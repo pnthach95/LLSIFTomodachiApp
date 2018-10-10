@@ -10,4 +10,5 @@ export default {
   primary: '#007bff',
   success: '#28a745',
   error: '#dc3545',
+  itemColor: 'white'
 }

@@ -1,4 +1,4 @@
-package com.llsifcards;
+package com.llsiftomodachiapp;
 
 import android.app.Application;
 

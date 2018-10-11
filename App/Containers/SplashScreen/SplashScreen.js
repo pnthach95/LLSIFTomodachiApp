@@ -7,7 +7,7 @@ import { Images, Metrics } from '../../Theme'
 export default class SplashScreen extends React.Component {
   render() {
     return (
-      <View style={styles.container}>
+      <View style={[styles.container, { backgroundColor: this.props.bgColor }]}>
         <Image source={Images.logo} style={styles.logo} />
         <Spinkit type='WanderingCubes' size={Metrics.icons.xl} color='white' />
       </View>

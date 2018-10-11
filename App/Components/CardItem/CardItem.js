@@ -5,40 +5,52 @@ import FastImage from 'react-native-fast-image'
 import LinearGradient from 'react-native-linear-gradient';
 import styles from './styles'
 import { Metrics, Colors, ApplicationStyles } from '../../Theme'
+import { AddHTTPS } from '../../Utils';
 
 export default class CardItem extends Component {
   static propTypes = {
     item: PropTypes.object,
     onPress: PropTypes.func,
-    styles: PropTypes.object,
-    hide: PropTypes.bool
+    styles: PropTypes.object
   }
 
   constructor(props) {
     super(props);
     this.state = {
-      item: this.props.item
+      imgWidth: 0,
+      imgHeight: 0
     }
   }
 
   render() {
     return (
       <TouchableOpacity style={[styles.container, this.props.styles]} onPress={this.props.onPress}>
-        {/* <LinearGradient colors={[Colors.g3, Colors.g4]} style={ApplicationStyles.mainContainer}> */}
         <FastImage
-          style={{ width: Metrics.images.itemWidth - 5, height: (Metrics.images.itemWidth - 5) * 720 / 512, borderTopLeftRadius: 10, borderTopRightRadius: 10, left: 1 }}
+          style={{
+            width: Metrics.images.itemWidth,
+            height: Metrics.images.itemWidth * this.state.imgHeight / this.state.imgWidth
+          }}
+          onLoad={(e) => {
+            console.log(e.nativeEvent.width, e.nativeEvent.height);
+            const width = e.nativeEvent.width;
+            const height = e.nativeEvent.height;
+            this.setState({ imgWidth: width, imgHeight: height })
+          }}
           source={{
-            uri: 'https:' + (this.state.item.card_image ? this.state.item.card_image : this.state.item.card_idolized_image),
+            uri: AddHTTPS(this.props.item.card_image ? this.props.item.card_image : this.props.item.card_idolized_image),
             priority: FastImage.priority.normal,
           }} />
-        <Text>Name: {this.state.item.idol.name}</Text>
-        <Text>School: {this.state.item.idol.school}</Text>
-        <Text>Year: {this.state.item.idol.year}</Text>
-        <Text>Main unit: {this.state.item.idol.main_unit}</Text>
-        <Text>Sub unit: {this.state.item.idol.sub_unit}</Text>
-        <Text>Rarity: {this.state.item.rarity}</Text>
-        <Text>Attribute: {this.state.item.attribute}</Text>
-        {/* </LinearGradient> */}
+        <LinearGradient
+          colors={[Colors.pink, Colors.lightPink]}
+          style={ApplicationStyles.mainContainer}>
+          <Text>Name: {this.props.item.idol.name}</Text>
+          <Text>School: {this.props.item.idol.school}</Text>
+          <Text>Year: {this.props.item.idol.year}</Text>
+          <Text>Main unit: {this.props.item.idol.main_unit}</Text>
+          <Text>Sub unit: {this.props.item.idol.sub_unit}</Text>
+          <Text>Rarity: {this.props.item.rarity}</Text>
+          <Text>Attribute: {this.props.item.attribute}</Text>
+        </LinearGradient>
       </TouchableOpacity>
     )
   }

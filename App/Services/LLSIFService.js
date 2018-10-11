@@ -6,15 +6,22 @@ const LLSIFApiClient = create({
   timeout: 5000
 })
 
-function fetchCachedData() {
-  return LLSIFApiClient.get(Config.CACHED_DATA).then((response) => {
-    if (response.ok) {
-      return response.data
-    }
-    return null
-  })
+async function fetchCachedData() {
+  const response = await LLSIFApiClient.get(Config.CACHED_DATA)
+  if (response.ok) {
+    return response.data
+  }
+  return null
+}
+
+async function fetchCardList(page) {
+  const response = await LLSIFApiClient.get(Config.CARDS, { ordering: '-release_date', page: page })
+  if (response.ok) {
+    return response.data.results
+  }
+  return null
 }
 
 export const LLSIFService = {
-  fetchCachedData,
+  fetchCachedData, fetchCardList
 }

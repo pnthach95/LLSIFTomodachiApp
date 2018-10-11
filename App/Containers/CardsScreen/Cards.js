@@ -2,7 +2,8 @@ import React from 'react'
 import { Text, View, FlatList } from 'react-native'
 import { connect } from 'react-redux'
 import Icon from 'react-native-vector-icons/Ionicons'
-import { Metrics, Colors } from '../../Theme'
+
+import { Metrics, Colors, ApplicationStyles } from '../../Theme'
 import CardItem from '../../Components/CardItem/CardItem'
 import SplashScreen from '../SplashScreen/SplashScreen'
 import { LLSIFService } from '../../Services/LLSIFService'
@@ -52,7 +53,7 @@ class CardsScreen extends React.Component {
         page: this.state.page + 1
       })
     }).catch((err) => {
-
+      //  TODO
     })
   }
 
@@ -61,17 +62,19 @@ class CardsScreen extends React.Component {
   }
 
   render() {
+    if (this.state.isLoading) return (<SplashScreen bgColor={Colors.green} />)
     return (
       <View style={{ flex: 1, backgroundColor: Colors.green, }}>
-        {this.state.isLoading ? <SplashScreen bgColor={Colors.green} /> :
-          <FlatList
-            data={this.state.data}
-            numColumns={2}
-            keyExtractor={this._keyExtractor}
-            onEndReached={() => this.getCards()}
-            style={{ padding: Metrics.smallMargin }}
-            renderItem={this._renderItem} />
-        }
+        <View style={[ApplicationStyles.header, { backgroundColor: 'white' }]}>
+          <Text>TOOLBAR</Text>
+        </View>
+        <FlatList
+          data={this.state.data}
+          numColumns={2}
+          keyExtractor={this._keyExtractor}
+          onEndReached={() => this.getCards()}
+          style={{ padding: Metrics.smallMargin }}
+          renderItem={this._renderItem} />
       </View>
     )
   }

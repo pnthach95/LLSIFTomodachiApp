@@ -12,11 +12,11 @@ export default {
   itemColor: 'white',
   inactive: '#888',
   pink: '#FF5B9B',
-  lightPink: '#ffadcd',
-  green: '#18a352',
+  lightPink: '#f9cadc',
+  green: '#09b751',
   lightGreen: '#60db93',
   violet: '#DF67FF',
   lightViolet: '#e7adf7',
-  blue: '#01A3FF',
+  blue: '#00a2ff',
   lightBlue: '#87d3ff'
 }

@@ -11,7 +11,7 @@ export default StyleSheet.create({
     resizeMode: 'contain'
   },
   body: {
-    height: Metrics.screenHeight - 64 * 2,
+    height: Metrics.screenHeight - Metrics.navBarHeight * 2,
     alignItems: 'center',
     paddingTop: 10,
   },

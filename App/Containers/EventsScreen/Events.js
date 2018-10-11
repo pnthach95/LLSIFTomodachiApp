@@ -32,7 +32,7 @@ class EventsScreen extends React.Component {
   }
 
   render() {
-    return (<SplashScreen />)
+    return (<SplashScreen bgColor={Colors.violet} />)
   }
 }
 

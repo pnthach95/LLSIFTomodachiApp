@@ -34,7 +34,7 @@ class IdolsScreen extends React.Component {
   }
 
   render() {
-    return (<SplashScreen />)
+    return (<SplashScreen bgColor={Colors.blue} />)
   }
 }
 

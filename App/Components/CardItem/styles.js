@@ -7,7 +7,9 @@ export default StyleSheet.create({
     width: Metrics.images.itemWidth,
     margin: Metrics.smallMargin,
   },
-  image: {
-    width: Metrics.images.itemWidth
+  info: {
+    flexDirection: 'row',
+    padding: Metrics.smallMargin,
+    justifyContent: 'space-around'
   }
 })

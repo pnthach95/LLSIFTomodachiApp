@@ -1,30 +1,65 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { TouchableOpacity, Text } from 'react-native'
+import { TouchableOpacity, View, Image } from 'react-native'
 import FastImage from 'react-native-fast-image'
-import LinearGradient from 'react-native-linear-gradient';
 import styles from './styles'
-import { Metrics, Colors, ApplicationStyles } from '../../Theme'
+import { Metrics, Colors, ApplicationStyles, Images } from '../../Theme'
 import { AddHTTPS } from '../../Utils';
 
 export default class CardItem extends Component {
   static propTypes = {
     item: PropTypes.object,
-    onPress: PropTypes.func,
-    styles: PropTypes.object
+    onPress: PropTypes.func
   }
 
   constructor(props) {
     super(props);
     this.state = {
       imgWidth: 0,
-      imgHeight: 0
+      imgHeight: 0,
+      colors: this.findColor(this.props.item.attribute)
+    }
+  }
+
+  findSkill(key) {
+    switch (key) {
+      case 'Score Up':
+      case 'Perfect Charm':
+      case 'Rhythmical Charm':
+      case 'Total Charm':
+      case 'Timer Charm':
+        return Images.skill[0]
+      case 'Perfect Lock':
+      case 'Total Trick':
+      case 'Timer Trick':
+        return Images.skill[1]
+      case 'Healer':
+      case 'Timer Yell':
+      case 'Total Yell':
+      case 'Rhythmical Yell':
+      case 'Perfect Yell':
+        return Images.skill[2]
+      default:
+        return Images.skill[3]
+    }
+  }
+
+  findColor(key) {
+    switch (key) {
+      case 'Smile':
+        return [Colors.pink, Colors.lightPink]
+      case 'Pure':
+        return [Colors.green, Colors.lightGreen]
+      case 'Cool':
+        return [Colors.blue, Colors.lightBlue]
+      default:
+        return [Colors.violet, Colors.lightViolet]
     }
   }
 
   render() {
     return (
-      <TouchableOpacity style={[styles.container, this.props.styles]} onPress={this.props.onPress}>
+      <TouchableOpacity style={styles.container} onPress={this.props.onPress}>
         <FastImage
           style={{
             width: Metrics.images.itemWidth,
@@ -40,17 +75,51 @@ export default class CardItem extends Component {
             uri: AddHTTPS(this.props.item.card_image ? this.props.item.card_image : this.props.item.card_idolized_image),
             priority: FastImage.priority.normal,
           }} />
-        <LinearGradient
-          colors={[Colors.pink, Colors.lightPink]}
-          style={ApplicationStyles.mainContainer}>
-          <Text>Name: {this.props.item.idol.name}</Text>
-          <Text>School: {this.props.item.idol.school}</Text>
-          <Text>Year: {this.props.item.idol.year}</Text>
-          <Text>Main unit: {this.props.item.idol.main_unit}</Text>
-          <Text>Sub unit: {this.props.item.idol.sub_unit}</Text>
-          <Text>Rarity: {this.props.item.rarity}</Text>
-          <Text>Attribute: {this.props.item.attribute}</Text>
-        </LinearGradient>
+
+        <View
+          style={[
+            styles.info,
+            { backgroundColor: this.state.colors[1] }
+          ]}>
+          {this.props.item.skill &&
+            <Image
+              source={this.findSkill(this.props.item.skill)}
+              style={[
+                ApplicationStyles.smallIcon,
+                { tintColor: this.state.colors[0] }
+              ]} />}
+
+          <Image
+            source={this.props.item.japan_only ? Images.region[0] : Images.region[1]}
+            style={[
+              ApplicationStyles.smallIcon,
+              { tintColor: this.state.colors[0] }
+            ]} />
+
+          {this.props.item.is_promo &&
+            <Image
+              source={Images.promo}
+              style={[
+                ApplicationStyles.smallIcon,
+                { tintColor: this.state.colors[0] }
+              ]} />}
+
+          {this.props.item.is_special &&
+            <Image
+              source={Images.skill[3]}
+              style={[
+                ApplicationStyles.smallIcon,
+                { tintColor: this.state.colors[0] }
+              ]} />}
+
+          {this.props.item.event &&
+            <Image
+              source={Images.event}
+              style={[
+                ApplicationStyles.smallIcon,
+                { tintColor: this.state.colors[0] }
+              ]} />}
+        </View>
       </TouchableOpacity>
     )
   }

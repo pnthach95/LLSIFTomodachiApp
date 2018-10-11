@@ -1,3 +1,5 @@
+import Metrics from './Metrics';
+
 /**
  * This file defines the base application styles.
  *
@@ -6,17 +8,19 @@
 
 export default {
   screen: {
-    container: {
-      flex: 1,
-    },
+    flex: 1
   },
   header: {
-    height: 64,
+    height: Metrics.navBarHeight,
     justifyContent: 'center',
     alignItems: 'center'
   },
   imageHeader: {
     height: '100%',
     resizeMode: 'contain'
+  },
+  smallIcon: {
+    width: Metrics.icons.medium,
+    height: Metrics.icons.medium
   }
 }

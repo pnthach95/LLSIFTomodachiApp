@@ -16,7 +16,7 @@ The project contains:
 - [apisauce](https://github.com/infinitered/apisauce) (v0.15) to make [axios](https://github.com/axios/axios) even better
 - [prettier](https://prettier.io/) and [eslint](https://eslint.org/) preconfigured for React Native
 - [react-native-fast-image](https://github.com/DylanVann/react-native-fast-image): to fix bug, replace `implementation` to `compile` in `gradle.build` file
-- [react-native-linear-gradienet](https://github.com/react-native-community/react-native-linear-gradient): to fix bug, replace `compileOnly` to `provided` in `gradle.build` file
+- [react-native-linear-gradienet](https://github.com/react-native-community/react-native-linear-gradient): to fix `Could not find method compileOnly() for arguments` bug, replace `compileOnly` to `provided` in `gradle.build` file
 
 ## Directory layout
 

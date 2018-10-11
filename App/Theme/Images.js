@@ -3,5 +3,5 @@
  */
 
 export default {
-  // logo: require('../Images/logo.png'),
+  logo: require('../Images/logo_shadow.png'),
 }

@@ -10,4 +10,13 @@ export default {
       flex: 1,
     },
   },
+  header: {
+    height: 64,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  imageHeader: {
+    height: '100%',
+    resizeMode: 'contain'
+  }
 }

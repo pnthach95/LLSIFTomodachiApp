@@ -1,5 +1,5 @@
 import { put } from 'redux-saga/effects'
-import ExampleActions from 'App/Stores/Example/Actions'
+import CachedDataActions from 'App/Stores/CachedData/Actions'
 import NavigationService from 'App/Services/NavigationService'
 
 /**
@@ -8,11 +8,6 @@ import NavigationService from 'App/Services/NavigationService'
 export function* startup() {
   // Dispatch a redux action using `put()`
   // @see https://redux-saga.js.org/docs/basics/DispatchingActions.html
-  yield put(ExampleActions.fetchTemperature())
-
-  // Add more operations you need to do at startup here
-  // ...
-
-  // When those operations are finished we redirect to the main screen
-  NavigationService.navigateAndReset('MainScreen')
+  yield put(CachedDataActions.fetchCachedData())
+  NavigationService.navigateAndReset('LLSIFScreen')
 }

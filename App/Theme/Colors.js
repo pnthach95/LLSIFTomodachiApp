@@ -6,13 +6,13 @@
  */
 
 export default {
-  text: '#212529',
   primary: '#007bff',
   success: '#28a745',
   error: '#dc3545',
   itemColor: 'white',
   inactive: '#888',
-  active: 'white',
-  pink: '#c64b8f',
-  green: '#18a352'
+  pink: '#FF5B9B',
+  green: '#18a352',
+  violet: '#DF67FF',
+  blue: '#01A3FF'
 }

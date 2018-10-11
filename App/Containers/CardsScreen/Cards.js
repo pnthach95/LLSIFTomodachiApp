@@ -5,7 +5,7 @@ import { create } from 'apisauce'
 import Icon from 'react-native-vector-icons/Ionicons'
 import { Config } from '../../Config'
 import { Metrics, Colors } from '../../Theme'
-import CardItem from '../../Components/CardItem'
+import CardItem from '../../Components/CardItem/CardItem'
 import SplashScreen from '../SplashScreen/SplashScreen'
 
 const LLSIFApiClient = create({

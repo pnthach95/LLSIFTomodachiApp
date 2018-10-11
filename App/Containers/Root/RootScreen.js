@@ -4,11 +4,11 @@ import NavigationService from 'App/Services/NavigationService'
 import { View } from 'react-native'
 import styles from './RootScreenStyle'
 import SplashScreen from 'App/Containers/SplashScreen/SplashScreen'
-import MainScreen from 'App/Containers/MainScreen'
-import CardsScreen from 'App/Containers/CardsScreen'
-import IdolsScreen from 'App/Containers/IdolsScreen'
-import EventsScreen from 'App/Containers/EventsScreen'
-import SongsScreen from 'App/Containers/SongsScreen'
+import MainScreen from 'App/Containers/MainScreen/Main'
+import CardsScreen from 'App/Containers/CardsScreen/Cards'
+import IdolsScreen from 'App/Containers/IdolsScreen/Idols'
+import EventsScreen from 'App/Containers/EventsScreen/Events'
+import SongsScreen from 'App/Containers/SongsScreen/Songs'
 import { connect } from 'react-redux'
 import StartupActions from 'App/Stores/Startup/Actions'
 
@@ -26,7 +26,6 @@ const LLSIFGame = createBottomTabNavigator(
 )
 
 LLSIFGame.navigationOptions = {
-  // Hide the header from AppNavigator stack
   header: null,
 }
 

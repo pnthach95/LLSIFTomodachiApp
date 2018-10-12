@@ -1,4 +1,5 @@
-import { takeLatest } from 'redux-saga/effects'
+import { takeLatest, fork } from 'redux-saga/effects'
+import { networkEventsListenerSaga } from 'react-native-offline'
 import { StartupTypes } from 'App/Stores/Startup/Actions'
 import { CachedDataTypes } from 'App/Stores/CachedData/Actions'
 import { fetchCachedData } from './CachedDataSaga'
@@ -11,5 +12,6 @@ export default function* root() {
      */
     takeLatest(StartupTypes.STARTUP, startup),
     takeLatest(CachedDataTypes.FETCH_CACHED_DATA, fetchCachedData),
+    fork(networkEventsListenerSaga, { timeout: 2000, checkConnectionInterval: 20000 }),
   ]
 }

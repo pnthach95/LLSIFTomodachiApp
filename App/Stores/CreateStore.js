@@ -2,6 +2,7 @@ import { applyMiddleware, compose, createStore } from 'redux'
 import createSagaMiddleware from 'redux-saga'
 import { persistReducer, persistStore } from 'redux-persist'
 import immutableTransform from 'redux-persist-transform-immutable'
+import { createNetworkMiddleware } from 'react-native-offline'
 
 /**
  * This import defaults to localStorage for web and AsyncStorage for react-native.
@@ -38,6 +39,8 @@ export default (rootReducer, rootSaga) => {
 
   // Connect the sagas to the redux store
   const sagaMiddleware = createSagaMiddleware()
+  const networkMiddleware = createNetworkMiddleware()
+  middleware.push(networkMiddleware)
   middleware.push(sagaMiddleware)
 
   enhancers.push(applyMiddleware(...middleware))

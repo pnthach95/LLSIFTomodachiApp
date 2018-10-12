@@ -3,8 +3,8 @@ import PropTypes from 'prop-types'
 import { TouchableOpacity, View, Image } from 'react-native'
 import FastImage from 'react-native-fast-image'
 import styles from './styles'
-import { Metrics, Colors, ApplicationStyles, Images } from '../../Theme'
-import { AddHTTPS } from '../../Utils';
+import { Metrics, ApplicationStyles, Images } from '../../Theme'
+import { AddHTTPS, findColorByAttribute } from '../../Utils';
 
 export default class CardItem extends Component {
   static propTypes = {
@@ -17,7 +17,7 @@ export default class CardItem extends Component {
     this.state = {
       imgWidth: 0,
       imgHeight: 0,
-      colors: this.findColor(this.props.item.attribute)
+      colors: findColorByAttribute(this.props.item.attribute)
     }
   }
 
@@ -44,19 +44,6 @@ export default class CardItem extends Component {
     }
   }
 
-  findColor(key) {
-    switch (key) {
-      case 'Smile':
-        return [Colors.pink, Colors.lightPink]
-      case 'Pure':
-        return [Colors.green, Colors.lightGreen]
-      case 'Cool':
-        return [Colors.blue, Colors.lightBlue]
-      default:
-        return [Colors.violet, Colors.lightViolet]
-    }
-  }
-
   render() {
     return (
       <TouchableOpacity style={styles.container} onPress={this.props.onPress}>
@@ -66,9 +53,7 @@ export default class CardItem extends Component {
             height: Metrics.images.itemWidth * this.state.imgHeight / this.state.imgWidth
           }}
           onLoad={(e) => {
-            console.log(e.nativeEvent.width, e.nativeEvent.height);
-            const width = e.nativeEvent.width;
-            const height = e.nativeEvent.height;
+            const { width, height } = e.nativeEvent
             this.setState({ imgWidth: width, imgHeight: height })
           }}
           source={{

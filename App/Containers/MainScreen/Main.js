@@ -72,7 +72,6 @@ class MainScreen extends React.Component {
 
               }}
               onLoad={e => {
-                console.log(e.nativeEvent.width, e.nativeEvent.height);
                 const { width, height } = e.nativeEvent
                 this.setState({ imgWidth: width, imgHeight: height })
               }} />
@@ -82,7 +81,6 @@ class MainScreen extends React.Component {
               source={{ uri: this.state.eventJP.image }}
               style={{ width: widthBanner, height: widthBanner * this.state.imgHeight / this.state.imgWidth }}
               onLoad={(e) => {
-                console.log(e.nativeEvent.width, e.nativeEvent.height);
                 const { width, height } = e.nativeEvent
                 this.setState({ imgWidth: width, imgHeight: height })
               }} />

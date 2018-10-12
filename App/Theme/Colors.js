@@ -14,7 +14,7 @@ export default {
   pink: '#FF5B9B',
   lightPink: '#f9cadc',
   green: '#09b751',
-  lightGreen: '#60db93',
+  lightGreen: '#6fe29f',
   violet: '#DF67FF',
   lightViolet: '#e7adf7',
   blue: '#00a2ff',

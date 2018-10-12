@@ -11,6 +11,7 @@ export default {
     flex: 1
   },
   header: {
+    flexDirection: 'row',
     height: Metrics.navBarHeight,
     justifyContent: 'center',
     alignItems: 'center'

@@ -29,14 +29,14 @@ class CardsScreen extends React.Component {
     }
   }
 
-  _keyExtractor = (item, index) => 'card' + item.id;
+  _keyExtractor = (item, index) => 'card' + item.id
 
   _renderItem = ({ item }) => (
-    <CardItem item={item} />
-  );
+    <CardItem item={item} onPress={() => this.navigateToCardDetail(item)} />
+  )
 
   getCards() {
-    console.log(`========== Cards.getCards.page ${this.state.page} =========`)
+    console.log(`========== Cards.getCards.page ${this.state.page} ==========`)
     LLSIFService.fetchCardList(this.state.page).then((result) => {
       result.sort((a, b) => {
         return a.id < b.id
@@ -55,6 +55,10 @@ class CardsScreen extends React.Component {
     }).catch((err) => {
       //  TODO
     })
+  }
+
+  navigateToCardDetail(item) {
+    this.props.navigation.navigate('CardDetailScreen', { item: item })
   }
 
   componentDidMount() {

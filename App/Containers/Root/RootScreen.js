@@ -11,6 +11,7 @@ import CardsScreen from 'App/Containers/CardsScreen/Cards'
 import IdolsScreen from 'App/Containers/IdolsScreen/Idols'
 import EventsScreen from 'App/Containers/EventsScreen/Events'
 import SongsScreen from 'App/Containers/SongsScreen/Songs'
+import CardDetailScreen from 'App/Containers/CardDetailScreen/CardDetail'
 import StartupActions from 'App/Stores/Startup/Actions'
 
 const LLSIFGame = createBottomTabNavigator(
@@ -24,14 +25,13 @@ const LLSIFGame = createBottomTabNavigator(
   { initialRouteName: 'MainScreen' }
 )
 
-LLSIFGame.navigationOptions = {
-  header: null,
-}
+LLSIFGame.navigationOptions = { header: null }
 
 const AppNav = createStackNavigator(
   {
     SplashScreen: SplashScreen,
     LLSIFScreen: LLSIFGame,
+    CardDetailScreen: CardDetailScreen
   },
   {
     initialRouteName: 'SplashScreen',

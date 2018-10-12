@@ -23,5 +23,9 @@ export default {
   smallIcon: {
     width: Metrics.icons.medium,
     height: Metrics.icons.medium
+  },
+  center: {
+    justifyContent: 'center',
+    alignItems: 'center'
   }
 }

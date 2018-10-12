@@ -7,8 +7,7 @@ export default StyleSheet.create({
   },
   header: {
     justifyContent: 'space-between',
-    backgroundColor: 'white',
-    paddingHorizontal: Metrics.doubleBaseMargin
+    backgroundColor: 'white'
   },
   text: {
     color: 'white',
@@ -18,7 +17,7 @@ export default StyleSheet.create({
   buttonRow: {
     flexDirection: 'row',
     padding: Metrics.baseMargin,
-    justifyContent: 'space-between'
+    justifyContent: 'space-around'
   },
   imageRow: {
     flexDirection: 'row',
@@ -35,5 +34,9 @@ export default StyleSheet.create({
     paddingLeft: '10%',
     paddingVertical: Metrics.baseMargin,
     color: '#333'
+  },
+  headerButton: {
+    height: Metrics.navBarHeight,
+    width: Metrics.navBarHeight
   }
 })

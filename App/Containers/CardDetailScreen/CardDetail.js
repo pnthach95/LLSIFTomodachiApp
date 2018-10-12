@@ -6,6 +6,7 @@ import FastImage from 'react-native-fast-image'
 import LinearGradient from 'react-native-linear-gradient'
 
 import ProgressBar from '../../Components/ProgressBar/ProgressBar'
+import SquareButton from '../../Components/SquareButton/SquareButton'
 import styles from './styles'
 import SplashScreen from '../SplashScreen/SplashScreen'
 import { findColorByAttribute, AddHTTPS } from '../../Utils'
@@ -120,10 +121,10 @@ class CardDetailScreen extends React.Component {
     return (
       <View style={styles.container}>
         <View style={[ApplicationStyles.header, styles.header]}>
-          <Icon name={'ios-arrow-back'} size={30} onPress={() => this.props.navigation.goBack()} />
+          <SquareButton name={'ios-arrow-back'} onPress={() => this.props.navigation.goBack()} />
           <Text style={Fonts.style.normal}>{this.state.item.idol.name}</Text>
           <View>
-            <Icon name={'ios-person'} size={30} color={this.state.colors[0]} />
+            <SquareButton name={'ios-person'} color={this.state.colors[0]} />
           </View>
         </View>
 
@@ -166,7 +167,7 @@ class CardDetailScreen extends React.Component {
 
             <View style={styles.buttonRow}>
               {this.statButton(0, 'Level 1', this.state.minStats)}
-              {this.statButton(1, `Level ${this.state.item.non_idolized_max_level}`, this.state.nonIdolMaxStats)}
+              {this.state.item.non_idolized_max_level != 0 && this.statButton(1, `Level ${this.state.item.non_idolized_max_level}`, this.state.nonIdolMaxStats)}
               {this.statButton(2, `Level ${this.state.item.idolized_max_level}`, this.state.idolMaxStats)}
             </View>
             {this.progressView(this.state.currentStats)}

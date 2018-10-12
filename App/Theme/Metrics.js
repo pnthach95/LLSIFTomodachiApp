@@ -29,5 +29,5 @@ export default {
     logo: 200,
     itemWidth: ((width < height ? width : height) - 10) / 2 - 10
   },
-  widthBanner = (width < height ? width : height) - 40
+  widthBanner: (width < height ? width : height) - 40
 }

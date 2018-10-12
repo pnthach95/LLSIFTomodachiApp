@@ -20,9 +20,15 @@ export default {
     height: '100%',
     resizeMode: 'contain'
   },
-  smallIcon: {
+  mediumIcon: {
     width: Metrics.icons.medium,
-    height: Metrics.icons.medium
+    height: Metrics.icons.medium,
+    resizeMode: 'contain'
+  },
+  largeIcon: {
+    width: Metrics.icons.large,
+    height: Metrics.icons.large,
+    resizeMode: 'contain'
   },
   center: {
     justifyContent: 'center',

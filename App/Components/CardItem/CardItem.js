@@ -70,14 +70,14 @@ export default class CardItem extends Component {
             <Image
               source={this.findSkill(this.props.item.skill)}
               style={[
-                ApplicationStyles.smallIcon,
+                ApplicationStyles.mediumIcon,
                 { tintColor: this.state.colors[0] }
               ]} />}
 
           <Image
             source={this.props.item.japan_only ? Images.region[0] : Images.region[1]}
             style={[
-              ApplicationStyles.smallIcon,
+              ApplicationStyles.mediumIcon,
               { tintColor: this.state.colors[0] }
             ]} />
 
@@ -85,7 +85,7 @@ export default class CardItem extends Component {
             <Image
               source={Images.promo}
               style={[
-                ApplicationStyles.smallIcon,
+                ApplicationStyles.mediumIcon,
                 { tintColor: this.state.colors[0] }
               ]} />}
 
@@ -93,7 +93,7 @@ export default class CardItem extends Component {
             <Image
               source={Images.skill[3]}
               style={[
-                ApplicationStyles.smallIcon,
+                ApplicationStyles.mediumIcon,
                 { tintColor: this.state.colors[0] }
               ]} />}
 
@@ -101,7 +101,7 @@ export default class CardItem extends Component {
             <Image
               source={Images.event}
               style={[
-                ApplicationStyles.smallIcon,
+                ApplicationStyles.mediumIcon,
                 { tintColor: this.state.colors[0] }
               ]} />}
         </View>

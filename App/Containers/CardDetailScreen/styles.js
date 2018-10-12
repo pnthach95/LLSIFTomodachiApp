@@ -7,7 +7,8 @@ export default StyleSheet.create({
   },
   header: {
     justifyContent: 'space-between',
-    backgroundColor: 'white'
+    backgroundColor: 'white',
+    paddingRight: Metrics.baseMargin
   },
   text: {
     color: 'white',

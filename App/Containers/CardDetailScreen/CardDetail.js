@@ -1,7 +1,6 @@
 import React from 'react'
-import { Text, View, ScrollView, TouchableOpacity } from 'react-native'
+import { Text, View, ScrollView, TouchableOpacity, Image } from 'react-native'
 import { connect } from 'react-redux'
-import Icon from 'react-native-vector-icons/Ionicons'
 import FastImage from 'react-native-fast-image'
 import LinearGradient from 'react-native-linear-gradient'
 
@@ -9,7 +8,7 @@ import ProgressBar from '../../Components/ProgressBar/ProgressBar'
 import SquareButton from '../../Components/SquareButton/SquareButton'
 import styles from './styles'
 import SplashScreen from '../SplashScreen/SplashScreen'
-import { findColorByAttribute, AddHTTPS } from '../../Utils'
+import { findColorByAttribute, AddHTTPS, findMainUnit, findSubUnit } from '../../Utils'
 import { Metrics, Fonts, ApplicationStyles, Colors } from '../../Theme'
 
 class CardDetailScreen extends React.Component {
@@ -120,18 +119,23 @@ class CardDetailScreen extends React.Component {
     if (this.state.isLoading) return (<SplashScreen />)
     return (
       <View style={styles.container}>
-        <View style={[ApplicationStyles.header, styles.header]}>
-          <SquareButton name={'ios-arrow-back'} onPress={() => this.props.navigation.goBack()} />
-          <Text style={Fonts.style.normal}>{this.state.item.idol.name}</Text>
-          <View>
-            <SquareButton name={'ios-person'} color={this.state.colors[0]} />
+        <View style={[ApplicationStyles.header, styles.header, { backgroundColor: this.state.colors[1], }]}>
+          <View style={{ flex: 1 }}>
+            <SquareButton name={'ios-arrow-back'} onPress={() => this.props.navigation.goBack()} />
+          </View>
+          <View style={{ flex: 3 }}>
+            <Text style={[Fonts.style.normal]}>{this.state.item.idol.name}</Text>
+          </View>
+          <View style={{ flex: 3, flexDirection: 'row', justifyContent: 'flex-end' }}>
+            <Image source={findMainUnit(this.state.item.idol.main_unit)} style={{ resizeMode: 'contain', width: '33%' }} />
+            <Image source={findSubUnit(this.state.item.idol.sub_unit)} style={{ resizeMode: 'contain', width: '33%' }} />
           </View>
         </View>
 
         <ScrollView
           showsVerticalScrollIndicator={false}
           style={{ paddingBottom: Metrics.doubleBaseMargin }}>
-          <LinearGradient colors={['white', this.state.colors[0]]}>
+          <LinearGradient colors={[this.state.colors[1], this.state.colors[0], 'white']}>
             <View style={styles.imageRow}>
               {this.state.item.card_image &&
                 <FastImage
@@ -151,10 +155,8 @@ class CardDetailScreen extends React.Component {
                 onLoad={e => this.onLoadFastImage(e)}
               />
             </View>
-
             <Text>School: {this.state.item.idol.school}</Text>
-            <Text>{this.state.item.idol.main_unit}</Text>
-            <Text>{this.state.item.idol.sub_unit}</Text>
+            <Text>Unit: {this.state.item.idol.main_unit}</Text>
             <Text>{this.state.item.idol.year}</Text>
             <Text>Card ID: {this.state.item.game_id}</Text>
             <Text>Rarity: {this.state.item.rarity}</Text>
@@ -168,7 +170,7 @@ class CardDetailScreen extends React.Component {
             <View style={styles.buttonRow}>
               {this.statButton(0, 'Level 1', this.state.minStats)}
               {this.state.item.non_idolized_max_level != 0 && this.statButton(1, `Level ${this.state.item.non_idolized_max_level}`, this.state.nonIdolMaxStats)}
-              {this.statButton(2, `Level ${this.state.item.idolized_max_level}`, this.state.idolMaxStats)}
+              {this.state.item.idolized_max_level != 0 && this.statButton(2, `Level ${this.state.item.idolized_max_level}`, this.state.idolMaxStats)}
             </View>
             {this.progressView(this.state.currentStats)}
             <View style={{ height: Metrics.doubleBaseMargin }} />

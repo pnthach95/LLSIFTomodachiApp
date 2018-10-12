@@ -16,4 +16,18 @@ export default {
   ],
   promo: require('../Images/others/promo.png'),
   event: require('../Images/others/event.png'),
+  mainUnit: [
+    require('../Images/units/0.png'),
+    require('../Images/units/1.png')
+  ],
+  subUnit: [
+    require('../Images/subunits/0.png'),
+    require('../Images/subunits/1.png'),
+    require('../Images/subunits/2.png'),
+    require('../Images/subunits/3.png'),
+    require('../Images/subunits/4.png'),
+    require('../Images/subunits/5.png'),
+    require('../Images/subunits/6.png'),
+    require('../Images/subunits/7.png'),
+  ]
 }

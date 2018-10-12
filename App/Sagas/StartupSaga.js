@@ -8,6 +8,6 @@ import NavigationService from 'App/Services/NavigationService'
 export function* startup() {
   // Dispatch a redux action using `put()`
   // @see https://redux-saga.js.org/docs/basics/DispatchingActions.html
-  yield put(CachedDataActions.fetchCachedData())
+  // yield put(CachedDataActions.fetchCachedData())
   NavigationService.navigateAndReset('LLSIFScreen')
 }

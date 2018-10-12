@@ -6,5 +6,5 @@ import { Map } from 'immutable'
 export const INITIAL_STATE = Map({
   cachedData: null,
   cachedDataErrorMessage: null,
-  cachedDataIsLoading: false,
+  cachedDataIsLoading: true,
 })

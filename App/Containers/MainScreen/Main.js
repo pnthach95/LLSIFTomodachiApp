@@ -10,15 +10,10 @@ import { AddHTTPS } from '../../Utils'
 import SplashScreen from '../SplashScreen/SplashScreen'
 import styles from './styles'
 
-const widthBanner = Metrics.screenWidth - 40
-
 class MainScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      currentContests: null,
-      eventEN: null,
-      eventJP: null,
       imgWidth: 0,
       imgHeight: 0
     }
@@ -43,20 +38,24 @@ class MainScreen extends React.Component {
   }
 
   componentDidMount() {
-    var data = this.props.cachedData
-    var dataEN = data.get('current_event_en')
-    var dataContests = data.get('current_contests')
-    var dataJP = data.get('current_event_jp')
-    this.setState({
-      currentContests: dataContests,
-      eventEN: this.parseEventData(dataEN),
-      eventJP: this.parseEventData(dataJP)
-    })
+    this.props.fetchCachedData()
+  }
+
+  onLoadFastImage(e) {
+    const { width, height } = e.nativeEvent
+    this.setState({ imgWidth: width, imgHeight: height })
   }
 
   render() {
     if (this.props.cachedDataIsLoading) return (<SplashScreen bgColor={Colors.pink} />)
     else {
+      var data = this.props.cachedData
+      var dataEN = data.get('current_event_en')
+      var currentContests = data.get('current_contests')
+      var dataJP = data.get('current_event_jp')
+      var eventEN = this.parseEventData(dataEN)
+      var eventJP = this.parseEventData(dataJP)
+
       return (
         <View style={styles.container}>
           <View style={ApplicationStyles.header}>
@@ -64,34 +63,34 @@ class MainScreen extends React.Component {
           </View>
 
           <View style={styles.body}>
-            <Text style={styles.text}>{this.state.eventEN.name}</Text>
+            <Text style={styles.text}>{eventEN.name}</Text>
             <FastImage
-              source={{ uri: this.state.eventEN.image }}
-              style={{ width: widthBanner, height: widthBanner * this.state.imgHeight / this.state.imgWidth }}
-              onProgress={e => {
-
+              source={{ uri: eventEN.image }}
+              style={{
+                width: Metrics.widthBanner,
+                height: Metrics.widthBanner * this.state.imgHeight / this.state.imgWidth
               }}
-              onLoad={e => {
-                const { width, height } = e.nativeEvent
-                this.setState({ imgWidth: width, imgHeight: height })
-              }} />
+              onLoad={e => this.onLoadFastImage(e)} />
 
-            <Text style={styles.text}>{this.state.eventJP.name}</Text>
+            <Text style={styles.text}>{eventJP.name}</Text>
             <FastImage
-              source={{ uri: this.state.eventJP.image }}
-              style={{ width: widthBanner, height: widthBanner * this.state.imgHeight / this.state.imgWidth }}
-              onLoad={(e) => {
-                const { width, height } = e.nativeEvent
-                this.setState({ imgWidth: width, imgHeight: height })
-              }} />
+              source={{ uri: eventJP.image }}
+              style={{
+                width: Metrics.widthBanner,
+                height: Metrics.widthBanner * this.state.imgHeight / this.state.imgWidth
+              }}
+              onLoad={e => this.onLoadFastImage(e)} />
 
-            {this.state.currentContests.map((item, id) => (
+            {currentContests.map((item, id) => (
               <View key={'contest' + id}>
                 <Text style={styles.text}>{item.get('name')}</Text>
                 <FastImage
                   resizeMode={FastImage.resizeMode.contain}
                   source={{ uri: AddHTTPS(item.get('image')) }}
-                  style={{ width: widthBanner, height: widthBanner / 3 }} />
+                  style={{
+                    width: Metrics.widthBanner,
+                    height: Metrics.widthBanner / 3
+                  }} />
               </View>
             ))}
           </View>

@@ -49,10 +49,19 @@ export default StyleSheet.create({
     alignItems: 'center'
   },
   button: {
-    width: '33%',
+    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    paddingVertical: Metrics.baseMargin
+    paddingVertical: Metrics.baseMargin,
+    marginHorizontal: 1
+  },
+  leftRadius: {
+    borderTopLeftRadius: 10,
+    borderBottomLeftRadius: 10
+  },
+  rightRadius: {
+    borderTopRightRadius: 10,
+    borderBottomRightRadius: 10
   },
   progressText: {
     paddingLeft: '10%',

@@ -14,8 +14,8 @@ async function fetchCachedData() {
   return null
 }
 
-async function fetchCardList(page) {
-  const response = await LLSIFApiClient.get(Config.CARDS, { ordering: '-release_date', page: page })
+async function fetchCardList(filter) {
+  const response = await LLSIFApiClient.get(Config.CARDS, filter)
   if (response.ok) {
     return response.data.results
   }

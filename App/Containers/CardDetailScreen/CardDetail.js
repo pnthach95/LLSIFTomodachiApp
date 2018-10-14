@@ -5,9 +5,11 @@ import FastImage from 'react-native-fast-image'
 import LinearGradient from 'react-native-linear-gradient'
 import Icon from 'react-native-vector-icons/Ionicons'
 
+import { getMaxStats } from '../../Stores/CachedData/Selectors'
 import Seperator from '../../Components/Seperator/Seperator'
 import ProgressBar from '../../Components/ProgressBar/ProgressBar'
 import SquareButton from '../../Components/SquareButton/SquareButton'
+import TextRow from '../../Components/TextRow/TextRow'
 import SplashScreen from '../SplashScreen/SplashScreen'
 import { findColorByAttribute, AddHTTPS, findMainUnit, findSubUnit } from '../../Utils'
 import { Metrics, Fonts, ApplicationStyles, Colors, Images } from '../../Theme'
@@ -32,14 +34,13 @@ class CardDetailScreen extends React.Component {
   }
 
   componentDidMount() {
-    let _maxStats = this.props.cachedData.get('cards_info').get('max_stats')
     this.setState({
       isLoading: false,
       colors: findColorByAttribute(this.state.item.attribute),
       maxStats: [
-        _maxStats.get('Smile'),
-        _maxStats.get('Pure'),
-        _maxStats.get('Cool')
+        this.props.maxStats.get('Smile'),
+        this.props.maxStats.get('Pure'),
+        this.props.maxStats.get('Cool')
       ],
       minStats: [
         this.state.item.minimum_statistics_smile,
@@ -112,11 +113,11 @@ class CardDetailScreen extends React.Component {
     )
   }
 
-  statButton(id, text, stats) {
+  statButton(id, text, stats, style) {
     return (
       <TouchableOpacity
         style={[
-          styles.button,
+          styles.button, style,
           { backgroundColor: this.state.buttonID == id ? Colors.violet : Colors.inactive }
         ]}
         onPress={() => this.setState({ currentStats: stats, buttonID: id })}>
@@ -178,16 +179,34 @@ class CardDetailScreen extends React.Component {
                 />
               </View>
               <View style={{ paddingHorizontal: Metrics.doubleBaseMargin }}>
-                <Text style={Fonts.style.normal}>Card ID: {this.state.item.game_id}</Text>
-                <Text style={Fonts.style.normal}>Release date: {this.state.item.release_date}</Text>
+                <TextRow
+                  item1={{ flex: 1, text: 'Card ID' }}
+                  item2={{ flex: 2, text: this.state.item.game_id }}
+                />
+                <TextRow
+                  item1={{ flex: 1, text: 'Release date' }}
+                  item2={{ flex: 2, text: this.state.item.release_date }}
+                />
                 <Seperator />
 
-                <Text style={Fonts.style.normal}>Skill: {this.state.item.skill}</Text>
-                <Text style={Fonts.style.normal}>Skill detail: {this.state.item.skill_details}</Text>
+                <TextRow
+                  item1={{ flex: 1, text: 'Skill' }}
+                  item2={{ flex: 2, text: this.state.item.skill }}
+                />
+                <TextRow
+                  item1={{ flex: 1, text: '' }}
+                  item2={{ flex: 2, text: this.state.item.skill_details }}
+                />
                 <Seperator />
 
-                <Text style={Fonts.style.normal}>Center skill: {this.state.item.skill}</Text>
-                <Text style={Fonts.style.normal}>Center skill detail: {this.state.item.center_skill_details || 'None'}</Text>
+                <TextRow
+                  item1={{ flex: 1, text: 'Center skill' }}
+                  item2={{ flex: 2, text: this.state.item.center_skill }}
+                />
+                <TextRow
+                  item1={{ flex: 1, text: '' }}
+                  item2={{ flex: 2, text: this.state.item.center_skill_details }}
+                />
                 <Seperator />
 
                 {this.state.item.event &&
@@ -208,13 +227,15 @@ class CardDetailScreen extends React.Component {
                   <Text style={Fonts.style.normal}> : {this.state.item.hp}</Text>
                 </View>
               </View>
+
               <View style={styles.buttonRow}>
-                {this.statButton(0, 'Level 1', this.state.minStats)}
+                {this.statButton(0, 'Level 1', this.state.minStats, styles.leftRadius)}
                 {this.state.item.non_idolized_max_level != 0 &&
                   this.statButton(1, `Level ${this.state.item.non_idolized_max_level}`, this.state.nonIdolMaxStats)}
                 {this.state.item.idolized_max_level != 0 &&
-                  this.statButton(2, `Level ${this.state.item.idolized_max_level}`, this.state.idolMaxStats)}
+                  this.statButton(2, `Level ${this.state.item.idolized_max_level}`, this.state.idolMaxStats, styles.rightRadius)}
               </View>
+
               {this.progressView(this.state.currentStats)}
               <View style={{ height: Metrics.doubleBaseMargin }} />
             </LinearGradient>
@@ -225,7 +246,7 @@ class CardDetailScreen extends React.Component {
 }
 
 const mapStateToProps = (state) => ({
-  cachedData: state.cachedData.get('cachedData'),
+  maxStats: getMaxStats(state)
 })
 
 const mapDispatchToProps = (dispatch) => ({

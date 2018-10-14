@@ -58,3 +58,10 @@ This project is released under the [MIT License](LICENSE).
 ## About me
 
 I'm just a developer who play Love Live and BanG Dream.
+
+## TODO
+
+- Idols screen
+- Events screen
+- Songs screen
+- Apply redux

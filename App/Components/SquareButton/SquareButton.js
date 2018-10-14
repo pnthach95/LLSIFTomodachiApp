@@ -5,7 +5,7 @@ import Icon from 'react-native-vector-icons/Ionicons'
 import styles from './styles'
 import { ApplicationStyles } from '../../Theme'
 
-export default class CardDetailScreen extends React.Component {
+export default class SquareButton extends React.Component {
   render() {
     return (
       <TouchableOpacity

@@ -4,15 +4,15 @@ import { connect } from 'react-redux'
 import FastImage from 'react-native-fast-image'
 import Icon from 'react-native-vector-icons/SimpleLineIcons'
 
-import { Metrics, Colors, Images, ApplicationStyles } from '../../Theme'
 import CachedDataActions from 'App/Stores/CachedData/Actions'
 import { AddHTTPS } from '../../Utils'
 import SplashScreen from '../SplashScreen/SplashScreen'
+import { Metrics, Colors, Images, ApplicationStyles } from '../../Theme'
 import styles from './styles'
 
 class MainScreen extends React.Component {
   constructor(props) {
-    super(props);
+    super(props)
     this.state = {
       imgWidth: 0,
       imgHeight: 0
@@ -47,14 +47,12 @@ class MainScreen extends React.Component {
   }
 
   render() {
-    if (this.props.cachedDataIsLoading) return (<SplashScreen bgColor={Colors.pink} />)
+    if (this.props.cachedDataIsLoading) return <SplashScreen bgColor={Colors.pink} />
     else {
-      var data = this.props.cachedData
-      var dataEN = data.get('current_event_en')
-      var currentContests = data.get('current_contests')
-      var dataJP = data.get('current_event_jp')
-      var eventEN = this.parseEventData(dataEN)
-      var eventJP = this.parseEventData(dataJP)
+      let data = this.props.cachedData
+      let currentContests = data.get('current_contests')
+      let eventEN = this.parseEventData(data.get('current_event_en'))
+      let eventJP = this.parseEventData(data.get('current_event_jp'))
 
       return (
         <View style={styles.container}>

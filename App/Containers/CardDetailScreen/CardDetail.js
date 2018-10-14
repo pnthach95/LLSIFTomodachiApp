@@ -3,13 +3,15 @@ import { Text, View, ScrollView, TouchableOpacity, Image } from 'react-native'
 import { connect } from 'react-redux'
 import FastImage from 'react-native-fast-image'
 import LinearGradient from 'react-native-linear-gradient'
+import Icon from 'react-native-vector-icons/Ionicons'
 
+import Seperator from '../../Components/Seperator/Seperator'
 import ProgressBar from '../../Components/ProgressBar/ProgressBar'
 import SquareButton from '../../Components/SquareButton/SquareButton'
-import styles from './styles'
 import SplashScreen from '../SplashScreen/SplashScreen'
 import { findColorByAttribute, AddHTTPS, findMainUnit, findSubUnit } from '../../Utils'
-import { Metrics, Fonts, ApplicationStyles, Colors } from '../../Theme'
+import { Metrics, Fonts, ApplicationStyles, Colors, Images } from '../../Theme'
+import styles from './styles'
 
 class CardDetailScreen extends React.Component {
   constructor(props) {
@@ -32,8 +34,8 @@ class CardDetailScreen extends React.Component {
   componentDidMount() {
     let _maxStats = this.props.cachedData.get('cards_info').get('max_stats')
     this.setState({
-      colors: findColorByAttribute(this.state.item.attribute),
       isLoading: false,
+      colors: findColorByAttribute(this.state.item.attribute),
       maxStats: [
         _maxStats.get('Smile'),
         _maxStats.get('Pure'),
@@ -58,7 +60,7 @@ class CardDetailScreen extends React.Component {
         this.state.item.minimum_statistics_smile,
         this.state.item.minimum_statistics_pure,
         this.state.item.minimum_statistics_cool
-      ],
+      ]
     })
   }
 
@@ -75,10 +77,22 @@ class CardDetailScreen extends React.Component {
   }
 
   progressUnit(text, stat, color) {
+    var icon = function (text) {
+      switch (text) {
+        case 'Smile':
+          return 0
+        case 'Pure':
+          return 1
+        default:
+          return 2
+      }
+    }
     return (
-      <View>
+      <View style={{ width: '100%' }}>
         <Text style={[Fonts.style.normal, styles.progressText]}>{text}</Text>
-        <View style={{ alignItems: 'center' }}>
+        <View style={styles.progressRow}>
+          <Image source={Images.attribute[icon(text)]}
+            style={[ApplicationStyles.mediumIcon, { marginRight: 10 }]} />
           <ProgressBar
             number={stat}
             progress={this.progressSmile(stat)}
@@ -101,11 +115,12 @@ class CardDetailScreen extends React.Component {
   statButton(id, text, stats) {
     return (
       <TouchableOpacity
-        style={[styles.button, { backgroundColor: this.state.buttonID == id ? Colors.violet : Colors.inactive }]}
+        style={[
+          styles.button,
+          { backgroundColor: this.state.buttonID == id ? Colors.violet : Colors.inactive }
+        ]}
         onPress={() => this.setState({ currentStats: stats, buttonID: id })}>
-        <Text style={[Fonts.style.normal, { color: 'white' }]}>
-          {text}
-        </Text>
+        <Text style={[Fonts.style.normal, { color: 'white' }]}>{text}</Text>
       </TouchableOpacity>
     )
   }
@@ -116,68 +131,96 @@ class CardDetailScreen extends React.Component {
   }
 
   render() {
-    if (this.state.isLoading) return (<SplashScreen />)
-    return (
-      <View style={styles.container}>
-        <View style={[ApplicationStyles.header, styles.header, { backgroundColor: this.state.colors[1], }]}>
-          <View style={{ flex: 1 }}>
-            <SquareButton name={'ios-arrow-back'} onPress={() => this.props.navigation.goBack()} />
+    if (this.state.isLoading) return <SplashScreen />
+    else
+      return (
+        <View style={styles.container}>
+          <View style={[
+            ApplicationStyles.header,
+            styles.header,
+            { backgroundColor: this.state.colors[1] }
+          ]}>
+            <View style={styles.leftHeader}>
+              <SquareButton name={'ios-arrow-back'} onPress={() => this.props.navigation.goBack()} />
+            </View>
+            <View style={styles.centerHeader}>
+              <Text style={Fonts.style.normal}>{this.state.item.idol.name}</Text>
+            </View>
+            <View style={styles.rightHeader}>
+              <Image source={findMainUnit(this.state.item.idol.main_unit)}
+                style={styles.rightHeaderImage} />
+              <Image source={findSubUnit(this.state.item.idol.sub_unit)}
+                style={styles.rightHeaderImage} />
+            </View>
           </View>
-          <View style={{ flex: 3 }}>
-            <Text style={[Fonts.style.normal]}>{this.state.item.idol.name}</Text>
-          </View>
-          <View style={{ flex: 3, flexDirection: 'row', justifyContent: 'flex-end' }}>
-            <Image source={findMainUnit(this.state.item.idol.main_unit)} style={{ resizeMode: 'contain', width: '33%' }} />
-            <Image source={findSubUnit(this.state.item.idol.sub_unit)} style={{ resizeMode: 'contain', width: '33%' }} />
-          </View>
-        </View>
 
-        <ScrollView
-          showsVerticalScrollIndicator={false}
-          style={{ paddingBottom: Metrics.doubleBaseMargin }}>
-          <LinearGradient colors={[this.state.colors[1], this.state.colors[0], 'white']}>
-            <View style={styles.imageRow}>
-              {this.state.item.card_image &&
+          <ScrollView
+            showsVerticalScrollIndicator={false}
+            style={styles.scrollView}>
+            <LinearGradient colors={[this.state.colors[1], this.state.colors[0], 'white']}>
+              <View style={styles.imageRow}>
+                {this.state.item.card_image &&
+                  <FastImage
+                    source={{ uri: AddHTTPS(this.state.item.card_image) }}
+                    style={{
+                      width: Metrics.images.itemWidth,
+                      height: Metrics.images.itemWidth * this.state.imgHeight / this.state.imgWidth
+                    }}
+                    onLoad={e => this.onLoadFastImage(e)}
+                  />}
                 <FastImage
-                  source={{ uri: AddHTTPS(this.state.item.card_image) }}
+                  source={{ uri: AddHTTPS(this.state.item.card_idolized_image) }}
                   style={{
                     width: Metrics.images.itemWidth,
                     height: Metrics.images.itemWidth * this.state.imgHeight / this.state.imgWidth
                   }}
                   onLoad={e => this.onLoadFastImage(e)}
-                />}
-              <FastImage
-                source={{ uri: AddHTTPS(this.state.item.card_idolized_image) }}
-                style={{
-                  width: Metrics.images.itemWidth,
-                  height: Metrics.images.itemWidth * this.state.imgHeight / this.state.imgWidth
-                }}
-                onLoad={e => this.onLoadFastImage(e)}
-              />
-            </View>
-            <Text>School: {this.state.item.idol.school}</Text>
-            <Text>Unit: {this.state.item.idol.main_unit}</Text>
-            <Text>{this.state.item.idol.year}</Text>
-            <Text>Card ID: {this.state.item.game_id}</Text>
-            <Text>Rarity: {this.state.item.rarity}</Text>
-            <Text>Release date: {this.state.item.release_date}</Text>
-            <Text>Skill: {this.state.item.skill}</Text>
-            <Text>Skill detail: {this.state.item.skill_details}</Text>
-            <Text>HP: {this.state.item.hp}</Text>
-            <Text>Center skill: {this.state.item.skill}</Text>
-            <Text>Center skill detail: {this.state.item.center_skill_details}</Text>
+                />
+              </View>
+              <View style={{ paddingHorizontal: Metrics.doubleBaseMargin }}>
+                <Text style={Fonts.style.normal}>Card ID: {this.state.item.game_id}</Text>
+                <Text style={Fonts.style.normal}>Release date: {this.state.item.release_date}</Text>
+                <Seperator />
 
-            <View style={styles.buttonRow}>
-              {this.statButton(0, 'Level 1', this.state.minStats)}
-              {this.state.item.non_idolized_max_level != 0 && this.statButton(1, `Level ${this.state.item.non_idolized_max_level}`, this.state.nonIdolMaxStats)}
-              {this.state.item.idolized_max_level != 0 && this.statButton(2, `Level ${this.state.item.idolized_max_level}`, this.state.idolMaxStats)}
-            </View>
-            {this.progressView(this.state.currentStats)}
-            <View style={{ height: Metrics.doubleBaseMargin }} />
-          </LinearGradient>
-        </ScrollView>
-      </View>
-    )
+                <Text style={Fonts.style.normal}>Skill: {this.state.item.skill}</Text>
+                <Text style={Fonts.style.normal}>Skill detail: {this.state.item.skill_details}</Text>
+                <Seperator />
+
+                <Text style={Fonts.style.normal}>Center skill: {this.state.item.skill}</Text>
+                <Text style={Fonts.style.normal}>Center skill detail: {this.state.item.center_skill_details || 'None'}</Text>
+                <Seperator />
+
+                {this.state.item.event &&
+                  <View>
+                    <Text style={Fonts.style.normal}>Event: {this.state.item.event.japanese_name}</Text>
+                    <View style={ApplicationStyles.center}>
+                      <FastImage
+                        source={{ uri: AddHTTPS(this.state.item.event.image) }}
+                        style={styles.banner}
+                        resizeMode={FastImage.resizeMode.contain}
+                      />
+                    </View>
+                    <Seperator />
+                  </View>}
+
+                <View style={{ flexDirection: 'row' }}>
+                  <Icon name='ios-heart' size={Metrics.icons.medium} color={'red'} />
+                  <Text style={Fonts.style.normal}> : {this.state.item.hp}</Text>
+                </View>
+              </View>
+              <View style={styles.buttonRow}>
+                {this.statButton(0, 'Level 1', this.state.minStats)}
+                {this.state.item.non_idolized_max_level != 0 &&
+                  this.statButton(1, `Level ${this.state.item.non_idolized_max_level}`, this.state.nonIdolMaxStats)}
+                {this.state.item.idolized_max_level != 0 &&
+                  this.statButton(2, `Level ${this.state.item.idolized_max_level}`, this.state.idolMaxStats)}
+              </View>
+              {this.progressView(this.state.currentStats)}
+              <View style={{ height: Metrics.doubleBaseMargin }} />
+            </LinearGradient>
+          </ScrollView>
+        </View>
+      )
   }
 }
 

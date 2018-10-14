@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import PropTypes from 'prop-types'
 import { TouchableOpacity, View, Image } from 'react-native'
 import FastImage from 'react-native-fast-image'
 import styles from './styles'
@@ -7,11 +6,6 @@ import { Metrics, ApplicationStyles, Images } from '../../Theme'
 import { AddHTTPS, findColorByAttribute } from '../../Utils';
 
 export default class CardItem extends Component {
-  static propTypes = {
-    item: PropTypes.object,
-    onPress: PropTypes.func
-  }
-
   constructor(props) {
     super(props);
     this.state = {
@@ -57,7 +51,7 @@ export default class CardItem extends Component {
             this.setState({ imgWidth: width, imgHeight: height })
           }}
           source={{
-            uri: AddHTTPS(this.props.item.card_image ? this.props.item.card_image : this.props.item.card_idolized_image),
+            uri: AddHTTPS(this.props.item.card_image || this.props.item.card_idolized_image),
             priority: FastImage.priority.normal,
           }} />
 

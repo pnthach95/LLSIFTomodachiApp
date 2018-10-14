@@ -29,5 +29,10 @@ export default {
     require('../Images/subunits/5.png'),
     require('../Images/subunits/6.png'),
     require('../Images/subunits/7.png'),
+  ],
+  attribute: [
+    require('../Images/attribute/0.png'),
+    require('../Images/attribute/1.png'),
+    require('../Images/attribute/2.png')
   ]
 }

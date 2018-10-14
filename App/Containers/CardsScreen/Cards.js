@@ -2,20 +2,23 @@ import React from 'react'
 import { Text, View, FlatList } from 'react-native'
 import { connect } from 'react-redux'
 import Icon from 'react-native-vector-icons/Ionicons'
+import _ from 'lodash'
 
-import { Metrics, Colors, ApplicationStyles } from '../../Theme'
 import CardItem from '../../Components/CardItem/CardItem'
 import SplashScreen from '../SplashScreen/SplashScreen'
 import { LLSIFService } from '../../Services/LLSIFService'
+import { Colors, ApplicationStyles } from '../../Theme'
+import styles from './styles'
 
-class CardsScreen extends React.Component {
+class CardsScreen extends React.PureComponent {
   constructor(props) {
-    super(props);
+    super(props)
     this.state = {
       isLoading: true,
       data: [],
       page: 1
     }
+    this._onEndReached = _.debounce(this._onEndReached, 500)
   }
 
   static navigationOptions = {
@@ -29,7 +32,7 @@ class CardsScreen extends React.Component {
     }
   }
 
-  _keyExtractor = (item, index) => 'card' + item.id
+  _keyExtractor = (item, index) => `card${item.id}`
 
   _renderItem = ({ item }) => (
     <CardItem item={item} onPress={() => this.navigateToCardDetail(item)} />
@@ -57,6 +60,10 @@ class CardsScreen extends React.Component {
     })
   }
 
+  _onEndReached = () => {
+    this.getCards()
+  }
+
   navigateToCardDetail(item) {
     this.props.navigation.navigate('CardDetailScreen', { item: item })
   }
@@ -68,16 +75,17 @@ class CardsScreen extends React.Component {
   render() {
     if (this.state.isLoading) return (<SplashScreen bgColor={Colors.green} />)
     return (
-      <View style={{ flex: 1, backgroundColor: Colors.green, }}>
-        <View style={[ApplicationStyles.header, { backgroundColor: 'white' }]}>
+      <View style={styles.container}>
+        <View style={[ApplicationStyles.header, styles.header]}>
           <Text>TOOLBAR</Text>
         </View>
         <FlatList
           data={this.state.data}
           numColumns={2}
+          initialNumToRender={4}
           keyExtractor={this._keyExtractor}
-          onEndReached={() => this.getCards()}
-          style={{ padding: Metrics.smallMargin }}
+          onEndReached={this._onEndReached}
+          style={styles.list}
           renderItem={this._renderItem} />
       </View>
     )

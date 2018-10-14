@@ -23,7 +23,4 @@ const style = {
   },
 }
 
-export default {
-  size,
-  style,
-}
+export default { size, style }

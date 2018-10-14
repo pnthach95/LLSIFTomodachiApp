@@ -6,7 +6,7 @@ export default StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: Colors.pink,
+    backgroundColor: Colors.pink
   },
   logo: {
     width: '70%',

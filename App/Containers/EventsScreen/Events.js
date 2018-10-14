@@ -4,15 +4,17 @@ import { create } from 'apisauce'
 import { connect } from 'react-redux'
 import FastImage from 'react-native-fast-image'
 import Icon from 'react-native-vector-icons/Ionicons'
+
 import { Config } from '../../Config'
-import { Metrics, Colors } from '../../Theme'
 import CachedDataActions from 'App/Stores/CachedData/Actions'
 import { AddHttps } from '../../Utils'
 import SplashScreen from '../SplashScreen/SplashScreen'
+import { Metrics, Colors } from '../../Theme'
+import styles from './styles'
 
 class EventsScreen extends React.Component {
   constructor(props) {
-    super(props);
+    super(props)
     this.state = {
     }
   }
@@ -32,7 +34,7 @@ class EventsScreen extends React.Component {
   }
 
   render() {
-    return (<SplashScreen bgColor={Colors.violet} />)
+    return <SplashScreen bgColor={Colors.violet} />
   }
 }
 

@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native'
-import { Colors, Metrics } from 'App/Theme'
+import { Metrics } from 'App/Theme'
 
 export default StyleSheet.create({
   container: {
@@ -10,20 +10,43 @@ export default StyleSheet.create({
     backgroundColor: 'white',
     paddingRight: Metrics.baseMargin
   },
-  text: {
-    color: 'white',
-    fontSize: 16,
-    padding: 10,
+  leftHeader: {
+    flex: 1
+  },
+  centerHeader: {
+    flex: 3
+  },
+  rightHeader: {
+    flex: 3,
+    flexDirection: 'row',
+    justifyContent: 'flex-end'
+  },
+  rightHeaderImage: {
+    resizeMode: 'contain',
+    width: '33%'
+  },
+  headerButton: {
+    height: Metrics.navBarHeight,
+    width: Metrics.navBarHeight
+  },
+  scrollView: {
+    paddingBottom: Metrics.doubleBaseMargin
   },
   buttonRow: {
     flexDirection: 'row',
-    padding: Metrics.baseMargin,
-    justifyContent: 'space-around'
+    justifyContent: 'space-around',
+    padding: Metrics.baseMargin
   },
   imageRow: {
     flexDirection: 'row',
     justifyContent: 'space-around',
     paddingBottom: Metrics.doubleBaseMargin
+  },
+  progressRow: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    paddingHorizontal: '5%',
+    alignItems: 'center'
   },
   button: {
     width: '33%',
@@ -36,8 +59,8 @@ export default StyleSheet.create({
     paddingVertical: Metrics.baseMargin,
     color: '#333'
   },
-  headerButton: {
-    height: Metrics.navBarHeight,
-    width: Metrics.navBarHeight
+  banner: {
+    width: '80%',
+    height: 100
   }
 })

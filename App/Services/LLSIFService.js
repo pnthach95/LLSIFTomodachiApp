@@ -3,7 +3,7 @@ import { Config } from 'App/Config'
 
 const LLSIFApiClient = create({
   baseURL: Config.API_URL,
-  timeout: 5000
+  timeout: 10000
 })
 
 async function fetchCachedData() {

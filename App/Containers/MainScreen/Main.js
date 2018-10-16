@@ -14,15 +14,28 @@ import { LLSIFService } from '../../Services/LLSIFService'
 import TimerCountdown from '../../Components/TimerCountdown/Timer'
 import Seperator from '../../Components/Seperator/Seperator'
 
+/**
+ *Màn hình chính
+ *
+ * @class MainScreen
+ * @extends {React.Component}
+ */
 class MainScreen extends React.Component {
   constructor(props) {
     super(props)
+
     this.state = {
+      /** Đang load dữ liệu */
       isLoading: true,
+      /** Chiều rộng của hình */
       imgWidth: 0,
+      /** Chiều cao của hình */
       imgHeight: 0,
+      /** Thông tin sự kiện bản EN */
       ENEvent: null,
+      /** Thông tin sự kiện bản JP */
       JPEvent: null,
+      /** Thông tin các contest */
       currentContests: []
     }
   }
@@ -58,6 +71,13 @@ class MainScreen extends React.Component {
     }
   }
 
+  /**
+   * Bộ đếm lùi thời gian sự kiện đang diễn ra
+   *
+   * @param {Number} time Thời gian còn lại (miliseconds)
+   * @returns
+   * @memberof MainScreen
+   */
   timer(time) {
     return <TimerCountdown
       initialSecondsRemaining={time}
@@ -66,6 +86,12 @@ class MainScreen extends React.Component {
     />
   }
 
+  /**
+   * Set state chiều cao, chiều rộng của hình tải về trong FastImage
+   *
+   * @param {*} e Event
+   * @memberof MainScreen
+   */
   onLoadFastImage(e) {
     const { width, height } = e.nativeEvent
     this.setState({ imgWidth: width, imgHeight: height })
@@ -74,16 +100,27 @@ class MainScreen extends React.Component {
   render() {
     if (this.state.isLoading) return <SplashScreen bgColor={Colors.pink} />
     else {
+      /** Sự kiện EN */
       let ENEvent = this.state.ENEvent
+      /** Thời gian bắt đầu sự kiện EN */
+      let ENEventStart = moment(ENEvent.english_beginning)
+      /** Thời gian kết thúc sự kiện EN */
       let ENEventEnd = moment(ENEvent.english_end)
+      /** Sự kiện JP */
       let JPEvent = this.state.JPEvent
+      /** Thời gian bắt đầu sự kiện JP */
       let JPEventStart = moment(JPEvent.beginning, 'YYYY-MM-DDTHH:mm:ssZ')
+      /** Thời gian kết thúc sự kiện JP */
       let JPEventEnd = moment(JPEvent.end, 'YYYY-MM-DDTHH:mm:ssZ')
+
       return (
         <View style={styles.container}>
+          {/* HEADER */}
           <View style={ApplicationStyles.header}>
             <Image source={Images.logo} style={ApplicationStyles.imageHeader} />
           </View>
+
+          {/* BODY */}
           <ScrollView style={styles.body} contentContainerStyle={styles.content}>
             {/* ENGLISH BLOCK */}
             <Text style={styles.title}>{ENEvent.english_name}</Text>
@@ -94,7 +131,7 @@ class MainScreen extends React.Component {
                 height: Metrics.widthBanner * this.state.imgHeight / this.state.imgWidth
               }}
               onLoad={e => this.onLoadFastImage(e)} />
-            <Text style={styles.text}>Start: {moment(ENEvent.english_beginning).format('HH:mm MMM Do YYYY')}</Text>
+            <Text style={styles.text}>Start: {ENEventStart.format('HH:mm MMM Do YYYY')}</Text>
             <Text style={styles.text}>End: {ENEventEnd.format('HH:mm MMM Do YYYY')}</Text>
             {ENEvent.world_current && this.timer(ENEventEnd.diff(moment()))}
             <Seperator style={{ backgroundColor: 'white' }} />
@@ -113,6 +150,7 @@ class MainScreen extends React.Component {
             {JPEvent.japan_current && this.timer(JPEventEnd.diff(moment()))}
             <Seperator style={{ backgroundColor: 'white' }} />
 
+            {/* CONTEST BLOCK */}
             <View style={{ paddingVertical: 10 }}>
               {this.state.currentContests.map((item, id) => (
                 <View key={'contest' + id}>

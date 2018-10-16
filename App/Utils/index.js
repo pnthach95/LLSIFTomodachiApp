@@ -1,9 +1,17 @@
 import { Colors, Images } from '../Theme'
 
+/**
+ * Thêm đầu https: cho link hình
+ * @param {String} link 
+ */
 export const AddHTTPS = (link) => {
   return 'https:' + link
 }
 
+/**
+ * Tìm màu bằng attribute
+ * @param {String} key Smile || Pure || Cool || null
+ */
 export const findColorByAttribute = (key) => {
   switch (key) {
     case 'Smile':
@@ -17,6 +25,10 @@ export const findColorByAttribute = (key) => {
   }
 }
 
+/**
+ * Tìm hình main unit theo key
+ * @param {String} key μ's || Aqours || null
+ */
 export const findMainUnit = (key) => {
   switch (key) {
     case 'Aqours':
@@ -28,6 +40,10 @@ export const findMainUnit = (key) => {
   }
 }
 
+/**
+ * Tìm hình của sub unit theo key
+ * @param {String} key Printemps, Lily White, Bibi, CYaRon!, AZALEA, Guilty Kiss, Saint Snow, A-RISE
+ */
 export const findSubUnit = (key) => {
   switch (key) {
     case 'Printemps':

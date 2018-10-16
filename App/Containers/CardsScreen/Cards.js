@@ -31,6 +31,12 @@ const defaultFilter = {
   idol_year: ''
 }
 
+/**
+ *Màn hình danh sách card
+ *
+ * @class CardsScreen
+ * @extends {React.PureComponent}
+ */
 class CardsScreen extends React.PureComponent {
   constructor(props) {
     super(props)
@@ -70,12 +76,27 @@ class CardsScreen extends React.PureComponent {
     }
   }
 
+  /**
+   *Key extractor
+   *
+   * @memberof CardsScreen
+   */
   _keyExtractor = (item, index) => `card${item.id}`
 
+  /**
+   *Render item trong FlatList
+   *
+   * @memberof CardsScreen
+   */
   _renderItem = ({ item }) => (
     <CardItem item={item} onPress={() => this.navigateToCardDetail(item)} />
   )
 
+  /**
+   *Lấy danh sách card
+   *
+   * @memberof CardsScreen
+   */
   getCards() {
     console.log(`========== Cards.getCards.page ${this.state.filter.page} ==========`)
     LLSIFService.fetchCardList(this.state.filter).then((result) => {
@@ -100,10 +121,21 @@ class CardsScreen extends React.PureComponent {
     })
   }
 
+  /**
+   *Khi scroll đến cuối danh sách
+   *
+   * @memberof CardsScreen
+   */
   _onEndReached = () => {
     this.getCards()
   }
 
+  /**
+   *Chuyển đến trang thông tin card
+   *
+   * @param {Object} item Thông tin của card đó
+   * @memberof CardsScreen
+   */
   navigateToCardDetail(item) {
     this.props.navigation.navigate('CardDetailScreen', { item: item })
   }
@@ -112,10 +144,20 @@ class CardsScreen extends React.PureComponent {
     this.getCards()
   }
 
+  /**
+   *Bật tắt bộ lọc
+   *
+   * @memberof CardsScreen
+   */
   toggleFilter = () => {
     this.setState({ isFilter: !this.state.isFilter })
   }
 
+  /**
+   *Tìm kiếm theo bộ lọc
+   *
+   * @memberof CardsScreen
+   */
   onSearch = () => {
     var _filter = this.state.filter
     _filter.page = 1
@@ -124,60 +166,117 @@ class CardsScreen extends React.PureComponent {
     this.getCards()
   }
 
+  /**
+   *Lưu is_promo vào filter
+   *
+   * @param {String} value
+   * @memberof CardsScreen
+   */
   selectPromo(value) {
     var _filter = this.state.filter
     _filter.is_promo = value
     this.setState({ filter: _filter })
   }
 
+  /**
+   *Lưu is_special vào filter
+   *
+   * @param {String} value
+   * @memberof CardsScreen
+   */
   selectSpecial(value) {
     var _filter = this.state.filter
     _filter.is_special = value
     this.setState({ filter: _filter })
   }
 
+  /**
+   *Lưu is_event vào filter
+   *
+   * @param {String} value
+   * @memberof CardsScreen
+   */
   selectEvent(value) {
     var _filter = this.state.filter
     _filter.is_event = value
     this.setState({ filter: _filter })
   }
 
+  /**
+   *Lưu idol_main_unit vào filter
+   *
+   * @param {String} value
+   * @memberof CardsScreen
+   */
   selectMainUnit(value) {
     var _filter = this.state.filter
     _filter.idol_main_unit = value
     this.setState({ filter: _filter })
   }
 
+  /**
+   *Lưu rarity vào filter
+   *
+   * @param {String} value
+   * @memberof CardsScreen
+   */
   selectRarity(value) {
     var _filter = this.state.filter
     _filter.rarity = value
     this.setState({ filter: _filter })
   }
 
+  /**
+   *Lưu attribute vào filter
+   *
+   * @param {String} value
+   * @memberof CardsScreen
+   */
   selectAttribute(value) {
     var _filter = this.state.filter
     _filter.attribute = value
     this.setState({ filter: _filter })
   }
 
+  /**
+   *Lưu idol_year vào filter
+   *
+   * @param {String} value
+   * @memberof CardsScreen
+   */
   selectYear(value) {
     var _filter = this.state.filter
     _filter.idol_year = value
     this.setState({ filter: _filter })
   }
 
+  /**
+   *Lưu idol_sub_unit vào filter
+   *
+   * @memberof CardsScreen
+   */
   selectSubUnit = (itemValue, itemIndex) => {
     var _filter = this.state.filter
     _filter.idol_sub_unit = itemValue == 'All' ? '' : itemValue
     this.setState({ filter: _filter })
   }
 
+  /**
+   *Lưu name vào filter
+   *
+   * @memberof CardsScreen
+   */
   selectIdol = (itemValue, itemIndex) => {
     var _filter = this.state.filter
     _filter.name = itemValue == 'All' ? '' : itemValue
     this.setState({ filter: _filter })
   }
 
+  /**
+   *Lưu school vào filter
+   *
+   * @memberof CardsScreen
+   */
   selectSchool = (itemValue, itemIndex) => {
     var _filter = this.state.filter
     _filter.school = itemValue == 'All' ? '' : itemValue
@@ -188,6 +287,7 @@ class CardsScreen extends React.PureComponent {
     if (this.state.isLoading) return <SplashScreen bgColor={Colors.green} />
     return (
       <View style={styles.container}>
+        {/* HEADER */}
         <View style={[ApplicationStyles.header, styles.header]}>
           <TextInput style={{ flex: 1, borderColor: '#333', borderWidth: 1.5, margin: 6 }}
             onFocus={e => {
@@ -197,9 +297,10 @@ class CardsScreen extends React.PureComponent {
           <SquareButton name={'ios-search'} onPress={this.onSearch} />
           <SquareButton name={'ios-more'} onPress={this.toggleFilter} />
         </View>
-
+        {/* FILTER */}
         {this.state.isFilter &&
           <View style={{ width: '100%', backgroundColor: 'white', padding: 10 }}>
+            {/* IDOL NAME */}
             <View style={{ flexDirection: 'row' }}>
               <View style={styles.leftView}>
                 <Text>Idol</Text>
@@ -217,6 +318,7 @@ class CardsScreen extends React.PureComponent {
               </View>
             </View>
 
+            {/* RARITY */}
             <View style={{ flexDirection: 'row' }}>
               <View style={styles.leftView}>
                 <Text>Rarity</Text>
@@ -249,6 +351,7 @@ class CardsScreen extends React.PureComponent {
               </View>
             </View>
 
+            {/* ATTRIBUTE */}
             <View style={{ flexDirection: 'row' }}>
               <View style={styles.leftView}>
                 <Text>Attribute</Text>
@@ -277,6 +380,7 @@ class CardsScreen extends React.PureComponent {
               </View>
             </View>
 
+            {/* REGION */}
             {/* <View style={{ flexDirection: 'row' }}>
               <View style={styles.leftView}>
                 <Text>Worldwide only</Text>
@@ -289,6 +393,7 @@ class CardsScreen extends React.PureComponent {
                 }} />
             </View> */}
 
+            {/* PROMO */}
             <View style={{ flexDirection: 'row' }}>
               <View style={styles.leftView}>
                 <Text>Promo card</Text>
@@ -315,6 +420,7 @@ class CardsScreen extends React.PureComponent {
               </View>
             </View>
 
+            {/* SPECIAL */}
             <View style={{ flexDirection: 'row' }}>
               <View style={styles.leftView}>
                 <Text>Special card</Text>
@@ -341,6 +447,7 @@ class CardsScreen extends React.PureComponent {
               </View>
             </View>
 
+            {/* EVENT */}
             <View style={{ flexDirection: 'row' }}>
               <View style={styles.leftView}>
                 <Text>Event card</Text>
@@ -367,6 +474,7 @@ class CardsScreen extends React.PureComponent {
               </View>
             </View>
 
+            {/* SKILL */}
             <View style={{ flexDirection: 'row' }}>
               <View style={styles.leftView}>
                 <Text>Skill</Text>
@@ -386,6 +494,7 @@ class CardsScreen extends React.PureComponent {
               </View>
             </View>
 
+            {/* MAIN UNIT */}
             <View style={{ flexDirection: 'row' }}>
               <View style={styles.leftView}>
                 <Text>Main unit</Text>
@@ -412,6 +521,7 @@ class CardsScreen extends React.PureComponent {
               </View>
             </View>
 
+            {/* SUB UNIT */}
             <View style={{ flexDirection: 'row' }}>
               <View style={styles.leftView}>
                 <Text>Sub unit</Text>
@@ -427,6 +537,7 @@ class CardsScreen extends React.PureComponent {
               </View>
             </View>
 
+            {/* SCHOOL */}
             <View style={{ flexDirection: 'row' }}>
               <View style={styles.leftView}>
                 <Text>School</Text>
@@ -442,6 +553,7 @@ class CardsScreen extends React.PureComponent {
               </View>
             </View>
 
+            {/* YEAR */}
             <View style={{ flexDirection: 'row' }}>
               <View style={styles.leftView}>
                 <Text>Year</Text>
@@ -466,6 +578,7 @@ class CardsScreen extends React.PureComponent {
               </View>
             </View>
 
+            {/* RESET BUTTON */}
             <View style={{ alignItems: 'stretch' }}>
               <TouchableOpacity style={styles.resetButton}>
                 <Text style={styles.resetText}>RESET</Text>
@@ -473,6 +586,7 @@ class CardsScreen extends React.PureComponent {
             </View>
           </View>}
 
+        {/* CARD LIST */}
         <FlatList
           data={this.state.data}
           numColumns={2}
@@ -487,9 +601,13 @@ class CardsScreen extends React.PureComponent {
 }
 
 const mapStateToProps = (state) => ({
+  /** Danh sách idol */
   idols: getIdols(state),
+  /** Danh sách trường */
   schools: getSchools(state),
+  /** Danh sách sub unit */
   subUnits: getSubunits(state),
+  /** Danh sách skill */
   skills: getSkills(state)
 })
 

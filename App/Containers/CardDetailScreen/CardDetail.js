@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import FastImage from 'react-native-fast-image'
 import LinearGradient from 'react-native-linear-gradient'
 import Icon from 'react-native-vector-icons/Ionicons'
+import moment from 'moment'
 
 import { getMaxStats } from '../../Stores/CachedData/Selectors'
 import Seperator from '../../Components/Seperator/Seperator'
@@ -185,7 +186,7 @@ class CardDetailScreen extends React.Component {
                 />
                 <TextRow
                   item1={{ flex: 1, text: 'Release date' }}
-                  item2={{ flex: 2, text: this.state.item.release_date }}
+                  item2={{ flex: 2, text: moment(this.state.item.release_date).format('MMM Do YYYY') }}
                 />
                 <Seperator />
 
@@ -195,7 +196,7 @@ class CardDetailScreen extends React.Component {
                 />
                 <TextRow
                   item1={{ flex: 1, text: '' }}
-                  item2={{ flex: 2, text: this.state.item.skill_details }}
+                  item2={{ flex: 2, text: this.state.item.skill_details, textStyle: styles.subtitleText }}
                 />
                 <Seperator />
 
@@ -205,7 +206,7 @@ class CardDetailScreen extends React.Component {
                 />
                 <TextRow
                   item1={{ flex: 1, text: '' }}
-                  item2={{ flex: 2, text: this.state.item.center_skill_details }}
+                  item2={{ flex: 2, text: this.state.item.center_skill_details, textStyle: styles.subtitleText }}
                 />
                 <Seperator />
 

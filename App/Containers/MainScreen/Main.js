@@ -1,21 +1,29 @@
 import React from 'react'
-import { Text, View, Image } from 'react-native'
+import { Text, View, Image, ScrollView } from 'react-native'
 import { connect } from 'react-redux'
 import FastImage from 'react-native-fast-image'
 import Icon from 'react-native-vector-icons/SimpleLineIcons'
+import moment from 'moment'
 
 import CachedDataActions from 'App/Stores/CachedData/Actions'
 import { AddHTTPS } from '../../Utils'
 import SplashScreen from '../SplashScreen/SplashScreen'
 import { Metrics, Colors, Images, ApplicationStyles } from '../../Theme'
 import styles from './styles'
+import { LLSIFService } from '../../Services/LLSIFService'
+import TimerCountdown from '../../Components/TimerCountdown/Timer'
+import Seperator from '../../Components/Seperator/Seperator'
 
 class MainScreen extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
+      isLoading: true,
       imgWidth: 0,
-      imgHeight: 0
+      imgHeight: 0,
+      ENEvent: null,
+      JPEvent: null,
+      currentContests: []
     }
   }
 
@@ -30,15 +38,32 @@ class MainScreen extends React.Component {
     }
   }
 
-  parseEventData(data) {
-    return {
-      image: AddHTTPS(data.get('image')),
-      name: data.get('japanese_name')
+  componentDidMount() {
+    this.props.fetchCachedData()
+    if (!this.props.cachedDataIsLoading) {
+      let data = this.props.cachedData
+      let currentContests = data.get('current_contests')
+      let eventEN = data.get('current_event_en').get('japanese_name')
+      let eventJP = data.get('current_event_jp').get('japanese_name')
+      LLSIFService.fetchEventData(eventEN).then(resEN => {
+        LLSIFService.fetchEventData(eventJP).then(resJP => {
+          this.setState({
+            isLoading: false,
+            currentContests: currentContests,
+            ENEvent: resEN,
+            JPEvent: resJP
+          })
+        })
+      })
     }
   }
 
-  componentDidMount() {
-    this.props.fetchCachedData()
+  timer(time) {
+    return <TimerCountdown
+      initialSecondsRemaining={time}
+      allowFontScaling={true}
+      style={styles.text}
+    />
   }
 
   onLoadFastImage(e) {
@@ -47,51 +72,63 @@ class MainScreen extends React.Component {
   }
 
   render() {
-    if (this.props.cachedDataIsLoading) return <SplashScreen bgColor={Colors.pink} />
+    if (this.state.isLoading) return <SplashScreen bgColor={Colors.pink} />
     else {
-      let data = this.props.cachedData
-      let currentContests = data.get('current_contests')
-      let eventEN = this.parseEventData(data.get('current_event_en'))
-      let eventJP = this.parseEventData(data.get('current_event_jp'))
-
+      let ENEvent = this.state.ENEvent
+      let ENEventEnd = moment(ENEvent.english_end)
+      let JPEvent = this.state.JPEvent
+      let JPEventStart = moment(JPEvent.beginning, 'YYYY-MM-DDTHH:mm:ssZ')
+      let JPEventEnd = moment(JPEvent.end, 'YYYY-MM-DDTHH:mm:ssZ')
       return (
         <View style={styles.container}>
           <View style={ApplicationStyles.header}>
             <Image source={Images.logo} style={ApplicationStyles.imageHeader} />
           </View>
-
-          <View style={styles.body}>
-            <Text style={styles.text}>{eventEN.name}</Text>
+          <ScrollView style={styles.body} contentContainerStyle={styles.content}>
+            {/* ENGLISH BLOCK */}
+            <Text style={styles.title}>{ENEvent.english_name}</Text>
             <FastImage
-              source={{ uri: eventEN.image }}
+              source={{ uri: AddHTTPS(ENEvent.english_image) }}
               style={{
                 width: Metrics.widthBanner,
                 height: Metrics.widthBanner * this.state.imgHeight / this.state.imgWidth
               }}
               onLoad={e => this.onLoadFastImage(e)} />
+            <Text style={styles.text}>Start: {moment(ENEvent.english_beginning).format('HH:mm MMM Do YYYY')}</Text>
+            <Text style={styles.text}>End: {ENEventEnd.format('HH:mm MMM Do YYYY')}</Text>
+            {ENEvent.world_current && this.timer(ENEventEnd.diff(moment()))}
+            <Seperator style={{ backgroundColor: 'white' }} />
 
-            <Text style={styles.text}>{eventJP.name}</Text>
+            {/* JAPANESE BLOCK */}
+            <Text style={styles.title}>{JPEvent.romaji_name}</Text>
             <FastImage
-              source={{ uri: eventJP.image }}
+              source={{ uri: AddHTTPS(JPEvent.image) }}
               style={{
                 width: Metrics.widthBanner,
                 height: Metrics.widthBanner * this.state.imgHeight / this.state.imgWidth
               }}
               onLoad={e => this.onLoadFastImage(e)} />
+            <Text style={styles.text}>Start: {JPEventStart.format('HH:mm MMM Do YYYY')}</Text>
+            <Text style={styles.text}>End: {JPEventEnd.format('HH:mm MMM Do YYYY')}</Text>
+            {JPEvent.japan_current && this.timer(JPEventEnd.diff(moment()))}
+            <Seperator style={{ backgroundColor: 'white' }} />
 
-            {currentContests.map((item, id) => (
-              <View key={'contest' + id}>
-                <Text style={styles.text}>{item.get('name')}</Text>
-                <FastImage
-                  resizeMode={FastImage.resizeMode.contain}
-                  source={{ uri: AddHTTPS(item.get('image')) }}
-                  style={{
-                    width: Metrics.widthBanner,
-                    height: Metrics.widthBanner / 3
-                  }} />
-              </View>
-            ))}
-          </View>
+            <View style={{ paddingVertical: 10 }}>
+              {this.state.currentContests.map((item, id) => (
+                <View key={'contest' + id}>
+                  <Text style={styles.text}>{item.get('name')}</Text>
+                  <FastImage
+                    resizeMode={FastImage.resizeMode.contain}
+                    source={{ uri: AddHTTPS(item.get('image')) }}
+                    style={{
+                      width: Metrics.widthBanner,
+                      height: Metrics.widthBanner / 3,
+                      alignSelf: 'center',
+                    }} />
+                </View>
+              ))}
+            </View>
+          </ScrollView>
         </View>)
     }
   }

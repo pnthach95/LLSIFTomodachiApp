@@ -26,7 +26,8 @@ export default {
     medium: 40,
     large: 60,
     logo: 200,
-    itemWidth: ((width < height ? width : height) - 10) / 2 - 10
+    itemWidth: ((width < height ? width : height) - 10) / 2 - 10,
+    smallItemWidth: ((width < height ? width : height) - 10) / 3 - 10
   },
   widthBanner: (width < height ? width : height) - 40
 }

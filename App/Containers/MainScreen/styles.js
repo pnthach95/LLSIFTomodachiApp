@@ -11,13 +11,20 @@ export default StyleSheet.create({
     resizeMode: 'contain'
   },
   body: {
-    height: Metrics.screenHeight - Metrics.navBarHeight * 2,
+    // height: Metrics.screenHeight - Metrics.navBarHeight * 2,
+    paddingVertical: 10,
+  },
+  content: {
     alignItems: 'center',
-    paddingTop: 10,
   },
   text: {
     color: 'white',
     fontSize: 16,
+    padding: 10,
+  },
+  title:{
+    color: 'white',
+    fontSize: 24,
     padding: 10,
   }
 })

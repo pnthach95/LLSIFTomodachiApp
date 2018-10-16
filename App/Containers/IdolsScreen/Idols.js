@@ -1,21 +1,21 @@
 import React from 'react'
-import { Text, View, FlatList } from 'react-native'
-import { create } from 'apisauce'
+import { View, FlatList } from 'react-native'
 import { connect } from 'react-redux'
-import FastImage from 'react-native-fast-image'
 import Icon from 'react-native-vector-icons/Ionicons'
 
-import { Config } from '../../Config'
+import IdolItem from '../../Components/IdolItem/Idol'
 import CachedDataActions from 'App/Stores/CachedData/Actions'
-import { AddHttps } from '../../Utils'
+import { LLSIFService } from '../../Services/LLSIFService'
 import SplashScreen from '../SplashScreen/SplashScreen'
-import { Metrics, Colors } from '../../Theme'
+import { Colors } from '../../Theme'
 import styles from './styles'
 
 class IdolsScreen extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
+      isLoading: true,
+      list: []
     }
   }
 
@@ -33,10 +33,30 @@ class IdolsScreen extends React.Component {
   }
 
   componentDidMount() {
+    LLSIFService.fetchIdolList().then(res => {
+      this.setState({ isLoading: false, list: res })
+    })
   }
 
+  _keyExtractor = (item, index) => `idol${item.name}`
+
+  _renderItem = ({ item }) => (
+    <IdolItem item={item} />//onPress={() => this.navigateToCardDetail(item)} />
+  )
+
   render() {
-    return <SplashScreen bgColor={Colors.blue} />
+    if (this.state.isLoading) return <SplashScreen bgColor={Colors.blue} />
+    return (
+      <View style={styles.container}>
+        <FlatList
+          data={this.state.list}
+          numColumns={3}
+          initialNumToRender={9}
+          keyExtractor={this._keyExtractor}
+          style={styles.list}
+          renderItem={this._renderItem} />
+      </View>
+    )
   }
 }
 

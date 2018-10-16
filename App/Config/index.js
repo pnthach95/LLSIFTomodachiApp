@@ -1,5 +1,8 @@
 export const Config = {
   API_URL: 'https://schoolido.lu/api/',
+  CACHED_DATA: 'cacheddata/',
   CARDS: 'cards/',
-  CACHED_DATA: 'cacheddata/'
+  IDOLS: 'idols/',
+  SONGS: 'songs/',
+  EVENTS: 'events/'
 }

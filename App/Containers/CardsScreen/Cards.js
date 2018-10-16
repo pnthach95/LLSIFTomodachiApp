@@ -1,5 +1,5 @@
 import React from 'react'
-import { Text, View, FlatList, TextInput, Picker, TouchableOpacity, Switch, Image } from 'react-native'
+import { Text, View, FlatList, TextInput, Picker, TouchableOpacity, Image } from 'react-native'
 import { connect } from 'react-redux'
 import Icon from 'react-native-vector-icons/Ionicons'
 import _ from 'lodash'
@@ -37,7 +37,6 @@ class CardsScreen extends React.PureComponent {
     this.state = {
       isLoading: true,
       data: [],
-      page: 1,
       isFilter: false,
       filter: {
         ordering: '-release_date',
@@ -195,7 +194,7 @@ class CardsScreen extends React.PureComponent {
               this.setState({ onSearchFocus: true })
             }}
           />
-          <SquareButton name={'ios-search'} onPress={this.onSearch}/>
+          <SquareButton name={'ios-search'} onPress={this.onSearch} />
           <SquareButton name={'ios-more'} onPress={this.toggleFilter} />
         </View>
 

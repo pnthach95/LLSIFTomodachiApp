@@ -1,5 +1,5 @@
 import React from 'react'
-import { Text, View, Image, ScrollView } from 'react-native'
+import { Text, View, Image, ScrollView, TouchableOpacity } from 'react-native'
 import { connect } from 'react-redux'
 import FastImage from 'react-native-fast-image'
 import Icon from 'react-native-vector-icons/SimpleLineIcons'
@@ -124,13 +124,15 @@ class MainScreen extends React.Component {
           <ScrollView style={styles.body} contentContainerStyle={styles.content}>
             {/* ENGLISH BLOCK */}
             <Text style={styles.title}>{ENEvent.english_name}</Text>
-            <FastImage
-              source={{ uri: AddHTTPS(ENEvent.english_image) }}
-              style={{
-                width: Metrics.widthBanner,
-                height: Metrics.widthBanner * this.state.imgHeight / this.state.imgWidth
-              }}
-              onLoad={e => this.onLoadFastImage(e)} />
+            <TouchableOpacity onPress={() => this.props.navigation.navigate('EventDetailScreen', { event: ENEvent })}>
+              <FastImage
+                source={{ uri: AddHTTPS(ENEvent.english_image) }}
+                style={{
+                  width: Metrics.widthBanner,
+                  height: Metrics.widthBanner * this.state.imgHeight / this.state.imgWidth
+                }}
+                onLoad={e => this.onLoadFastImage(e)} />
+            </TouchableOpacity>
             <Text style={styles.text}>Start: {ENEventStart.format('HH:mm MMM Do YYYY')}</Text>
             <Text style={styles.text}>End: {ENEventEnd.format('HH:mm MMM Do YYYY')}</Text>
             {ENEvent.world_current && this.timer(ENEventEnd.diff(moment()))}
@@ -167,7 +169,7 @@ class MainScreen extends React.Component {
               ))}
             </View>
           </ScrollView>
-        </View>)
+        </View >)
     }
   }
 }

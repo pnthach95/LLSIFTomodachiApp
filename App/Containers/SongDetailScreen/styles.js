@@ -14,16 +14,16 @@ export default StyleSheet.create({
     flex: 1
   },
   centerHeader: {
-    flex: 3
+    flex: 5
   },
   rightHeader: {
-    flex: 3,
+    flex: 1,
     flexDirection: 'row',
     justifyContent: 'flex-end'
   },
   rightHeaderImage: {
     resizeMode: 'contain',
-    width: '33%'
+    width: '100%'
   },
   headerButton: {
     height: Metrics.navBarHeight,

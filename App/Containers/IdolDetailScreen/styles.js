@@ -30,7 +30,7 @@ export default StyleSheet.create({
     width: Metrics.navBarHeight
   },
   scrollView: {
-    paddingBottom: Metrics.doubleBaseMargin
+    marginBottom: Metrics.doubleBaseMargin
   },
   buttonRow: {
     flexDirection: 'row',

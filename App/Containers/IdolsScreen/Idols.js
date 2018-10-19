@@ -4,7 +4,6 @@ import { connect } from 'react-redux'
 import Icon from 'react-native-vector-icons/Ionicons'
 
 import IdolItem from '../../Components/IdolItem/Idol'
-import CachedDataActions from 'App/Stores/CachedData/Actions'
 import { LLSIFService } from '../../Services/LLSIFService'
 import SplashScreen from '../SplashScreen/SplashScreen'
 import { Colors } from '../../Theme'
@@ -38,10 +37,14 @@ class IdolsScreen extends React.Component {
     })
   }
 
+  navigateToIdolDetail(name) {
+    this.props.navigation.navigate('IdolDetailScreen', { name: name })
+  }
+
   _keyExtractor = (item, index) => `idol${item.name}`
 
   _renderItem = ({ item }) => (
-    <IdolItem item={item} />//onPress={() => this.navigateToCardDetail(item)} />
+    <IdolItem item={item} onPress={() => this.navigateToIdolDetail(item.name)} />
   )
 
   render() {

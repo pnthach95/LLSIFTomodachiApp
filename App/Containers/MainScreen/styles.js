@@ -20,6 +20,7 @@ export default StyleSheet.create({
     color: 'white',
     fontSize: 16,
     padding: Metrics.baseMargin,
+    textAlign: 'center'
   },
   title: {
     color: 'white',

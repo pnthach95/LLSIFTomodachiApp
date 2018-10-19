@@ -16,7 +16,9 @@ export default StyleSheet.create({
     flexDirection: 'row-reverse',
     alignItems: 'center',
     borderTopLeftRadius: 10,
-    borderBottomLeftRadius: 10
+    borderBottomLeftRadius: 10,
+    borderTopRightRadius: 10,
+    borderBottomRightRadius: 10
   },
   noFill: {
     flexDirection: 'row',

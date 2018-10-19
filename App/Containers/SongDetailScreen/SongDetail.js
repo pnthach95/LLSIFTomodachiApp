@@ -82,7 +82,7 @@ class SongDetailScreen extends React.Component {
       hard: [this.state.item.hard_notes, hardArray],
       expert: [this.state.item.expert_notes, expertArray],
       random: [this.state.item.expert_notes, expertRandomArray],
-      master: [this.state.item.master_notes, this.state.item.master_difficulty],
+      master: [this.state.item.master_notes, masterArray],
       colors: findColorByAttribute(this.state.item.attribute)
     })
   }
@@ -145,7 +145,8 @@ class SongDetailScreen extends React.Component {
             <SquareButton name={'ios-arrow-back'} onPress={() => this.props.navigation.goBack()} />
           </View>
           <View style={styles.centerHeader}>
-            <Text style={Fonts.style.normal}>{this.state.item.name}</Text>
+            <Text>{this.state.item.name}</Text>
+            <Text>{this.state.item.romaji_name}</Text>
           </View>
           <View style={styles.rightHeader}>
             <Image source={findMainUnit(this.state.item.main_unit)}
@@ -153,11 +154,8 @@ class SongDetailScreen extends React.Component {
           </View>
         </View>
 
-        <ScrollView showsVerticalScrollIndicator={false}
-          contentContainerStyle={{
-            flex: 1
-          }}>
-          <LinearGradient colors={[this.state.colors[1], this.state.colors[0], 'white']} style={styles.content}>
+        <LinearGradient colors={[this.state.colors[1], this.state.colors[1]]} style={styles.content}>
+          <ScrollView showsVerticalScrollIndicator={false}>
             <FastImage
               source={{ uri: AddHTTPS(this.state.item.image) }}
               style={{
@@ -165,7 +163,9 @@ class SongDetailScreen extends React.Component {
                 height: (Metrics.screenWidth / 2) * this.state.imgHeight / this.state.imgWidth
               }}
               onLoad={e => this.onLoadFastImage(e)} />
-            <TextRow item1={{ text: 'Attribute', flex: 1 }} item2={{ text: this.state.item.attribute, flex: 1 }} />
+            <View style={{ height: 10 }} />
+            <TextRow item1={{ text: 'Attribute', flex: 1 }}
+              item2={{ text: this.state.item.attribute, flex: 1 }} />
             {this.state.item.rank ?
               <View style={styles.event}>
                 <TextRow item1={{ text: 'Unlock', flex: 1 }}
@@ -198,17 +198,21 @@ class SongDetailScreen extends React.Component {
               {this.statButton(0, 'Easy', this.state.easy, styles.leftRadius)}
               {this.statButton(1, 'Normal', this.state.normal)}
               {this.statButton(2, 'Hard', this.state.hard)}
-              {this.statButton(3, 'Expert', this.state.expert)}
-              {this.state.random[1].length != 0 && this.statButton(4, 'Random', this.state.random, !this.state.master[0] && styles.rightRadius)}
-              {this.state.master[0] && this.statButton(5, 'Master', this.state.master, styles.rightRadius)}
+              {this.statButton(3, 'Expert', this.state.expert,
+                (this.state.random[1].length == 0 && !this.state.master[0]) && styles.rightRadius)}
+              {this.state.random[1].length != 0 &&
+                this.statButton(4, 'Random', this.state.random,
+                  !this.state.master[0] && styles.rightRadius)}
+              {this.state.master[0] &&
+                this.statButton(5, 'Master', this.state.master, styles.rightRadius)}
             </View>
             <ProgressBar
               number={this.state.currentStats[0]}
               progress={this.progressStat(this.state.currentStats[0])}
-              fillStyle={{ backgroundColor: this.state.colors[1] }} />
+              fillStyle={{ backgroundColor: this.state.colors[0] }} />
             <StarBar array={this.state.currentStats[1]} />
-          </LinearGradient>
-        </ScrollView>
+          </ScrollView>
+        </LinearGradient>
       </View>
     )
   }

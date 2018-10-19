@@ -53,6 +53,20 @@ async function fetchIdolList() {
 }
 
 /**
+ *Lấy thông tin idol
+ *
+ * @param {String} name tên tiếng Anh của idol
+ * @returns
+ */
+async function fetchIdol(name) {
+  const response = await LLSIFApiClient.get(Config.IDOLS + name)
+  if (response.ok) {
+    return response.data
+  }
+  return null
+}
+
+/**
  * Lấy danh sách bài hát
  * 
  * https://github.com/MagiCircles/SchoolIdolAPI/wiki/API-Songs
@@ -97,6 +111,7 @@ export const LLSIFService = {
   fetchCachedData,
   fetchCardList,
   fetchIdolList,
+  fetchIdol,
   fetchSongList,
   fetchEventList,
   fetchEventData

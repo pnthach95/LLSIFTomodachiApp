@@ -37,6 +37,7 @@ export default StyleSheet.create({
     color: 'white',
     fontSize: 24,
     padding: Metrics.baseMargin,
+    textAlign: 'center'
   },
   song: {
     width: Metrics.screenWidth / 3,

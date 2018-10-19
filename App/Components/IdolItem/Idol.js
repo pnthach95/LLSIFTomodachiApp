@@ -2,15 +2,15 @@ import React, { Component } from 'react'
 import { TouchableOpacity, View, Text } from 'react-native'
 import FastImage from 'react-native-fast-image'
 import styles from './styles'
-import { Metrics, ApplicationStyles, Images } from '../../Theme'
+import { Metrics } from '../../Theme'
 import { AddHTTPS, findColorByAttribute } from '../../Utils';
 
 export default class IdolItem extends Component {
   constructor(props) {
-    super(props);
+    super(props)
     this.state = {
-      imgWidth: 0,
-      imgHeight: 0,
+      imgWidth: Metrics.images.smallItemWidth,
+      imgHeight: Metrics.images.smallItemWidth,
       colors: findColorByAttribute(this.props.item.attribute)
     }
   }

@@ -140,6 +140,10 @@ class CardDetailScreen extends React.Component {
     this.props.navigation.navigate('EventDetailScreen', { eventName: name })
   }
 
+  navigateToIdolDetail(name) {
+    this.props.navigation.navigate('IdolDetailScreen', { name: name })
+  }
+
   render() {
     if (this.state.isLoading) return <SplashScreen />
     else
@@ -154,7 +158,10 @@ class CardDetailScreen extends React.Component {
               <SquareButton name={'ios-arrow-back'} onPress={() => this.props.navigation.goBack()} />
             </View>
             <View style={styles.centerHeader}>
-              <Text style={Fonts.style.normal}>{this.state.item.idol.name}</Text>
+              <TouchableOpacity
+                onPress={() => this.navigateToEventDetail(this.state.item.idol.japanese_name)}>
+                <Text style={Fonts.style.normal}>{this.state.item.idol.name}</Text>
+              </TouchableOpacity>
             </View>
             <View style={styles.rightHeader}>
               <Image source={findMainUnit(this.state.item.idol.main_unit)}
@@ -199,7 +206,7 @@ class CardDetailScreen extends React.Component {
                 />
                 <Seperator />
 
-                {this.state.item.skill.length != 0 &&
+                {(!this.state.item.skill && this.state.item.skill.length != 0) &&
                   <View>
                     <TextRow
                       item1={{ flex: 1, text: 'Skill' }}
@@ -212,7 +219,7 @@ class CardDetailScreen extends React.Component {
                     <Seperator />
                   </View>}
 
-                {this.state.item.center_skill.length != 0 &&
+                {(!this.state.item.center_skill && this.state.item.center_skill.length != 0) &&
                   <View>
                     <TextRow
                       item1={{ flex: 1, text: 'Center skill' }}
@@ -227,11 +234,12 @@ class CardDetailScreen extends React.Component {
 
                 {this.state.item.event &&
                   <View>
-                  <TextRow item1={{ text: 'Event', flex: 1, textStyle: Fonts.style.normal }}
-                   item2={{ text: this.state.item.event.japanese_name, flex: 4, textStyle: Fonts.style.normal }}/>
-                   <TextRow item1={{ text: '', flex: 1, textStyle: Fonts.style.normal }}
-                   item2={{ text: this.state.item.event.english_name, flex: 4, textStyle: Fonts.style.normal }}/>
-                    <TouchableOpacity style={ApplicationStyles.center} onPress={() => this.navigateToEventDetail(this.state.item.event.japanese_name)}>
+                    <TextRow item1={{ text: 'Event', flex: 1, textStyle: Fonts.style.normal }}
+                      item2={{ text: this.state.item.event.japanese_name, flex: 4, textStyle: Fonts.style.normal }} />
+                    <TextRow item1={{ text: '', flex: 1, textStyle: Fonts.style.normal }}
+                      item2={{ text: this.state.item.event.english_name, flex: 4, textStyle: Fonts.style.normal }} />
+                    <TouchableOpacity style={ApplicationStyles.center}
+                      onPress={() => this.navigateToEventDetail(this.state.item.event.japanese_name)}>
                       <FastImage
                         source={{ uri: AddHTTPS(this.state.item.event.image) }}
                         style={styles.banner}

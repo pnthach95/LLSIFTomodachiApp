@@ -2,10 +2,12 @@ import React from 'react'
 import { View, FlatList } from 'react-native'
 import { connect } from 'react-redux'
 import Icon from 'react-native-vector-icons/Ionicons'
+import _ from 'lodash'
 
 import SongItem from '../../Components/SongItem/SongItem'
 import SplashScreen from '../SplashScreen/SplashScreen'
-import { Metrics, Colors } from '../../Theme'
+import { LLSIFService } from '../../Services/LLSIFService'
+import { Colors } from '../../Theme'
 import styles from './styles'
 
 class SongsScreen extends React.Component {
@@ -16,7 +18,7 @@ class SongsScreen extends React.Component {
       list: [],
       isFilter: false,
       filter: {
-        ordering: '',
+        ordering: '-id',
         page_size: 20,
         page: 1,
         expand_event: ''
@@ -37,13 +39,18 @@ class SongsScreen extends React.Component {
   }
 
   componentDidMount() {
+    this.getSongs()
   }
 
-  _keyExtractor = (item, index) => `event ${item.japanese_name}`
+  _keyExtractor = (item, index) => `song ${item.name}`
 
   _renderItem = ({ item }) => (
-    <SongItem item={item} onPress={() => this.navigateToEventDetail(item)} />
+    <SongItem item={item} onPress={() => this.navigateToSongDetail(item)} />
   )
+
+  navigateToSongDetail(item) {
+    this.props.navigation.navigate('SongDetailScreen', { item: item })
+  }
 
   /**
    *Khi scroll đến cuối danh sách
@@ -60,7 +67,7 @@ class SongsScreen extends React.Component {
       var x = [...this.state.list, ...result]
       x = x.filter((thing, index, self) =>
         index === self.findIndex((t) => (
-          t.japanese_name === thing.japanese_name
+          t.name === thing.name
         ))
       )
       var _filter = this.state.filter
@@ -83,6 +90,7 @@ class SongsScreen extends React.Component {
           contentContainerStyle={styles.content}
           data={this.state.list}
           initialNumToRender={6}
+          numColumns={2}
           keyExtractor={this._keyExtractor}
           style={styles.list}
           onEndReached={this._onEndReached}

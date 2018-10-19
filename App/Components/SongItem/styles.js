@@ -8,8 +8,11 @@ export default StyleSheet.create({
     margin: Metrics.smallMargin,
   },
   info: {
-    flexDirection: 'row',
-    padding: Metrics.smallMargin,
-    justifyContent: 'space-around'
+    paddingVertical: Metrics.smallMargin,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  text: {
+    textAlign: 'center'
   }
 })

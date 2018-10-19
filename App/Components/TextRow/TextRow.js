@@ -7,7 +7,7 @@ import { Fonts } from '../../Theme'
 /**
  * TextRow
  * - item1: {text, flex, textStyle}
- * - item2: {text, flex, textStyle}
+ * - item2: {text, flex, textStyle, onPress}
  */
 export default class TextRow extends React.Component {
   render() {
@@ -17,7 +17,8 @@ export default class TextRow extends React.Component {
           <Text style={[Fonts.style.normal, this.props.item1.textStyle]}>{this.props.item1.text}</Text>
         </View>
         <View style={{ flex: this.props.item2.flex }}>
-          <Text style={[Fonts.style.normal, this.props.item2.textStyle]}>{this.props.item2.text}</Text>
+          <Text style={[Fonts.style.normal, this.props.item2.textStyle]}
+            onPress={this.props.item2.onPress}>{this.props.item2.text}</Text>
         </View>
       </View>
     )

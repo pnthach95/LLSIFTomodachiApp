@@ -1,8 +1,12 @@
 import { StyleSheet } from 'react-native'
-import { Colors } from '../../Theme'
+import { Metrics } from '../../Theme'
 
 export default StyleSheet.create({
   container: {
-    flexDirection: 'row'
+    flexDirection: 'row',
+    marginVertical: Metrics.baseMargin
+  },
+  star: {
+    paddingHorizontal: 2
   }
 })

@@ -101,15 +101,8 @@ class EventDetailScreen extends React.Component {
           <View style={styles.leftHeader}>
             <SquareButton name={'ios-arrow-back'} color={'white'} onPress={() => this.props.navigation.goBack()} />
           </View>
-          <View style={styles.centerHeader}>
-            {/* <Text style={Fonts.style.normal}>{this.state.item.idol.name}</Text> */}
-          </View>
-          <View style={styles.rightHeader}>
-            {/* <Image source={findMainUnit(this.state.item.idol.main_unit)}
-                style={styles.rightHeaderImage} />
-              <Image source={findSubUnit(this.state.item.idol.sub_unit)}
-                style={styles.rightHeaderImage} /> */}
-          </View>
+          <View style={styles.centerHeader} />
+          <View style={styles.rightHeader} />
         </View>
 
         <ScrollView
@@ -151,7 +144,7 @@ class EventDetailScreen extends React.Component {
           {/* SONGS */}
           <View style={styles.cardList}>
             {this.state.songs.map((item, index) =>
-              <TouchableOpacity key={'song' + index} style={styles.card} onPress={()=>this.navigateToSongDetail(item)}>
+              <TouchableOpacity key={'song' + index} style={styles.card} onPress={() => this.navigateToSongDetail(item)}>
                 <FastImage source={{ uri: AddHTTPS(item.image) }} style={styles.song} />
                 <View style={styles.songInfo}>
                   <Image source={findAttribute(item.attribute)} style={{ width: 25, height: 25 }} />

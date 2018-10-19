@@ -5,6 +5,10 @@ import styles from './styles'
 import { Metrics, ApplicationStyles, Images } from '../../Theme'
 import { AddHTTPS, findColorByAttribute } from '../../Utils';
 
+/**
+ * Event item
+ * - item: Event object
+ */
 export default class EventItem extends Component {
   constructor(props) {
     super(props);
@@ -17,9 +21,10 @@ export default class EventItem extends Component {
 
   render() {
     return (
-      <TouchableOpacity style={[styles.container, { backgroundColor: this.state.colors[1] }]} onPress={this.props.onPress}>
+      <TouchableOpacity style={styles.container} onPress={this.props.onPress}>
         <FastImage
           style={{
+            alignSelf: 'center',
             width: Metrics.widthBanner,
             height: Metrics.widthBanner * this.state.imgHeight / this.state.imgWidth
           }}
@@ -33,7 +38,8 @@ export default class EventItem extends Component {
           }} />
 
         <View style={styles.info}>
-          <Text style={styles.text}>{this.props.item.name}</Text>
+          <Text style={styles.text}>{this.props.item.japanese_name}</Text>
+          <Text style={styles.text}>{this.props.item.english_name}</Text>
         </View>
       </TouchableOpacity>
     )

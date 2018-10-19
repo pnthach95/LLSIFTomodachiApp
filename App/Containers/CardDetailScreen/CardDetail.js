@@ -16,6 +16,10 @@ import { findColorByAttribute, AddHTTPS, findMainUnit, findSubUnit } from '../..
 import { Metrics, Fonts, ApplicationStyles, Colors, Images } from '../../Theme'
 import styles from './styles'
 
+/**
+ * Màn hình thông tin chi tiết card
+ * - item: Card object
+ */
 class CardDetailScreen extends React.Component {
   constructor(props) {
     super(props)
@@ -132,6 +136,10 @@ class CardDetailScreen extends React.Component {
     this.setState({ imgWidth: width, imgHeight: height })
   }
 
+  navigateToEventDetail(name) {
+    this.props.navigation.navigate('EventDetailScreen', { eventName: name })
+  }
+
   render() {
     if (this.state.isLoading) return <SplashScreen />
     else
@@ -179,6 +187,7 @@ class CardDetailScreen extends React.Component {
                   onLoad={e => this.onLoadFastImage(e)}
                 />
               </View>
+
               <View style={{ paddingHorizontal: Metrics.doubleBaseMargin }}>
                 <TextRow
                   item1={{ flex: 1, text: 'Card ID' }}
@@ -190,36 +199,45 @@ class CardDetailScreen extends React.Component {
                 />
                 <Seperator />
 
-                <TextRow
-                  item1={{ flex: 1, text: 'Skill' }}
-                  item2={{ flex: 2, text: this.state.item.skill }}
-                />
-                <TextRow
-                  item1={{ flex: 1, text: '' }}
-                  item2={{ flex: 2, text: this.state.item.skill_details, textStyle: styles.subtitleText }}
-                />
-                <Seperator />
+                {this.state.item.skill.length != 0 &&
+                  <View>
+                    <TextRow
+                      item1={{ flex: 1, text: 'Skill' }}
+                      item2={{ flex: 2, text: this.state.item.skill }}
+                    />
+                    <TextRow
+                      item1={{ flex: 1, text: '' }}
+                      item2={{ flex: 2, text: this.state.item.skill_details, textStyle: styles.subtitleText }}
+                    />
+                    <Seperator />
+                  </View>}
 
-                <TextRow
-                  item1={{ flex: 1, text: 'Center skill' }}
-                  item2={{ flex: 2, text: this.state.item.center_skill }}
-                />
-                <TextRow
-                  item1={{ flex: 1, text: '' }}
-                  item2={{ flex: 2, text: this.state.item.center_skill_details, textStyle: styles.subtitleText }}
-                />
-                <Seperator />
+                {this.state.item.center_skill.length != 0 &&
+                  <View>
+                    <TextRow
+                      item1={{ flex: 1, text: 'Center skill' }}
+                      item2={{ flex: 2, text: this.state.item.center_skill }}
+                    />
+                    <TextRow
+                      item1={{ flex: 1, text: '' }}
+                      item2={{ flex: 2, text: this.state.item.center_skill_details, textStyle: styles.subtitleText }}
+                    />
+                    <Seperator />
+                  </View>}
 
                 {this.state.item.event &&
                   <View>
-                    <Text style={Fonts.style.normal}>Event: {this.state.item.event.japanese_name}</Text>
-                    <View style={ApplicationStyles.center}>
+                  <TextRow item1={{ text: 'Event', flex: 1, textStyle: Fonts.style.normal }}
+                   item2={{ text: this.state.item.event.japanese_name, flex: 4, textStyle: Fonts.style.normal }}/>
+                   <TextRow item1={{ text: '', flex: 1, textStyle: Fonts.style.normal }}
+                   item2={{ text: this.state.item.event.english_name, flex: 4, textStyle: Fonts.style.normal }}/>
+                    <TouchableOpacity style={ApplicationStyles.center} onPress={() => this.navigateToEventDetail(this.state.item.event.japanese_name)}>
                       <FastImage
                         source={{ uri: AddHTTPS(this.state.item.event.image) }}
                         style={styles.banner}
                         resizeMode={FastImage.resizeMode.contain}
                       />
-                    </View>
+                    </TouchableOpacity>
                     <Seperator />
                   </View>}
 
@@ -231,7 +249,7 @@ class CardDetailScreen extends React.Component {
 
               <View style={styles.buttonRow}>
                 {this.statButton(0, 'Level 1', this.state.minStats, styles.leftRadius)}
-                {this.state.item.non_idolized_max_level != 0 &&
+                {this.state.item.non_idolized_maximum_statistics_smile != 0 &&
                   this.statButton(1, `Level ${this.state.item.non_idolized_max_level}`, this.state.nonIdolMaxStats)}
                 {this.state.item.idolized_max_level != 0 &&
                   this.statButton(2, `Level ${this.state.item.idolized_max_level}`, this.state.idolMaxStats, styles.rightRadius)}

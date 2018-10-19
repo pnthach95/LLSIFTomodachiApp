@@ -18,5 +18,6 @@ export default {
   violet: '#DF67FF',
   lightViolet: '#e7adf7',
   blue: '#00a2ff',
-  lightBlue: '#87d3ff'
+  lightBlue: '#87d3ff',
+  star: ['#D8FD53', '#F7FB34', '#FBAAC3', '#F33256']
 }

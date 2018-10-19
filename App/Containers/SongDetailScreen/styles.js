@@ -30,30 +30,28 @@ export default StyleSheet.create({
     width: Metrics.navBarHeight
   },
   scrollView: {
-    paddingBottom: Metrics.doubleBaseMargin
+    marginVertical: Metrics.doubleBaseMargin
+  },
+  content: {
+    alignItems: 'center',
+    padding: 10,
+    flex: 1
+  },
+  event: {
+    alignItems: 'center'
+  },
+  eventButton: {
+    alignSelf: 'flex-end',
+    paddingRight: 10
+  },
+  eventImage: {
+    width: (Metrics.screenWidth / 2) - 20,
+    height: Metrics.screenWidth / 5
   },
   buttonRow: {
     flexDirection: 'row',
     justifyContent: 'space-around',
-    padding: Metrics.baseMargin
-  },
-  imageRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    paddingBottom: Metrics.doubleBaseMargin
-  },
-  progressRow: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    paddingHorizontal: '5%',
-    alignItems: 'center'
-  },
-  button: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingVertical: Metrics.baseMargin,
-    marginHorizontal: 1
+    paddingVertical: Metrics.baseMargin
   },
   leftRadius: {
     borderTopLeftRadius: 10,
@@ -63,16 +61,11 @@ export default StyleSheet.create({
     borderTopRightRadius: 10,
     borderBottomRightRadius: 10
   },
-  progressText: {
-    paddingLeft: '10%',
+  button: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
     paddingVertical: Metrics.baseMargin,
-    color: '#333'
+    marginHorizontal: 1
   },
-  banner: {
-    width: '80%',
-    height: 100
-  },
-  subtitleText: {
-    fontSize: 14
-  }
 })

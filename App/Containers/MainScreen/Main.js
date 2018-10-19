@@ -97,6 +97,10 @@ class MainScreen extends React.Component {
     this.setState({ imgWidth: width, imgHeight: height })
   }
 
+  navigateToEventDetail(event) {
+    this.props.navigation.navigate('EventDetailScreen', { event: event })
+  }
+
   render() {
     if (this.state.isLoading) return <SplashScreen bgColor={Colors.pink} />
     else {
@@ -123,8 +127,9 @@ class MainScreen extends React.Component {
           {/* BODY */}
           <ScrollView style={styles.body} contentContainerStyle={styles.content}>
             {/* ENGLISH BLOCK */}
+            <Text style={{ color: 'white' }}>English Event</Text>
             <Text style={styles.title}>{ENEvent.english_name}</Text>
-            <TouchableOpacity onPress={() => this.props.navigation.navigate('EventDetailScreen', { event: ENEvent })}>
+            <TouchableOpacity onPress={() => this.navigateToEventDetail(ENEvent)}>
               <FastImage
                 source={{ uri: AddHTTPS(ENEvent.english_image) }}
                 style={{
@@ -139,14 +144,17 @@ class MainScreen extends React.Component {
             <Seperator style={{ backgroundColor: 'white' }} />
 
             {/* JAPANESE BLOCK */}
+            <Text style={{ color: 'white' }}>Japanese Event</Text>
             <Text style={styles.title}>{JPEvent.romaji_name}</Text>
-            <FastImage
-              source={{ uri: AddHTTPS(JPEvent.image) }}
-              style={{
-                width: Metrics.widthBanner,
-                height: Metrics.widthBanner * this.state.imgHeight / this.state.imgWidth
-              }}
-              onLoad={e => this.onLoadFastImage(e)} />
+            <TouchableOpacity onPress={() => this.navigateToEventDetail(JPEvent)}>
+              <FastImage
+                source={{ uri: AddHTTPS(JPEvent.image) }}
+                style={{
+                  width: Metrics.widthBanner,
+                  height: Metrics.widthBanner * this.state.imgHeight / this.state.imgWidth
+                }}
+                onLoad={e => this.onLoadFastImage(e)} />
+            </TouchableOpacity>
             <Text style={styles.text}>Start: {JPEventStart.format('HH:mm MMM Do YYYY')}</Text>
             <Text style={styles.text}>End: {JPEventEnd.format('HH:mm MMM Do YYYY')}</Text>
             {JPEvent.japan_current && this.timer(JPEventEnd.diff(moment()))}

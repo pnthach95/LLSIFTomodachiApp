@@ -3,23 +3,27 @@ import { Colors } from '../../Theme'
 
 export default StyleSheet.create({
   background: {
-    backgroundColor: '#ddd',
+    backgroundColor: '#aaa',
     height: 35,
     width: '80%',
     borderRadius: 10,
     borderColor: 'white',
-    borderWidth: 1.5
+    borderWidth: 1.5,
+    flexDirection: 'row'
   },
   fill: {
     backgroundColor: Colors.primary,
-    flex: 1,
     flexDirection: 'row-reverse',
     alignItems: 'center',
     borderTopLeftRadius: 10,
     borderBottomLeftRadius: 10
   },
+  noFill: {
+    flexDirection: 'row',
+    alignItems: 'center'
+  },
   text: {
-    paddingRight: 10,
+    paddingHorizontal: 10,
     color: 'white'
   }
 })

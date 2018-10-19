@@ -4,16 +4,15 @@ import { connect } from 'react-redux'
 import FastImage from 'react-native-fast-image'
 import LinearGradient from 'react-native-linear-gradient'
 import Icon from 'react-native-vector-icons/Ionicons'
-import moment from 'moment'
 
-import { getMaxStats } from '../../Stores/CachedData/Selectors'
-import Seperator from '../../Components/Seperator/Seperator'
+import { getSongMaxStat } from '../../Stores/CachedData/Selectors'
+import StarBar from '../../Components/StarBar/StarBar'
 import ProgressBar from '../../Components/ProgressBar/ProgressBar'
 import SquareButton from '../../Components/SquareButton/SquareButton'
 import TextRow from '../../Components/TextRow/TextRow'
 import SplashScreen from '../SplashScreen/SplashScreen'
-import { findColorByAttribute, AddHTTPS, findMainUnit, findSubUnit } from '../../Utils'
-import { Metrics, Fonts, ApplicationStyles, Colors, Images } from '../../Theme'
+import { findColorByAttribute, AddHTTPS, findMainUnit } from '../../Utils'
+import { Metrics, Fonts, ApplicationStyles, Colors } from '../../Theme'
 import styles from './styles'
 
 class SongDetailScreen extends React.Component {
@@ -24,107 +23,68 @@ class SongDetailScreen extends React.Component {
       imgWidth: 0,
       imgHeight: 0,
       colors: [],
-      isLoading: true,
-      maxStats: null,
-      minStats: [],
-      nonIdolMaxStats: [],
-      idolMaxStats: [],
       currentStats: [],
-      buttonID: 0
+      buttonID: 0,
+      easy: [],
+      normal: [],
+      hard: [],
+      expert: [],
+      random: [],
+      master: [],
+      isLoading: true
     }
+  }
+
+  setColor(index) {
+    if (index < 3)
+      return 0
+    if (index < 6)
+      return 1
+    if (index < 9)
+      return 2
+    return 3
   }
 
   componentDidMount() {
-    this.setState({
-      isLoading: false,
-      colors: findColorByAttribute(this.state.item.attribute),
-      maxStats: [
-        this.props.maxStats.get('Smile'),
-        this.props.maxStats.get('Pure'),
-        this.props.maxStats.get('Cool')
-      ],
-      minStats: [
-        this.state.item.minimum_statistics_smile,
-        this.state.item.minimum_statistics_pure,
-        this.state.item.minimum_statistics_cool
-      ],
-      nonIdolMaxStats: [
-        this.state.item.non_idolized_maximum_statistics_smile,
-        this.state.item.non_idolized_maximum_statistics_pure,
-        this.state.item.non_idolized_maximum_statistics_cool
-      ],
-      idolMaxStats: [
-        this.state.item.idolized_maximum_statistics_smile,
-        this.state.item.idolized_maximum_statistics_pure,
-        this.state.item.idolized_maximum_statistics_cool
-      ],
-      currentStats: [
-        this.state.item.minimum_statistics_smile,
-        this.state.item.minimum_statistics_pure,
-        this.state.item.minimum_statistics_cool
-      ]
-    })
-  }
-
-  progressSmile(stat) {
-    return 100 * stat / this.state.maxStats[0]
-  }
-
-  progressPure(stat) {
-    return 100 * stat / this.state.maxStats[1]
-  }
-
-  progressCool(stat) {
-    return 100 * stat / this.state.maxStats[2]
-  }
-
-  progressUnit(text, stat, color) {
-    var icon = function (text) {
-      switch (text) {
-        case 'Smile':
-          return 0
-        case 'Pure':
-          return 1
-        default:
-          return 2
+    easyArray = []
+    for (i = 0; i < this.state.item.easy_difficulty; i++) {
+      easyArray.push(this.setColor(i))
+    }
+    normalArray = []
+    for (i = 0; i < this.state.item.normal_difficulty; i++) {
+      normalArray.push(this.setColor(i))
+    }
+    hardArray = []
+    for (i = 0; i < this.state.item.hard_difficulty; i++) {
+      hardArray.push(this.setColor(i))
+    }
+    expertArray = []
+    for (i = 0; i < this.state.item.expert_difficulty; i++) {
+      expertArray.push(this.setColor(i))
+    }
+    expertRandomArray = []
+    if (this.state.item.expert_random_difficulty) {
+      for (i = 0; i < this.state.item.expert_random_difficulty; i++) {
+        expertRandomArray.push(this.setColor(i))
       }
     }
-    return (
-      <View style={{ width: '100%' }}>
-        <Text style={[Fonts.style.normal, styles.progressText]}>{text}</Text>
-        <View style={styles.progressRow}>
-          <Image source={Images.attribute[icon(text)]}
-            style={[ApplicationStyles.mediumIcon, { marginRight: 10 }]} />
-          <ProgressBar
-            number={stat}
-            progress={this.progressSmile(stat)}
-            fillStyle={{ backgroundColor: color }} />
-        </View>
-      </View>
-    )
-  }
-
-  progressView(stats) {
-    return (
-      <View>
-        {this.progressUnit('Smile', stats[0], Colors.pink)}
-        {this.progressUnit('Pure', stats[1], Colors.green)}
-        {this.progressUnit('Cool', stats[2], Colors.blue)}
-      </View>
-    )
-  }
-
-  statButton(id, text, stats, style) {
-    return (
-      <TouchableOpacity
-        style={[
-          styles.button, style,
-          { backgroundColor: this.state.buttonID == id ? Colors.violet : Colors.inactive }
-        ]}
-        onPress={() => this.setState({ currentStats: stats, buttonID: id })}>
-        <Text style={[Fonts.style.normal, { color: 'white' }]}>{text}</Text>
-      </TouchableOpacity>
-    )
+    masterArray = []
+    if (this.state.item.master_difficulty) {
+      for (i = 0; i < this.state.item.master_difficulty; i++) {
+        masterArray.push(this.setColor(i))
+      }
+    }
+    this.setState({
+      isLoading: false,
+      currentStats: [this.state.item.easy_notes, easyArray],
+      easy: [this.state.item.easy_notes, easyArray],
+      normal: [this.state.item.normal_notes, normalArray],
+      hard: [this.state.item.hard_notes, hardArray],
+      expert: [this.state.item.expert_notes, expertArray],
+      random: [this.state.item.expert_notes, expertRandomArray],
+      master: [this.state.item.master_notes, this.state.item.master_difficulty],
+      colors: findColorByAttribute(this.state.item.attribute)
+    })
   }
 
   onLoadFastImage(e) {
@@ -132,122 +92,130 @@ class SongDetailScreen extends React.Component {
     this.setState({ imgWidth: width, imgHeight: height })
   }
 
+  /**
+   * Đổi số giây ra dạng m:ss
+   * @param {Number} time Số giây
+   */
+  formatTime(time) {
+    let minutes = parseInt(((time / 60) % 60).toString(), 10)
+    var seconds = time % 60
+    if (seconds < 10) seconds = '0' + seconds
+    return minutes + ':' + seconds
+  }
+
+  navigateToEventDetail(event) {
+    this.props.navigation.navigate('EventDetailScreen', { event: event })
+  }
+
+  /**
+   * Render nút chọn độ khó
+   * 
+   * @param {Number} id ID
+   * @param {String} text Nội dung
+   * @param {Array} stat Chỉ số
+   * @param {Object} style Style
+   */
+  statButton(id, text, stat, style) {
+    return (
+      <TouchableOpacity
+        style={[
+          styles.button, style,
+          { backgroundColor: this.state.buttonID == id ? Colors.violet : Colors.inactive }
+        ]}
+        onPress={() => this.setState({ currentStats: stat, buttonID: id })}>
+        <Text style={{ color: 'white' }}>{text}</Text>
+      </TouchableOpacity>
+    )
+  }
+
+  progressStat(stat) {
+    return 100 * stat / this.props.songMaxStat
+  }
+
   render() {
     if (this.state.isLoading) return <SplashScreen />
-    else
-      return (
-        <View style={styles.container}>
-          <View style={[
-            ApplicationStyles.header,
-            styles.header,
-            { backgroundColor: this.state.colors[1] }
-          ]}>
-            <View style={styles.leftHeader}>
-              <SquareButton name={'ios-arrow-back'} onPress={() => this.props.navigation.goBack()} />
-            </View>
-            <View style={styles.centerHeader}>
-              <Text style={Fonts.style.normal}>{this.state.item.idol.name}</Text>
-            </View>
-            <View style={styles.rightHeader}>
-              <Image source={findMainUnit(this.state.item.idol.main_unit)}
-                style={styles.rightHeaderImage} />
-              <Image source={findSubUnit(this.state.item.idol.sub_unit)}
-                style={styles.rightHeaderImage} />
-            </View>
+    return (
+      <View style={styles.container}>
+        <View style={[
+          ApplicationStyles.header,
+          styles.header,
+          { backgroundColor: this.state.colors[1] }
+        ]}>
+          <View style={styles.leftHeader}>
+            <SquareButton name={'ios-arrow-back'} onPress={() => this.props.navigation.goBack()} />
           </View>
-
-          <ScrollView
-            showsVerticalScrollIndicator={false}
-            style={styles.scrollView}>
-            <LinearGradient colors={[this.state.colors[1], this.state.colors[0], 'white']}>
-              <View style={styles.imageRow}>
-                {this.state.item.card_image &&
-                  <FastImage
-                    source={{ uri: AddHTTPS(this.state.item.card_image) }}
-                    style={{
-                      width: Metrics.images.itemWidth,
-                      height: Metrics.images.itemWidth * this.state.imgHeight / this.state.imgWidth
-                    }}
-                    onLoad={e => this.onLoadFastImage(e)}
-                  />}
-                <FastImage
-                  source={{ uri: AddHTTPS(this.state.item.card_idolized_image) }}
-                  style={{
-                    width: Metrics.images.itemWidth,
-                    height: Metrics.images.itemWidth * this.state.imgHeight / this.state.imgWidth
-                  }}
-                  onLoad={e => this.onLoadFastImage(e)}
-                />
-              </View>
-              <View style={{ paddingHorizontal: Metrics.doubleBaseMargin }}>
-                <TextRow
-                  item1={{ flex: 1, text: 'Card ID' }}
-                  item2={{ flex: 2, text: this.state.item.game_id }}
-                />
-                <TextRow
-                  item1={{ flex: 1, text: 'Release date' }}
-                  item2={{ flex: 2, text: moment(this.state.item.release_date).format('MMM Do YYYY') }}
-                />
-                <Seperator />
-
-                <TextRow
-                  item1={{ flex: 1, text: 'Skill' }}
-                  item2={{ flex: 2, text: this.state.item.skill }}
-                />
-                <TextRow
-                  item1={{ flex: 1, text: '' }}
-                  item2={{ flex: 2, text: this.state.item.skill_details, textStyle: styles.subtitleText }}
-                />
-                <Seperator />
-
-                <TextRow
-                  item1={{ flex: 1, text: 'Center skill' }}
-                  item2={{ flex: 2, text: this.state.item.center_skill }}
-                />
-                <TextRow
-                  item1={{ flex: 1, text: '' }}
-                  item2={{ flex: 2, text: this.state.item.center_skill_details, textStyle: styles.subtitleText }}
-                />
-                <Seperator />
-
-                {this.state.item.event &&
-                  <View>
-                    <Text style={Fonts.style.normal}>Event: {this.state.item.event.japanese_name}</Text>
-                    <View style={ApplicationStyles.center}>
-                      <FastImage
-                        source={{ uri: AddHTTPS(this.state.item.event.image) }}
-                        style={styles.banner}
-                        resizeMode={FastImage.resizeMode.contain}
-                      />
-                    </View>
-                    <Seperator />
-                  </View>}
-
-                <View style={{ flexDirection: 'row' }}>
-                  <Icon name='ios-heart' size={Metrics.icons.medium} color={'red'} />
-                  <Text style={Fonts.style.normal}> : {this.state.item.hp}</Text>
-                </View>
-              </View>
-
-              <View style={styles.buttonRow}>
-                {this.statButton(0, 'Level 1', this.state.minStats, styles.leftRadius)}
-                {this.state.item.non_idolized_max_level != 0 &&
-                  this.statButton(1, `Level ${this.state.item.non_idolized_max_level}`, this.state.nonIdolMaxStats)}
-                {this.state.item.idolized_max_level != 0 &&
-                  this.statButton(2, `Level ${this.state.item.idolized_max_level}`, this.state.idolMaxStats, styles.rightRadius)}
-              </View>
-
-              {this.progressView(this.state.currentStats)}
-              <View style={{ height: Metrics.doubleBaseMargin }} />
-            </LinearGradient>
-          </ScrollView>
+          <View style={styles.centerHeader}>
+            <Text style={Fonts.style.normal}>{this.state.item.name}</Text>
+          </View>
+          <View style={styles.rightHeader}>
+            <Image source={findMainUnit(this.state.item.main_unit)}
+              style={styles.rightHeaderImage} />
+          </View>
         </View>
-      )
+
+        <ScrollView showsVerticalScrollIndicator={false}
+          contentContainerStyle={{
+            flex: 1
+          }}>
+          <LinearGradient colors={[this.state.colors[1], this.state.colors[0], 'white']} style={styles.content}>
+            <FastImage
+              source={{ uri: AddHTTPS(this.state.item.image) }}
+              style={{
+                width: Metrics.screenWidth / 2,
+                height: (Metrics.screenWidth / 2) * this.state.imgHeight / this.state.imgWidth
+              }}
+              onLoad={e => this.onLoadFastImage(e)} />
+            <TextRow item1={{ text: 'Attribute', flex: 1 }} item2={{ text: this.state.item.attribute, flex: 1 }} />
+            {this.state.item.rank ?
+              <View style={styles.event}>
+                <TextRow item1={{ text: 'Unlock', flex: 1 }}
+                  item2={{ text: this.state.item.rank, flex: 1 }} />
+              </View> :
+              <View />}
+            <TextRow item1={{ text: 'Beats per minute', flex: 1 }} item2={{ text: this.state.item.BPM, flex: 1 }} />
+            <TextRow item1={{ text: 'Length', flex: 1 }} item2={{ text: this.formatTime(this.state.item.time), flex: 1 }} />
+            {this.state.item.event &&
+              <View style={styles.event}>
+                <TextRow item1={{ text: 'Event', flex: 1 }} item2={{ text: this.state.item.event.japanese_name, flex: 1 }} />
+                <TextRow item1={{ text: '', flex: 1 }} item2={{ text: this.state.item.event.english_name, flex: 1 }} />
+                <TouchableOpacity style={styles.eventButton}
+                  onPress={() => this.navigateToEventDetail(this.state.item.event)}>
+                  <FastImage
+                    source={{ uri: AddHTTPS(this.state.item.event.image) }}
+                    style={styles.eventImage}
+                    resizeMode={FastImage.resizeMode.contain}
+                  />
+                </TouchableOpacity>
+              </View>}
+            {this.state.item.daily_rotation ?
+              <View style={styles.event}>
+                <TextRow item1={{ text: 'Daily rotation', flex: 1 }}
+                  item2={{ text: this.state.item.daily_rotation + ' - ' + this.state.item.daily_rotation_position, flex: 1 }} />
+              </View> :
+              <View />}
+            <TextRow item1={{ text: 'Currently available', flex: 1 }} item2={{ text: this.state.item.available ? 'Yes' : 'No', flex: 1 }} />
+            <View style={styles.buttonRow}>
+              {this.statButton(0, 'Easy', this.state.easy, styles.leftRadius)}
+              {this.statButton(1, 'Normal', this.state.normal)}
+              {this.statButton(2, 'Hard', this.state.hard)}
+              {this.statButton(3, 'Expert', this.state.expert)}
+              {this.state.random[1].length != 0 && this.statButton(4, 'Random', this.state.random, !this.state.master[0] && styles.rightRadius)}
+              {this.state.master[0] && this.statButton(5, 'Master', this.state.master, styles.rightRadius)}
+            </View>
+            <ProgressBar
+              number={this.state.currentStats[0]}
+              progress={this.progressStat(this.state.currentStats[0])}
+              fillStyle={{ backgroundColor: this.state.colors[1] }} />
+            <StarBar array={this.state.currentStats[1]} />
+          </LinearGradient>
+        </ScrollView>
+      </View>
+    )
   }
 }
 
 const mapStateToProps = (state) => ({
-  maxStats: getMaxStats(state)
+  songMaxStat: getSongMaxStat(state)
 })
 
 const mapDispatchToProps = (dispatch) => ({

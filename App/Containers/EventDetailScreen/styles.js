@@ -1,13 +1,17 @@
 import { StyleSheet } from 'react-native'
-import { Metrics } from 'App/Theme'
+import { Colors, Metrics } from 'App/Theme'
 
 export default StyleSheet.create({
   container: {
-    flex: 1
+    flex: 1,
+    backgroundColor: Colors.violet
+  },
+  scrollView: {
+    paddingBottom: Metrics.doubleBaseMargin
   },
   header: {
     justifyContent: 'space-between',
-    backgroundColor: 'white',
+    backgroundColor: Colors.lightViolet,
     paddingRight: Metrics.baseMargin
   },
   leftHeader: {
@@ -21,58 +25,43 @@ export default StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'flex-end'
   },
-  rightHeaderImage: {
-    resizeMode: 'contain',
-    width: '33%'
-  },
-  headerButton: {
-    height: Metrics.navBarHeight,
-    width: Metrics.navBarHeight
-  },
-  scrollView: {
-    paddingBottom: Metrics.doubleBaseMargin
-  },
-  buttonRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    padding: Metrics.baseMargin
-  },
-  imageRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    paddingBottom: Metrics.doubleBaseMargin
-  },
-  progressRow: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    paddingHorizontal: '5%',
+  content: {
     alignItems: 'center'
   },
-  button: {
-    flex: 1,
-    justifyContent: 'center',
+  text: {
+    color: 'white',
+    fontSize: 16,
+    padding: Metrics.baseMargin,
+  },
+  title: {
+    color: 'white',
+    fontSize: 24,
+    padding: Metrics.baseMargin,
+  },
+  song: {
+    width: Metrics.screenWidth / 3,
+    height: Metrics.screenWidth / 3
+  },
+  songInfo: {
+    flexDirection: 'row',
+    paddingVertical: Metrics.baseMargin,
+    alignItems: 'center'
+  },
+  roundImage: {
+    width: Metrics.screenWidth / 6,
+    height: Metrics.screenWidth / 6
+  },
+  cardList: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'center'
+  },
+  card: {
     alignItems: 'center',
-    paddingVertical: Metrics.baseMargin,
-    marginHorizontal: 1
+    paddingVertical: Metrics.baseMargin
   },
-  leftRadius: {
-    borderTopLeftRadius: 10,
-    borderBottomLeftRadius: 10
-  },
-  rightRadius: {
-    borderTopRightRadius: 10,
-    borderBottomRightRadius: 10
-  },
-  progressText: {
-    paddingLeft: '10%',
-    paddingVertical: Metrics.baseMargin,
-    color: '#333'
-  },
-  banner: {
-    width: '80%',
-    height: 100
-  },
-  subtitleText: {
-    fontSize: 14
+  cardImage: {
+    flexDirection: 'row',
+    paddingHorizontal: Metrics.baseMargin
   }
 })

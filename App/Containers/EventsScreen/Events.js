@@ -1,5 +1,5 @@
 import React from 'react'
-import { Text, View, FlatList } from 'react-native'
+import { View, FlatList } from 'react-native'
 import { connect } from 'react-redux'
 import Icon from 'react-native-vector-icons/Ionicons'
 import _ from 'lodash'
@@ -9,6 +9,7 @@ import CachedDataActions from 'App/Stores/CachedData/Actions'
 import SplashScreen from '../SplashScreen/SplashScreen'
 import { Metrics, Colors } from '../../Theme'
 import styles from './styles'
+import { LLSIFService } from '../../Services/LLSIFService'
 
 class EventsScreen extends React.Component {
   constructor(props) {
@@ -18,7 +19,7 @@ class EventsScreen extends React.Component {
       list: [],
       isFilter: false,
       filter: {
-        ordering: '-release_date',
+        ordering: '-beginning',
         page_size: 20,
         page: 1,
       }
@@ -37,13 +38,26 @@ class EventsScreen extends React.Component {
     }
   }
 
-  _keyExtractor = (item, index) => `event ${item.name}`
+  _keyExtractor = (item, index) => `event ${item.japanese_name}`
 
   _renderItem = ({ item }) => (
-    <EventItem item={item} />//onPress={() => this.navigateToCardDetail(item)} />
+    <EventItem item={item} onPress={() => this.navigateToEventDetail(item)} />
   )
 
+  navigateToEventDetail(item) {
+    this.props.navigation.navigate('EventDetailScreen', { eventName: item.japanese_name })
+  }
+
   componentDidMount() {
+    this.getEvents()
+  }
+
+  /**
+   *Khi scroll đến cuối danh sách
+   *
+   * @memberof CardsScreen
+   */
+  _onEndReached = () => {
     this.getEvents()
   }
 
@@ -73,6 +87,7 @@ class EventsScreen extends React.Component {
     return (
       <View style={styles.container}>
         <FlatList
+          contentContainerStyle={styles.content}
           data={this.state.list}
           initialNumToRender={6}
           keyExtractor={this._keyExtractor}

@@ -27,3 +27,7 @@ export const getSkills = (state) => {
   let z = ['All', ...y]
   return z
 }
+
+export const getSongMaxStat = (state)=>{
+  return state.cachedData.get('cachedData').get('cards_info').get('songs_max_stats')
+}

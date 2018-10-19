@@ -26,6 +26,23 @@ export const findColorByAttribute = (key) => {
 }
 
 /**
+ * Tìm màu bằng attribute
+ * @param {String} key Smile || Pure || Cool || null
+ */
+export const findAttribute = (key) => {
+  switch (key) {
+    case 'Smile':
+      return Images.attribute[0]
+    case 'Pure':
+      return Images.attribute[1]
+    case 'Cool':
+      return Images.attribute[2]
+    default:
+      return Images.attribute[3]
+  }
+}
+
+/**
  * Tìm hình main unit theo key
  * @param {String} key μ's || Aqours || null
  */

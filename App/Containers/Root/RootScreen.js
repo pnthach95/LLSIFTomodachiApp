@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
-import { createStackNavigator, createBottomTabNavigator } from 'react-navigation'
 import { View } from 'react-native'
+import { createStackNavigator, createBottomTabNavigator, createDrawerNavigator, SafeAreaView } from 'react-navigation'
 
 import { ApplicationStyles } from 'App/Theme'
 import NavigationService from 'App/Services/NavigationService'
@@ -10,13 +10,14 @@ import CardsScreen from 'App/Containers/CardsScreen/Cards'
 import IdolsScreen from 'App/Containers/IdolsScreen/Idols'
 import EventsScreen from 'App/Containers/EventsScreen/Events'
 import SongsScreen from 'App/Containers/SongsScreen/Songs'
+import Drawer from 'App/Containers/Drawer/Drawer'
 
 import CardDetailScreen from 'App/Containers/CardDetailScreen/CardDetail'
 import EventDetailScreen from 'App/Containers/EventDetailScreen/EventDetail'
 import IdolDetailScreen from 'App/Containers/IdolDetailScreen/IdolDetail'
 import SongDetailScreen from 'App/Containers/SongDetailScreen/SongDetail'
 
-const LLSIFGame = createBottomTabNavigator(
+const LLSIFTab = createBottomTabNavigator(
   {
     MainScreen: MainScreen,
     CardsScreen: CardsScreen,
@@ -27,11 +28,11 @@ const LLSIFGame = createBottomTabNavigator(
   { initialRouteName: 'MainScreen' }
 )
 
-LLSIFGame.navigationOptions = { header: null }
+LLSIFTab.navigationOptions = { header: null }
 
-const AppNav = createStackNavigator(
+const Stack = createStackNavigator(
   {
-    LLSIFScreen: LLSIFGame,
+    LLSIFScreen: LLSIFTab,
     CardDetailScreen: CardDetailScreen,
     EventDetailScreen: EventDetailScreen,
     IdolDetailScreen: IdolDetailScreen,
@@ -42,6 +43,8 @@ const AppNav = createStackNavigator(
     headerMode: 'none',
   }
 )
+
+const AppNav = createDrawerNavigator({ Stack: Stack }, { contentComponent: Drawer })
 
 export default class RootScreen extends Component {
   render() {

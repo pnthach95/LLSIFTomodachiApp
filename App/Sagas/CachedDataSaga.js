@@ -4,7 +4,13 @@ import { LLSIFService } from 'App/Services/LLSIFService'
 
 export function* fetchCachedData() {
   yield put(CachedDataActions.fetchCachedDataLoading())
-  const data = yield call(LLSIFService.fetchCachedData)
+  var data = yield call(LLSIFService.fetchCachedData)
+  let eventEN = data.current_event_en.japanese_name
+  let eventJP = data.current_event_jp.japanese_name
+  let data1 = yield call(LLSIFService.fetchEventData, eventEN)
+  let data2 = yield call(LLSIFService.fetchEventData, eventJP)
+  data.eventEN = data1
+  data.eventJP = data2
   if (data) {
     yield put(CachedDataActions.fetchCachedDataSuccess(data))
   } else {

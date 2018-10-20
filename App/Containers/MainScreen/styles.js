@@ -6,6 +6,19 @@ export default StyleSheet.create({
     flex: 1,
     backgroundColor: Colors.pink
   },
+  leftHeader: {
+    flex: 1
+  },
+  centerHeader: {
+    flex: 5,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  rightHeader: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'flex-end'
+  },
   logo: {
     width: '70%',
     resizeMode: 'contain'

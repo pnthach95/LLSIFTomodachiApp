@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { View } from 'react-native'
-import { createStackNavigator, createBottomTabNavigator, createDrawerNavigator, SafeAreaView } from 'react-navigation'
+import { createStackNavigator, createBottomTabNavigator, createDrawerNavigator } from 'react-navigation'
 
 import { ApplicationStyles } from 'App/Theme'
 import NavigationService from 'App/Services/NavigationService'
@@ -38,10 +38,7 @@ const Stack = createStackNavigator(
     IdolDetailScreen: IdolDetailScreen,
     SongDetailScreen: SongDetailScreen
   },
-  {
-    initialRouteName: 'LLSIFScreen',
-    headerMode: 'none',
-  }
+  { initialRouteName: 'LLSIFScreen' }
 )
 
 const AppNav = createDrawerNavigator({ Stack: Stack }, { contentComponent: Drawer })

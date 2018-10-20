@@ -289,6 +289,8 @@ class CardsScreen extends React.PureComponent {
       <View style={styles.container}>
         {/* HEADER */}
         <View style={[ApplicationStyles.header, styles.header]}>
+          <SquareButton name={'ios-menu'}
+            onPress={() => this.props.navigation.openDrawer()} />
           <TextInput style={{ flex: 1, borderColor: '#333', borderWidth: 1.5, margin: 6 }}
             onFocus={e => {
               this.setState({ onSearchFocus: true })

@@ -1,18 +1,18 @@
 import React from 'react'
-import { Text, View, Image, ScrollView, TouchableOpacity } from 'react-native'
+import { Text, View, Image, ScrollView, TouchableOpacity, Alert } from 'react-native'
 import { connect } from 'react-redux'
 import FastImage from 'react-native-fast-image'
 import Icon from 'react-native-vector-icons/SimpleLineIcons'
 import moment from 'moment'
 
+import TimerCountdown from '../../Components/TimerCountdown/Timer'
+import Seperator from '../../Components/Seperator/Seperator'
+import SquareButton from '../../Components/SquareButton/SquareButton'
 import CachedDataActions from 'App/Stores/CachedData/Actions'
 import { AddHTTPS } from '../../Utils'
 import SplashScreen from '../SplashScreen/SplashScreen'
 import { Metrics, Colors, Images, ApplicationStyles } from '../../Theme'
 import styles from './styles'
-import { LLSIFService } from '../../Services/LLSIFService'
-import TimerCountdown from '../../Components/TimerCountdown/Timer'
-import Seperator from '../../Components/Seperator/Seperator'
 
 /**
  *Màn hình chính
@@ -53,22 +53,6 @@ class MainScreen extends React.Component {
 
   componentDidMount() {
     this.props.fetchCachedData()
-    if (!this.props.cachedDataIsLoading) {
-      let data = this.props.cachedData
-      let currentContests = data.get('current_contests')
-      let eventEN = data.get('current_event_en').get('japanese_name')
-      let eventJP = data.get('current_event_jp').get('japanese_name')
-      LLSIFService.fetchEventData(eventEN).then(resEN => {
-        LLSIFService.fetchEventData(eventJP).then(resJP => {
-          this.setState({
-            isLoading: false,
-            currentContests: currentContests,
-            ENEvent: resEN,
-            JPEvent: resJP
-          })
-        })
-      })
-    }
   }
 
   /**
@@ -102,83 +86,93 @@ class MainScreen extends React.Component {
   }
 
   render() {
-    if (this.state.isLoading) return <SplashScreen bgColor={Colors.pink} />
-    else {
-      /** Sự kiện EN */
-      let ENEvent = this.state.ENEvent
-      /** Thời gian bắt đầu sự kiện EN */
-      let ENEventStart = moment(ENEvent.english_beginning)
-      /** Thời gian kết thúc sự kiện EN */
-      let ENEventEnd = moment(ENEvent.english_end)
-      /** Sự kiện JP */
-      let JPEvent = this.state.JPEvent
-      /** Thời gian bắt đầu sự kiện JP */
-      let JPEventStart = moment(JPEvent.beginning, 'YYYY-MM-DDTHH:mm:ssZ')
-      /** Thời gian kết thúc sự kiện JP */
-      let JPEventEnd = moment(JPEvent.end, 'YYYY-MM-DDTHH:mm:ssZ')
+    if (this.props.cachedDataIsLoading) return <SplashScreen bgColor={Colors.pink} />
+    if (this.props.cachedDataErrorMessage) {
+      Alert.alert('Error', this.props.cachedDataErrorMessage)
+      return <View style={{ backgroundColor: Colors.pink }} />
+    }
+    let data = this.props.cachedData
+    let currentContests = data.get('current_contests')
+    /** Sự kiện EN */
+    let ENEvent = data.get('eventEN')
+    /** Thời gian bắt đầu sự kiện EN */
+    let ENEventStart = moment(ENEvent.get('english_beginning'))
+    /** Thời gian kết thúc sự kiện EN */
+    let ENEventEnd = moment(ENEvent.get('english_end'))
+    /** Sự kiện JP */
+    let JPEvent = data.get('eventJP')
+    /** Thời gian bắt đầu sự kiện JP */
+    let JPEventStart = moment(JPEvent.get('beginning'), 'YYYY-MM-DDTHH:mm:ssZ')
+    /** Thời gian kết thúc sự kiện JP */
+    let JPEventEnd = moment(JPEvent.get('end'), 'YYYY-MM-DDTHH:mm:ssZ')
 
-      return (
-        <View style={styles.container}>
-          {/* HEADER */}
-          <View style={ApplicationStyles.header}>
+    return (
+      <View style={styles.container}>
+        {/* HEADER */}
+        <View style={ApplicationStyles.header}>
+          <View style={styles.leftHeader}>
+            <SquareButton name={'ios-menu'} color={'white'}
+              onPress={() => this.props.navigation.openDrawer()} />
+          </View>
+          <View style={styles.centerHeader}>
             <Image source={Images.logo} style={ApplicationStyles.imageHeader} />
           </View>
+          <View style={styles.rightHeader} />
+        </View>
 
-          {/* BODY */}
-          <ScrollView style={styles.body} contentContainerStyle={styles.content}>
-            {/* ENGLISH BLOCK */}
-            <Text style={{ color: 'white' }}>English Event</Text>
-            <Text style={styles.title}>{ENEvent.english_name}</Text>
-            <TouchableOpacity onPress={() => this.navigateToEventDetail(ENEvent)}>
+        {/* BODY */}
+        <ScrollView style={styles.body} contentContainerStyle={styles.content}>
+          {/* ENGLISH BLOCK */}
+          <Text style={{ color: 'white' }}>English Event</Text>
+          <Text style={styles.title}>{ENEvent.get('english_name')}</Text>
+          <TouchableOpacity onPress={() => this.navigateToEventDetail(ENEvent)}>
+            <FastImage
+              source={{ uri: AddHTTPS(ENEvent.get('english_image')) }}
+              style={{
+                width: Metrics.widthBanner,
+                height: Metrics.widthBanner * this.state.imgHeight / this.state.imgWidth
+              }}
+              onLoad={e => this.onLoadFastImage(e)} />
+          </TouchableOpacity>
+          <Text style={styles.text}>Start: {ENEventStart.format('HH:mm MMM Do YYYY')}</Text>
+          <Text style={styles.text}>End: {ENEventEnd.format('HH:mm MMM Do YYYY')}</Text>
+          {ENEvent.get('world_current') && this.timer(ENEventEnd.diff(moment()))}
+          <Seperator style={{ backgroundColor: 'white' }} />
+
+          {/* JAPANESE BLOCK */}
+          <Text style={{ color: 'white' }}>Japanese Event</Text>
+          <Text style={styles.title}>{JPEvent.get('romaji_name')}</Text>
+          <TouchableOpacity onPress={() => this.navigateToEventDetail(JPEvent)}>
+            <FastImage
+              source={{ uri: AddHTTPS(JPEvent.get('image')) }}
+              style={{
+                width: Metrics.widthBanner,
+                height: Metrics.widthBanner * this.state.imgHeight / this.state.imgWidth
+              }}
+              onLoad={e => this.onLoadFastImage(e)} />
+          </TouchableOpacity>
+          <Text style={styles.text}>Start: {JPEventStart.format('HH:mm MMM Do YYYY')}</Text>
+          <Text style={styles.text}>End: {JPEventEnd.format('HH:mm MMM Do YYYY')}</Text>
+          {JPEvent.get('japan_current') && this.timer(JPEventEnd.diff(moment()))}
+          <Seperator style={{ backgroundColor: 'white' }} />
+
+          {/* CONTEST BLOCK */}
+          {currentContests.map((item, id) => (
+            <View key={'contest' + id}>
+              <Text style={styles.text}>{item.get('name')}</Text>
               <FastImage
-                source={{ uri: AddHTTPS(ENEvent.english_image) }}
+                resizeMode={FastImage.resizeMode.contain}
+                source={{ uri: AddHTTPS(item.get('image')) }}
                 style={{
                   width: Metrics.widthBanner,
-                  height: Metrics.widthBanner * this.state.imgHeight / this.state.imgWidth
-                }}
-                onLoad={e => this.onLoadFastImage(e)} />
-            </TouchableOpacity>
-            <Text style={styles.text}>Start: {ENEventStart.format('HH:mm MMM Do YYYY')}</Text>
-            <Text style={styles.text}>End: {ENEventEnd.format('HH:mm MMM Do YYYY')}</Text>
-            {ENEvent.world_current && this.timer(ENEventEnd.diff(moment()))}
-            <Seperator style={{ backgroundColor: 'white' }} />
-
-            {/* JAPANESE BLOCK */}
-            <Text style={{ color: 'white' }}>Japanese Event</Text>
-            <Text style={styles.title}>{JPEvent.romaji_name}</Text>
-            <TouchableOpacity onPress={() => this.navigateToEventDetail(JPEvent)}>
-              <FastImage
-                source={{ uri: AddHTTPS(JPEvent.image) }}
-                style={{
-                  width: Metrics.widthBanner,
-                  height: Metrics.widthBanner * this.state.imgHeight / this.state.imgWidth
-                }}
-                onLoad={e => this.onLoadFastImage(e)} />
-            </TouchableOpacity>
-            <Text style={styles.text}>Start: {JPEventStart.format('HH:mm MMM Do YYYY')}</Text>
-            <Text style={styles.text}>End: {JPEventEnd.format('HH:mm MMM Do YYYY')}</Text>
-            {JPEvent.japan_current && this.timer(JPEventEnd.diff(moment()))}
-            <Seperator style={{ backgroundColor: 'white' }} />
-
-            {/* CONTEST BLOCK */}
-            <View style={{ paddingVertical: 10 }}>
-              {this.state.currentContests.map((item, id) => (
-                <View key={'contest' + id}>
-                  <Text style={styles.text}>{item.get('name')}</Text>
-                  <FastImage
-                    resizeMode={FastImage.resizeMode.contain}
-                    source={{ uri: AddHTTPS(item.get('image')) }}
-                    style={{
-                      width: Metrics.widthBanner,
-                      height: Metrics.widthBanner / 3,
-                      alignSelf: 'center',
-                    }} />
-                </View>
-              ))}
+                  height: Metrics.widthBanner / 3,
+                  alignSelf: 'center',
+                }} />
             </View>
-          </ScrollView>
-        </View >)
-    }
+          ))}
+          <View style={{ height: 10 }} />
+        </ScrollView>
+      </View >)
   }
 }
 

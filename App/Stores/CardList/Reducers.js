@@ -22,6 +22,7 @@ export const fetchCardListSuccess = (state, { cardList }) => {
     cardListIsLoading: false,
     cardListErrorMessage: null,
   })
+  return state
 }
 
 export const fetchCardListFailure = (state, { errorMessage }) =>

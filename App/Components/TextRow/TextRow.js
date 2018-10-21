@@ -8,6 +8,10 @@ import { Fonts } from '../../Theme'
  * TextRow
  * - item1: {text, flex, textStyle}
  * - item2: {text, flex, textStyle, onPress}
+ *
+ * @export
+ * @class TextRow
+ * @extends {React.Component}
  */
 export default class TextRow extends React.Component {
   render() {

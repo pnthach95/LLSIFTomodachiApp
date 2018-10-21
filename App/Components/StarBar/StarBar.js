@@ -1,9 +1,8 @@
 import React from 'react'
 import { View } from 'react-native'
 import Icon from 'react-native-vector-icons/Ionicons'
-
 import styles from './styles'
-import { Metrics, Colors } from 'App/Theme'
+import { Metrics, Colors } from '../../Theme'
 
 export default class StarBar extends React.Component {
 	render() {

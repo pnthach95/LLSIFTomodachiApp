@@ -1,6 +1,6 @@
 import { put, call } from 'redux-saga/effects'
-import CachedDataActions from 'App/Stores/CachedData/Actions'
-import { LLSIFService } from 'App/Services/LLSIFService'
+import CachedDataActions from '../Stores/CachedData/Actions'
+import { LLSIFService } from '../Services/LLSIFService'
 
 export function* fetchCachedData() {
   yield put(CachedDataActions.fetchCachedDataLoading())

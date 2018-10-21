@@ -19,6 +19,9 @@ import styles from './styles'
 /**
  * Màn hình thông tin chi tiết card
  * - item: Card object
+ *
+ * @class CardDetailScreen
+ * @extends {React.Component}
  */
 class CardDetailScreen extends React.Component {
   constructor(props) {

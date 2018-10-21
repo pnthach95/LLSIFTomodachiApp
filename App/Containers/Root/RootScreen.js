@@ -2,20 +2,20 @@ import React, { Component } from 'react'
 import { View } from 'react-native'
 import { createStackNavigator, createBottomTabNavigator, createDrawerNavigator } from 'react-navigation'
 
-import { ApplicationStyles } from 'App/Theme'
-import NavigationService from 'App/Services/NavigationService'
+import { ApplicationStyles } from '../../Theme'
+import NavigationService from '../../Services/NavigationService'
 
-import MainScreen from 'App/Containers/MainScreen/Main'
-import CardsScreen from 'App/Containers/CardsScreen/Cards'
-import IdolsScreen from 'App/Containers/IdolsScreen/Idols'
-import EventsScreen from 'App/Containers/EventsScreen/Events'
-import SongsScreen from 'App/Containers/SongsScreen/Songs'
-import Drawer from 'App/Containers/Drawer/Drawer'
+import MainScreen from '../MainScreen/Main'
+import CardsScreen from '../CardsScreen/Cards'
+import IdolsScreen from '../IdolsScreen/Idols'
+import EventsScreen from '../EventsScreen/Events'
+import SongsScreen from '../SongsScreen/Songs'
+import Drawer from '../Drawer/Drawer'
 
-import CardDetailScreen from 'App/Containers/CardDetailScreen/CardDetail'
-import EventDetailScreen from 'App/Containers/EventDetailScreen/EventDetail'
-import IdolDetailScreen from 'App/Containers/IdolDetailScreen/IdolDetail'
-import SongDetailScreen from 'App/Containers/SongDetailScreen/SongDetail'
+import CardDetailScreen from '../CardDetailScreen/CardDetail'
+import EventDetailScreen from '../EventDetailScreen/EventDetail'
+import IdolDetailScreen from '../IdolDetailScreen/IdolDetail'
+import SongDetailScreen from '../SongDetailScreen/SongDetail'
 
 const LLSIFTab = createBottomTabNavigator(
   {

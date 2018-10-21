@@ -5,9 +5,8 @@ import Icon from 'react-native-vector-icons/Ionicons'
 import _ from 'lodash'
 
 import EventItem from '../../Components/EventItem/Event'
-import CachedDataActions from 'App/Stores/CachedData/Actions'
 import SplashScreen from '../SplashScreen/SplashScreen'
-import { Metrics, Colors } from '../../Theme'
+import { Colors } from '../../Theme'
 import styles from './styles'
 import { LLSIFService } from '../../Services/LLSIFService'
 

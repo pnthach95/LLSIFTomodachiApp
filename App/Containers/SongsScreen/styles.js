@@ -1,10 +1,9 @@
 import { StyleSheet } from 'react-native'
-import { Metrics, Colors } from 'App/Theme'
+import { Metrics } from '../../Theme'
 
 export default StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: null
+    flex: 1
   },
   header: {
     backgroundColor: 'white'

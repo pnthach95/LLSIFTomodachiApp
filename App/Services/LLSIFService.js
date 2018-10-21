@@ -1,5 +1,5 @@
 import { create } from 'apisauce'
-import { Config } from 'App/Config'
+import { Config } from '../Config'
 
 const LLSIFApiClient = create({
   baseURL: Config.API_URL,

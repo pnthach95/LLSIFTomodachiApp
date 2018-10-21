@@ -82,7 +82,7 @@ class MainScreen extends React.Component {
   }
 
   navigateToEventDetail(event) {
-    this.props.navigation.navigate('EventDetailScreen', { event: event })
+    this.props.navigation.navigate('EventDetailScreen', { event: event.toObject() })
   }
 
   render() {

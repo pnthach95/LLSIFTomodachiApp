@@ -9,6 +9,7 @@ import SquareButton from '../../Components/SquareButton/SquareButton'
 import CardItem from '../../Components/CardItem/CardItem'
 import SplashScreen from '../SplashScreen/SplashScreen'
 import { LLSIFService } from '../../Services/LLSIFService'
+import CardListActions from '../../Stores/CardList/Actions'
 import { Colors, ApplicationStyles, Images } from '../../Theme'
 import styles from './styles'
 
@@ -62,7 +63,7 @@ class CardsScreen extends React.PureComponent {
         idol_year: ''
       }
     }
-    this._onEndReached = _.debounce(this._onEndReached, 500)
+    this._onEndReached = _.debounce(this._onEndReached, 1000)
   }
 
   static navigationOptions = {
@@ -81,7 +82,7 @@ class CardsScreen extends React.PureComponent {
    *
    * @memberof CardsScreen
    */
-  _keyExtractor = (item, index) => `card${item.id}`
+  _keyExtractor = (item, index) => `card${item.get('id')}`
 
   /**
    *Render item trong FlatList
@@ -89,7 +90,7 @@ class CardsScreen extends React.PureComponent {
    * @memberof CardsScreen
    */
   _renderItem = ({ item }) => (
-    <CardItem item={item} onPress={() => this.navigateToCardDetail(item)} />
+    <CardItem item={item.toObject()} onPress={() => this.navigateToCardDetail(item.toObject())} />
   )
 
   /**
@@ -127,7 +128,14 @@ class CardsScreen extends React.PureComponent {
    * @memberof CardsScreen
    */
   _onEndReached = () => {
-    this.getCards()
+    // this.getCards()
+    var _filter = this.state.filter
+    _filter.page++
+    this.setState({
+      isLoading: false,
+      filter: _filter
+    })
+    this.props.fetchCardList(this.state.filter)
   }
 
   /**
@@ -137,11 +145,11 @@ class CardsScreen extends React.PureComponent {
    * @memberof CardsScreen
    */
   navigateToCardDetail(item) {
-    this.props.navigation.navigate('CardDetailScreen', { item: item })
+    this.props.navigation.navigate('CardDetailScreen', { item: item.toObject() })
   }
 
   componentDidMount() {
-    this.getCards()
+    this.props.fetchCardList(this.state.filter)
   }
 
   /**
@@ -284,7 +292,7 @@ class CardsScreen extends React.PureComponent {
   }
 
   render() {
-    if (this.state.isLoading) return <SplashScreen bgColor={Colors.green} />
+    if (this.props.cardListIsLoading) return <SplashScreen bgColor={Colors.green} />
     return (
       <View style={styles.container}>
         {/* HEADER */}
@@ -299,6 +307,7 @@ class CardsScreen extends React.PureComponent {
           <SquareButton name={'ios-search'} onPress={this.onSearch} />
           <SquareButton name={'ios-more'} onPress={this.toggleFilter} />
         </View>
+
         {/* FILTER */}
         {this.state.isFilter &&
           <View style={{ width: '100%', backgroundColor: 'white', padding: 10 }}>
@@ -590,7 +599,7 @@ class CardsScreen extends React.PureComponent {
 
         {/* CARD LIST */}
         <FlatList
-          data={this.state.data}
+          data={this.props.cards.toArray()}
           numColumns={2}
           initialNumToRender={4}
           keyExtractor={this._keyExtractor}
@@ -603,6 +612,8 @@ class CardsScreen extends React.PureComponent {
 }
 
 const mapStateToProps = (state) => ({
+  /** Danh sách card */
+  cards: state.cardList.get('cardList'),
   /** Danh sách idol */
   idols: getIdols(state),
   /** Danh sách trường */
@@ -610,10 +621,13 @@ const mapStateToProps = (state) => ({
   /** Danh sách sub unit */
   subUnits: getSubunits(state),
   /** Danh sách skill */
-  skills: getSkills(state)
+  skills: getSkills(state),
+  cardListErrorMessage: state.cardList.get('cardListErrorMessage'),
+  cardListIsLoading: state.cardList.get('cardListIsLoading'),
 })
 
 const mapDispatchToProps = (dispatch) => ({
+  fetchCardList: (filter) => dispatch(CardListActions.fetchCardList(filter))
 })
 
 export default connect(

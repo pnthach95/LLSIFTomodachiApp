@@ -2,18 +2,13 @@ import { put, call } from 'redux-saga/effects'
 import CardListActions from '../Stores/CardList/Actions'
 import { LLSIFService } from '../Services/LLSIFService'
 
-export function* fetchCardList(filter) {
+export function* fetchCardList(action) {
   yield put(CardListActions.fetchCardListLoading())
-  var data = yield call(LLSIFService.fetchCardList, filter)
-  let eventEN = data.current_event_en.japanese_name
-  let eventJP = data.current_event_jp.japanese_name
-  let data1 = yield call(LLSIFService.fetchEventData, eventEN)
-  let data2 = yield call(LLSIFService.fetchEventData, eventJP)
-  data.eventEN = data1
-  data.eventJP = data2
+  console.log('fetchCardList:', JSON.stringify(action.filter))
+  var data = yield call(LLSIFService.fetchCardList, action.filter)
   if (data) {
-    yield put(CardListActions.fetchCachedDataSuccess(data))
+    yield put(CardListActions.fetchCardListSuccess(data))
   } else {
-    yield put(CardListActions.fetchCachedDataFailure('There was an error while fetching card list.'))
+    yield put(CardListActions.fetchCardListFailure('There was an error while fetching card list.'))
   }
 }

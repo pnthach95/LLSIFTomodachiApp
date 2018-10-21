@@ -1,7 +1,7 @@
 import { createActions } from 'reduxsauce'
 
 const { Types, Creators } = createActions({
-  fetchCardList: null,
+  fetchCardList: ['filter'],
   fetchCardListLoading: null,
   fetchCardListSuccess: ['cardList'],
   fetchCardListFailure: ['errorMessage'],

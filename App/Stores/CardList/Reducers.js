@@ -14,16 +14,19 @@ export const fetchCardListLoading = (state) =>
     cardListErrorMessage: '',
   })
 
-export const fetchCardListSuccess = (state, { cardList }) => {
-  let oldData = state.get('cardList').toArray().map(item => item.toObject())
+const generateNewData = (state, cardList) => {
+  let oldData = state.get('cardList')
+  let z = oldData.map(item => item.toObject())
   let newData = [...oldData, ...cardList]
+  return newData
+}
+
+export const fetchCardListSuccess = (state, { cardList }) =>
   state.merge({
-    cardList: newData,
+    cardList: generateNewData(state, cardList),
     cardListIsLoading: false,
     cardListErrorMessage: null,
   })
-  return state
-}
 
 export const fetchCardListFailure = (state, { errorMessage }) =>
   state.merge({

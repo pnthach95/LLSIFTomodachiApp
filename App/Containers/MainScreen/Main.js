@@ -123,7 +123,7 @@ class MainScreen extends React.Component {
         {/* BODY */}
         <ScrollView style={styles.body} contentContainerStyle={styles.content}>
           {/* ENGLISH BLOCK */}
-          <Text style={{ color: 'white' }}>English Event</Text>
+          <Text style={{ color: 'white' }}>English Event: {ENEvent.get('english_status')}</Text>
           <Text style={styles.title}>{ENEvent.get('english_name')}</Text>
           <TouchableOpacity onPress={() => this.navigateToEventDetail(ENEvent)}>
             <FastImage
@@ -140,7 +140,7 @@ class MainScreen extends React.Component {
           <Seperator style={{ backgroundColor: 'white' }} />
 
           {/* JAPANESE BLOCK */}
-          <Text style={{ color: 'white' }}>Japanese Event</Text>
+          <Text style={{ color: 'white' }}>Japanese Event: {JPEvent.get('japan_status')}</Text>
           <Text style={styles.title}>{JPEvent.get('romaji_name')}</Text>
           <TouchableOpacity onPress={() => this.navigateToEventDetail(JPEvent)}>
             <FastImage

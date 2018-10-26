@@ -1,6 +1,7 @@
 import React from 'react'
 import { Text, View, FlatList, TextInput, Picker, TouchableOpacity, Image } from 'react-native'
 import { connect } from 'react-redux'
+import Spinkit from 'react-native-spinkit'
 import Icon from 'react-native-vector-icons/Ionicons'
 import _ from 'lodash'
 
@@ -128,14 +129,14 @@ class CardsScreen extends React.PureComponent {
    * @memberof CardsScreen
    */
   _onEndReached = () => {
-    // this.getCards()
-    var _filter = this.state.filter
-    _filter.page++
-    this.setState({
-      isLoading: false,
-      filter: _filter
-    })
-    this.props.fetchCardList(this.state.filter)
+    this.getCards()
+    // var _filter = this.state.filter
+    // _filter.page++
+    // this.setState({
+    //   isLoading: false,
+    //   filter: _filter
+    // })
+    // this.props.fetchCardList(this.state.filter)
   }
 
   /**
@@ -149,7 +150,8 @@ class CardsScreen extends React.PureComponent {
   }
 
   componentDidMount() {
-    this.props.fetchCardList(this.state.filter)
+    // this.props.fetchCardList(this.state.filter)
+    this.getCards()
   }
 
   /**
@@ -292,7 +294,7 @@ class CardsScreen extends React.PureComponent {
   }
 
   render() {
-    if (this.props.cardListIsLoading) return <SplashScreen bgColor={Colors.green} />
+    // if (this.props.cardListIsLoading) return <SplashScreen bgColor={Colors.green} />
     return (
       <View style={styles.container}>
         {/* HEADER */}
@@ -605,6 +607,7 @@ class CardsScreen extends React.PureComponent {
           keyExtractor={this._keyExtractor}
           onEndReached={this._onEndReached}
           style={styles.list}
+          ListFooterComponent={<View style={ApplicationStyles.center}><Spinkit type='WanderingCubes' size={30} color='white' /></View>}
           renderItem={this._renderItem} />
       </View>
     )

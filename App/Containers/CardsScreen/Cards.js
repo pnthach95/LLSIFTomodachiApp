@@ -3,6 +3,7 @@ import { Text, View, FlatList, TextInput, Picker, TouchableOpacity, Image } from
 import { connect } from 'react-redux'
 import Icon from 'react-native-vector-icons/Ionicons'
 import _ from 'lodash'
+import Spinkit from 'react-native-spinkit'
 
 import { getIdols, getSchools, getSkills, getSubunits } from '../../Stores/CachedData/Selectors'
 import SquareButton from '../../Components/SquareButton/SquareButton'
@@ -82,7 +83,7 @@ class CardsScreen extends React.PureComponent {
    *
    * @memberof CardsScreen
    */
-  _keyExtractor = (item, index) => `card${item.get('id')}`
+  _keyExtractor = (item, index) => `card${item.id}`
 
   /**
    *Render item trong FlatList
@@ -90,7 +91,7 @@ class CardsScreen extends React.PureComponent {
    * @memberof CardsScreen
    */
   _renderItem = ({ item }) => (
-    <CardItem item={item.toObject()} onPress={() => this.navigateToCardDetail(item.toObject())} />
+    <CardItem item={item} onPress={() => this.navigateToCardDetail(item)} />
   )
 
   /**
@@ -128,14 +129,14 @@ class CardsScreen extends React.PureComponent {
    * @memberof CardsScreen
    */
   _onEndReached = () => {
-    // this.getCards()
-    var _filter = this.state.filter
-    _filter.page++
-    this.setState({
-      isLoading: false,
-      filter: _filter
-    })
-    this.props.fetchCardList(this.state.filter)
+    this.getCards()
+    // var _filter = this.state.filter
+    // _filter.page++
+    // this.setState({
+    //   isLoading: false,
+    //   filter: _filter
+    // })
+    // this.props.fetchCardList(this.state.filter)
   }
 
   /**
@@ -145,11 +146,12 @@ class CardsScreen extends React.PureComponent {
    * @memberof CardsScreen
    */
   navigateToCardDetail(item) {
-    this.props.navigation.navigate('CardDetailScreen', { item: item.toObject() })
+    this.props.navigation.navigate('CardDetailScreen', { item: item })
   }
 
   componentDidMount() {
-    this.props.fetchCardList(this.state.filter)
+    // this.props.fetchCardList(this.state.filter)
+    this.getCards()
   }
 
   /**
@@ -292,7 +294,7 @@ class CardsScreen extends React.PureComponent {
   }
 
   render() {
-    if (this.props.cardListIsLoading) return <SplashScreen bgColor={Colors.green} />
+    // if (this.props.cardListIsLoading) return <SplashScreen bgColor={Colors.green} />
     return (
       <View style={styles.container}>
         {/* HEADER */}
@@ -599,12 +601,15 @@ class CardsScreen extends React.PureComponent {
 
         {/* CARD LIST */}
         <FlatList
-          data={this.props.cards.toArray()}
+          data={this.state.data}
           numColumns={2}
           initialNumToRender={4}
           keyExtractor={this._keyExtractor}
           onEndReached={this._onEndReached}
           style={styles.list}
+          ListFooterComponent={<View style={[ApplicationStyles.center, { margin: 10 }]}>
+            <Spinkit type='WanderingCubes' size={30} color='white' />
+          </View>}
           renderItem={this._renderItem} />
       </View>
     )
@@ -622,12 +627,12 @@ const mapStateToProps = (state) => ({
   subUnits: getSubunits(state),
   /** Danh sách skill */
   skills: getSkills(state),
-  cardListErrorMessage: state.cardList.get('cardListErrorMessage'),
-  cardListIsLoading: state.cardList.get('cardListIsLoading'),
+  // cardListErrorMessage: state.cardList.get('cardListErrorMessage'),
+  // cardListIsLoading: state.cardList.get('cardListIsLoading'),
 })
 
 const mapDispatchToProps = (dispatch) => ({
-  fetchCardList: (filter) => dispatch(CardListActions.fetchCardList(filter))
+  // fetchCardList: (filter) => dispatch(CardListActions.fetchCardList(filter))
 })
 
 export default connect(

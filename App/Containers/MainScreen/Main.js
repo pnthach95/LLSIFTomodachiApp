@@ -110,10 +110,7 @@ class MainScreen extends React.Component {
       <View style={styles.container}>
         {/* HEADER */}
         <View style={ApplicationStyles.header}>
-          <View style={styles.leftHeader}>
-            <SquareButton name={'ios-menu'} color={'white'}
-              onPress={() => this.props.navigation.openDrawer()} />
-          </View>
+          <View style={styles.leftHeader} />
           <View style={styles.centerHeader}>
             <Image source={Images.logo} style={ApplicationStyles.imageHeader} />
           </View>
@@ -121,9 +118,11 @@ class MainScreen extends React.Component {
         </View>
 
         {/* BODY */}
-        <ScrollView style={styles.body} contentContainerStyle={styles.content}>
+        <ScrollView style={styles.body}
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={styles.content}>
           {/* ENGLISH BLOCK */}
-          <Text style={{ color: 'white' }}>English Event</Text>
+          <Text style={{ color: 'white' }}>English Event: {ENEvent.get('english_status')}</Text>
           <Text style={styles.title}>{ENEvent.get('english_name')}</Text>
           <TouchableOpacity onPress={() => this.navigateToEventDetail(ENEvent)}>
             <FastImage
@@ -140,7 +139,7 @@ class MainScreen extends React.Component {
           <Seperator style={{ backgroundColor: 'white' }} />
 
           {/* JAPANESE BLOCK */}
-          <Text style={{ color: 'white' }}>Japanese Event</Text>
+          <Text style={{ color: 'white' }}>Japanese Event: {JPEvent.get('japan_status')}</Text>
           <Text style={styles.title}>{JPEvent.get('romaji_name')}</Text>
           <TouchableOpacity onPress={() => this.navigateToEventDetail(JPEvent)}>
             <FastImage

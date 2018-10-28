@@ -85,6 +85,7 @@ class SongDetailScreen extends React.Component {
       master: [this.state.item.master_notes, masterArray],
       colors: findColorByAttribute(this.state.item.attribute)
     })
+    console.log('SongDetails', this.state.item)
   }
 
   onLoadFastImage(e) {
@@ -154,8 +155,11 @@ class SongDetailScreen extends React.Component {
           </View>
         </View>
 
-        <LinearGradient colors={[this.state.colors[1], this.state.colors[1]]} style={styles.content}>
-          <ScrollView showsVerticalScrollIndicator={false}>
+        <LinearGradient colors={[this.state.colors[1], this.state.colors[1]]}
+          style={styles.content}>
+          <ScrollView showsVerticalScrollIndicator={false}
+            contentContainerStyle={{ alignItems: 'center' }}
+            style={{ flex: 1 }}>
             <FastImage
               source={{ uri: AddHTTPS(this.state.item.image) }}
               style={{
@@ -187,7 +191,7 @@ class SongDetailScreen extends React.Component {
                   />
                 </TouchableOpacity>
               </View>}
-            {this.state.item.daily_rotation ?
+            {this.state.item.daily_rotation.length != 0 ?
               <View style={styles.event}>
                 <TextRow item1={{ text: 'Daily rotation', flex: 1 }}
                   item2={{ text: this.state.item.daily_rotation + ' - ' + this.state.item.daily_rotation_position, flex: 1 }} />

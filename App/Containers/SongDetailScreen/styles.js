@@ -33,7 +33,6 @@ export default StyleSheet.create({
     marginVertical: Metrics.doubleBaseMargin
   },
   content: {
-    alignItems: 'center',
     padding: 10,
     flex: 1
   },

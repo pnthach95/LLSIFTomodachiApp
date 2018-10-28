@@ -71,6 +71,7 @@ class CardDetailScreen extends React.Component {
         this.state.item.minimum_statistics_cool
       ]
     })
+    console.log('CardDetails.state.item', this.state.item)
   }
 
   progressSmile(stat) {
@@ -162,7 +163,7 @@ class CardDetailScreen extends React.Component {
             </View>
             <View style={styles.centerHeader}>
               <TouchableOpacity
-                onPress={() => this.navigateToEventDetail(this.state.item.idol.japanese_name)}>
+                onPress={() => this.navigateToIdolDetail(this.state.item.idol.name)}>
                 <Text style={Fonts.style.normal}>{this.state.item.idol.name}</Text>
               </TouchableOpacity>
             </View>
@@ -222,7 +223,7 @@ class CardDetailScreen extends React.Component {
                     <Seperator />
                   </View>}
 
-                {(!this.state.item.center_skill && this.state.item.center_skill.length != 0) &&
+                {(this.state.item.center_skill && this.state.item.center_skill.length != 0) &&
                   <View>
                     <TextRow
                       item1={{ flex: 1, text: 'Center skill' }}

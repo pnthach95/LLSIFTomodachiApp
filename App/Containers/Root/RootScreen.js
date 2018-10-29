@@ -38,7 +38,10 @@ const Stack = createStackNavigator(
     IdolDetailScreen: IdolDetailScreen,
     SongDetailScreen: SongDetailScreen
   },
-  { initialRouteName: 'LLSIFScreen' }
+  {
+    initialRouteName: 'LLSIFScreen',
+    headerMode: 'none',
+  }
 )
 
 const AppNav = createDrawerNavigator({ Stack: Stack }, { contentComponent: Drawer })

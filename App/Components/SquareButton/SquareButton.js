@@ -9,6 +9,7 @@ import { ApplicationStyles } from '../../Theme'
  *
  * - name: tên icon
  * - color: màu icon
+ * - style: style
  * - onPress: function
  * @export
  * @class SquareButton
@@ -19,7 +20,7 @@ export default class SquareButton extends React.Component {
     return (
       <TouchableOpacity
         onPress={this.props.onPress}
-        style={[ApplicationStyles.center, styles.button]}>
+        style={[ApplicationStyles.center, styles.button, this.props.style]}>
         <Icon name={this.props.name} size={30} color={this.props.color} />
       </TouchableOpacity>
     )

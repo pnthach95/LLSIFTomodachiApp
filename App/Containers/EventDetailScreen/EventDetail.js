@@ -39,6 +39,11 @@ class EventDetailScreen extends React.Component {
           cards: resCard,
           songs: resSong
         })
+        console.log('+-----------------------------------')
+        console.log('+ EventDetails', this.state.item)
+        console.log('+ Cards', this.state.cards)
+        console.log('+ Songs', this.state.songs)
+        console.log('+-----------------------------------')
       })
     })
   }
@@ -111,7 +116,7 @@ class EventDetailScreen extends React.Component {
           style={styles.scrollView}>
           {/* ENGLISH BLOCK */}
           {this.state.item.english_name &&
-            <View style={styles.content}>
+            <View style={[styles.content, { marginVertical: 10 }]}>
               <Text style={{ color: 'white' }}>English</Text>
               <Text style={styles.title}>{this.state.item.english_name}</Text>
               <FastImage

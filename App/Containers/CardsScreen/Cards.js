@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import Spinkit from 'react-native-spinkit'
 import Icon from 'react-native-vector-icons/Ionicons'
 import _ from 'lodash'
+import Spinkit from 'react-native-spinkit'
 
 import { getIdols, getSchools, getSkills, getSubunits } from '../../Stores/CachedData/Selectors'
 import SquareButton from '../../Components/SquareButton/SquareButton'
@@ -83,7 +84,7 @@ class CardsScreen extends React.PureComponent {
    *
    * @memberof CardsScreen
    */
-  _keyExtractor = (item, index) => `card${item.get('id')}`
+  _keyExtractor = (item, index) => `card${item.id}`
 
   /**
    *Render item trong FlatList
@@ -91,7 +92,7 @@ class CardsScreen extends React.PureComponent {
    * @memberof CardsScreen
    */
   _renderItem = ({ item }) => (
-    <CardItem item={item.toObject()} onPress={() => this.navigateToCardDetail(item.toObject())} />
+    <CardItem item={item} onPress={() => this.navigateToCardDetail(item)} />
   )
 
   /**
@@ -146,7 +147,7 @@ class CardsScreen extends React.PureComponent {
    * @memberof CardsScreen
    */
   navigateToCardDetail(item) {
-    this.props.navigation.navigate('CardDetailScreen', { item: item.toObject() })
+    this.props.navigation.navigate('CardDetailScreen', { item: item })
   }
 
   componentDidMount() {
@@ -601,13 +602,19 @@ class CardsScreen extends React.PureComponent {
 
         {/* CARD LIST */}
         <FlatList
-          data={this.props.cards.toArray()}
+          data={this.state.data}
           numColumns={2}
           initialNumToRender={4}
           keyExtractor={this._keyExtractor}
           onEndReached={this._onEndReached}
           style={styles.list}
+<<<<<<< HEAD
           ListFooterComponent={<View style={ApplicationStyles.center}><Spinkit type='WanderingCubes' size={30} color='white' /></View>}
+=======
+          ListFooterComponent={<View style={[ApplicationStyles.center, { margin: 10 }]}>
+            <Spinkit type='WanderingCubes' size={30} color='white' />
+          </View>}
+>>>>>>> 756b356d976189d0912e5165e91a8da0b3b3ed55
           renderItem={this._renderItem} />
       </View>
     )
@@ -625,12 +632,12 @@ const mapStateToProps = (state) => ({
   subUnits: getSubunits(state),
   /** Danh sách skill */
   skills: getSkills(state),
-  cardListErrorMessage: state.cardList.get('cardListErrorMessage'),
-  cardListIsLoading: state.cardList.get('cardListIsLoading'),
+  // cardListErrorMessage: state.cardList.get('cardListErrorMessage'),
+  // cardListIsLoading: state.cardList.get('cardListIsLoading'),
 })
 
 const mapDispatchToProps = (dispatch) => ({
-  fetchCardList: (filter) => dispatch(CardListActions.fetchCardList(filter))
+  // fetchCardList: (filter) => dispatch(CardListActions.fetchCardList(filter))
 })
 
 export default connect(

@@ -62,7 +62,7 @@ class SongsScreen extends React.Component {
   }
 
   getSongs() {
-    console.log(`========== Events.getEvents.page ${this.state.filter.page} ==========`)
+    console.log(`========== Songs.getSongs.page ${this.state.filter.page} ==========`)
     LLSIFService.fetchSongList(this.state.filter).then((result) => {
       var x = [...this.state.list, ...result]
       x = x.filter((thing, index, self) =>

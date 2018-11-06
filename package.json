@@ -18,7 +18,7 @@
     "moment": "^2.22.2",
     "prop-types": "^15.6.1",
     "react": "16.6.0-alpha.8af6728",
-    "react-native": "0.57.3",
+    "react-native": "0.57.4",
     "react-native-fast-image": "^5.0.10",
     "react-native-linear-gradient": "^2.4.2",
     "react-native-offline": "^3.14.1",

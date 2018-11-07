@@ -17,8 +17,17 @@ export default StyleSheet.create({
     fontSize: 16
   },
   button: {
-    paddingLeft: 12,
-    paddingVertical: 5
+    paddingHorizontal: 7,
+    paddingVertical: 3,
+    marginVertical: 3,
+    borderRadius: 10,
+    marginRight: 10
+  },
+  button1: {
+    paddingHorizontal: 7,
+    paddingVertical: 3,
+    marginVertical: 3,
+    borderRadius: 10
   },
   buttonImage: {
     width: 30,
@@ -29,9 +38,18 @@ export default StyleSheet.create({
     flex: 1,
     justifyContent: 'center'
   },
-  selectedButton: {
+  rightView: {
+    flex: 2,
+    flexDirection: 'row'
+  },
+  selectedValue: {
     borderColor: Colors.green,
+    paddingHorizontal: 5,
+    paddingVertical: 1,
     borderWidth: 2,
+  },
+  selectedValue1: {
+    backgroundColor: Colors.lightGreen,
   },
   resetButton: {
     backgroundColor: 'red',

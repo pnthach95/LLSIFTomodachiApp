@@ -28,6 +28,6 @@ export const getSkills = (state) => {
   return z
 }
 
-export const getSongMaxStat = (state)=>{
+export const getSongMaxStat = (state) => {
   return state.cachedData.get('cachedData').get('cards_info').get('songs_max_stats')
 }

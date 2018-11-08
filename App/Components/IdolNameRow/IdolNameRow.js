@@ -1,5 +1,6 @@
 import React from 'react'
 import { Text, View, Picker } from 'react-native'
+import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import { getIdols } from '../../Stores/CachedData/Selectors'
 import styles from '../../Theme/RowStyles'
@@ -16,11 +17,6 @@ const PickerItem = Picker.Item
  * @extends {React.Component}
  */
 class IdolNameRow extends React.Component {
-  static propTypes = {
-    name: PropTypes.string.isRequired,
-    selectIdol: PropTypes.func.isRequired
-  }
-
   render() {
     return (
       <View style={{ flexDirection: 'row' }}>
@@ -40,6 +36,11 @@ class IdolNameRow extends React.Component {
       </View>
     )
   }
+}
+
+IdolNameRow.propTypes = {
+  name: PropTypes.string.isRequired,
+  selectIdol: PropTypes.func.isRequired
 }
 
 const mapStateToProps = (state) => ({

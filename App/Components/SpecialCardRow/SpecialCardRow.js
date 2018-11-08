@@ -12,12 +12,7 @@ import styles from '../../Theme/RowStyles'
  * @class SpecialCardRow
  * @extends {React.Component}
  */
-export default class SpecialCardRow extends React.Component {
-  static propTypes = {
-    is_special: PropTypes.string.isRequired,
-    selectSpecial: PropTypes.func.isRequired
-  }
-
+class SpecialCardRow extends React.Component {
   render() {
     return (
       <View style={{ flexDirection: 'row' }}>
@@ -51,3 +46,10 @@ export default class SpecialCardRow extends React.Component {
     )
   }
 }
+
+SpecialCardRow.propTypes = {
+  is_special: PropTypes.string.isRequired,
+  selectSpecial: PropTypes.func.isRequired
+}
+
+export default SpecialCardRow

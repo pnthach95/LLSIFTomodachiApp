@@ -12,12 +12,7 @@ import styles from '../../Theme/RowStyles'
  * @class MainUnitRow
  * @extends {React.Component}
  */
-export default class MainUnitRow extends React.Component {
-  static propTypes = {
-    idol_main_unit: PropTypes.string.isRequired,
-    selectMainUnit: PropTypes.func.isRequired
-  }
-
+class MainUnitRow extends React.Component {
   render() {
     return (
       <View style={{ flexDirection: 'row' }}>
@@ -51,3 +46,10 @@ export default class MainUnitRow extends React.Component {
     )
   }
 }
+
+MainUnitRow.propTypes = {
+  idol_main_unit: PropTypes.string.isRequired,
+  selectMainUnit: PropTypes.func.isRequired
+}
+
+export default MainUnitRow

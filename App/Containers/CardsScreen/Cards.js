@@ -1,31 +1,29 @@
 import React from 'react'
-import { Text, View, FlatList, TextInput, Picker, TouchableOpacity, Alert } from 'react-native'
+import { Text, View, FlatList, TextInput, TouchableOpacity, Alert } from 'react-native'
 import { connect } from 'react-redux'
 import Spinkit from 'react-native-spinkit'
 import Icon from 'react-native-vector-icons/Ionicons'
 import _ from 'lodash'
 
-import { getIdols, getSchools, getSkills, getSubunits } from '../../Stores/CachedData/Selectors'
-import SquareButton from '../../Components/SquareButton/SquareButton'
-import CardItem from '../../Components/CardItem/CardItem'
-import PromoCardRow from '../../Components/PromoCardRow/PromoCardRow'
-import SpecialCardRow from '../../Components/SpecialCardRow/SpecialCardRow'
-import EventCardRow from '../../Components/EventCardRow/EventCardRow'
-import RegionRow from '../../Components/RegionRow/RegionRow'
-import MainUnitRow from '../../Components/MainUnitRow/MainUnitRow'
 import YearRow from '../../Components/YearRow/YearRow'
+import CardItem from '../../Components/CardItem/CardItem'
+import SkillRow from '../../Components/SkillRow/SkillRow'
 import RarityRow from '../../Components/RarityRow/RarityRow'
-import AttributeRow from '../../Components/AttributeRow/AttributeRow'
+import RegionRow from '../../Components/RegionRow/RegionRow'
+import SchoolRow from '../../Components/SchoolRow/SchoolRow'
 import SubUnitRow from '../../Components/SubUnitRow/SubUnitRow'
 import IdolNameRow from '../../Components/IdolNameRow/IdolNameRow'
+import MainUnitRow from '../../Components/MainUnitRow/MainUnitRow'
+import AttributeRow from '../../Components/AttributeRow/AttributeRow'
+import EventCardRow from '../../Components/EventCardRow/EventCardRow'
+import PromoCardRow from '../../Components/PromoCardRow/PromoCardRow'
+import SquareButton from '../../Components/SquareButton/SquareButton'
+import SpecialCardRow from '../../Components/SpecialCardRow/SpecialCardRow'
 import { LLSIFService } from '../../Services/LLSIFService'
 import CardListActions from '../../Stores/CardList/Actions'
-import { Colors, ApplicationStyles, Images } from '../../Theme'
+import { Colors, ApplicationStyles } from '../../Theme'
 import styles from './styles'
-import SchoolRow from '../../Components/SchoolRow/SchoolRow';
-import SkillRow from '../../Components/SkillRow/SkillRow';
 
-const PickerItem = Picker.Item
 const defaultFilter = {
   ordering: '-release_date',
   page_size: 20,
@@ -333,9 +331,8 @@ class CardsScreen extends React.PureComponent {
           <SquareButton name={'ios-more'} onPress={this.toggleFilter} />
         </View>
 
-        {/* FILTER */}
-        {this.state.isFilter &&
-          <View style={{ width: '100%', backgroundColor: 'white', padding: 10 }}>
+        {this.state.isFilter ?
+          <View style={{ flex: 1, backgroundColor: 'white', padding: 10 }}>
             <IdolNameRow name={this.state.name} selectIdol={this.selectIdol} />
             <RarityRow rarity={this.state.rarity} selectRarity={this.selectRarity} />
             <AttributeRow attribute={this.state.attribute} selectAttribute={this.selectAttribute} />
@@ -356,20 +353,18 @@ class CardsScreen extends React.PureComponent {
                 <Text style={styles.resetText}>RESET</Text>
               </TouchableOpacity>
             </View>
-          </View>}
-
-        {/* CARD LIST */}
-        <FlatList
-          data={this.state.data}
-          numColumns={2}
-          initialNumToRender={8}
-          keyExtractor={this._keyExtractor}
-          onEndReached={this._onEndReached}
-          style={styles.list}
-          ListFooterComponent={<View style={[ApplicationStyles.center, { margin: 10 }]}>
-            <Spinkit type='WanderingCubes' size={30} color='white' />
-          </View>}
-          renderItem={this._renderItem} />
+          </View> :
+          <FlatList
+            data={this.state.data}
+            numColumns={2}
+            initialNumToRender={8}
+            keyExtractor={this._keyExtractor}
+            onEndReached={this._onEndReached}
+            style={styles.list}
+            ListFooterComponent={<View style={[ApplicationStyles.center, { margin: 10 }]}>
+              <Spinkit type='WanderingCubes' size={30} color='white' />
+            </View>}
+            renderItem={this._renderItem} />}
       </View>
     )
   }

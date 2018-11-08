@@ -13,12 +13,7 @@ import styles from '../../Theme/RowStyles'
  * @class AttributeRow
  * @extends {React.Component}
  */
-export default class AttributeRow extends React.Component {
-  static propTypes = {
-    attribute: PropTypes.string.isRequired,
-    selectAttribute: PropTypes.func.isRequired
-  }
-
+class AttributeRow extends React.Component {
   render() {
     return (
       <View style={{ flexDirection: 'row' }}>
@@ -67,3 +62,10 @@ export default class AttributeRow extends React.Component {
     )
   }
 }
+
+AttributeRow.propTypes = {
+  attribute: PropTypes.string.isRequired,
+  selectAttribute: PropTypes.func.isRequired
+}
+
+export default AttributeRow

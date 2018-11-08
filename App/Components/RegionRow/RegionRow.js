@@ -12,12 +12,7 @@ import styles from '../../Theme/RowStyles'
  * @class RegionRow
  * @extends {React.Component}
  */
-export default class RegionRow extends React.Component {
-  static propTypes = {
-    japan_only: PropTypes.string.isRequired,
-    selectRegion: PropTypes.func.isRequired
-  }
-
+class RegionRow extends React.Component {
   render() {
     return (
       <View style={{ flexDirection: 'row' }}>
@@ -51,3 +46,10 @@ export default class RegionRow extends React.Component {
     )
   }
 }
+
+RegionRow.propTypes = {
+  japan_only: PropTypes.string.isRequired,
+  selectRegion: PropTypes.func.isRequired
+}
+
+export default RegionRow

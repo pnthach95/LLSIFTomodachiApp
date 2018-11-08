@@ -12,12 +12,7 @@ import styles from '../../Theme/RowStyles'
  * @class YearRow
  * @extends {React.Component}
  */
-export default class YearRow extends React.Component {
-  static propTypes = {
-    idol_year: PropTypes.string.isRequired,
-    selectYear: PropTypes.func.isRequired
-  }
-
+class YearRow extends React.Component {
   render() {
     return (
       <View style={{ flexDirection: 'row' }}>
@@ -58,3 +53,10 @@ export default class YearRow extends React.Component {
     )
   }
 }
+
+YearRow.propTypes = {
+  idol_year: PropTypes.string.isRequired,
+  selectYear: PropTypes.func.isRequired
+}
+
+export default YearRow

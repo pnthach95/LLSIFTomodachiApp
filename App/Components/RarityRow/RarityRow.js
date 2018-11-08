@@ -13,12 +13,7 @@ import styles from '../../Theme/RowStyles'
  * @class RarityRow
  * @extends {React.Component}
  */
-export default class RarityRow extends React.Component {
-  static propTypes = {
-    rarity: PropTypes.string.isRequired,
-    selectRarity: PropTypes.func.isRequired
-  }
-
+class RarityRow extends React.Component {
   render() {
     return (
       <View style={{ flexDirection: 'row' }}>
@@ -74,3 +69,10 @@ export default class RarityRow extends React.Component {
     )
   }
 }
+
+RarityRow.propTypes = {
+  rarity: PropTypes.string.isRequired,
+  selectRarity: PropTypes.func.isRequired
+}
+
+export default RarityRow

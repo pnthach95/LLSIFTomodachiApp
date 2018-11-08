@@ -12,12 +12,7 @@ import styles from '../../Theme/RowStyles'
  * @class EventCardRow
  * @extends {React.Component}
  */
-export default class EventCardRow extends React.Component {
-  static propTypes = {
-    is_event: PropTypes.string.isRequired,
-    selectEvent: PropTypes.func.isRequired
-  }
-
+class EventCardRow extends React.Component {
   render() {
     return (
       <View style={{ flexDirection: 'row' }}>
@@ -51,3 +46,10 @@ export default class EventCardRow extends React.Component {
     )
   }
 }
+
+EventCardRow.propTypes = {
+  is_event: PropTypes.string.isRequired,
+  selectEvent: PropTypes.func.isRequired
+}
+
+export default EventCardRow

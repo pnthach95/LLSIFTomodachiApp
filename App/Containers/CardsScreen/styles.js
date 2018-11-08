@@ -12,45 +12,6 @@ export default StyleSheet.create({
   list: {
     padding: Metrics.smallMargin
   },
-  buttonText: {
-    color: 'black',
-    fontSize: 16
-  },
-  button: {
-    paddingHorizontal: 7,
-    paddingVertical: 3,
-    marginVertical: 3,
-    borderRadius: 10,
-    marginRight: 10
-  },
-  button1: {
-    paddingHorizontal: 7,
-    paddingVertical: 3,
-    marginVertical: 3,
-    borderRadius: 10
-  },
-  buttonImage: {
-    width: 30,
-    height: 30,
-    resizeMode: 'contain'
-  },
-  leftView: {
-    flex: 1,
-    justifyContent: 'center'
-  },
-  rightView: {
-    flex: 2,
-    flexDirection: 'row'
-  },
-  selectedValue: {
-    borderColor: Colors.green,
-    paddingHorizontal: 5,
-    paddingVertical: 1,
-    borderWidth: 2,
-  },
-  selectedValue1: {
-    backgroundColor: Colors.lightGreen,
-  },
   resetButton: {
     backgroundColor: 'red',
     justifyContent: 'center',

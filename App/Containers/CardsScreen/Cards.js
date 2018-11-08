@@ -203,24 +203,24 @@ class CardsScreen extends React.PureComponent {
    * @memberof CardsScreen
    */
   onSearch = () => {
-    // this.setState({ data: [], page: 1, isFilter: false })
-    // console.log(`========= Cards.onSearch: ${_filter} =========`)
-    // this.getCards()
-    Alert.alert('onSearch', `ordering: ${this.state.ordering},
-      page_size: ${this.state.page_size},
-      page: ${this.state.page},
-      name: ${this.state.name},
-      rarity: ${this.state.rarity},
-      attribute: ${this.state.attribute},
-      japan_only: ${this.state.japan_only},
-      is_promo: ${this.state.is_promo},
-      is_special: ${this.state.is_special},
-      is_event: ${this.state.is_event},
-      skill: ${this.state.skill},
-      idol_main_unit: ${this.state.idol_main_unit},
-      idol_sub_unit: ${this.state.idol_sub_unit},
-      idol_school: ${this.state.idol_school},
-      idol_year: ${this.state.idol_year}`)
+    this.setState({ data: [], page: 1, isFilter: false })
+    console.log(`========= Cards.onSearch: ${_filter} =========`)
+    this.getCards()
+    // Alert.alert('onSearch', `ordering: ${this.state.ordering},
+    //   page_size: ${this.state.page_size},
+    //   page: ${this.state.page},
+    //   name: ${this.state.name},
+    //   rarity: ${this.state.rarity},
+    //   attribute: ${this.state.attribute},
+    //   japan_only: ${this.state.japan_only},
+    //   is_promo: ${this.state.is_promo},
+    //   is_special: ${this.state.is_special},
+    //   is_event: ${this.state.is_event},
+    //   skill: ${this.state.skill},
+    //   idol_main_unit: ${this.state.idol_main_unit},
+    //   idol_sub_unit: ${this.state.idol_sub_unit},
+    //   idol_school: ${this.state.idol_school},
+    //   idol_year: ${this.state.idol_year}`)
   }
 
   /**

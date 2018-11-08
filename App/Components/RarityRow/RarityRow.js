@@ -1,5 +1,5 @@
 import React from 'react'
-import { Text, View, TouchableOpacity } from 'react-native'
+import { Text, View, TouchableOpacity, Image } from 'react-native'
 import PropTypes from 'prop-types'
 import { Images } from '../../Theme'
 import styles from '../../Theme/RowStyles'
@@ -21,46 +21,46 @@ class RarityRow extends React.Component {
           <Text>Rarity</Text>
         </View>
         <View style={styles.rightView}>
-          <TouchableOpacity onPress={this.selectRarity('')}
+          <TouchableOpacity onPress={this.props.selectRarity('')}
             style={[
               styles.button1,
               { paddingLeft: 0 },
-              this.state.rarity === '' && styles.selectedValue1
+              this.props.rarity === '' && styles.selectedValue1
             ]}>
             <Image source={Images.empty} style={styles.buttonImage} />
           </TouchableOpacity>
-          <TouchableOpacity onPress={this.selectRarity('N')}
+          <TouchableOpacity onPress={this.props.selectRarity('N')}
             style={[
               styles.button1,
-              this.state.rarity === 'N' && styles.selectedValue1
+              this.props.rarity === 'N' && styles.selectedValue1
             ]}>
             <Image source={Images.rarity[0]} style={styles.buttonImage} />
           </TouchableOpacity>
-          <TouchableOpacity onPress={this.selectRarity('R')}
+          <TouchableOpacity onPress={this.props.selectRarity('R')}
             style={[
               styles.button1,
-              this.state.rarity === 'R' && styles.selectedValue1
+              this.props.rarity === 'R' && styles.selectedValue1
             ]}>
             <Image source={Images.rarity[1]} style={styles.buttonImage} />
           </TouchableOpacity>
-          <TouchableOpacity onPress={this.selectRarity('SR')}
+          <TouchableOpacity onPress={this.props.selectRarity('SR')}
             style={[
               styles.button1,
-              this.state.rarity === 'SR' && styles.selectedValue1
+              this.props.rarity === 'SR' && styles.selectedValue1
             ]}>
             <Image source={Images.rarity[2]} style={styles.buttonImage} />
           </TouchableOpacity>
-          <TouchableOpacity onPress={this.selectRarity('SSR')}
+          <TouchableOpacity onPress={this.props.selectRarity('SSR')}
             style={[
               styles.button1,
-              this.state.rarity === 'SSR' && styles.selectedValue1
+              this.props.rarity === 'SSR' && styles.selectedValue1
             ]}>
             <Image source={Images.rarity[3]} style={styles.buttonImage} />
           </TouchableOpacity>
-          <TouchableOpacity onPress={this.selectRarity('UR')}
+          <TouchableOpacity onPress={this.props.selectRarity('UR')}
             style={[
               styles.button1,
-              this.state.rarity === 'UR' && styles.selectedValue1
+              this.props.rarity === 'UR' && styles.selectedValue1
             ]}>
             <Image source={Images.rarity[4]} style={styles.buttonImage} />
           </TouchableOpacity>

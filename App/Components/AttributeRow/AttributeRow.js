@@ -1,5 +1,5 @@
 import React from 'react'
-import { Text, View, TouchableOpacity } from 'react-native'
+import { Text, View, TouchableOpacity, Image } from 'react-native'
 import PropTypes from 'prop-types'
 import { Images } from '../../Theme'
 import styles from '../../Theme/RowStyles'

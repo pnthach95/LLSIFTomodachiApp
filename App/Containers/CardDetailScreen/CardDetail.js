@@ -180,7 +180,7 @@ class CardDetailScreen extends React.Component {
             style={styles.scrollView}>
             <LinearGradient colors={[this.state.colors[1], this.state.colors[0], 'white']}>
               <View style={styles.imageRow}>
-                {this.state.item.card_image &&
+                {this.state.item.card_image != null &&
                   <FastImage
                     source={{ uri: AddHTTPS(this.state.item.card_image) }}
                     style={{
@@ -210,7 +210,7 @@ class CardDetailScreen extends React.Component {
                 />
                 <Seperator />
 
-                {(!this.state.item.skill && this.state.item.skill.length != 0) &&
+                {(this.state.item.skill != null && this.state.item.skill.length != 0) &&
                   <View>
                     <TextRow
                       item1={{ flex: 1, text: 'Skill' }}
@@ -223,7 +223,7 @@ class CardDetailScreen extends React.Component {
                     <Seperator />
                   </View>}
 
-                {(this.state.item.center_skill && this.state.item.center_skill.length != 0) &&
+                {(this.state.item.center_skill != null && this.state.item.center_skill.length != 0) &&
                   <View>
                     <TextRow
                       item1={{ flex: 1, text: 'Center skill' }}
@@ -236,7 +236,7 @@ class CardDetailScreen extends React.Component {
                     <Seperator />
                   </View>}
 
-                {this.state.item.event &&
+                {this.state.item.event != null &&
                   <View>
                     <TextRow item1={{ text: 'Event', flex: 1, textStyle: Fonts.style.normal }}
                       item2={{ text: this.state.item.event.japanese_name, flex: 4, textStyle: Fonts.style.normal }} />

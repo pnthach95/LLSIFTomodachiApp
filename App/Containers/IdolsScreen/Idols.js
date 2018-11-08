@@ -84,7 +84,7 @@ class IdolsScreen extends React.Component {
           keyExtractor={(item, index) => 'School' + index}
           style={styles.list}
           renderSectionHeader={({ section: { title } }) => (
-            <Text style={{ fontWeight: 'bold', color: 'white', fontSize: 16 }}>{title}</Text>
+            <Text style={{ fontWeight: 'bold', color: 'white', fontSize: 20 }}>{title}</Text>
           )}
           ListHeaderComponent={<View style={{ height: 10 }} />}
           ListFooterComponent={<View style={{ height: 10 }} />}

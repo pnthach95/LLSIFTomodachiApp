@@ -60,7 +60,7 @@ export default class CardItem extends Component {
             styles.info,
             { backgroundColor: this.state.colors[1] }
           ]}>
-          {this.props.item.skill &&
+          {(this.props.item.skill != null && this.props.item.skill.length !== 0) &&
             <Image
               source={this.findSkill(this.props.item.skill)}
               style={[
@@ -91,7 +91,7 @@ export default class CardItem extends Component {
                 { tintColor: this.state.colors[0] }
               ]} />}
 
-          {this.props.item.event &&
+          {this.props.item.event != null &&
             <Image
               source={Images.event}
               style={[

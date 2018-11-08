@@ -25,8 +25,9 @@ import { Colors, ApplicationStyles } from '../../Theme'
 import styles from './styles'
 
 const defaultFilter = {
-  ordering: '-release_date',
-  page_size: 20,
+  search: '',
+  ordering: '-game_id',
+  page_size: 30,
   page: 1,
   name: 'All',
   rarity: '',
@@ -43,7 +44,7 @@ const defaultFilter = {
 }
 
 /**
- *Màn hình danh sách card
+ * Màn hình danh sách card
  *
  * @class CardsScreen
  * @extends {React.PureComponent}
@@ -55,8 +56,9 @@ class CardsScreen extends React.PureComponent {
       isLoading: true,
       data: [],
       isFilter: false,
-      ordering: '-release_date',
-      page_size: 20,
+      search: '',
+      ordering: '-game_id',
+      page_size: 30,
       page: 1,
       name: 'All',
       rarity: '',
@@ -112,7 +114,7 @@ class CardsScreen extends React.PureComponent {
    *
    * @memberof CardsScreen
    */
-  getCards() {
+  getCards(page = this.state.page) {
     // console.log(`========== Cards.getCards.page ${this.state.filter.page} ==========`)
     let _skill = this.state.skill
     let _name = this.state.name
@@ -121,7 +123,7 @@ class CardsScreen extends React.PureComponent {
     let _filter = {
       ordering: this.state.ordering,
       page_size: this.state.page_size,
-      page: this.state.page,
+      page: page,
       name: _name === 'All' ? '' : _name,
       rarity: this.state.rarity,
       attribute: this.state.attribute,
@@ -135,10 +137,8 @@ class CardsScreen extends React.PureComponent {
       idol_school: _school === 'All' ? '' : _school,
       idol_year: this.state.idol_year
     }
+    if (this.state.search != '') { _filter.search = this.state.search }
     LLSIFService.fetchCardList(_filter).then((result) => {
-      result.sort((a, b) => {
-        return a.id < b.id
-      })
       var x = [...this.state.data, ...result]
       x = x.filter((thing, index, self) =>
         index === self.findIndex((t) => (
@@ -149,10 +149,13 @@ class CardsScreen extends React.PureComponent {
       this.setState({
         data: x,
         isLoading: false,
-        page: this.state.page + 1
+        page: page + 1
       })
     }).catch((err) => {
-      //  TODO
+      Alert.alert('Error', 'Error when get cards',
+        [
+          { text: 'OK', onPress: () => console.log('Cancel Pressed', err) },
+        ])
     })
   }
 
@@ -204,8 +207,7 @@ class CardsScreen extends React.PureComponent {
    */
   onSearch = () => {
     this.setState({ data: [], page: 1, isFilter: false })
-    console.log(`========= Cards.onSearch: ${_filter} =========`)
-    this.getCards()
+    this.getCards(1)
     // Alert.alert('onSearch', `ordering: ${this.state.ordering},
     //   page_size: ${this.state.page_size},
     //   page: ${this.state.page},
@@ -326,7 +328,10 @@ class CardsScreen extends React.PureComponent {
       <View style={styles.container}>
         {/* HEADER */}
         <View style={[ApplicationStyles.header, styles.header]}>
-          <TextInput style={{ flex: 1, borderColor: '#333', borderWidth: 1.5, margin: 6 }} />
+          <TextInput style={{ flex: 1, borderColor: '#333', borderWidth: 1.5, margin: 6 }}
+            onChangeText={text => this.setState({ search: text })}
+            onSubmitEditing={this.onSearch}
+            placeholder={'Type here...'} />
           <SquareButton name={'ios-search'} onPress={this.onSearch} />
           <SquareButton name={'ios-more'} onPress={this.toggleFilter} />
         </View>
@@ -347,7 +352,7 @@ class CardsScreen extends React.PureComponent {
             <YearRow idol_year={this.state.idol_year} selectYear={this.selectYear} />
 
             {/* RESET BUTTON */}
-            <View style={{ alignItems: 'stretch' }}>
+            <View style={{ alignItems: 'stretch', marginTop: 10 }}>
               <TouchableOpacity onPress={this.resetFilter}
                 style={styles.resetButton}>
                 <Text style={styles.resetText}>RESET</Text>

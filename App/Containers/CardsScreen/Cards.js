@@ -1,5 +1,5 @@
 import React from 'react'
-import { Text, View, FlatList, TextInput, Picker, TouchableOpacity, Image } from 'react-native'
+import { Text, View, FlatList, TextInput, Picker, TouchableOpacity, Alert } from 'react-native'
 import { connect } from 'react-redux'
 import Spinkit from 'react-native-spinkit'
 import Icon from 'react-native-vector-icons/Ionicons'
@@ -8,10 +8,22 @@ import _ from 'lodash'
 import { getIdols, getSchools, getSkills, getSubunits } from '../../Stores/CachedData/Selectors'
 import SquareButton from '../../Components/SquareButton/SquareButton'
 import CardItem from '../../Components/CardItem/CardItem'
+import PromoCardRow from '../../Components/PromoCardRow/PromoCardRow'
+import SpecialCardRow from '../../Components/SpecialCardRow/SpecialCardRow'
+import EventCardRow from '../../Components/EventCardRow/EventCardRow'
+import RegionRow from '../../Components/RegionRow/RegionRow'
+import MainUnitRow from '../../Components/MainUnitRow/MainUnitRow'
+import YearRow from '../../Components/YearRow/YearRow'
+import RarityRow from '../../Components/RarityRow/RarityRow'
+import AttributeRow from '../../Components/AttributeRow/AttributeRow'
+import SubUnitRow from '../../Components/SubUnitRow/SubUnitRow'
+import IdolNameRow from '../../Components/IdolNameRow/IdolNameRow'
 import { LLSIFService } from '../../Services/LLSIFService'
 import CardListActions from '../../Stores/CardList/Actions'
 import { Colors, ApplicationStyles, Images } from '../../Theme'
 import styles from './styles'
+import SchoolRow from '../../Components/SchoolRow/SchoolRow';
+import SkillRow from '../../Components/SkillRow/SkillRow';
 
 const PickerItem = Picker.Item
 const defaultFilter = {
@@ -87,8 +99,7 @@ class CardsScreen extends React.PureComponent {
    *
    * @memberof CardsScreen
    */
-  _renderItem = ({ item }) =>
-    <CardItem item={item} onPress={this.navigateToCardDetail(item)} />
+  _renderItem = ({ item }) => <CardItem item={item} onPress={this.navigateToCardDetail(item)} />
 
   /**
    * Chuyển đến trang thông tin card
@@ -96,9 +107,7 @@ class CardsScreen extends React.PureComponent {
    * @param {Object} item Thông tin của card đó
    * @memberof CardsScreen
    */
-  navigateToCardDetail = (item) => () => {
-    this.props.navigation.navigate('CardDetailScreen', { item: item })
-  }
+  navigateToCardDetail = (item) => () => this.props.navigation.navigate('CardDetailScreen', { item: item })
 
   /**
    * Lấy danh sách card
@@ -196,9 +205,24 @@ class CardsScreen extends React.PureComponent {
    * @memberof CardsScreen
    */
   onSearch = () => {
-    this.setState({ data: [], page: 1, isFilter: false })
+    // this.setState({ data: [], page: 1, isFilter: false })
     // console.log(`========= Cards.onSearch: ${_filter} =========`)
-    this.getCards()
+    // this.getCards()
+    Alert.alert('onSearch', `ordering: ${this.state.ordering},
+      page_size: ${this.state.page_size},
+      page: ${this.state.page},
+      name: ${this.state.name},
+      rarity: ${this.state.rarity},
+      attribute: ${this.state.attribute},
+      japan_only: ${this.state.japan_only},
+      is_promo: ${this.state.is_promo},
+      is_special: ${this.state.is_special},
+      is_event: ${this.state.is_event},
+      skill: ${this.state.skill},
+      idol_main_unit: ${this.state.idol_main_unit},
+      idol_sub_unit: ${this.state.idol_sub_unit},
+      idol_school: ${this.state.idol_school},
+      idol_year: ${this.state.idol_year}`)
   }
 
   /**
@@ -209,36 +233,6 @@ class CardsScreen extends React.PureComponent {
    */
   selectPromo = (value) => () => this.setState({ is_promo: value })
 
-  renderPromo = () =>
-    <View style={{ flexDirection: 'row' }}>
-      <View style={styles.leftView}>
-        <Text>Promo card</Text>
-      </View>
-      <View style={styles.rightView}>
-        <TouchableOpacity onPress={this.selectPromo('')}
-          style={[
-            styles.button,
-            this.state.is_promo == '' && styles.selectedValue
-          ]}>
-          <Text style={styles.buttonText}>All</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={this.selectPromo('True')}
-          style={[
-            styles.button,
-            this.state.is_promo == 'True' && styles.selectedValue
-          ]}>
-          <Text style={styles.buttonText}>Only</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={this.selectPromo('False')}
-          style={[
-            styles.button,
-            this.state.is_promo == 'False' && styles.selectedValue
-          ]}>
-          <Text style={styles.buttonText}>None</Text>
-        </TouchableOpacity>
-      </View>
-    </View>
-
   /**
    * Lưu is_special
    *
@@ -246,36 +240,6 @@ class CardsScreen extends React.PureComponent {
    * @memberof CardsScreen
    */
   selectSpecial = (value) => () => this.setState({ is_special: value })
-
-  renderSpecial = () =>
-    <View style={{ flexDirection: 'row' }}>
-      <View style={styles.leftView}>
-        <Text>Special card</Text>
-      </View>
-      <View style={styles.rightView}>
-        <TouchableOpacity onPress={this.selectSpecial('')}
-          style={[
-            styles.button,
-            this.state.is_special == '' && styles.selectedValue
-          ]}>
-          <Text style={styles.buttonText}>All</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={this.selectSpecial('True')}
-          style={[
-            styles.button,
-            this.state.is_special == 'True' && styles.selectedValue
-          ]}>
-          <Text style={styles.buttonText}>Only</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={this.selectSpecial('False')}
-          style={[
-            styles.button,
-            this.state.is_special == 'False' && styles.selectedValue
-          ]}>
-          <Text style={styles.buttonText}>None</Text>
-        </TouchableOpacity>
-      </View>
-    </View>
 
   /**
    * Lưu is_event
@@ -285,36 +249,6 @@ class CardsScreen extends React.PureComponent {
    */
   selectEvent = (value) => () => this.setState({ is_event: value })
 
-  renderEvent = () =>
-    <View style={{ flexDirection: 'row' }}>
-      <View style={styles.leftView}>
-        <Text>Event card</Text>
-      </View>
-      <View style={styles.rightView}>
-        <TouchableOpacity onPress={this.selectEvent('')}
-          style={[
-            styles.button,
-            this.state.is_event == '' && styles.selectedValue
-          ]}>
-          <Text style={styles.buttonText}>All</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={this.selectEvent('True')}
-          style={[
-            styles.button,
-            this.state.is_event == 'True' && styles.selectedValue
-          ]}>
-          <Text style={styles.buttonText}>Only</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={this.selectEvent('False')}
-          style={[
-            styles.button,
-            this.state.is_event == 'False' && styles.selectedValue
-          ]}>
-          <Text style={styles.buttonText}>None</Text>
-        </TouchableOpacity>
-      </View>
-    </View>
-
   /**
    * Lưu idol_main_unit
    *
@@ -322,36 +256,6 @@ class CardsScreen extends React.PureComponent {
    * @memberof CardsScreen
    */
   selectMainUnit = (value) => () => this.setState({ idol_main_unit: value })
-
-  renderMainUnit = () =>
-    <View style={{ flexDirection: 'row' }}>
-      <View style={styles.leftView}>
-        <Text>Main unit</Text>
-      </View>
-      <View style={styles.rightView}>
-        <TouchableOpacity onPress={this.selectMainUnit('')}
-          style={[
-            styles.button,
-            this.state.idol_main_unit == '' && styles.selectedValue
-          ]}>
-          <Text style={styles.buttonText}>All</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={this.selectMainUnit(`μ's`)}
-          style={[
-            styles.button,
-            this.state.idol_main_unit == `μ's` && styles.selectedValue
-          ]}>
-          <Text style={styles.buttonText}>{`μ's`}</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={this.selectMainUnit('Aqours')}
-          style={[
-            styles.button,
-            this.state.idol_main_unit == 'Aqours' && styles.selectedValue
-          ]}>
-          <Text style={styles.buttonText}>Aqours</Text>
-        </TouchableOpacity>
-      </View>
-    </View>
 
   /**
    * Lưu rarity
@@ -361,58 +265,6 @@ class CardsScreen extends React.PureComponent {
    */
   selectRarity = (value) => () => this.setState({ rarity: value })
 
-  renderRarity = () =>
-    <View style={{ flexDirection: 'row' }}>
-      <View style={styles.leftView}>
-        <Text>Rarity</Text>
-      </View>
-      <View style={styles.rightView}>
-        <TouchableOpacity onPress={this.selectRarity('')}
-          style={[
-            styles.button1,
-            { paddingLeft: 0 },
-            this.state.rarity === '' && styles.selectedValue1
-          ]}>
-          <Image source={Images.empty} style={styles.buttonImage} />
-        </TouchableOpacity>
-        <TouchableOpacity onPress={this.selectRarity('N')}
-          style={[
-            styles.button1,
-            this.state.rarity === 'N' && styles.selectedValue1
-          ]}>
-          <Image source={Images.rarity[0]} style={styles.buttonImage} />
-        </TouchableOpacity>
-        <TouchableOpacity onPress={this.selectRarity('R')}
-          style={[
-            styles.button1,
-            this.state.rarity === 'R' && styles.selectedValue1
-          ]}>
-          <Image source={Images.rarity[1]} style={styles.buttonImage} />
-        </TouchableOpacity>
-        <TouchableOpacity onPress={this.selectRarity('SR')}
-          style={[
-            styles.button1,
-            this.state.rarity === 'SR' && styles.selectedValue1
-          ]}>
-          <Image source={Images.rarity[2]} style={styles.buttonImage} />
-        </TouchableOpacity>
-        <TouchableOpacity onPress={this.selectRarity('SSR')}
-          style={[
-            styles.button1,
-            this.state.rarity === 'SSR' && styles.selectedValue1
-          ]}>
-          <Image source={Images.rarity[3]} style={styles.buttonImage} />
-        </TouchableOpacity>
-        <TouchableOpacity onPress={this.selectRarity('UR')}
-          style={[
-            styles.button1,
-            this.state.rarity === 'UR' && styles.selectedValue1
-          ]}>
-          <Image source={Images.rarity[4]} style={styles.buttonImage} />
-        </TouchableOpacity>
-      </View>
-    </View>
-
   /**
    * Lưu attribute
    *
@@ -420,51 +272,6 @@ class CardsScreen extends React.PureComponent {
    * @memberof CardsScreen
    */
   selectAttribute = (value) => () => this.setState({ attribute: value })
-
-  renderAttribute = () =>
-    <View style={{ flexDirection: 'row' }}>
-      <View style={styles.leftView}>
-        <Text>Attribute</Text>
-      </View>
-      <View style={styles.rightView}>
-        <TouchableOpacity onPress={this.selectAttribute('')}
-          style={[
-            styles.button1,
-            { paddingLeft: 0 },
-            this.state.attribute === '' && styles.selectedValue1
-          ]}>
-          <Image source={Images.empty} style={styles.buttonImage} />
-        </TouchableOpacity>
-        <TouchableOpacity onPress={this.selectAttribute('Smile')}
-          style={[
-            styles.button1,
-            this.state.attribute === 'Smile' && styles.selectedValue1
-          ]}>
-          <Image source={Images.attribute[0]} style={styles.buttonImage} />
-        </TouchableOpacity>
-        <TouchableOpacity onPress={this.selectAttribute('Pure')}
-          style={[
-            styles.button1,
-            this.state.attribute === 'Pure' && styles.selectedValue1
-          ]}>
-          <Image source={Images.attribute[1]} style={styles.buttonImage} />
-        </TouchableOpacity>
-        <TouchableOpacity onPress={this.selectAttribute('Cool')}
-          style={[
-            styles.button1,
-            this.state.attribute === 'Cool' && styles.selectedValue1
-          ]}>
-          <Image source={Images.attribute[2]} style={styles.buttonImage} />
-        </TouchableOpacity>
-        <TouchableOpacity onPress={this.selectAttribute('All')}
-          style={[
-            styles.button1,
-            this.state.attribute === 'All' && styles.selectedValue1
-          ]}>
-          <Image source={Images.attribute[3]} style={styles.buttonImage} />
-        </TouchableOpacity>
-      </View>
-    </View>
 
   /**
    * Lưu idol_year
@@ -474,65 +281,12 @@ class CardsScreen extends React.PureComponent {
    */
   selectYear = (value) => () => this.setState({ idol_year: value })
 
-  renderYear = () =>
-    <View style={{ flexDirection: 'row' }}>
-      <View style={styles.leftView}>
-        <Text>Year</Text>
-      </View>
-      <View style={styles.rightView}>
-        <TouchableOpacity onPress={this.selectYear('')}
-          style={[
-            styles.button,
-            this.state.idol_year == '' && styles.selectedValue
-          ]}>
-          <Text style={styles.buttonText}>All</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={this.selectYear('First')}
-          style={[
-            styles.button,
-            this.state.idol_year == 'First' && styles.selectedValue
-          ]}>
-          <Text style={styles.buttonText}>1st</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={this.selectYear('Second')}
-          style={[
-            styles.button,
-            this.state.idol_year == 'Second' && styles.selectedValue
-          ]}>
-          <Text style={styles.buttonText}>2nd</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={this.selectYear('Third')}
-          style={[
-            styles.button,
-            this.state.idol_year == 'Third' && styles.selectedValue
-          ]}>
-          <Text style={styles.buttonText}>3rd</Text>
-        </TouchableOpacity>
-      </View>
-    </View>
-
   /**
    * Lưu idol_sub_unit
    *
    * @memberof CardsScreen
    */
   selectSubUnit = (itemValue, itemIndex) => this.setState({ idol_sub_unit: itemValue })
-
-  renderSubUnit = () =>
-    <View style={{ flexDirection: 'row' }}>
-      <View style={styles.leftView}>
-        <Text>Sub unit</Text>
-      </View>
-      <View style={{ flex: 2 }}>
-        <Picker
-          mode={'dropdown'}
-          selectedValue={this.state.idol_sub_unit}
-          onValueChange={this.selectSubUnit}>
-          {this.props.subUnits.map((item, index) =>
-            <PickerItem key={'subUnit' + index} label={item} value={item} />)}
-        </Picker>
-      </View>
-    </View>
 
   /**
    * Lưu name
@@ -541,24 +295,6 @@ class CardsScreen extends React.PureComponent {
    */
   selectIdol = (itemValue, itemIndex) => this.setState({ name: itemValue })
 
-  renderIdolName = () =>
-    <View style={{ flexDirection: 'row' }}>
-      <View style={styles.leftView}>
-        <Text>Idol</Text>
-      </View>
-      <View style={{ flex: 2 }}>
-        <Picker
-          mode={'dropdown'}
-          selectedValue={this.state.name}
-          onValueChange={this.selectIdol}
-          style={{ borderColor: 'black', borderWidth: 1 }}
-        >
-          {this.props.idols.map((item, index) =>
-            <PickerItem key={'idol' + index} label={item} value={item} />)}
-        </Picker>
-      </View>
-    </View>
-
   /**
    * Lưu school
    *
@@ -566,71 +302,9 @@ class CardsScreen extends React.PureComponent {
    */
   selectSchool = (itemValue, itemIndex) => this.setState({ idol_school: itemValue })
 
-  renderSchool = () =>
-    <View style={{ flexDirection: 'row' }}>
-      <View style={styles.leftView}>
-        <Text>School</Text>
-      </View>
-      <View style={{ flex: 2 }}>
-        <Picker
-          mode={'dropdown'}
-          selectedValue={this.state.idol_school}
-          onValueChange={this.selectSchool}>
-          {this.props.schools.map((item, index) =>
-            <PickerItem key={'school' + index} label={item} value={item} />)}
-        </Picker>
-      </View>
-    </View>
-
   selectSkill = (itemValue, itemIndex) => this.setState({ skill: itemValue })
 
-  renderSkill = () =>
-    <View style={{ flexDirection: 'row' }}>
-      <View style={styles.leftView}>
-        <Text>Skill</Text>
-      </View>
-      <View style={{ flex: 2 }}>
-        <Picker
-          mode={'dropdown'}
-          selectedValue={this.state.skill}
-          onValueChange={this.selectSkill}>
-          {this.props.skills.map((item, index) =>
-            <PickerItem key={'skill' + index} label={item} value={item} />)}
-        </Picker>
-      </View>
-    </View>
-
   selectRegion = (item) => () => this.setState({ japan_only: item })
-
-  renderRegion = () =>
-    <View style={{ flexDirection: 'row' }}>
-      <View style={styles.leftView}>
-        <Text>Worldwide only</Text>
-      </View>
-      <View style={styles.rightView}>
-        <TouchableOpacity onPress={this.selectRegion('')}
-          style={[
-            styles.button,
-            this.state.japan_only == '' && styles.selectedValue
-          ]}>
-          <Text style={styles.buttonText}>All</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={this.selectRegion('False')}
-          style={[
-            styles.button,
-            this.state.japan_only == 'False' && styles.selectedValue
-          ]}>
-          <Text style={styles.buttonText}>EN Only</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={this.selectRegion('True')}
-          style={[
-            styles.button,
-            this.state.japan_only == 'True' && styles.selectedValue
-          ]}>
-          <Text style={styles.buttonText}>JP Only</Text>
-        </TouchableOpacity>
-      </View>
-    </View>
 
   resetFilter = () => {
     this.setState({
@@ -662,18 +336,18 @@ class CardsScreen extends React.PureComponent {
         {/* FILTER */}
         {this.state.isFilter &&
           <View style={{ width: '100%', backgroundColor: 'white', padding: 10 }}>
-            <this.renderIdolName />
-            <this.renderRarity />
-            <this.renderAttribute />
-            <this.renderRegion />
-            <this.renderPromo />
-            <this.renderSpecial />
-            <this.renderEvent />
-            <this.renderSkill />
-            <this.renderMainUnit />
-            <this.renderSubUnit />
-            <this.renderSchool />
-            <this.renderYear />
+            <IdolNameRow name={this.state.name} selectIdol={this.selectIdol} />
+            <RarityRow rarity={this.state.rarity} selectRarity={this.selectRarity} />
+            <AttributeRow attribute={this.state.attribute} selectAttribute={this.selectAttribute} />
+            <RegionRow japan_only={this.state.japan_only} selectRegion={this.selectRegion} />
+            <PromoCardRow is_promo={this.state.is_promo} selectPromo={this.selectPromo} />
+            <SpecialCardRow is_special={this.state.is_special} selectSpecial={this.selectSpecial} />
+            <EventCardRow is_event={this.state.is_event} selectEvent={this.selectEvent} />
+            <SkillRow skill={this.state.skill} selectSkill={this.selectSkill} />
+            <MainUnitRow idol_main_unit={this.state.idol_main_unit} selectMainUnit={this.selectMainUnit} />
+            <SubUnitRow idol_sub_unit={this.state.idol_sub_unit} selectSubUnit={this.selectSubUnit} />
+            <SchoolRow idol_school={this.state.idol_school} selectSchool={this.selectSchool} />
+            <YearRow idol_year={this.state.idol_year} selectYear={this.selectYear} />
 
             {/* RESET BUTTON */}
             <View style={{ alignItems: 'stretch' }}>
@@ -703,22 +377,10 @@ class CardsScreen extends React.PureComponent {
 
 const mapStateToProps = (state) => ({
   /** Danh sách card */
-  cards: state.cardList.get('cardList'),
-  /** Danh sách idol */
-  idols: getIdols(state),
-  /** Danh sách trường */
-  schools: getSchools(state),
-  /** Danh sách sub unit */
-  subUnits: getSubunits(state),
-  /** Danh sách skill */
-  skills: getSkills(state),
-  // cardListErrorMessage: state.cardList.get('cardListErrorMessage'),
-  // cardListIsLoading: state.cardList.get('cardListIsLoading'),
+  cards: state.cardList.get('cardList')
 })
 
-const mapDispatchToProps = (dispatch) => ({
-  // fetchCardList: (filter) => dispatch(CardListActions.fetchCardList(filter))
-})
+const mapDispatchToProps = (dispatch) => ({})
 
 export default connect(
   mapStateToProps,

@@ -83,6 +83,9 @@ async function fetchSongList(filter) {
   console.log('fetchSongList response', response)
   if (response.ok) {
     return response.data.results
+  } else {
+    if (response.data.detail == 'Not found')
+      return 'End results'
   }
   return null
 }

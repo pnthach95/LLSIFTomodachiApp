@@ -10,5 +10,15 @@ export default StyleSheet.create({
   },
   list: {
     padding: Metrics.smallMargin
+  },
+  resetButton: {
+    backgroundColor: 'red',
+    justifyContent: 'center',
+    margin: 5,
+    padding: 10
+  },
+  resetText: {
+    color: 'white',
+    textAlign: 'center'
   }
 })

@@ -1,7 +1,6 @@
 import React from 'react'
 import { Text, View, FlatList, TextInput, TouchableOpacity, Alert } from 'react-native'
 import { connect } from 'react-redux'
-import Spinkit from 'react-native-spinkit'
 import Icon from 'react-native-vector-icons/Ionicons'
 import _ from 'lodash'
 
@@ -15,7 +14,7 @@ import SubUnitRow from '../../Components/SubUnitRow/SubUnitRow'
 import IdolNameRow from '../../Components/IdolNameRow/IdolNameRow'
 import MainUnitRow from '../../Components/MainUnitRow/MainUnitRow'
 import AttributeRow from '../../Components/AttributeRow/AttributeRow'
-import EventCardRow from '../../Components/EventCardRow/EventCardRow'
+import EventRow from '../../Components/EventRow/EventRow'
 import PromoCardRow from '../../Components/PromoCardRow/PromoCardRow'
 import SquareButton from '../../Components/SquareButton/SquareButton'
 import SpecialCardRow from '../../Components/SpecialCardRow/SpecialCardRow'
@@ -154,7 +153,7 @@ class CardsScreen extends React.PureComponent {
     }).catch((err) => {
       Alert.alert('Error', 'Error when get cards',
         [
-          { text: 'OK', onPress: () => console.log('Cancel Pressed', err) },
+          { text: 'OK', onPress: () => console.log('OK Pressed', err) },
         ])
     })
   }
@@ -319,7 +318,8 @@ class CardsScreen extends React.PureComponent {
       idol_main_unit: defaultFilter.idol_main_unit,
       idol_sub_unit: defaultFilter.idol_sub_unit,
       idol_school: defaultFilter.idol_school,
-      idol_year: defaultFilter.idol_year
+      idol_year: defaultFilter.idol_year,
+      search: ''
     })
   }
 
@@ -331,7 +331,8 @@ class CardsScreen extends React.PureComponent {
           <TextInput style={{ flex: 1, borderColor: '#333', borderWidth: 1.5, margin: 6 }}
             onChangeText={text => this.setState({ search: text })}
             onSubmitEditing={this.onSearch}
-            placeholder={'Type here...'} />
+            placeholder={'Type here...'}
+            value={this.state.search} />
           <SquareButton name={'ios-search'} onPress={this.onSearch} />
           <SquareButton name={'ios-more'} onPress={this.toggleFilter} />
         </View>
@@ -344,9 +345,9 @@ class CardsScreen extends React.PureComponent {
             <RegionRow japan_only={this.state.japan_only} selectRegion={this.selectRegion} />
             <PromoCardRow is_promo={this.state.is_promo} selectPromo={this.selectPromo} />
             <SpecialCardRow is_special={this.state.is_special} selectSpecial={this.selectSpecial} />
-            <EventCardRow is_event={this.state.is_event} selectEvent={this.selectEvent} />
+            <EventRow is_event={this.state.is_event} selectEvent={this.selectEvent} />
             <SkillRow skill={this.state.skill} selectSkill={this.selectSkill} />
-            <MainUnitRow idol_main_unit={this.state.idol_main_unit} selectMainUnit={this.selectMainUnit} />
+            <MainUnitRow main_unit={this.state.idol_main_unit} selectMainUnit={this.selectMainUnit} />
             <SubUnitRow idol_sub_unit={this.state.idol_sub_unit} selectSubUnit={this.selectSubUnit} />
             <SchoolRow idol_school={this.state.idol_school} selectSchool={this.selectSchool} />
             <YearRow idol_year={this.state.idol_year} selectYear={this.selectYear} />
@@ -367,7 +368,7 @@ class CardsScreen extends React.PureComponent {
             onEndReached={this._onEndReached}
             style={styles.list}
             ListFooterComponent={<View style={[ApplicationStyles.center, { margin: 10 }]}>
-              <Spinkit type='WanderingCubes' size={30} color='white' />
+              <Text>End results</Text>
             </View>}
             renderItem={this._renderItem} />}
       </View>

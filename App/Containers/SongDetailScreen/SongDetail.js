@@ -191,12 +191,11 @@ class SongDetailScreen extends React.Component {
                   />
                 </TouchableOpacity>
               </View>}
-            {this.state.item.daily_rotation.length != 0 ?
+            {(this.state.item.daily_rotation != null && this.state.item.daily_rotation.length != 0) &&
               <View style={styles.event}>
                 <TextRow item1={{ text: 'Daily rotation', flex: 1 }}
                   item2={{ text: this.state.item.daily_rotation + ' - ' + this.state.item.daily_rotation_position, flex: 1 }} />
-              </View> :
-              <View />}
+              </View>}
             <TextRow item1={{ text: 'Currently available', flex: 1 }} item2={{ text: this.state.item.available ? 'Yes' : 'No', flex: 1 }} />
             <View style={styles.buttonRow}>
               {this.statButton(0, 'Easy', this.state.easy, styles.leftRadius)}

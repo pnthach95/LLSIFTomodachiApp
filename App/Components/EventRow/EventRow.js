@@ -9,15 +9,15 @@ import styles from '../../Theme/RowStyles'
  * @function selectEvent: Save `is_event` state
  * @param is_event state
  * @export
- * @class EventCardRow
+ * @class EventRow
  * @extends {React.Component}
  */
-class EventCardRow extends React.Component {
+class EventRow extends React.Component {
   render() {
     return (
       <View style={{ flexDirection: 'row' }}>
         <View style={styles.leftView}>
-          <Text>Event card</Text>
+          <Text>Event</Text>
         </View>
         <View style={styles.rightView}>
           <TouchableOpacity onPress={this.props.selectEvent('')}
@@ -47,9 +47,9 @@ class EventCardRow extends React.Component {
   }
 }
 
-EventCardRow.propTypes = {
+EventRow.propTypes = {
   is_event: PropTypes.string.isRequired,
   selectEvent: PropTypes.func.isRequired
 }
 
-export default EventCardRow
+export default EventRow

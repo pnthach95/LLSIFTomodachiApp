@@ -5,9 +5,8 @@ import FastImage from 'react-native-fast-image'
 import Icon from 'react-native-vector-icons/SimpleLineIcons'
 import moment from 'moment'
 
-import TimerCountdown from '../../Components/TimerCountdown/Timer'
 import Seperator from '../../Components/Seperator/Seperator'
-import SquareButton from '../../Components/SquareButton/SquareButton'
+import TimerCountdown from '../../Components/TimerCountdown/Timer'
 import CachedDataActions from '../../Stores/CachedData/Actions'
 import { AddHTTPS } from '../../Utils'
 import SplashScreen from '../SplashScreen/SplashScreen'
@@ -15,27 +14,26 @@ import { Metrics, Colors, Images, ApplicationStyles } from '../../Theme'
 import styles from './styles'
 
 /**
- *Màn hình chính
- *
+ * Main Screen
+ * 
+ * State:
+ * - `imgWidth`: Image width
+ * - `imgHeight`: Image height
+ * - `ENEvent`: English event
+ * - `JPEvent`: Japanese event
+ * - `currentContests`: Contest array
+ * 
  * @class MainScreen
  * @extends {React.Component}
  */
 class MainScreen extends React.Component {
   constructor(props) {
     super(props)
-
     this.state = {
-      /** Đang load dữ liệu */
-      isLoading: true,
-      /** Chiều rộng của hình */
       imgWidth: 0,
-      /** Chiều cao của hình */
       imgHeight: 0,
-      /** Thông tin sự kiện bản EN */
       ENEvent: null,
-      /** Thông tin sự kiện bản JP */
       JPEvent: null,
-      /** Thông tin các contest */
       currentContests: []
     }
   }
@@ -56,9 +54,9 @@ class MainScreen extends React.Component {
   }
 
   /**
-   * Bộ đếm lùi thời gian sự kiện đang diễn ra
+   * Countdown timer for ongoing event
    *
-   * @param {Number} time Thời gian còn lại (miliseconds)
+   * @param {Number} time Remaining time (miliseconds)
    * @returns
    * @memberof MainScreen
    */
@@ -70,17 +68,17 @@ class MainScreen extends React.Component {
     />
   }
 
-  /**
-   * Set state chiều cao, chiều rộng của hình tải về trong FastImage
-   *
-   * @param {*} e Event
-   * @memberof MainScreen
-   */
   onLoadFastImage(e) {
     const { width, height } = e.nativeEvent
     this.setState({ imgWidth: width, imgHeight: height })
   }
 
+  /**
+   * Navigate to Event Detail Screen
+   *
+   * @param {Object} event Event object
+   * @memberof MainScreen
+   */
   navigateToEventDetail(event) {
     this.props.navigation.navigate('EventDetailScreen', { event: event.toObject() })
   }
@@ -93,17 +91,17 @@ class MainScreen extends React.Component {
     }
     let data = this.props.cachedData
     let currentContests = data.get('current_contests')
-    /** Sự kiện EN */
+    /** English event */
     let ENEvent = data.get('eventEN')
-    /** Thời gian bắt đầu sự kiện EN */
+    /** Start time of English event */
     let ENEventStart = moment(ENEvent.get('english_beginning'))
-    /** Thời gian kết thúc sự kiện EN */
+    /** End time of English event */
     let ENEventEnd = moment(ENEvent.get('english_end'))
-    /** Sự kiện JP */
+    /** Japanese event */
     let JPEvent = data.get('eventJP')
-    /** Thời gian bắt đầu sự kiện JP */
+    /** Start time of Japanese event */
     let JPEventStart = moment(JPEvent.get('beginning'), 'YYYY-MM-DDTHH:mm:ssZ')
-    /** Thời gian kết thúc sự kiện JP */
+    /** End time of Japanese event */
     let JPEventEnd = moment(JPEvent.get('end'), 'YYYY-MM-DDTHH:mm:ssZ')
 
     return (
@@ -125,13 +123,12 @@ class MainScreen extends React.Component {
           <Text style={{ color: 'white' }}>English Event: {ENEvent.get('english_status')}</Text>
           <Text style={styles.title}>{ENEvent.get('english_name')}</Text>
           <TouchableOpacity onPress={() => this.navigateToEventDetail(ENEvent)}>
-            <FastImage
-              source={{ uri: AddHTTPS(ENEvent.get('english_image')) }}
+            <FastImage source={{ uri: AddHTTPS(ENEvent.get('english_image')) }}
+              onLoad={e => this.onLoadFastImage(e)}
               style={{
                 width: Metrics.widthBanner,
                 height: Metrics.widthBanner * this.state.imgHeight / this.state.imgWidth
-              }}
-              onLoad={e => this.onLoadFastImage(e)} />
+              }} />
           </TouchableOpacity>
           <Text style={styles.text}>Start: {ENEventStart.format('HH:mm MMM Do YYYY')}</Text>
           <Text style={styles.text}>End: {ENEventEnd.format('HH:mm MMM Do YYYY')}</Text>
@@ -142,13 +139,12 @@ class MainScreen extends React.Component {
           <Text style={{ color: 'white' }}>Japanese Event: {JPEvent.get('japan_status')}</Text>
           <Text style={styles.title}>{JPEvent.get('romaji_name')}</Text>
           <TouchableOpacity onPress={() => this.navigateToEventDetail(JPEvent)}>
-            <FastImage
-              source={{ uri: AddHTTPS(JPEvent.get('image')) }}
+            <FastImage source={{ uri: AddHTTPS(JPEvent.get('image')) }}
+              onLoad={e => this.onLoadFastImage(e)}
               style={{
                 width: Metrics.widthBanner,
                 height: Metrics.widthBanner * this.state.imgHeight / this.state.imgWidth
-              }}
-              onLoad={e => this.onLoadFastImage(e)} />
+              }} />
           </TouchableOpacity>
           <Text style={styles.text}>Start: {JPEventStart.format('HH:mm MMM Do YYYY')}</Text>
           <Text style={styles.text}>End: {JPEventEnd.format('HH:mm MMM Do YYYY')}</Text>
@@ -159,9 +155,8 @@ class MainScreen extends React.Component {
           {currentContests.map((item, id) => (
             <View key={'contest' + id}>
               <Text style={styles.text}>{item.get('name')}</Text>
-              <FastImage
+              <FastImage source={{ uri: AddHTTPS(item.get('image')) }}
                 resizeMode={FastImage.resizeMode.contain}
-                source={{ uri: AddHTTPS(item.get('image')) }}
                 style={{
                   width: Metrics.widthBanner,
                   height: Metrics.widthBanner / 3,
@@ -178,14 +173,11 @@ class MainScreen extends React.Component {
 const mapStateToProps = (state) => ({
   cachedData: state.cachedData.get('cachedData'),
   cachedDataErrorMessage: state.cachedData.get('cachedDataErrorMessage'),
-  cachedDataIsLoading: state.cachedData.get('cachedDataIsLoading'),
+  cachedDataIsLoading: state.cachedData.get('cachedDataIsLoading')
 })
 
 const mapDispatchToProps = (dispatch) => ({
-  fetchCachedData: () => dispatch(CachedDataActions.fetchCachedData()),
+  fetchCachedData: () => dispatch(CachedDataActions.fetchCachedData())
 })
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(MainScreen)
+export default connect(mapStateToProps, mapDispatchToProps)(MainScreen)

@@ -3,13 +3,23 @@ import { View, Text, SectionList, FlatList } from 'react-native'
 import { connect } from 'react-redux'
 import Icon from 'react-native-vector-icons/Ionicons'
 
-import IdolItem from '../../Components/IdolItem/Idol'
+import IdolItem from '../../Components/IdolItem/IdolItem'
 import { LLSIFService } from '../../Services/LLSIFService'
 import SplashScreen from '../SplashScreen/SplashScreen'
 import { Colors } from '../../Theme'
 import styles from './styles'
 import Seperator from '../../Components/Seperator/Seperator';
 
+/**
+ * Idol List Screen
+ * 
+ * State:
+ * - isLoading: Loading state
+ * - list: Data for FlatList
+ *
+ * @class IdolsScreen
+ * @extends {React.Component}
+ */
 class IdolsScreen extends React.Component {
   constructor(props) {
     super(props)
@@ -64,15 +74,28 @@ class IdolsScreen extends React.Component {
     })
   }
 
-  navigateToIdolDetail(name) {
-    this.props.navigation.navigate('IdolDetailScreen', { name: name })
-  }
+  /**
+   * Navigate to Idol Detail Screen
+   * 
+   * @param {String} name
+   * @memberof IdolsScreen
+   */
+  navigateToIdolDetail = (name) => () => this.props.navigation.navigate('IdolDetailScreen', { name: name })
 
+  /**
+   * Key extractor for FlatList
+   *
+   * @memberof IdolsScreen
+   */
   _keyExtractor = (item, index) => `idol${item.name}`
 
-  _renderItem = ({ item }) => (
-    <IdolItem item={item} onPress={() => this.navigateToIdolDetail(item.name)} />
-  )
+  /**
+   * Render item in FlatList
+   *
+   * @param {Object} item
+   * @memberof IdolsScreen
+   */
+  _renderItem = ({ item }) => <IdolItem item={item} onPress={this.navigateToIdolDetail(item.name)} />
 
   render() {
     if (this.state.isLoading) return <SplashScreen bgColor={Colors.blue} />
@@ -108,11 +131,5 @@ class IdolsScreen extends React.Component {
 const mapStateToProps = (state) => ({
   schools: state.cachedData.get('cachedData').get('cards_info').get('schools')
 })
-
-const mapDispatchToProps = (dispatch) => ({
-})
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(IdolsScreen)
+const mapDispatchToProps = (dispatch) => ({})
+export default connect(mapStateToProps, mapDispatchToProps)(IdolsScreen)

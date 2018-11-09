@@ -4,10 +4,12 @@ import PropTypes from 'prop-types'
 import styles from '../../Theme/RowStyles'
 
 /**
- * Promo Card Row
+ * Promo Card Row (None, True, False)
  *
- * @function selectPromo: Save `is_promo` state
- * @param is_promo state
+ * Prop:
+ * - `selectPromo`: Save `is_promo` state
+ * - `is_promo`: state from parent
+ * 
  * @export
  * @class PromoCardRow
  * @extends {React.Component}

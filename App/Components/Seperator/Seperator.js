@@ -3,7 +3,9 @@ import { View } from 'react-native'
 
 /**
  * Seperator
- *- style: style
+ * 
+ * Prop:
+ * - style: style
  *
  * @export
  * @class Seperator

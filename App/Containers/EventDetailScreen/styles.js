@@ -64,5 +64,13 @@ export default StyleSheet.create({
   cardImage: {
     flexDirection: 'row',
     paddingHorizontal: Metrics.baseMargin
+  },
+  attributeIcon: {
+    width: 25,
+    height: 25
+  },
+  songName: {
+    color: 'white',
+    paddingLeft: 10
   }
 })

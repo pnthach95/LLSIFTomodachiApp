@@ -2,6 +2,11 @@ import { put, call } from 'redux-saga/effects'
 import CachedDataActions from '../Stores/CachedData/Actions'
 import { LLSIFService } from '../Services/LLSIFService'
 
+/**
+ * [Fetch cached data](https://github.com/MagiCircles/SchoolIdolAPI/wiki/API-Cached-data)
+ *
+ * @export
+ */
 export function* fetchCachedData() {
   yield put(CachedDataActions.fetchCachedDataLoading())
   var data = yield call(LLSIFService.fetchCachedData)

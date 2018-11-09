@@ -1,13 +1,16 @@
 import React from 'react'
-import { Text, View, TouchableOpacity } from 'react-native'
+import { Text, View, TouchableOpacity, Image } from 'react-native'
 import PropTypes from 'prop-types'
+import { Images } from '../../Theme'
 import styles from '../../Theme/RowStyles'
 
 /**
- * Main Unit Row
+ * Main Unit Row (None, μ's, Aqours)
  *
- * @function selectMainUnit: Save `main_unit` state
- * @param main_unit state
+ * Prop:
+ * - `selectMainUnit`: Save `main_unit` state
+ * - `main_unit`: state from parent
+ * 
  * @export
  * @class MainUnitRow
  * @extends {React.Component}
@@ -29,17 +32,17 @@ class MainUnitRow extends React.Component {
           </TouchableOpacity>
           <TouchableOpacity onPress={this.props.selectMainUnit(`μ's`)}
             style={[
-              styles.button,
-              this.props.main_unit == `μ's` && styles.selectedValue
+              styles.button1,
+              this.props.main_unit == `μ's` && styles.selectedValue1
             ]}>
-            <Text style={styles.buttonText}>{`μ's`}</Text>
+            <Image source={Images.mainUnit[0]} style={styles.buttonImage1} />
           </TouchableOpacity>
           <TouchableOpacity onPress={this.props.selectMainUnit('Aqours')}
             style={[
-              styles.button,
-              this.props.main_unit == 'Aqours' && styles.selectedValue
+              styles.button1,
+              this.props.main_unit == 'Aqours' && styles.selectedValue1
             ]}>
-            <Text style={styles.buttonText}>Aqours</Text>
+            <Image source={Images.mainUnit[1]} style={styles.buttonImage1} />
           </TouchableOpacity>
         </View>
       </View>

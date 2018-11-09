@@ -7,9 +7,9 @@ const LLSIFApiClient = create({
 })
 
 /**
- * Lấy cache data
+ * [Fetch cached data](https://github.com/MagiCircles/SchoolIdolAPI/wiki/API-Cached-data)
  * 
- * https://github.com/MagiCircles/SchoolIdolAPI/wiki/API-Cached-data
+ * @returns
  */
 async function fetchCachedData() {
   const response = await LLSIFApiClient.get(Config.CACHED_DATA)
@@ -21,10 +21,10 @@ async function fetchCachedData() {
 }
 
 /**
- * Lấy danh sách card
- * 
- * https://github.com/SchoolIdolTomodachi/SchoolIdolAPI/wiki/API-Cards
- * - filter: bộ lọc tìm kiếm (https://github.com/SchoolIdolTomodachi/SchoolIdolAPI/wiki/API-Cards#objects)
+ * [Fetch card list](https://github.com/MagiCircles/SchoolIdolAPI/wiki/API-Cards)
+ *
+ * @param {Object} filter [Filter](https://github.com/MagiCircles/SchoolIdolAPI/wiki/API-Cards#objects)
+ * @returns
  */
 async function fetchCardList(filter) {
   const response = await LLSIFApiClient.get(Config.CARDS, filter)
@@ -37,9 +37,9 @@ async function fetchCardList(filter) {
 }
 
 /**
- * Lấy danh sách idol
- * 
- * https://github.com/MagiCircles/SchoolIdolAPI/wiki/API-Idols
+ * [Fetch idol list](https://github.com/MagiCircles/SchoolIdolAPI/wiki/API-Idols#get-the-list-of-idols)
+ *
+ * @returns
  */
 async function fetchIdolList() {
   const response1 = await LLSIFApiClient.get(Config.IDOLS, { page_size: 100 })
@@ -56,9 +56,9 @@ async function fetchIdolList() {
 }
 
 /**
- *Lấy thông tin idol
+ * [Fetch idol](https://github.com/MagiCircles/SchoolIdolAPI/wiki/API-Idols#get-an-idol-by-name)
  *
- * @param {String} name tên tiếng Anh của idol
+ * @param {String} name English idol name
  * @returns
  */
 async function fetchIdol(name) {
@@ -72,9 +72,10 @@ async function fetchIdol(name) {
 }
 
 /**
- * Lấy danh sách bài hát
- * 
- * https://github.com/MagiCircles/SchoolIdolAPI/wiki/API-Songs
+ * [Fetch song list](https://github.com/MagiCircles/SchoolIdolAPI/wiki/API-Songs#get-the-list-of-songs)
+ *
+ * @param {Object} filter
+ * @returns
  */
 async function fetchSongList(filter) {
   filter.expand_event = ''
@@ -91,9 +92,10 @@ async function fetchSongList(filter) {
 }
 
 /**
- * Lấy danh sách sự kiện
- * 
- * https://github.com/MagiCircles/SchoolIdolAPI/wiki/API-Events
+ * [Fetch event list](https://github.com/MagiCircles/SchoolIdolAPI/wiki/API-Events)
+ *
+ * @param {Object} filter
+ * @returns
  */
 async function fetchEventList(filter) {
   const response = await LLSIFApiClient.get(Config.EVENTS, filter)
@@ -106,10 +108,10 @@ async function fetchEventList(filter) {
 }
 
 /**
- * Lấy thông tin sự kiện
- * 
- * https://github.com/MagiCircles/SchoolIdolAPI/wiki/API-Events#get-an-event-by-japanese-name
- * - name: tên sự kiện (japanese_name)
+ * [Fetch event information](https://github.com/MagiCircles/SchoolIdolAPI/wiki/API-Events#get-an-event-by-japanese-name)
+ *
+ * @param {*} name Japanese event name
+ * @returns
  */
 async function fetchEventData(name) {
   const response = await LLSIFApiClient.get(Config.EVENTS + name)

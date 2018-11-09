@@ -4,6 +4,16 @@ import Icon from 'react-native-vector-icons/Ionicons'
 import styles from './styles'
 import { Metrics, Colors } from '../../Theme'
 
+/**
+ * Star bar in Song Detail Screen
+ * 
+ * Prop:
+ * - array: Star array
+ *
+ * @export
+ * @class StarBar
+ * @extends {React.Component}
+ */
 export default class StarBar extends React.Component {
 	render() {
 		return (

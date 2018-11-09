@@ -5,12 +5,14 @@ import styles from './styles'
 import { ApplicationStyles } from '../../Theme'
 
 /**
- * Nút hình vuông, dùng icon Ionicons
+ * Square button, using Ionicons icon (https://oblador.github.io/react-native-vector-icons/).
  *
- * - name: tên icon
- * - color: màu icon
+ * Prop:
+ * - name: Icon name
+ * - color: Icon color
  * - style: style
- * - onPress: function
+ * - onPress: onPress function
+ * 
  * @export
  * @class SquareButton
  * @extends {React.Component}
@@ -18,8 +20,7 @@ import { ApplicationStyles } from '../../Theme'
 export default class SquareButton extends React.Component {
   render() {
     return (
-      <TouchableOpacity
-        onPress={this.props.onPress}
+      <TouchableOpacity onPress={this.props.onPress}
         style={[ApplicationStyles.center, styles.button, this.props.style]}>
         <Icon name={this.props.name} size={30} color={this.props.color} />
       </TouchableOpacity>

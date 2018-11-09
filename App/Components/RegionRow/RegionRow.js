@@ -4,10 +4,11 @@ import PropTypes from 'prop-types'
 import styles from '../../Theme/RowStyles'
 
 /**
- * Region Row
+ * Region Row (None, False, True)
  *
- * @function selectRegion: Save `japan_only` state
- * @param japan_only state
+ * - `selectRegion`: Save `japan_only` state
+ * - `japan_only` state from parent
+ * 
  * @export
  * @class RegionRow
  * @extends {React.Component}

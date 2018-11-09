@@ -2,6 +2,17 @@ import React from 'react'
 import { View, Text } from 'react-native'
 import styles from './styles'
 
+/**
+ * Emulate stat in Card Detail Screen
+ * 
+ * Prop:
+ * - progress: (100 * stat / maxStat) percent
+ * - number: Stat number
+ *
+ * @export
+ * @class ProgressBar
+ * @extends {React.Component}
+ */
 export default class ProgressBar extends React.Component {
 	render() {
 		return (

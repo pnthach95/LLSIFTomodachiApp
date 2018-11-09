@@ -5,13 +5,15 @@ import PropTypes from 'prop-types'
 import { getSchools } from '../../Stores/CachedData/Selectors'
 import styles from '../../Theme/RowStyles'
 
-const PickerItem = Picker.Item
-
 /**
- * School Row
- *
- * @function selectSchool: Save `idol_school` state
- * @param idol_school state
+ * School Row.
+ * 
+ * School list in `this.props.schools`.
+ * 
+ * Prop:
+ * - `selectSchool`: Save `idol_school` state
+ * - `idol_school`: state from parent
+ * 
  * @export
  * @class SchoolRow
  * @extends {React.Component}
@@ -24,12 +26,11 @@ class SchoolRow extends React.Component {
           <Text>School</Text>
         </View>
         <View style={{ flex: 2 }}>
-          <Picker
-            mode={'dropdown'}
+          <Picker mode={'dropdown'}
             selectedValue={this.props.idol_school}
             onValueChange={this.props.selectSchool}>
             {this.props.schools.map((item, index) =>
-              <PickerItem key={'school' + index} label={item} value={item} />)}
+              <Picker.Item key={'school' + index} label={item} value={item} />)}
           </Picker>
         </View>
       </View>
@@ -48,7 +49,4 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({})
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(SchoolRow)
+export default connect(mapStateToProps, mapDispatchToProps)(SchoolRow)

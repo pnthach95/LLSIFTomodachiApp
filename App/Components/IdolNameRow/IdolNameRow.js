@@ -5,13 +5,15 @@ import PropTypes from 'prop-types'
 import { getIdols } from '../../Stores/CachedData/Selectors'
 import styles from '../../Theme/RowStyles'
 
-const PickerItem = Picker.Item
-
 /**
- * Idol Name Row
+ * Idol Name Row.
+ * 
+ * Idol list in `this.props.idols`.
  *
- * @function selectIdol: Save `name` state
- * @param name state
+ * Prop:
+ * - `selectIdol`: Save `name` state
+ * - `name`: state from parent
+ * 
  * @export
  * @class IdolNameRow
  * @extends {React.Component}
@@ -24,13 +26,11 @@ class IdolNameRow extends React.Component {
           <Text>Idol</Text>
         </View>
         <View style={{ flex: 2 }}>
-          <Picker
-            mode={'dropdown'}
+          <Picker mode={'dropdown'}
             selectedValue={this.props.name}
-            onValueChange={this.props.selectIdol}
-          >
+            onValueChange={this.props.selectIdol}>
             {this.props.idols.map((item, index) =>
-              <PickerItem key={'idol' + index} label={item} value={item} />)}
+              <Picker.Item key={'idol' + index} label={item} value={item} />)}
           </Picker>
         </View>
       </View>
@@ -49,7 +49,4 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({})
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(IdolNameRow)
+export default connect(mapStateToProps, mapDispatchToProps)(IdolNameRow)

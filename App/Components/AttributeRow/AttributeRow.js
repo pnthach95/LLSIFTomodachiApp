@@ -5,10 +5,12 @@ import { Images } from '../../Theme'
 import styles from '../../Theme/RowStyles'
 
 /**
- * Attribute Row
+ * Attribute Row (None, Smile, Pure, Cool, All)
  *
- * @function selectAttribute: Save `attribute` state
- * @param attribute state
+ * Prop:
+ * - `selectAttribute`: Save `attribute` state
+ * - `attribute`: state from parent
+ * 
  * @export
  * @class AttributeRow
  * @extends {React.Component}

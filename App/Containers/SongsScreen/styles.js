@@ -11,6 +11,16 @@ export default StyleSheet.create({
   list: {
     padding: Metrics.smallMargin
   },
+  textInput: {
+    flex: 1,
+    borderColor: '#333',
+    borderWidth: 1.5,
+    margin: 6
+  },
+  filterContainer: {
+    backgroundColor: 'white',
+    padding: 10
+  },
   resetButton: {
     backgroundColor: 'red',
     justifyContent: 'center',
@@ -20,5 +30,9 @@ export default StyleSheet.create({
   resetText: {
     color: 'white',
     textAlign: 'center'
+  },
+  resetView: {
+    alignItems: 'stretch',
+    marginTop: 10
   }
 })

@@ -3,7 +3,6 @@ import { Text, View, ScrollView, TouchableOpacity, Image } from 'react-native'
 import { connect } from 'react-redux'
 import FastImage from 'react-native-fast-image'
 import LinearGradient from 'react-native-linear-gradient'
-import Icon from 'react-native-vector-icons/Ionicons'
 
 import { getSongMaxStat } from '../../Stores/CachedData/Selectors'
 import StarBar from '../../Components/StarBar/StarBar'
@@ -12,9 +11,32 @@ import SquareButton from '../../Components/SquareButton/SquareButton'
 import TextRow from '../../Components/TextRow/TextRow'
 import SplashScreen from '../SplashScreen/SplashScreen'
 import { findColorByAttribute, AddHTTPS, findMainUnit } from '../../Utils'
-import { Metrics, Fonts, ApplicationStyles, Colors } from '../../Theme'
+import { Metrics, ApplicationStyles, Colors } from '../../Theme'
 import styles from './styles'
 
+/**
+ * Song Detail Screen
+ * 
+ * From parent screen, pass `item` (Song object) to show detail
+ *
+ * State:
+ * - `item`: [Song object](https://github.com/MagiCircles/SchoolIdolAPI/wiki/API-Songs#objects)
+ * - `imgWidth`: Image width
+ * - `imgHeight`: Image height
+ * - `colors`: Color array
+ * - `currentStats`: To show stats when choosing Mode
+ * - `buttonID`: ID for choosing Mode button
+ * - `easy`: [note number, stars]
+ * - `normal`: [note number, stars]
+ * - `hard`: [note number, stars]
+ * - `expert`: [note number, stars]
+ * - `random`: [note number, stars]
+ * - `master`: [note number, stars]
+ * - `isLoading`: Loading state
+ * 
+ * @class SongDetailScreen
+ * @extends {React.Component}
+ */
 class SongDetailScreen extends React.Component {
   constructor(props) {
     super(props)
@@ -33,16 +55,6 @@ class SongDetailScreen extends React.Component {
       master: [],
       isLoading: true
     }
-  }
-
-  setColor(index) {
-    if (index < 3)
-      return 0
-    if (index < 6)
-      return 1
-    if (index < 9)
-      return 2
-    return 3
   }
 
   componentDidMount() {
@@ -94,8 +106,27 @@ class SongDetailScreen extends React.Component {
   }
 
   /**
-   * Đổi số giây ra dạng m:ss
-   * @param {Number} time Số giây
+   * Set color for star
+   *
+   * @param {Number} index
+   * @returns
+   * @memberof SongDetailScreen
+   */
+  setColor(index) {
+    if (index < 3)
+      return 0
+    if (index < 6)
+      return 1
+    if (index < 9)
+      return 2
+    return 3
+  }
+
+  /**
+   * Convert seconds to m:ss
+   * 
+   * @param {Number} time
+   * @memberof SongDetailScreen
    */
   formatTime(time) {
     let minutes = parseInt(((time / 60) % 60).toString(), 10)
@@ -104,17 +135,24 @@ class SongDetailScreen extends React.Component {
     return minutes + ':' + seconds
   }
 
+  /**
+   * Navigate to Event Detail Screen
+   *
+   * @param {Object} event
+   * @memberof SongDetailScreen
+   */
   navigateToEventDetail(event) {
     this.props.navigation.navigate('EventDetailScreen', { event: event })
   }
 
   /**
-   * Render nút chọn độ khó
+   * Render choosing stat button
    * 
-   * @param {Number} id ID
-   * @param {String} text Nội dung
-   * @param {Array} stat Chỉ số
-   * @param {Object} style Style
+   * @param {Number} id
+   * @param {String} text
+   * @param {Array} stat
+   * @param {Object} style
+   * @memberof SongDetailScreen
    */
   statButton(id, text, stat, style) {
     return (
@@ -137,6 +175,7 @@ class SongDetailScreen extends React.Component {
     if (this.state.isLoading) return <SplashScreen />
     return (
       <View style={styles.container}>
+        {/* HEADER */}
         <View style={[
           ApplicationStyles.header,
           styles.header,
@@ -155,40 +194,42 @@ class SongDetailScreen extends React.Component {
           </View>
         </View>
 
+        {/* BODY */}
         <LinearGradient colors={[this.state.colors[1], this.state.colors[1]]}
           style={styles.content}>
           <ScrollView showsVerticalScrollIndicator={false}
             contentContainerStyle={{ alignItems: 'center' }}
             style={{ flex: 1 }}>
-            <FastImage
-              source={{ uri: AddHTTPS(this.state.item.image) }}
+            <FastImage source={{ uri: AddHTTPS(this.state.item.image) }}
+              onLoad={e => this.onLoadFastImage(e)}
               style={{
                 width: Metrics.screenWidth / 2,
                 height: (Metrics.screenWidth / 2) * this.state.imgHeight / this.state.imgWidth
-              }}
-              onLoad={e => this.onLoadFastImage(e)} />
+              }} />
             <View style={{ height: 10 }} />
+
             <TextRow item1={{ text: 'Attribute', flex: 1 }}
               item2={{ text: this.state.item.attribute, flex: 1 }} />
-            {this.state.item.rank ?
+            {this.state.item.rank &&
               <View style={styles.event}>
                 <TextRow item1={{ text: 'Unlock', flex: 1 }}
                   item2={{ text: this.state.item.rank, flex: 1 }} />
-              </View> :
-              <View />}
-            <TextRow item1={{ text: 'Beats per minute', flex: 1 }} item2={{ text: this.state.item.BPM, flex: 1 }} />
-            <TextRow item1={{ text: 'Length', flex: 1 }} item2={{ text: this.formatTime(this.state.item.time), flex: 1 }} />
+              </View>}
+            <TextRow item1={{ text: 'Beats per minute', flex: 1 }}
+              item2={{ text: this.state.item.BPM, flex: 1 }} />
+            <TextRow item1={{ text: 'Length', flex: 1 }}
+              item2={{ text: this.formatTime(this.state.item.time), flex: 1 }} />
             {this.state.item.event &&
               <View style={styles.event}>
-                <TextRow item1={{ text: 'Event', flex: 1 }} item2={{ text: this.state.item.event.japanese_name, flex: 1 }} />
-                <TextRow item1={{ text: '', flex: 1 }} item2={{ text: this.state.item.event.english_name, flex: 1 }} />
-                <TouchableOpacity style={styles.eventButton}
-                  onPress={() => this.navigateToEventDetail(this.state.item.event)}>
-                  <FastImage
-                    source={{ uri: AddHTTPS(this.state.item.event.image) }}
-                    style={styles.eventImage}
+                <TextRow item1={{ text: 'Event', flex: 1 }}
+                  item2={{ text: this.state.item.event.japanese_name, flex: 1 }} />
+                <TextRow item1={{ text: '', flex: 1 }}
+                  item2={{ text: this.state.item.event.english_name, flex: 1 }} />
+                <TouchableOpacity onPress={() => this.navigateToEventDetail(this.state.item.event)}
+                  style={styles.eventButton}>
+                  <FastImage source={{ uri: AddHTTPS(this.state.item.event.image) }}
                     resizeMode={FastImage.resizeMode.contain}
-                  />
+                    style={styles.eventImage} />
                 </TouchableOpacity>
               </View>}
             {(this.state.item.daily_rotation != null && this.state.item.daily_rotation.length != 0) &&
@@ -196,7 +237,8 @@ class SongDetailScreen extends React.Component {
                 <TextRow item1={{ text: 'Daily rotation', flex: 1 }}
                   item2={{ text: this.state.item.daily_rotation + ' - ' + this.state.item.daily_rotation_position, flex: 1 }} />
               </View>}
-            <TextRow item1={{ text: 'Currently available', flex: 1 }} item2={{ text: this.state.item.available ? 'Yes' : 'No', flex: 1 }} />
+            <TextRow item1={{ text: 'Currently available', flex: 1 }}
+              item2={{ text: this.state.item.available ? 'Yes' : 'No', flex: 1 }} />
             <View style={styles.buttonRow}>
               {this.statButton(0, 'Easy', this.state.easy, styles.leftRadius)}
               {this.statButton(1, 'Normal', this.state.normal)}
@@ -209,8 +251,7 @@ class SongDetailScreen extends React.Component {
               {this.state.master[0] &&
                 this.statButton(5, 'Master', this.state.master, styles.rightRadius)}
             </View>
-            <ProgressBar
-              number={this.state.currentStats[0]}
+            <ProgressBar number={this.state.currentStats[0]}
               progress={this.progressStat(this.state.currentStats[0])}
               fillStyle={{ backgroundColor: this.state.colors[0] }} />
             <StarBar array={this.state.currentStats[1]} />
@@ -225,10 +266,5 @@ const mapStateToProps = (state) => ({
   songMaxStat: getSongMaxStat(state)
 })
 
-const mapDispatchToProps = (dispatch) => ({
-})
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(SongDetailScreen)
+const mapDispatchToProps = (dispatch) => ({})
+export default connect(mapStateToProps, mapDispatchToProps)(SongDetailScreen)

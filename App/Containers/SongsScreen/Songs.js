@@ -1,7 +1,6 @@
 import React from 'react'
 import { View, FlatList, TextInput, Alert, TouchableOpacity, Text } from 'react-native'
 import { connect } from 'react-redux'
-import Spinkit from 'react-native-spinkit'
 import Icon from 'react-native-vector-icons/Ionicons'
 import _ from 'lodash'
 
@@ -28,6 +27,28 @@ const defaultFilter = {
   main_unit: ''
 }
 
+/**
+ * [Song List Screen](https://github.com/MagiCircles/SchoolIdolAPI/wiki/API-Songs#get-the-list-of-songs)
+ * 
+ * State:
+ * - `isLoading`: Loading state
+ * - `list`: Data for FlatList
+ * - `isFilter`: Filter on/off
+ * - `ordering`: Ordering by any field (See link above)
+ * - `page_size`: Number of object per API call
+ * - `page`: Page number
+ * - `expand_event`: Will return the full Event object in the event field
+ * - `search`: Keyword for search
+ * - `attribute`: Attribute (None, Smile, Pure, Cool, All)
+ * - `is_event`: Is event (None, True, False)
+ * - `is_daily_rotation`: *TODO*
+ * - `available`: *TODO*
+ * - `main_unit`: Main unit (None, μ's, Aqours)
+ * - `stopSearch`: Prevent calling API
+ *
+ * @class SongsScreen
+ * @extends {React.Component}
+ */
 class SongsScreen extends React.Component {
   constructor(props) {
     super(props)
@@ -65,18 +86,34 @@ class SongsScreen extends React.Component {
     this.getSongs()
   }
 
+  /**
+   * Key extractor for FlatList
+   *
+   * @memberof SongsScreen
+   */
   _keyExtractor = (item, index) => `song ${item.name}`
 
-  _renderItem = ({ item }) => (
-    <SongItem item={item} onPress={() => this.navigateToSongDetail(item)} />
-  )
+  /**
+   * Render item in FlatList
+   *
+   * @param {Object} item
+   * @memberof SongsScreen
+   */
+  _renderItem = ({ item }) => <SongItem item={item} onPress={() => this.navigateToSongDetail(item)} />
 
+  /**
+   * Navigate to Song Detail Screen
+   *
+   * @param {Object} item
+   * @memberof SongsScreen
+   */
   navigateToSongDetail(item) {
     this.props.navigation.navigate('SongDetailScreen', { item: item })
   }
 
   /**
-   *Khi scroll đến cuối danh sách
+   * Call when scrolling to the end of list.
+   * stopSearch prevents calling getCards when no card was found (404).
    *
    * @memberof CardsScreen
    */
@@ -98,7 +135,7 @@ class SongsScreen extends React.Component {
       main_unit: this.state.main_unit
     }
     if (this.state.search != 0) { _filter.search = this.state.search }
-    console.log(`========== Songs.getSongs.page ${page} ==========`)
+    console.log(`========== Songs.getSongs`, _filter)
     LLSIFService.fetchSongList(_filter).then((result) => {
       if (_.isString(result)) {
         this.setState({ stopSearch: true })
@@ -117,19 +154,32 @@ class SongsScreen extends React.Component {
       }
     }).catch((err) => {
       Alert.alert('Error', 'Error when get songs',
-        [
-          { text: 'OK', onPress: () => console.log('OK Pressed', err) },
-        ])
+        [{ text: 'OK', onPress: () => console.log('OK Pressed', err) }])
     })
   }
 
+  /**
+   * Filter on/off
+   *
+   * @memberof SongsScreen
+   */
   toggleFilter = () => this.setState({ isFilter: !this.state.isFilter })
 
+  /**
+   * Call when pressing search button
+   *
+   * @memberof SongsScreen
+   */
   onSearch = () => {
     this.setState({ list: [], page: 1, isFilter: false, stopSearch: false })
     this.getSongs(1)
   }
 
+  /**
+   * Reset filter variables
+   *
+   * @memberof SongsScreen
+   */
   resetFilter = () => {
     this.setState({
       ordering: defaultFilter.ordering,
@@ -147,17 +197,30 @@ class SongsScreen extends React.Component {
   }
 
   /**
-   * Lưu is_event
+   * Save `is_event`
    *
    * @param {String} value
    * @memberof SongsScreen
    */
   selectEvent = (value) => () => this.setState({ is_event: value })
 
+  /**
+   * Save `attribute`
+   *
+   * @memberof SongsScreen
+   */
   selectAttribute = (value) => () => this.setState({ attribute: value })
 
+  /**
+   * Save `main_unit`
+   *
+   * @memberof SongsScreen
+   */
   selectMainUnit = (value) => () => this.setState({ main_unit: value })
 
+  /**
+   * Render footer in FlatList
+   */
   renderFooter = () => {
     return (
       <View style={[ApplicationStyles.center, { margin: 10 }]}>
@@ -171,7 +234,7 @@ class SongsScreen extends React.Component {
       <View style={styles.container}>
         {/* HEADER */}
         <View style={[ApplicationStyles.header, styles.header]}>
-          <TextInput style={{ flex: 1, borderColor: '#333', borderWidth: 1.5, margin: 6 }}
+          <TextInput style={styles.textInput}
             onChangeText={text => this.setState({ search: text })}
             onSubmitEditing={this.onSearch}
             placeholder={'Type here...'}
@@ -179,19 +242,21 @@ class SongsScreen extends React.Component {
           <SquareButton name={'ios-search'} onPress={this.onSearch} />
           <SquareButton name={'ios-more'} onPress={this.toggleFilter} />
         </View>
+        {/* FILTER */}
         {this.state.isFilter &&
-          <View style={{ backgroundColor: 'white', padding: 10 }}>
+          <View style={styles.filterContainer}>
             <AttributeRow attribute={this.state.attribute} selectAttribute={this.selectAttribute} />
             <EventRow is_event={this.state.is_event} selectEvent={this.selectEvent} />
             <MainUnitRow main_unit={this.state.main_unit} selectMainUnit={this.selectMainUnit} />
 
-            <View style={{ alignItems: 'stretch', marginTop: 10 }}>
+            <View style={styles.resetView}>
               <TouchableOpacity onPress={this.resetFilter}
                 style={styles.resetButton}>
                 <Text style={styles.resetText}>RESET</Text>
               </TouchableOpacity>
             </View>
           </View>}
+        {/* LIST */}
         <FlatList
           contentContainerStyle={styles.content}
           data={this.state.list}
@@ -207,13 +272,6 @@ class SongsScreen extends React.Component {
   }
 }
 
-const mapStateToProps = (state) => ({
-})
-
-const mapDispatchToProps = (dispatch) => ({
-})
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(SongsScreen)
+const mapStateToProps = (state) => ({})
+const mapDispatchToProps = (dispatch) => ({})
+export default connect(mapStateToProps, mapDispatchToProps)(SongsScreen)

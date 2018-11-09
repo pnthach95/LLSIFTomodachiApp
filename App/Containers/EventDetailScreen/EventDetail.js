@@ -14,9 +14,22 @@ import styles from './styles'
 import { LLSIFService } from '../../Services/LLSIFService'
 
 /**
- * Màn hình thông tin chi tiết event
- * - event: Event object
- * - eventName: tên tiếng Nhật của event
+ * Event Detail Screen
+ * 
+ * From parent screen, pass `item` (event object) or `eventName` (Japanese only) to show event detail
+ * 
+ * State:
+ * - `isLoading`: Loading state
+ * - `item`: Event object
+ * - `imgWidth`: Image width
+ * - `imgHeight`: Image height
+ * - `cards`: Card list
+ * - `songs`: Song list
+ *
+ * Event object: https://github.com/MagiCircles/SchoolIdolAPI/wiki/API-Events#objects
+ * 
+ * @class EventDetailScreen
+ * @extends {React.Component}
  */
 class EventDetailScreen extends React.Component {
   constructor(props) {
@@ -31,23 +44,6 @@ class EventDetailScreen extends React.Component {
     }
   }
 
-  loadData() {
-    LLSIFService.fetchCardList({ event_japanese_name: this.state.item.japanese_name }).then(resCard => {
-      LLSIFService.fetchSongList({ event: this.state.item.japanese_name }).then(resSong => {
-        this.setState({
-          isLoading: false,
-          cards: resCard,
-          songs: resSong
-        })
-        console.log('+-----------------------------------')
-        console.log('+ EventDetails', this.state.item)
-        console.log('+ Cards', this.state.cards)
-        console.log('+ Songs', this.state.songs)
-        console.log('+-----------------------------------')
-      })
-    })
-  }
-
   componentDidMount() {
     if (this.state.item) {
       this.loadData()
@@ -59,23 +55,57 @@ class EventDetailScreen extends React.Component {
     }
   }
 
+  /**
+   * Load card list, song list in event
+   *
+   * @memberof EventDetailScreen
+   */
+  loadData() {
+    LLSIFService.fetchCardList({ event_japanese_name: this.state.item.japanese_name }).then(resCard => {
+      LLSIFService.fetchSongList({ event: this.state.item.japanese_name }).then(resSong => {
+        this.setState({
+          isLoading: false,
+          cards: resCard,
+          songs: resSong
+        })
+        console.log('+-----------------------------------')
+        console.log('| EventDetails', this.state.item)
+        console.log('| Cards', this.state.cards)
+        console.log('| Songs', this.state.songs)
+        console.log('+-----------------------------------')
+      })
+    })
+  }
+
   onLoadFastImage(e) {
     const { width, height } = e.nativeEvent
     this.setState({ imgWidth: width, imgHeight: height })
   }
 
+  /**
+   * Navigate to Card Detail Screen
+   *
+   * @param {Object} item Card object
+   * @memberof EventDetailScreen
+   */
   navigateToCardDetail(item) {
     this.props.navigation.navigate('CardDetailScreen', { item: item })
   }
 
+  /**
+   * Navigate to Song Detail Screen
+   *
+   * @param {Object} item Song object
+   * @memberof EventDetailScreen
+   */
   navigateToSongDetail(item) {
     this.props.navigation.navigate('SongDetailScreen', { item: item })
   }
 
   /**
-   * Bộ đếm lùi thời gian sự kiện đang diễn ra
+   * Countdown timer for ongoing event
    *
-   * @param {Number} time Thời gian còn lại (miliseconds)
+   * @param {Number} time Remaining time (miliseconds)
    * @returns
    * @memberof MainScreen
    */
@@ -89,29 +119,26 @@ class EventDetailScreen extends React.Component {
 
   render() {
     if (this.state.isLoading) return <SplashScreen bgColor={Colors.violet} />
-    /** Thời gian bắt đầu sự kiện EN */
+    /** Start time of English event */
     let ENEventStart = moment(this.state.item.english_beginning)
-    /** Thời gian kết thúc sự kiện EN */
+    /** End time of English event */
     let ENEventEnd = moment(this.state.item.english_end)
-    /** Thời gian bắt đầu sự kiện JP */
+    /** Start time of Japan event */
     let JPEventStart = moment(this.state.item.beginning, 'YYYY-MM-DDTHH:mm:ssZ')
-    /** Thời gian kết thúc sự kiện JP */
+    /** End time of Japan event */
     let JPEventEnd = moment(this.state.item.end, 'YYYY-MM-DDTHH:mm:ssZ')
     return (
       <View style={styles.container}>
-        <View style={[
-          ApplicationStyles.header,
-          styles.header
-        ]}>
+        <View style={[ApplicationStyles.header, styles.header]}>
           <View style={styles.leftHeader}>
-            <SquareButton name={'ios-arrow-back'} color={'white'} onPress={() => this.props.navigation.goBack()} />
+            <SquareButton name={'ios-arrow-back'} color={'white'}
+              onPress={() => this.props.navigation.goBack()} />
           </View>
           <View style={styles.centerHeader} />
           <View style={styles.rightHeader} />
         </View>
 
-        <ScrollView
-          showsVerticalScrollIndicator={false}
+        <ScrollView showsVerticalScrollIndicator={false}
           contentContainerStyle={styles.content}
           style={styles.scrollView}>
           {/* ENGLISH BLOCK */}
@@ -119,29 +146,28 @@ class EventDetailScreen extends React.Component {
             <View style={[styles.content, { marginVertical: 10 }]}>
               <Text style={{ color: 'white' }}>English</Text>
               <Text style={styles.title}>{this.state.item.english_name}</Text>
-              <FastImage
-                source={{ uri: AddHTTPS(this.state.item.english_image) }}
+              <FastImage source={{ uri: AddHTTPS(this.state.item.english_image) }}
+                onLoad={e => this.onLoadFastImage(e)}
                 style={{
                   width: Metrics.widthBanner,
                   height: Metrics.widthBanner * this.state.imgHeight / this.state.imgWidth
-                }}
-                onLoad={e => this.onLoadFastImage(e)} />
+                }} />
               <Text style={styles.text}>Start: {ENEventStart.format('HH:mm MMM Do YYYY')}</Text>
               <Text style={styles.text}>End: {ENEventEnd.format('HH:mm MMM Do YYYY')}</Text>
               {this.state.item.world_current && this.timer(ENEventEnd.diff(moment()))}
             </View>}
           {this.state.item.english_name &&
             <Seperator style={{ backgroundColor: 'white' }} />}
+
           {/* JAPANESE BLOCK */}
           <Text style={{ color: 'white' }}>Japanese</Text>
           <Text style={styles.title}>{this.state.item.romaji_name}</Text>
-          <FastImage
-            source={{ uri: AddHTTPS(this.state.item.image) }}
+          <FastImage source={{ uri: AddHTTPS(this.state.item.image) }}
+            onLoad={e => this.onLoadFastImage(e)}
             style={{
               width: Metrics.widthBanner,
               height: Metrics.widthBanner * this.state.imgHeight / this.state.imgWidth
-            }}
-            onLoad={e => this.onLoadFastImage(e)} />
+            }} />
           <Text style={styles.text}>Start: {JPEventStart.format('HH:mm MMM Do YYYY')}</Text>
           <Text style={styles.text}>End: {JPEventEnd.format('HH:mm MMM Do YYYY')}</Text>
           {this.state.item.japan_current && this.timer(JPEventEnd.diff(moment()))}
@@ -149,11 +175,13 @@ class EventDetailScreen extends React.Component {
           {/* SONGS */}
           <View style={styles.cardList}>
             {this.state.songs.map((item, index) =>
-              <TouchableOpacity key={'song' + index} style={styles.card} onPress={() => this.navigateToSongDetail(item)}>
+              <TouchableOpacity key={'song' + index}
+                onPress={() => this.navigateToSongDetail(item)}
+                style={styles.card}>
                 <FastImage source={{ uri: AddHTTPS(item.image) }} style={styles.song} />
                 <View style={styles.songInfo}>
-                  <Image source={findAttribute(item.attribute)} style={{ width: 25, height: 25 }} />
-                  <Text style={{ color: 'white', paddingLeft: 10 }}>{item.name}</Text>
+                  <Image source={findAttribute(item.attribute)} style={styles.attributeIcon} />
+                  <Text style={styles.songName}>{item.name}</Text>
                 </View>
               </TouchableOpacity>
             )}
@@ -162,7 +190,9 @@ class EventDetailScreen extends React.Component {
           {/* CARDS */}
           <View style={styles.cardList}>
             {this.state.cards.map((item, index) =>
-              <TouchableOpacity key={'card' + index} style={styles.card} onPress={() => this.navigateToCardDetail(item)}>
+              <TouchableOpacity key={'card' + index}
+                onPress={() => this.navigateToCardDetail(item)}
+                style={styles.card}>
                 <View style={styles.cardImage}>
                   <FastImage source={{ uri: AddHTTPS(item.round_card_image) }} style={styles.roundImage} />
                   <View style={{ width: 5 }} />
@@ -178,13 +208,6 @@ class EventDetailScreen extends React.Component {
   }
 }
 
-const mapStateToProps = (state) => ({
-})
-
-const mapDispatchToProps = (dispatch) => ({
-})
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(EventDetailScreen)
+const mapStateToProps = (state) => ({})
+const mapDispatchToProps = (dispatch) => ({})
+export default connect(mapStateToProps, mapDispatchToProps)(EventDetailScreen)

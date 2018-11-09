@@ -17,6 +17,22 @@ import styles from './styles'
 const column1 = 3
 const column2 = 4
 
+/**
+ * Idol Detail Screen
+ * 
+ * From parent screen, pass `name` to get Idol object
+ * 
+ * State:
+ * - `item`: [Idol object](https://github.com/MagiCircles/SchoolIdolAPI/wiki/API-Idols#objects)
+ * - `imgWidth`: Image width
+ * - `imgHeight`: Image height
+ * - `colors`: Color array
+ * - `images`: Image array
+ * - `isLoading`: Loading state
+ * 
+ * @class IdolDetailScreen
+ * @extends {React.Component}
+ */
 class IdolDetailScreen extends React.Component {
   constructor(props) {
     super(props)
@@ -66,6 +82,7 @@ class IdolDetailScreen extends React.Component {
     if (this.state.isLoading) return <SplashScreen bgColor={Colors.blue} />
     return (
       <View style={styles.container}>
+        {/* HEADER */}
         <View style={[
           ApplicationStyles.header,
           styles.header,
@@ -86,6 +103,7 @@ class IdolDetailScreen extends React.Component {
           </View>
         </View>
 
+        {/* INFORMATION */}
         <LinearGradient style={{ flex: 1 }}
           colors={[this.state.colors[1], this.state.colors[0]]} >
           <ScrollView showsVerticalScrollIndicator={false}>
@@ -119,109 +137,108 @@ class IdolDetailScreen extends React.Component {
                 <View>
                   <TextRow
                     item1={{ flex: column1, text: 'School' }}
-                    item2={{ flex: column2, text: this.state.item.school }}
-                  />
+                    item2={{ flex: column2, text: this.state.item.school }} />
                   <Seperator />
                 </View>}
+
               <TextRow
                 item1={{ flex: column1, text: 'Attribute' }}
-                item2={{ flex: column2, text: this.state.item.attribute }}
-              />
+                item2={{ flex: column2, text: this.state.item.attribute }} />
+
               {this.state.item.birthday &&
                 <View>
                   <Seperator />
                   <TextRow
                     item1={{ flex: column1, text: 'Birthday' }}
-                    item2={{ flex: column2, text: moment(this.state.item.birthday, 'MM-DD').format('MMM Do') }}
-                  />
+                    item2={{ flex: column2, text: moment(this.state.item.birthday, 'MM-DD').format('MMM Do') }} />
                 </View>}
+
               {this.state.item.main_unit &&
                 <View>
                   <Seperator />
                   <TextRow
                     item1={{ flex: column1, text: 'Main Unit' }}
-                    item2={{ flex: column2, text: this.state.item.main_unit }}
-                  />
+                    item2={{ flex: column2, text: this.state.item.main_unit }} />
                 </View>}
+
               {this.state.item.sub_unit &&
                 <View>
                   <Seperator />
                   <TextRow
                     item1={{ flex: column1, text: 'Sub Unit' }}
-                    item2={{ flex: column2, text: this.state.item.sub_unit }}
-                  />
+                    item2={{ flex: column2, text: this.state.item.sub_unit }} />
                 </View>}
+
               {this.state.item.astrological_sign &&
                 <View>
                   <Seperator />
                   <TextRow
                     item1={{ flex: column1, text: 'Astrological Sign' }}
-                    item2={{ flex: column2, text: this.state.item.astrological_sign }}
-                  />
+                    item2={{ flex: column2, text: this.state.item.astrological_sign }} />
                 </View>}
+
               {this.state.item.blood &&
                 <View>
                   <Seperator />
                   <TextRow
                     item1={{ flex: column1, text: 'Blood Type' }}
-                    item2={{ flex: column2, text: this.state.item.blood }}
-                  />
+                    item2={{ flex: column2, text: this.state.item.blood }} />
                 </View>}
+
               {this.state.item.height &&
                 <View>
                   <Seperator />
                   <TextRow
                     item1={{ flex: column1, text: 'Height' }}
-                    item2={{ flex: column2, text: this.state.item.height }}
-                  />
+                    item2={{ flex: column2, text: this.state.item.height }} />
                 </View>}
+
               {this.state.item.measurements &&
                 <View>
                   <Seperator />
                   <TextRow
                     item1={{ flex: column1, text: 'Measurements' }}
-                    item2={{ flex: column2, text: this.state.item.measurements }}
-                  />
+                    item2={{ flex: column2, text: this.state.item.measurements }} />
                 </View>}
+
               {this.state.item.favorite_food &&
                 <View>
                   <Seperator />
                   <TextRow
                     item1={{ flex: column1, text: 'Favorite Food' }}
-                    item2={{ flex: column2, text: this.state.item.favorite_food }}
-                  />
+                    item2={{ flex: column2, text: this.state.item.favorite_food }} />
                 </View>}
+
               {this.state.item.least_favorite_food &&
                 <View>
                   <Seperator />
                   <TextRow
                     item1={{ flex: column1, text: 'Least Favorite Food' }}
-                    item2={{ flex: column2, text: this.state.item.least_favorite_food }}
-                  />
+                    item2={{ flex: column2, text: this.state.item.least_favorite_food }} />
                 </View>}
+
               {this.state.item.hobbies &&
                 <View>
                   <Seperator />
                   <TextRow
                     item1={{ flex: column1, text: 'Hobbies' }}
-                    item2={{ flex: column2, text: this.state.item.hobbies }}
-                  />
+                    item2={{ flex: column2, text: this.state.item.hobbies }} />
                 </View>}
+
               {this.state.item.year &&
                 <View>
                   <Seperator />
                   <TextRow
                     item1={{ flex: column1, text: 'Year' }}
-                    item2={{ flex: column2, text: this.state.item.year }}
-                  />
+                    item2={{ flex: column2, text: this.state.item.year }} />
                 </View>}
+
               {this.state.item.cv &&
                 <View>
                   <Seperator />
                   <TextRow
                     item1={{ flex: column1, text: 'CV' }}
-                    item2={{ flex: column2, text: this.state.item.cv.name + ' (' + this.state.item.cv.nickname + ')' }}
-                  />
+                    item2={{ flex: column2, text: this.state.item.cv.name + ' (' + this.state.item.cv.nickname + ')' }} />
                   {this.state.item.cv.twitter &&
                     <TextRow
                       item1={{ flex: column1, text: '' }}
@@ -230,8 +247,7 @@ class IdolDetailScreen extends React.Component {
                         text: 'Twitter: ' + this.state.item.cv.twitter,
                         onPress: () => Linking.openURL('https://twitter.com/' + this.state.item.cv.twitter),
                         textStyle: { textDecorationLine: 'underline' }
-                      }}
-                    />}
+                      }} />}
                   {this.state.item.cv.instagram &&
                     <TextRow
                       item1={{ flex: column1, text: '' }}
@@ -240,24 +256,22 @@ class IdolDetailScreen extends React.Component {
                         text: 'Instagram: ' + this.state.item.cv.instagram,
                         onPress: () => Linking.openURL('https://www.instagram.com/' + this.state.item.cv.instagram),
                         textStyle: { textDecorationLine: 'underline' }
-                      }}
-                    />}
+                      }} />}
                   <TextRow
                     item1={{ flex: column1, text: '' }}
                     item2={{
                       flex: column2, text: this.state.item.cv.url,
                       onPress: () => Linking.openURL(this.state.item.cv.url),
                       textStyle: { textDecorationLine: 'underline' }
-                    }}
-                  />
+                    }} />
                 </View>}
+
               {this.state.item.summary &&
                 <View>
                   <Seperator />
                   <TextRow
                     item1={{ flex: column1, text: 'Summary' }}
-                    item2={{ flex: column2, text: this.state.item.summary }}
-                  />
+                    item2={{ flex: column2, text: this.state.item.summary }} />
                 </View>}
             </View>
             <View style={{ height: Metrics.doubleBaseMargin }} />
@@ -268,13 +282,6 @@ class IdolDetailScreen extends React.Component {
   }
 }
 
-const mapStateToProps = (state) => ({
-})
-
-const mapDispatchToProps = (dispatch) => ({
-})
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(IdolDetailScreen)
+const mapStateToProps = (state) => ({})
+const mapDispatchToProps = (dispatch) => ({})
+export default connect(mapStateToProps, mapDispatchToProps)(IdolDetailScreen)

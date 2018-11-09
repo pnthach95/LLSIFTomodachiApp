@@ -17,8 +17,20 @@ import { Metrics, Fonts, ApplicationStyles, Colors, Images } from '../../Theme'
 import styles from './styles'
 
 /**
- * Màn hình thông tin chi tiết card
- * - item: Card object
+ * Card detail screen
+ * 
+ * State:
+ * - `item`: Card object
+ * - `imgWidth`: Image width
+ * - `imgHeight`: Image height
+ * - `colors`: Colors for background
+ * - `isLoading`: Check loading
+ * - `maxStats`: Maximum stats
+ * - `minStats`: Minimal stats
+ * - `nonIdolMaxStats`: Non-idolized maximum stats
+ * - `idolMaxStats`: Idolized maximum stats
+ * - `currentStats`: To show stats when choosing Level
+ * - `buttonID`: ID for choosing Level button
  *
  * @class CardDetailScreen
  * @extends {React.Component}
@@ -124,12 +136,11 @@ class CardDetailScreen extends React.Component {
 
   statButton(id, text, stats, style) {
     return (
-      <TouchableOpacity
+      <TouchableOpacity onPress={() => this.setState({ currentStats: stats, buttonID: id })}
         style={[
           styles.button, style,
           { backgroundColor: this.state.buttonID == id ? Colors.violet : Colors.inactive }
-        ]}
-        onPress={() => this.setState({ currentStats: stats, buttonID: id })}>
+        ]}>
         <Text style={[Fonts.style.normal, { color: 'white' }]}>{text}</Text>
       </TouchableOpacity>
     )
@@ -140,150 +151,156 @@ class CardDetailScreen extends React.Component {
     this.setState({ imgWidth: width, imgHeight: height })
   }
 
-  navigateToEventDetail(name) {
-    this.props.navigation.navigate('EventDetailScreen', { eventName: name })
-  }
+  /**
+   * Navigate to Event Detail Screen
+   * 
+   * @param {String} name Event name
+   * @memberof CardDetailScreen
+   */
+  navigateToEventDetail = (name) => () => this.props.navigation.navigate('EventDetailScreen', { eventName: name })
 
-  navigateToIdolDetail(name) {
-    this.props.navigation.navigate('IdolDetailScreen', { name: name })
-  }
+  /**
+   * Navigate to Idol Detail Screen
+   * 
+   * @param {String} name Idol name
+   * @memberof CardDetailScreen
+   */
+  navigateToIdolDetail = (name) => () => this.props.navigation.navigate('IdolDetailScreen', { name: name })
 
   render() {
     if (this.state.isLoading) return <SplashScreen />
-    else
-      return (
-        <View style={styles.container}>
-          <View style={[
-            ApplicationStyles.header,
-            styles.header,
-            { backgroundColor: this.state.colors[1] }
-          ]}>
-            <View style={styles.leftHeader}>
-              <SquareButton name={'ios-arrow-back'} onPress={() => this.props.navigation.goBack()} />
-            </View>
-            <View style={styles.centerHeader}>
-              <TouchableOpacity
-                onPress={() => this.navigateToIdolDetail(this.state.item.idol.name)}>
-                <Text style={Fonts.style.normal}>{this.state.item.idol.name}</Text>
-              </TouchableOpacity>
-            </View>
-            <View style={styles.rightHeader}>
-              <Image source={findMainUnit(this.state.item.idol.main_unit)}
-                style={styles.rightHeaderImage} />
-              <Image source={findSubUnit(this.state.item.idol.sub_unit)}
-                style={styles.rightHeaderImage} />
-            </View>
+    return (
+      <View style={styles.container}>
+        {/* HEADER */}
+        <View style={[
+          ApplicationStyles.header,
+          styles.header,
+          { backgroundColor: this.state.colors[1] }
+        ]}>
+          <View style={styles.leftHeader}>
+            <SquareButton name={'ios-arrow-back'} onPress={() => this.props.navigation.goBack()} />
           </View>
+          <View style={styles.centerHeader}>
+            <TouchableOpacity
+              onPress={this.navigateToIdolDetail(this.state.item.idol.name)}>
+              <Text style={Fonts.style.normal}>{this.state.item.idol.name}</Text>
+            </TouchableOpacity>
+          </View>
+          <View style={styles.rightHeader}>
+            <Image source={findMainUnit(this.state.item.idol.main_unit)}
+              style={styles.rightHeaderImage} />
+            <Image source={findSubUnit(this.state.item.idol.sub_unit)}
+              style={styles.rightHeaderImage} />
+          </View>
+        </View>
 
-          <ScrollView
-            showsVerticalScrollIndicator={false}
-            style={styles.scrollView}>
-            <LinearGradient colors={[this.state.colors[1], this.state.colors[0], 'white']}>
-              <View style={styles.imageRow}>
-                {this.state.item.card_image != null &&
-                  <FastImage
-                    source={{ uri: AddHTTPS(this.state.item.card_image) }}
-                    style={{
-                      width: Metrics.images.itemWidth,
-                      height: Metrics.images.itemWidth * this.state.imgHeight / this.state.imgWidth
-                    }}
-                    onLoad={e => this.onLoadFastImage(e)}
-                  />}
+        {/* MAIN VIEW */}
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          style={styles.scrollView}>
+          <LinearGradient colors={[this.state.colors[1], this.state.colors[0], 'white']}>
+            {/* CARD IMAGES */}
+            <View style={styles.imageRow}>
+              {this.state.item.card_image != null &&
                 <FastImage
-                  source={{ uri: AddHTTPS(this.state.item.card_idolized_image) }}
+                  source={{ uri: AddHTTPS(this.state.item.card_image) }}
                   style={{
                     width: Metrics.images.itemWidth,
                     height: Metrics.images.itemWidth * this.state.imgHeight / this.state.imgWidth
                   }}
                   onLoad={e => this.onLoadFastImage(e)}
-                />
+                />}
+              <FastImage
+                source={{ uri: AddHTTPS(this.state.item.card_idolized_image) }}
+                style={{
+                  width: Metrics.images.itemWidth,
+                  height: Metrics.images.itemWidth * this.state.imgHeight / this.state.imgWidth
+                }}
+                onLoad={e => this.onLoadFastImage(e)}
+              />
+            </View>
+
+            {/* INFORMATION */}
+            <View style={{ paddingHorizontal: Metrics.doubleBaseMargin }}>
+              <TextRow
+                item1={{ flex: 1, text: 'Card ID' }}
+                item2={{ flex: 2, text: this.state.item.game_id }}
+              />
+              <TextRow
+                item1={{ flex: 1, text: 'Release date' }}
+                item2={{ flex: 2, text: moment(this.state.item.release_date).format('MMM Do YYYY') }}
+              />
+              <Seperator />
+
+              {(this.state.item.skill != null && this.state.item.skill.length != 0) &&
+                <View>
+                  <TextRow
+                    item1={{ flex: 1, text: 'Skill' }}
+                    item2={{ flex: 2, text: this.state.item.skill }}
+                  />
+                  <TextRow
+                    item1={{ flex: 1, text: '' }}
+                    item2={{ flex: 2, text: this.state.item.skill_details, textStyle: styles.subtitleText }}
+                  />
+                  <Seperator />
+                </View>}
+
+              {(this.state.item.center_skill != null && this.state.item.center_skill.length != 0) &&
+                <View>
+                  <TextRow
+                    item1={{ flex: 1, text: 'Center skill' }}
+                    item2={{ flex: 2, text: this.state.item.center_skill }}
+                  />
+                  <TextRow
+                    item1={{ flex: 1, text: '' }}
+                    item2={{ flex: 2, text: this.state.item.center_skill_details, textStyle: styles.subtitleText }}
+                  />
+                  <Seperator />
+                </View>}
+
+              {this.state.item.event != null &&
+                <View>
+                  <TextRow item1={{ text: 'Event', flex: 1, textStyle: Fonts.style.normal }}
+                    item2={{ text: this.state.item.event.japanese_name, flex: 4, textStyle: Fonts.style.normal }} />
+                  <TextRow item1={{ text: '', flex: 1, textStyle: Fonts.style.normal }}
+                    item2={{ text: this.state.item.event.english_name, flex: 4, textStyle: Fonts.style.normal }} />
+                  <TouchableOpacity style={ApplicationStyles.center}
+                    onPress={this.navigateToEventDetail(this.state.item.event.japanese_name)}>
+                    <FastImage
+                      source={{ uri: AddHTTPS(this.state.item.event.image) }}
+                      style={styles.banner}
+                      resizeMode={FastImage.resizeMode.contain}
+                    />
+                  </TouchableOpacity>
+                  <Seperator />
+                </View>}
+
+              <View style={{ flexDirection: 'row' }}>
+                <Icon name='ios-heart' size={Metrics.icons.medium} color={'red'} />
+                <Text style={Fonts.style.normal}> : {this.state.item.hp}</Text>
               </View>
+            </View>
 
-              <View style={{ paddingHorizontal: Metrics.doubleBaseMargin }}>
-                <TextRow
-                  item1={{ flex: 1, text: 'Card ID' }}
-                  item2={{ flex: 2, text: this.state.item.game_id }}
-                />
-                <TextRow
-                  item1={{ flex: 1, text: 'Release date' }}
-                  item2={{ flex: 2, text: moment(this.state.item.release_date).format('MMM Do YYYY') }}
-                />
-                <Seperator />
+            {/* STATS */}
+            <View style={styles.buttonRow}>
+              {this.statButton(0, 'Level 1', this.state.minStats, styles.leftRadius)}
+              {this.state.item.non_idolized_maximum_statistics_smile != 0 &&
+                this.statButton(1, `Level ${this.state.item.non_idolized_max_level}`, this.state.nonIdolMaxStats)}
+              {this.state.item.idolized_max_level != 0 &&
+                this.statButton(2, `Level ${this.state.item.idolized_max_level}`, this.state.idolMaxStats, styles.rightRadius)}
+            </View>
+            {this.progressView(this.state.currentStats)}
 
-                {(this.state.item.skill != null && this.state.item.skill.length != 0) &&
-                  <View>
-                    <TextRow
-                      item1={{ flex: 1, text: 'Skill' }}
-                      item2={{ flex: 2, text: this.state.item.skill }}
-                    />
-                    <TextRow
-                      item1={{ flex: 1, text: '' }}
-                      item2={{ flex: 2, text: this.state.item.skill_details, textStyle: styles.subtitleText }}
-                    />
-                    <Seperator />
-                  </View>}
-
-                {(this.state.item.center_skill != null && this.state.item.center_skill.length != 0) &&
-                  <View>
-                    <TextRow
-                      item1={{ flex: 1, text: 'Center skill' }}
-                      item2={{ flex: 2, text: this.state.item.center_skill }}
-                    />
-                    <TextRow
-                      item1={{ flex: 1, text: '' }}
-                      item2={{ flex: 2, text: this.state.item.center_skill_details, textStyle: styles.subtitleText }}
-                    />
-                    <Seperator />
-                  </View>}
-
-                {this.state.item.event != null &&
-                  <View>
-                    <TextRow item1={{ text: 'Event', flex: 1, textStyle: Fonts.style.normal }}
-                      item2={{ text: this.state.item.event.japanese_name, flex: 4, textStyle: Fonts.style.normal }} />
-                    <TextRow item1={{ text: '', flex: 1, textStyle: Fonts.style.normal }}
-                      item2={{ text: this.state.item.event.english_name, flex: 4, textStyle: Fonts.style.normal }} />
-                    <TouchableOpacity style={ApplicationStyles.center}
-                      onPress={() => this.navigateToEventDetail(this.state.item.event.japanese_name)}>
-                      <FastImage
-                        source={{ uri: AddHTTPS(this.state.item.event.image) }}
-                        style={styles.banner}
-                        resizeMode={FastImage.resizeMode.contain}
-                      />
-                    </TouchableOpacity>
-                    <Seperator />
-                  </View>}
-
-                <View style={{ flexDirection: 'row' }}>
-                  <Icon name='ios-heart' size={Metrics.icons.medium} color={'red'} />
-                  <Text style={Fonts.style.normal}> : {this.state.item.hp}</Text>
-                </View>
-              </View>
-
-              <View style={styles.buttonRow}>
-                {this.statButton(0, 'Level 1', this.state.minStats, styles.leftRadius)}
-                {this.state.item.non_idolized_maximum_statistics_smile != 0 &&
-                  this.statButton(1, `Level ${this.state.item.non_idolized_max_level}`, this.state.nonIdolMaxStats)}
-                {this.state.item.idolized_max_level != 0 &&
-                  this.statButton(2, `Level ${this.state.item.idolized_max_level}`, this.state.idolMaxStats, styles.rightRadius)}
-              </View>
-
-              {this.progressView(this.state.currentStats)}
-              <View style={{ height: Metrics.doubleBaseMargin }} />
-            </LinearGradient>
-          </ScrollView>
-        </View>
-      )
+            <View style={{ height: Metrics.doubleBaseMargin }} />
+          </LinearGradient>
+        </ScrollView>
+      </View>
+    )
   }
 }
 
 const mapStateToProps = (state) => ({
   maxStats: getMaxStats(state)
 })
-
-const mapDispatchToProps = (dispatch) => ({
-})
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(CardDetailScreen)
+const mapDispatchToProps = (dispatch) => ({})
+export default connect(mapStateToProps, mapDispatchToProps)(CardDetailScreen)

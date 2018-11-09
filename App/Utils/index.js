@@ -1,7 +1,8 @@
 import { Colors, Images } from '../Theme'
 
 /**
- * Thêm đầu https: cho link hình
+ * Add `https:` for image link
+ * 
  * @param {String} link 
  */
 export const AddHTTPS = (link) => {
@@ -9,7 +10,8 @@ export const AddHTTPS = (link) => {
 }
 
 /**
- * Tìm màu bằng attribute
+ * Find color by attribute
+ * 
  * @param {String} key Smile || Pure || Cool || null
  */
 export const findColorByAttribute = (key) => {
@@ -26,7 +28,7 @@ export const findColorByAttribute = (key) => {
 }
 
 /**
- * Tìm màu bằng attribute
+ * Find icon by attribute
  * @param {String} key Smile || Pure || Cool || null
  */
 export const findAttribute = (key) => {
@@ -43,7 +45,7 @@ export const findAttribute = (key) => {
 }
 
 /**
- * Tìm hình main unit theo key
+ * Find icon by main unit
  * @param {String} key μ's || Aqours || null
  */
 export const findMainUnit = (key) => {
@@ -58,7 +60,7 @@ export const findMainUnit = (key) => {
 }
 
 /**
- * Tìm hình của sub unit theo key
+ * Find icon by sub unit
  * @param {String} key Printemps, Lily White, Bibi, CYaRon!, AZALEA, Guilty Kiss, Saint Snow, A-RISE
  */
 export const findSubUnit = (key) => {

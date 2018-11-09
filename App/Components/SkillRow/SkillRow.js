@@ -5,13 +5,15 @@ import PropTypes from 'prop-types'
 import { getSkills } from '../../Stores/CachedData/Selectors'
 import styles from '../../Theme/RowStyles'
 
-const PickerItem = Picker.Item
-
 /**
- * Skill Row
- *
- * @function selectSkill: Save `skill` state
- * @param skill state
+ * Skill Row.
+ * 
+ * Skill list in `this.props.skills`.
+ * 
+ * Prop:
+ * - `selectSkill`: Save `skill` state
+ * - `skill`: state from parent
+ * 
  * @export
  * @class SkillRow
  * @extends {React.Component}
@@ -24,12 +26,11 @@ class SkillRow extends React.Component {
           <Text>Skill</Text>
         </View>
         <View style={{ flex: 2 }}>
-          <Picker
-            mode={'dropdown'}
+          <Picker mode={'dropdown'}
             selectedValue={this.props.skill}
             onValueChange={this.props.selectSkill}>
             {this.props.skills.map((item, index) =>
-              <PickerItem key={'skill' + index} label={item} value={item} />)}
+              <Picker.Item key={'skill' + index} label={item} value={item} />)}
           </Picker>
         </View>
       </View>
@@ -48,7 +49,4 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({})
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(SkillRow)
+export default connect(mapStateToProps, mapDispatchToProps)(SkillRow)

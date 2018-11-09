@@ -4,10 +4,12 @@ import PropTypes from 'prop-types'
 import styles from '../../Theme/RowStyles'
 
 /**
- * Year Row
+ * Year Row (None, First, Second, Third)
  *
- * @function selectYear: Save `idol_year` state
- * @param idol_year state
+ * Prop:
+ * - `selectYear`: Save `idol_year` state
+ * - `idol_year`: state from parent
+ * 
  * @export
  * @class YearRow
  * @extends {React.Component}

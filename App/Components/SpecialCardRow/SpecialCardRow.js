@@ -4,10 +4,12 @@ import PropTypes from 'prop-types'
 import styles from '../../Theme/RowStyles'
 
 /**
- * Special Card Row
+ * Special Card Row (None, True, False)
  * 
- * @function selectSpecial: Save `is_special` state
- * @param is_special state
+ * Prop:
+ * - `selectSpecial`: Save `is_special` state
+ * - `is_special`: state from parent
+ * 
  * @export
  * @class SpecialCardRow
  * @extends {React.Component}

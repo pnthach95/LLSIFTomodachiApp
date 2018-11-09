@@ -5,10 +5,12 @@ import { Images } from '../../Theme'
 import styles from '../../Theme/RowStyles'
 
 /**
- * Rarity Row
+ * Rarity Row (None, N, R, SR, SSR, UR)
  *
- * @function selectRarity: Save `rarity` state
- * @param rarity state
+ * Prop:
+ * - `selectRarity`: Save `rarity` state
+ * - `rarity`: state from parent
+ * 
  * @export
  * @class RarityRow
  * @extends {React.Component}

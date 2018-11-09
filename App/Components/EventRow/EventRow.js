@@ -4,10 +4,12 @@ import PropTypes from 'prop-types'
 import styles from '../../Theme/RowStyles'
 
 /**
- * Event Card Row
+ * Event Card Row (None, True, False)
  *
- * @function selectEvent: Save `is_event` state
- * @param is_event state
+ * Prop:
+ * - `selectEvent`: Save `is_event` state
+ * - `is_event`: state from parent
+ * 
  * @export
  * @class EventRow
  * @extends {React.Component}

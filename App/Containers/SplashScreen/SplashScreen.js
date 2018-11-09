@@ -4,6 +4,16 @@ import Spinkit from 'react-native-spinkit'
 import styles from './SplashScreenStyle'
 import { Images, Metrics } from '../../Theme'
 
+/**
+ * Splash Screen
+ * 
+ * Prop:
+ * - `bgColor`: Background color
+ *
+ * @export
+ * @class SplashScreen
+ * @extends {React.Component}
+ */
 export default class SplashScreen extends React.Component {
   render() {
     return (

@@ -25,7 +25,7 @@ import styles from './styles'
 
 const defaultFilter = {
   search: '',
-  ordering: '-game_id',
+  ordering: '-release_date',
   page_size: 30,
   page: 1,
   name: 'All',

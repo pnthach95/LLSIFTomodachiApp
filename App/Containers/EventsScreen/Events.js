@@ -20,10 +20,10 @@ const defaultFilter = {
   ordering: '-beginning',
   page_size: 30,
   page: 1,
-  idol: '',
+  idol: 'All',
   search: '',
   main_unit: '',
-  skill: '',
+  skill: 'All',
   attribute: '',
   is_english: ''
 }
@@ -61,9 +61,9 @@ class EventsScreen extends React.Component {
       page_size: 30,
       page: 1,
       search: '',
-      idol: '',
+      idol: 'All',
       main_unit: '',
-      skill: '',
+      skill: 'All',
       attribute: '',
       is_english: ''
     }
@@ -125,15 +125,20 @@ class EventsScreen extends React.Component {
    * @memberof EventsScreen
    */
   getEvents(page = this.state.page) {
+    let _idol = this.state.idol
+    let _skill = this.state.skill
+    var _is_english = this.state.is_english
+    if (_is_english === 'True') _is_english = 'False'
+    if (_is_english === 'False') _is_english = 'True'
     var _filter = {
       ordering: this.state.ordering,
       page_size: this.state.page_size,
       page: page,
-      idol: this.state.idol,
+      idol: _idol === 'All' ? '' : _idol,
       main_unit: this.state.main_unit,
-      skill: this.state.skill,
+      skill: _skill === 'All' ? '' : _skill,
       attribute: this.state.attribute,
-      is_english: this.state.is_english
+      is_english: _is_english
     }
     if (this.state.search.length != 0) _filter.search = this.state.search
     console.log(`========== Events.getEvents`, _filter)

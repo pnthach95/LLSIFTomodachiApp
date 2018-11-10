@@ -123,6 +123,22 @@ async function fetchEventData(name) {
   return null
 }
 
+async function getDrawerBackground() {
+  let filter = {
+    rarity: 'SSR,UR',
+    idol_main_unit: `μ's,Aqours`
+  }
+  const response = await LLSIFApiClient.get(Config.CARDIDS, filter)
+  if (response.ok) {
+    let r = Math.floor(Math.random() * response.data.length)
+    const card = await LLSIFApiClient.get(Config.CARDS + response.data[r])
+    if (card.ok) {
+      return card.data
+    }
+  }
+  return null
+}
+
 export const LLSIFService = {
   fetchCachedData,
   fetchCardList,
@@ -130,5 +146,6 @@ export const LLSIFService = {
   fetchIdol,
   fetchSongList,
   fetchEventList,
-  fetchEventData
+  fetchEventData,
+  getDrawerBackground
 }

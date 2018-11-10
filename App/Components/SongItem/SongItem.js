@@ -27,7 +27,7 @@ export default class SongItem extends Component {
     this.state = {
       imgWidth: Metrics.images.itemWidth,
       imgHeight: Metrics.images.itemWidth,
-      colors: findColorByAttribute(this.props.item.attribute)
+      colors: findColorByAttribute(props.item.attribute)
     }
   }
 

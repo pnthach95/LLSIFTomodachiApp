@@ -27,7 +27,7 @@ export default class CardItem extends Component {
     this.state = {
       imgWidth: 0,
       imgHeight: 0,
-      colors: findColorByAttribute(this.props.item.attribute)
+      colors: findColorByAttribute(props.item.attribute)
     }
   }
 

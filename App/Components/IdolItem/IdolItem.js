@@ -27,7 +27,7 @@ export default class IdolItem extends Component {
     this.state = {
       imgWidth: Metrics.images.smallItemWidth,
       imgHeight: Metrics.images.smallItemWidth,
-      colors: findColorByAttribute(this.props.item.attribute)
+      colors: findColorByAttribute(props.item.attribute)
     }
   }
 

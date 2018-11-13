@@ -31,3 +31,9 @@ export const getSkills = (state) => {
 export const getSongMaxStat = (state) => {
   return state.cachedData.get('cachedData').get('cards_info').get('songs_max_stats')
 }
+
+export const getRandomCard = (state) => {
+  let x = state.cachedData.get('cachedData').get('randomCard').toObject()
+  x.idol = x.idol.toObject()
+  return x
+}

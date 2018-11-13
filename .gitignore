@@ -54,3 +54,9 @@ buck-out/
 
 # Bundle artifact
 *.jsbundle
+
+# VSCode
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/extensions.json

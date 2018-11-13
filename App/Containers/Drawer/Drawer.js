@@ -10,6 +10,7 @@ import styles from './styles'
 import { Images, ApplicationStyles } from '../../Theme'
 import { Config } from '../../Config'
 import { AddHTTPS } from '../../Utils'
+import { getRandomCard } from '../../Stores/CachedData/Selectors'
 
 /**
  * Left Drawer show some information
@@ -38,8 +39,6 @@ class Drawer extends Component {
   navigateToCardDetail = (item) => () => this.props.navigation.navigate('CardDetailScreen', { item: item })
 
   render() {
-    let data = this.props.randomCard.toObject()
-    data.idol = data.idol.toObject()
     return (
       <SafeAreaView>
         <ImageBackground style={styles.fullscreen}
@@ -49,7 +48,7 @@ class Drawer extends Component {
               <Image source={Images.logo} style={styles.logo} resizeMode={'contain'} />
             </View>
             <View style={styles.body}>
-              <Text>This app, that app</Text>
+              <Text>This app is open-source.</Text>
             </View>
             <View style={[ApplicationStyles.center, styles.footer]}>
               <Text style={styles.versionText}>Powered by School Idol Tomodachi</Text>
@@ -60,7 +59,7 @@ class Drawer extends Component {
             </View>
           </Fade>
 
-          {!this.state.visible && <TouchableHighlight onPress={this.navigateToCardDetail(data)}
+          {!this.state.visible && <TouchableHighlight onPress={this.navigateToCardDetail(this.props.randomCard)}
             underlayColor={'#fff'}
             style={[ApplicationStyles.center, styles.viewMore]}>
             <Text style={styles.versionText}>View card info</Text>
@@ -78,7 +77,7 @@ class Drawer extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  randomCard: state.cachedData.get('cachedData').get('randomCard'),
+  randomCard: getRandomCard(state),
   bgImage: state.cachedData.get('cachedData').get('bgImage')
 })
 const mapDispatchToProps = (dispatch) => ({})

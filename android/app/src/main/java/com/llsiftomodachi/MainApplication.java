@@ -1,4 +1,4 @@
-package com.llsiftomodachiapp;
+package com.llsiftomodachi;
 
 import android.app.Application;
 

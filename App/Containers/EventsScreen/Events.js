@@ -125,21 +125,21 @@ class EventsScreen extends React.Component {
    * @memberof EventsScreen
    */
   getEvents(page = this.state.page) {
-    let _idol = this.state.idol
-    let _skill = this.state.skill
-    var _is_english = this.state.is_english
-    if (_is_english === 'True') _is_english = 'False'
-    if (_is_english === 'False') _is_english = 'True'
     var _filter = {
       ordering: this.state.ordering,
       page_size: this.state.page_size,
-      page: page,
-      idol: _idol === 'All' ? '' : _idol,
-      main_unit: this.state.main_unit,
-      skill: _skill === 'All' ? '' : _skill,
-      attribute: this.state.attribute,
-      is_english: _is_english
+      page: page
     }
+    if (this.state.idol !== 'All') _filter.idol = this.state.idol
+    if (this.state.skill !== 'All') _filter.skill = this.state.skill
+    var _is_english = this.state.is_english
+    if (_is_english.length !== 0) {
+      if (_is_english === 'True') _is_english = 'False'
+      else _is_english = 'True'
+      _filter.is_english = _is_english
+    }
+    if (this.state.main_unit.length !== 0) _filter.main_unit = this.state.main_unit
+    if (this.state.attribute.length !== 0) _filter.attribute = this.state.attribute
     if (this.state.search.length != 0) _filter.search = this.state.search
     console.log(`========== Events.getEvents`, _filter)
     LLSIFService.fetchEventList(_filter).then((result) => {

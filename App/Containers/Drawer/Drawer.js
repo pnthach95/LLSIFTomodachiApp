@@ -10,7 +10,7 @@ import styles from './styles'
 import { Images, ApplicationStyles } from '../../Theme'
 import { Config } from '../../Config'
 import { AddHTTPS } from '../../Utils'
-import { getRandomCard } from '../../Stores/CachedData/Selectors'
+import { getRandomCard, getBGImage } from '../../Stores/CachedData/Selectors'
 
 /**
  * Left Drawer show some information
@@ -78,7 +78,8 @@ class Drawer extends Component {
 
 const mapStateToProps = (state) => ({
   randomCard: getRandomCard(state),
-  bgImage: state.cachedData.get('cachedData').get('bgImage')
+  bgImage: getBGImage(state)
 })
+
 const mapDispatchToProps = (dispatch) => ({})
 export default connect(mapStateToProps, mapDispatchToProps)(Drawer)

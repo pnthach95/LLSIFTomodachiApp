@@ -29,12 +29,15 @@ export default class EventItem extends Component {
     }
   }
 
+  getImage = (this.props.item.english_image === null) ? AddHTTPS(this.props.item.image)
+    : AddHTTPS(this.props.item.english_image)
+
   render() {
     return (
       <TouchableOpacity onPress={this.props.onPress} style={styles.container}>
         <FastImage
           source={{
-            uri: AddHTTPS(this.props.item.image),
+            uri: this.getImage,
             priority: FastImage.priority.normal,
           }}
           onLoad={(e) => {
@@ -48,8 +51,8 @@ export default class EventItem extends Component {
           }} />
 
         <View style={styles.info}>
+          {this.props.item.english_name !== null && <Text style={styles.text}>{this.props.item.english_name}</Text>}
           <Text style={styles.text}>{this.props.item.japanese_name}</Text>
-          <Text style={styles.text}>{this.props.item.english_name}</Text>
         </View>
       </TouchableOpacity>
     )

@@ -49,7 +49,7 @@ export default class SongItem extends Component {
           }} />
         <View style={styles.info}>
           <Text style={styles.text}>{this.props.item.name}</Text>
-          <Text style={styles.text}>{this.props.item.romaji_name}</Text>
+          {this.props.item.romaji_name != null && <Text style={styles.text}>{this.props.item.romaji_name}</Text>}
         </View>
       </TouchableOpacity>
     )

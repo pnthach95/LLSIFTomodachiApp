@@ -10,7 +10,8 @@ export default StyleSheet.create({
   info: {
     paddingVertical: Metrics.smallMargin,
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
+    paddingHorizontal: 4
   },
   text: {
     textAlign: 'center'

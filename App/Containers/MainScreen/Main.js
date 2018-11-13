@@ -49,10 +49,6 @@ class MainScreen extends React.Component {
     }
   }
 
-  componentDidMount() {
-    this.props.fetchCachedData()
-  }
-
   /**
    * Countdown timer for ongoing event
    *

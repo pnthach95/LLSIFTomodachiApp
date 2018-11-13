@@ -1,7 +1,9 @@
 import React, { Component } from 'react'
 import { View } from 'react-native'
 import { createStackNavigator, createBottomTabNavigator, createDrawerNavigator } from 'react-navigation'
+import { connect } from 'react-redux'
 
+import CachedDataActions from '../../Stores/CachedData/Actions'
 import { ApplicationStyles } from '../../Theme'
 import NavigationService from '../../Services/NavigationService'
 
@@ -46,7 +48,11 @@ const Stack = createStackNavigator(
 
 const AppNav = createDrawerNavigator({ Stack: Stack }, { contentComponent: Drawer })
 
-export default class RootScreen extends Component {
+class RootScreen extends Component {
+  componentDidMount() {
+    this.props.startup()
+  }
+
   render() {
     return (
       <View style={ApplicationStyles.screen}>
@@ -57,3 +63,14 @@ export default class RootScreen extends Component {
     )
   }
 }
+
+const mapStateToProps = (state) => ({})
+
+const mapDispatchToProps = (dispatch) => ({
+  startup: () => dispatch(CachedDataActions.fetchCachedData())
+})
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(RootScreen)

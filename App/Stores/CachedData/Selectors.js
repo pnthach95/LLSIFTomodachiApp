@@ -33,7 +33,19 @@ export const getSongMaxStat = (state) => {
 }
 
 export const getRandomCard = (state) => {
-  let x = state.cachedData.get('cachedData').get('randomCard').toObject()
-  x.idol = x.idol.toObject()
-  return x
+  try {
+    let x = state.cachedData.get('cachedData').get('randomCard').toObject()
+    x.idol = x.idol.toObject()
+    return x
+  } catch (error) {
+    return null
+  }
+}
+
+export const getBGImage = (state) =>{
+  try {
+    return state.cachedData.get('cachedData').get('bgImage')
+  } catch (error) {
+    return null
+  }
 }

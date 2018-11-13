@@ -14,9 +14,9 @@ export function* fetchCachedData() {
   let eventJP = data.current_event_jp.japanese_name
   let data1 = yield call(LLSIFService.fetchEventData, eventEN)
   let data2 = yield call(LLSIFService.fetchEventData, eventJP)
-  let randomCard = yield call(LLSIFService.getDrawerBackground)
   data.eventEN = data1
   data.eventJP = data2
+  let randomCard = yield call(LLSIFService.getDrawerBackground)
   let r = Math.floor(Math.random() * 10)
   var bgImage = ''
   if (randomCard.clean_ur != null && r < 6) {

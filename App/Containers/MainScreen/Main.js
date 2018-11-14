@@ -103,11 +103,7 @@ class MainScreen extends React.Component {
       <View style={styles.container}>
         {/* HEADER */}
         <View style={ApplicationStyles.header}>
-          <View style={styles.leftHeader} />
-          <View style={styles.centerHeader}>
-            <Image source={Images.logo} style={ApplicationStyles.imageHeader} />
-          </View>
-          <View style={styles.rightHeader} />
+          <Image source={Images.logo} style={ApplicationStyles.imageHeader} />
         </View>
 
         {/* BODY */}
@@ -125,8 +121,9 @@ class MainScreen extends React.Component {
                 height: Metrics.widthBanner * this.state.imgHeight / this.state.imgWidth
               }} />
           </TouchableOpacity>
-          <Text style={styles.text}>Start: {ENEventStart.format('HH:mm MMM Do YYYY')}</Text>
-          <Text style={styles.text}>End: {ENEventEnd.format('HH:mm MMM Do YYYY')}</Text>
+          <Text style={styles.text}>
+            {`Start: ${ENEventStart.format('HH:mm MMM Do YYYY')}\nEnd: ${ENEventEnd.format('HH:mm MMM Do YYYY')}`}
+          </Text>
           {ENEvent.get('world_current') && this.timer(ENEventEnd.diff(moment()))}
           <Seperator style={{ backgroundColor: 'white' }} />
 
@@ -141,8 +138,9 @@ class MainScreen extends React.Component {
                 height: Metrics.widthBanner * this.state.imgHeight / this.state.imgWidth
               }} />
           </TouchableOpacity>
-          <Text style={styles.text}>Start: {JPEventStart.format('HH:mm MMM Do YYYY')}</Text>
-          <Text style={styles.text}>End: {JPEventEnd.format('HH:mm MMM Do YYYY')}</Text>
+          <Text style={styles.text}>
+            {`Start: ${JPEventStart.format('HH:mm MMM Do YYYY')}\nEnd: ${JPEventEnd.format('HH:mm MMM Do YYYY')}`}
+          </Text>
           {JPEvent.get('japan_current') && this.timer(JPEventEnd.diff(moment()))}
           {/* <Seperator style={{ backgroundColor: 'white' }} /> */}
 
@@ -159,7 +157,7 @@ class MainScreen extends React.Component {
                 }} />
             </View>
           ))} */}
-          <View style={{ height: 10 }} />
+          <View style={{ height: 14 }} />
         </ScrollView>
       </View >)
   }

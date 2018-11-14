@@ -63,3 +63,5 @@ buck-out/
 android/app/.settings/org.eclipse.buildship.core.prefs
 android/app/bin/.settings/org.eclipse.buildship.core.prefs
 android/app/bin/.project
+android/app/.project
+android/.project

@@ -36,7 +36,10 @@ class Drawer extends Component {
    * @param {Object} item Card's information
    * @memberof Drawer
    */
-  navigateToCardDetail = (item) => () => this.props.navigation.navigate('CardDetailScreen', { item: item })
+  navigateToCardDetail = (item) => () => {
+    this.setState({ visible: true })
+    this.props.navigation.navigate('CardDetailScreen', { item: item })
+  }
 
   render() {
     return (
@@ -51,19 +54,31 @@ class Drawer extends Component {
               <Text>This app is open-source.</Text>
             </View>
             <View style={[ApplicationStyles.center, styles.footer]}>
-              <Text style={styles.versionText}>Powered by School Idol Tomodachi</Text>
               <View style={{ flexDirection: 'row', marginVertical: 10 }}>
-                <Icon name={'logo-github'} size={50}
-                  onPress={() => Linking.openURL(Config.GITHUB_PROJECT)} />
+                <Text style={styles.versionText}>Powered by </Text>
+                <Text onPress={() => Linking.openURL('https://schoolido.lu')}
+                  style={[styles.versionText, { textDecorationLine: 'underline' }]}>School Idol Tomodachi</Text>
+              </View>
+              <View style={{ flexDirection: 'row', marginVertical: 10 }}>
+                <TouchableHighlight onPress={() => Linking.openURL(Config.GITHUB_PROJECT)}
+                  underlayColor={'#fff0'}
+                  style={ApplicationStyles.center}>
+                  <View style={ApplicationStyles.center}>
+                    <Icon name={'logo-github'} size={50} />
+                    <Text>Project</Text>
+                  </View>
+                </TouchableHighlight>
               </View>
             </View>
           </Fade>
 
-          {!this.state.visible && <TouchableHighlight onPress={this.navigateToCardDetail(this.props.randomCard)}
-            underlayColor={'#fff'}
-            style={[ApplicationStyles.center, styles.viewMore]}>
-            <Text style={styles.versionText}>View card info</Text>
-          </TouchableHighlight>}
+          {!this.state.visible && <Fade visible={!this.state.visible}>
+            <TouchableHighlight onPress={this.navigateToCardDetail(this.props.randomCard)}
+              underlayColor={'#fff'}
+              style={[ApplicationStyles.center, styles.viewMore]}>
+              <Text style={styles.versionText}>View card info</Text>
+            </TouchableHighlight>
+          </Fade>}
 
           <TouchableHighlight onPress={this._visibleToggle}
             underlayColor={'#fff'}

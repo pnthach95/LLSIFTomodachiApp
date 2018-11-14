@@ -1,8 +1,8 @@
 import React from 'react'
 import { View, Image } from 'react-native'
-import Spinkit from 'react-native-spinkit'
+import { BarIndicator } from 'react-native-indicators'
 import styles from './SplashScreenStyle'
-import { Images, Metrics } from '../../Theme'
+import { Images } from '../../Theme'
 
 /**
  * Splash Screen
@@ -15,11 +15,15 @@ import { Images, Metrics } from '../../Theme'
  * @extends {React.Component}
  */
 export default class SplashScreen extends React.Component {
+  static defaultProps = {
+    bgColor: '#D2CAC6'
+  }
+
   render() {
     return (
       <View style={[styles.container, { backgroundColor: this.props.bgColor }]}>
         <Image source={Images.logo} style={styles.logo} />
-        <Spinkit type='WanderingCubes' size={Metrics.icons.xl} color='white' />
+        <BarIndicator count={9} color={'white'}/>
       </View>
     )
   }

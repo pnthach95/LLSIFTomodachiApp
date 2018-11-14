@@ -14,11 +14,10 @@ The project contains:
 - [React Navigation](https://reactnavigation.org/) (v2.18) with a [`NavigationService`](App/Services/NavigationService.js) to handle routing and navigation in the app, with a splash screen setup by default
 - [reduxsauce](https://github.com/infinitered/reduxsauce) (v1.0.0) to facilitate using Redux
 - [apisauce](https://github.com/infinitered/apisauce) (v1.0.0) to make [axios](https://github.com/axios/axios) even better
-- [prettier](https://prettier.io/) and [eslint](https://eslint.org/) preconfigured for React Native
 - [react-native-fast-image](https://github.com/DylanVann/react-native-fast-image)
 - [react-native-linear-gradienet](https://github.com/react-native-community/react-native-linear-gradient)
 - [react-native-offline](https://github.com/rgommezz/react-native-offline) to handle offline mode
-- [react-native-spinkit](https://github.com/maxs15/react-native-spinkit#readme) is a collection of animated loading indicators
+- [react-native-indicators](https://github.com/n4kz/react-native-indicators) is a collection of animated loading indicators
 
 ## Directory layout
 

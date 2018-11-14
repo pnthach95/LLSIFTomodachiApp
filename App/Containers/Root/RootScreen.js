@@ -70,7 +70,4 @@ const mapDispatchToProps = (dispatch) => ({
   startup: () => dispatch(CachedDataActions.fetchCachedData())
 })
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(RootScreen)
+export default connect(mapStateToProps, mapDispatchToProps)(RootScreen)

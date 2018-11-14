@@ -13,8 +13,8 @@
     "lodash": "^4.17.11",
     "moment": "^2.22.2",
     "prop-types": "^15.6.2",
-    "react": "16.6.0-alpha.8af6728",
-    "react-native": "0.57.4",
+    "react": "16.6.1",
+    "react-native": "0.57.5",
     "react-native-fast-image": "^5.1.0",
     "react-native-indicators": "^0.13.0",
     "react-native-linear-gradient": "^2.4.3",
@@ -46,7 +46,7 @@
     "jest": "23.3.0",
     "prettier": "^1.11.1",
     "react-native-rename": "^2.3.2",
-    "react-test-renderer": "16.6.0-alpha.8af6728"
+    "react-test-renderer": "16.6.1"
   },
   "jest": {
     "preset": "react-native"

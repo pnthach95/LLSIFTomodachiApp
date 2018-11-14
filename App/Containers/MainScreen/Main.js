@@ -7,7 +7,6 @@ import moment from 'moment'
 
 import Seperator from '../../Components/Seperator/Seperator'
 import TimerCountdown from '../../Components/TimerCountdown/Timer'
-import CachedDataActions from '../../Stores/CachedData/Actions'
 import { AddHTTPS } from '../../Utils'
 import SplashScreen from '../SplashScreen/SplashScreen'
 import { Metrics, Colors, Images, ApplicationStyles } from '../../Theme'
@@ -145,10 +144,10 @@ class MainScreen extends React.Component {
           <Text style={styles.text}>Start: {JPEventStart.format('HH:mm MMM Do YYYY')}</Text>
           <Text style={styles.text}>End: {JPEventEnd.format('HH:mm MMM Do YYYY')}</Text>
           {JPEvent.get('japan_current') && this.timer(JPEventEnd.diff(moment()))}
-          <Seperator style={{ backgroundColor: 'white' }} />
+          {/* <Seperator style={{ backgroundColor: 'white' }} /> */}
 
           {/* CONTEST BLOCK */}
-          {currentContests.map((item, id) => (
+          {/* {currentContests.map((item, id) => (
             <View key={'contest' + id}>
               <Text style={styles.text}>{item.get('name')}</Text>
               <FastImage source={{ uri: AddHTTPS(item.get('image')) }}
@@ -159,7 +158,7 @@ class MainScreen extends React.Component {
                   alignSelf: 'center',
                 }} />
             </View>
-          ))}
+          ))} */}
           <View style={{ height: 10 }} />
         </ScrollView>
       </View >)
@@ -172,8 +171,5 @@ const mapStateToProps = (state) => ({
   cachedDataIsLoading: state.cachedData.get('cachedDataIsLoading')
 })
 
-const mapDispatchToProps = (dispatch) => ({
-  fetchCachedData: () => dispatch(CachedDataActions.fetchCachedData())
-})
-
+const mapDispatchToProps = (dispatch) => ({})
 export default connect(mapStateToProps, mapDispatchToProps)(MainScreen)

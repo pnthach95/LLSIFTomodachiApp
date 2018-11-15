@@ -4,6 +4,7 @@ import { createStackNavigator, createBottomTabNavigator, createDrawerNavigator }
 import { connect } from 'react-redux'
 
 import CachedDataActions from '../../Stores/CachedData/Actions'
+import SettingActions from '../../Stores/Settings/Actions'
 import { ApplicationStyles } from '../../Theme'
 import NavigationService from '../../Services/NavigationService'
 
@@ -50,6 +51,7 @@ const AppNav = createDrawerNavigator({ Stack: Stack }, { contentComponent: Drawe
 
 class RootScreen extends Component {
   componentDidMount() {
+    this.props.getSettings()
     this.props.startup()
   }
 
@@ -67,7 +69,9 @@ class RootScreen extends Component {
 const mapStateToProps = (state) => ({})
 
 const mapDispatchToProps = (dispatch) => ({
-  startup: () => dispatch(CachedDataActions.fetchCachedData())
+  startup: () => dispatch(CachedDataActions.fetchCachedData()),
+  setSettings: (data) => dispatch(SettingActions.setSettings(data)),
+  getSettings: () => dispatch(SettingActions.getSettings())
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(RootScreen)

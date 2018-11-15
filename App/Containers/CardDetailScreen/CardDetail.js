@@ -195,10 +195,12 @@ class CardDetailScreen extends React.Component {
         </View>
 
         {/* MAIN VIEW */}
-        <ScrollView
-          showsVerticalScrollIndicator={false}
-          style={styles.scrollView}>
-          <LinearGradient colors={[this.state.colors[1], this.state.colors[0], 'white']}>
+        <LinearGradient style={{ flex: 1 }}
+          colors={[this.state.colors[1], this.state.colors[0], 'white']}>
+          <ScrollView
+            showsVerticalScrollIndicator={false}
+            style={styles.scrollView}>
+
             {/* CARD IMAGES */}
             <View style={styles.imageRow}>
               {this.state.item.card_image != null &&
@@ -230,10 +232,15 @@ class CardDetailScreen extends React.Component {
                 item1={{ flex: 1, text: 'Release date' }}
                 item2={{ flex: 2, text: moment(this.state.item.release_date).format('MMM Do YYYY') }}
               />
-              <Seperator />
+              <View style={{ flexDirection: 'row' }}>
+                {this.state.item.is_promo && <Text>Promo card</Text>}
+                {this.state.item.is_promo && this.state.item.japan_only && <Text> - </Text>}
+                {this.state.item.japan_only && <Text>Japan only</Text>}
+              </View>
 
               {(this.state.item.skill != null && this.state.item.skill.length != 0) &&
                 <View>
+                  <Seperator />
                   <TextRow
                     item1={{ flex: 1, text: 'Skill' }}
                     item2={{ flex: 2, text: this.state.item.skill }}
@@ -242,11 +249,11 @@ class CardDetailScreen extends React.Component {
                     item1={{ flex: 1, text: '' }}
                     item2={{ flex: 2, text: this.state.item.skill_details, textStyle: styles.subtitleText }}
                   />
-                  <Seperator />
                 </View>}
 
               {(this.state.item.center_skill != null && this.state.item.center_skill.length != 0) &&
                 <View>
+                  <Seperator />
                   <TextRow
                     item1={{ flex: 1, text: 'Center skill' }}
                     item2={{ flex: 2, text: this.state.item.center_skill }}
@@ -255,11 +262,11 @@ class CardDetailScreen extends React.Component {
                     item1={{ flex: 1, text: '' }}
                     item2={{ flex: 2, text: this.state.item.center_skill_details, textStyle: styles.subtitleText }}
                   />
-                  <Seperator />
                 </View>}
 
               {this.state.item.event != null &&
                 <View>
+                  <Seperator />
                   <TextRow item1={{ text: 'Event', flex: 1, textStyle: Fonts.style.normal }}
                     item2={{ text: this.state.item.event.japanese_name, flex: 4, textStyle: Fonts.style.normal }} />
                   <TextRow item1={{ text: '', flex: 1, textStyle: Fonts.style.normal }}
@@ -272,28 +279,34 @@ class CardDetailScreen extends React.Component {
                       resizeMode={FastImage.resizeMode.contain}
                     />
                   </TouchableOpacity>
-                  <Seperator />
+
                 </View>}
 
-              <View style={{ flexDirection: 'row' }}>
-                <Icon name='ios-heart' size={Metrics.icons.medium} color={'red'} />
-                <Text style={Fonts.style.normal}> : {this.state.item.hp}</Text>
-              </View>
+              {this.state.item.hp !== 0 &&
+                <View>
+                  <Seperator />
+                  <View style={{ flexDirection: 'row' }}>
+                    <Icon name='ios-heart' size={Metrics.icons.medium} color={'red'} />
+                    <Text style={Fonts.style.normal}> : {this.state.item.hp}</Text>
+                  </View>
+                </View>}
             </View>
 
             {/* STATS */}
-            <View style={styles.buttonRow}>
-              {this.statButton(0, 'Level 1', this.state.minStats, styles.leftRadius)}
-              {this.state.item.non_idolized_maximum_statistics_smile != 0 &&
-                this.statButton(1, `Level ${this.state.item.non_idolized_max_level}`, this.state.nonIdolMaxStats)}
-              {this.state.item.idolized_max_level != 0 &&
-                this.statButton(2, `Level ${this.state.item.idolized_max_level}`, this.state.idolMaxStats, styles.rightRadius)}
-            </View>
-            {this.progressView(this.state.currentStats)}
-
+            {this.state.item.hp !== 0 &&
+              <View>
+                <View style={styles.buttonRow}>
+                  {this.statButton(0, 'Level 1', this.state.minStats, styles.leftRadius)}
+                  {this.state.item.non_idolized_maximum_statistics_smile != 0 &&
+                    this.statButton(1, `Level ${this.state.item.non_idolized_max_level}`, this.state.nonIdolMaxStats)}
+                  {this.state.item.idolized_max_level != 0 &&
+                    this.statButton(2, `Level ${this.state.item.idolized_max_level}`, this.state.idolMaxStats, styles.rightRadius)}
+                </View>
+                {this.progressView(this.state.currentStats)}
+              </View>}
             <View style={{ height: Metrics.doubleBaseMargin }} />
-          </LinearGradient>
-        </ScrollView>
+          </ScrollView>
+        </LinearGradient>
       </View>
     )
   }

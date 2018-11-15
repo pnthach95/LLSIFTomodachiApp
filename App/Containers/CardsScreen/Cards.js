@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import Icon from 'react-native-vector-icons/Ionicons'
 import _ from 'lodash'
 
+import { getWorldwideOnly } from '../../Stores/Settings/Selectors'
 import YearRow from '../../Components/YearRow/YearRow'
 import CardItem from '../../Components/CardItem/CardItem'
 import EventRow from '../../Components/EventRow/EventRow'
@@ -22,25 +23,6 @@ import { LLSIFService } from '../../Services/LLSIFService'
 import SplashScreen from '../SplashScreen/SplashScreen'
 import { Colors, ApplicationStyles } from '../../Theme'
 import styles from './styles'
-
-const defaultFilter = {
-  search: '',
-  ordering: '-release_date',
-  page_size: 30,
-  page: 1,
-  name: 'All',
-  rarity: '',
-  attribute: '',
-  japan_only: '',
-  is_promo: '',
-  is_special: '',
-  is_event: '',
-  skill: 'All',
-  idol_main_unit: '',
-  idol_sub_unit: 'All',
-  idol_school: 'All',
-  idol_year: ''
-}
 
 /**
  * [Card List Screen](https://github.com/MagiCircles/SchoolIdolAPI/wiki/API-Cards#get-the-list-of-cards)
@@ -73,6 +55,24 @@ const defaultFilter = {
 class CardsScreen extends React.PureComponent {
   constructor(props) {
     super(props)
+    this.defaultFilter = {
+      search: '',
+      ordering: '-release_date',
+      page_size: 30,
+      page: 1,
+      name: 'All',
+      rarity: '',
+      attribute: '',
+      japan_only: this.props.worldwideOnly ? 'False' : '',
+      is_promo: '',
+      is_special: '',
+      is_event: '',
+      skill: 'All',
+      idol_main_unit: '',
+      idol_sub_unit: 'All',
+      idol_school: 'All',
+      idol_year: ''
+    }
     this.state = {
       isLoading: true,
       data: [],
@@ -85,7 +85,7 @@ class CardsScreen extends React.PureComponent {
       name: 'All',
       rarity: '',
       attribute: '',
-      japan_only: '',
+      japan_only: this.props.worldwideOnly ? 'False' : '',
       is_promo: '',
       is_special: '',
       is_event: '',
@@ -322,18 +322,18 @@ class CardsScreen extends React.PureComponent {
    */
   resetFilter = () => {
     this.setState({
-      name: defaultFilter.name,
-      rarity: defaultFilter.rarity,
-      attribute: defaultFilter.attribute,
-      japan_only: defaultFilter.japan_only,
-      is_promo: defaultFilter.is_promo,
-      is_special: defaultFilter.is_special,
-      is_event: defaultFilter.is_event,
-      skill: defaultFilter.skill,
-      idol_main_unit: defaultFilter.idol_main_unit,
-      idol_sub_unit: defaultFilter.idol_sub_unit,
-      idol_school: defaultFilter.idol_school,
-      idol_year: defaultFilter.idol_year,
+      name: this.defaultFilter.name,
+      rarity: this.defaultFilter.rarity,
+      attribute: this.defaultFilter.attribute,
+      japan_only: this.defaultFilter.japan_only,
+      is_promo: this.defaultFilter.is_promo,
+      is_special: this.defaultFilter.is_special,
+      is_event: this.defaultFilter.is_event,
+      skill: this.defaultFilter.skill,
+      idol_main_unit: this.defaultFilter.idol_main_unit,
+      idol_sub_unit: this.defaultFilter.idol_sub_unit,
+      idol_school: this.defaultFilter.idol_school,
+      idol_year: this.defaultFilter.idol_year,
       search: ''
     })
   }
@@ -402,6 +402,9 @@ class CardsScreen extends React.PureComponent {
   }
 }
 
-const mapStateToProps = (state) => ({})
+const mapStateToProps = (state) => ({
+  worldwideOnly: getWorldwideOnly(state)
+})
+
 const mapDispatchToProps = (dispatch) => ({})
 export default connect(mapStateToProps, mapDispatchToProps)(CardsScreen)

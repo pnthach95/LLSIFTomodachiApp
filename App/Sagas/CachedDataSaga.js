@@ -16,7 +16,7 @@ export function* fetchCachedData() {
   let data2 = yield call(LLSIFService.fetchEventData, eventJP)
   data.eventEN = data1
   data.eventJP = data2
-  let randomCard = yield call(LLSIFService.getDrawerBackground)
+  let randomCard = yield call(LLSIFService.fetchRandomCard)
   let r = Math.floor(Math.random() * 10)
   var bgImage = ''
   if (randomCard.clean_ur != null && r < 6) {

@@ -20,8 +20,19 @@ export default StyleSheet.create({
     width: '75%'
   },
   body: {
-    width: '100%',
-    padding: 10
+    height: Metrics.screenHeight - 290,
+    paddingVertical: 10,
+    justifyContent: 'space-between',
+    alignItems: 'stretch'
+  },
+  textBlock: {
+    paddingHorizontal: 10
+  },
+  settingRow: {
+    flexDirection: 'row',
+    backgroundColor: '#fffa',
+    padding: 10,
+    justifyContent: 'space-between'
   },
   footer: {
     position: 'absolute',
@@ -29,6 +40,10 @@ export default StyleSheet.create({
     backgroundColor: '#eeec',
     width: '100%',
     height: 150
+  },
+  footerBlock: {
+    flexDirection: 'row',
+    marginVertical: 10
   },
   versionContainer: {
     position: 'absolute',

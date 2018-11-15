@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, Text, Linking, ImageBackground, TouchableHighlight, Image } from 'react-native'
+import { View, Text, Linking, ImageBackground, TouchableHighlight, Image, Switch } from 'react-native'
 import { SafeAreaView } from 'react-navigation'
 import { connect } from 'react-redux'
 import Icon from 'react-native-vector-icons/Ionicons'
@@ -10,7 +10,9 @@ import styles from './styles'
 import { Images, ApplicationStyles } from '../../Theme'
 import { Config } from '../../Config'
 import { AddHTTPS } from '../../Utils'
+import SettingActions from '../../Stores/Settings/Actions'
 import { getRandomCard, getBGImage } from '../../Stores/CachedData/Selectors'
+import { getWorldwideOnly } from '../../Stores/Settings/Selectors'
 
 /**
  * Left Drawer show some information
@@ -24,11 +26,19 @@ class Drawer extends Component {
     super(props)
     this.state = {
       visible: true,
-      random: -1
+      worldwide_only: this.props.worldwideOnly
     }
   }
 
   _visibleToggle = () => this.setState({ visible: !this.state.visible })
+
+  _worldwideToggle = () => {
+    let settings = {
+      worldwide_only: !this.state.worldwide_only
+    }
+    this.setState({ worldwide_only: !this.state.worldwide_only })
+    this.props.setSettings(settings)
+  }
 
   /**
    * Navigate to Card Detail Screen
@@ -50,16 +60,27 @@ class Drawer extends Component {
             <View style={[ApplicationStyles.center, styles.header]}>
               <Image source={Images.logo} style={styles.logo} resizeMode={'contain'} />
             </View>
+
             <View style={styles.body}>
-              <Text>This app is open-source.</Text>
+              <View style={styles.textBlock}>
+                <Text>This app is open-source.</Text>
+              </View>
+              <View style={styles.settingRow}>
+                <Text>Worldwide only</Text>
+                <Switch value={this.state.worldwide_only}
+                  onValueChange={this._worldwideToggle} />
+              </View>
             </View>
+
             <View style={[ApplicationStyles.center, styles.footer]}>
-              <View style={{ flexDirection: 'row', marginVertical: 10 }}>
+              <View style={styles.footerBlock}>
                 <Text style={styles.versionText}>Powered by </Text>
                 <Text onPress={() => Linking.openURL('https://schoolido.lu')}
-                  style={[styles.versionText, { textDecorationLine: 'underline' }]}>School Idol Tomodachi</Text>
+                  style={[styles.versionText, { textDecorationLine: 'underline' }]}>
+                  {`School Idol Tomodachi`}
+                </Text>
               </View>
-              <View style={{ flexDirection: 'row', marginVertical: 10 }}>
+              <View style={styles.footerBlock}>
                 <TouchableHighlight onPress={() => Linking.openURL(Config.GITHUB_PROJECT)}
                   underlayColor={'#fff0'}
                   style={ApplicationStyles.center}>
@@ -93,8 +114,12 @@ class Drawer extends Component {
 
 const mapStateToProps = (state) => ({
   randomCard: getRandomCard(state),
-  bgImage: getBGImage(state)
+  bgImage: getBGImage(state),
+  worldwideOnly: getWorldwideOnly(state)
 })
 
-const mapDispatchToProps = (dispatch) => ({})
+const mapDispatchToProps = (dispatch) => ({
+  setSettings: (data) => dispatch(SettingActions.setSettings(data))
+})
+
 export default connect(mapStateToProps, mapDispatchToProps)(Drawer)

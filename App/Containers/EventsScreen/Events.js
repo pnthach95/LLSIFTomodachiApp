@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import Icon from 'react-native-vector-icons/Ionicons'
 import _ from 'lodash'
 
+import { getWorldwideOnly } from '../../Stores/Settings/Selectors'
 import SkillRow from '../../Components/SkillRow/SkillRow'
 import EventItem from '../../Components/EventItem/EventItem'
 import RegionRow from '../../Components/RegionRow/RegionRow'
@@ -15,18 +16,6 @@ import SplashScreen from '../SplashScreen/SplashScreen'
 import { Colors, ApplicationStyles } from '../../Theme'
 import styles from './styles'
 import { LLSIFService } from '../../Services/LLSIFService'
-
-const defaultFilter = {
-  ordering: '-beginning',
-  page_size: 30,
-  page: 1,
-  idol: 'All',
-  search: '',
-  main_unit: '',
-  skill: 'All',
-  attribute: '',
-  is_english: ''
-}
 
 /**
  * [Event List Screen](https://github.com/MagiCircles/SchoolIdolAPI/wiki/API-Events#get-the-list-of-events)
@@ -52,6 +41,17 @@ const defaultFilter = {
 class EventsScreen extends React.Component {
   constructor(props) {
     super(props)
+    this.defaultFilter = {
+      ordering: '-beginning',
+      page_size: 30,
+      page: 1,
+      idol: 'All',
+      search: '',
+      main_unit: '',
+      skill: 'All',
+      attribute: '',
+      is_english: this.props.worldwideOnly ? 'True' : '',
+    }
     this.state = {
       isLoading: true,
       list: [],
@@ -65,7 +65,7 @@ class EventsScreen extends React.Component {
       main_unit: '',
       skill: 'All',
       attribute: '',
-      is_english: ''
+      is_english: this.props.worldwideOnly ? 'True' : '',
     }
     this._onEndReached = _.debounce(this._onEndReached, 500)
   }
@@ -180,15 +180,15 @@ class EventsScreen extends React.Component {
    */
   resetFilter = () => {
     this.setState({
-      ordering: defaultFilter.ordering,
-      page_size: defaultFilter.page_size,
-      page: defaultFilter.page,
-      idol: defaultFilter.idol,
-      search: defaultFilter.search,
-      main_unit: defaultFilter.main_unit,
-      skill: defaultFilter.skill,
-      attribute: defaultFilter.attribute,
-      is_english: defaultFilter.is_english
+      ordering: this.defaultFilter.ordering,
+      page_size: this.defaultFilter.page_size,
+      page: this.defaultFilter.page,
+      idol: this.defaultFilter.idol,
+      search: this.defaultFilter.search,
+      main_unit: this.defaultFilter.main_unit,
+      skill: this.defaultFilter.skill,
+      attribute: this.defaultFilter.attribute,
+      is_english: this.defaultFilter.is_english
     })
   }
 
@@ -286,6 +286,9 @@ class EventsScreen extends React.Component {
   }
 }
 
-const mapStateToProps = (state) => ({})
+const mapStateToProps = (state) => ({
+  worldwideOnly: getWorldwideOnly(state)
+})
+
 const mapDispatchToProps = (dispatch) => ({})
 export default connect(mapStateToProps, mapDispatchToProps)(EventsScreen)

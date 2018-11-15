@@ -123,18 +123,17 @@ async function fetchEventData(name) {
   return null
 }
 
-async function getDrawerBackground() {
+async function fetchRandomCard() {
   let filter = {
+    ordering: 'random',
+    page_size: 1,
     rarity: 'SSR,UR',
     idol_main_unit: `μ's,Aqours`
   }
-  const response = await LLSIFApiClient.get(Config.CARDIDS, filter)
+  const response = await LLSIFApiClient.get(Config.CARDS, filter)
+  console.log('fetchRandomCard', response)
   if (response.ok) {
-    let r = Math.floor(Math.random() * response.data.length)
-    const card = await LLSIFApiClient.get(Config.CARDS + response.data[r])
-    if (card.ok) {
-      return card.data
-    }
+    return response.data.results[0]
   }
   return null
 }
@@ -147,5 +146,5 @@ export const LLSIFService = {
   fetchSongList,
   fetchEventList,
   fetchEventData,
-  getDrawerBackground
+  fetchRandomCard
 }

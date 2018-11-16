@@ -82,6 +82,7 @@ class EventsScreen extends React.Component {
   }
 
   componentDidMount() {
+    this.setState({ japan_only: this.props.worldwideOnly ? 'True' : '' })
     this.getEvents()
   }
 

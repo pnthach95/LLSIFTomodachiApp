@@ -110,6 +110,7 @@ class CardsScreen extends React.PureComponent {
   }
 
   componentDidMount() {
+    this.setState({ japan_only: this.props.worldwideOnly ? 'False' : '' })
     this.getCards()
   }
 

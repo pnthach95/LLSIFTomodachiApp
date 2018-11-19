@@ -51,7 +51,7 @@ const AppNav = createDrawerNavigator({ Stack: Stack }, { contentComponent: Drawe
 
 class RootScreen extends Component {
   componentDidMount() {
-    this.props.getSettings()
+    console.clear()
     this.props.startup()
   }
 

@@ -152,8 +152,9 @@ class EventDetailScreen extends React.Component {
                   width: Metrics.widthBanner,
                   height: Metrics.widthBanner * this.state.imgHeight / this.state.imgWidth
                 }} />
-              <Text style={styles.text}>Start: {ENEventStart.format('HH:mm MMM Do YYYY')}</Text>
-              <Text style={styles.text}>End: {ENEventEnd.format('HH:mm MMM Do YYYY')}</Text>
+              <Text style={styles.text}>
+                {`Start: ${ENEventStart.format('HH:mm MMM Do YYYY')}\nEnd: ${ENEventEnd.format('HH:mm MMM Do YYYY')}`}
+              </Text>
               {this.state.item.world_current && this.timer(ENEventEnd.diff(moment()))}
             </View>}
           {this.state.item.english_name &&
@@ -168,25 +169,30 @@ class EventDetailScreen extends React.Component {
               width: Metrics.widthBanner,
               height: Metrics.widthBanner * this.state.imgHeight / this.state.imgWidth
             }} />
-          <Text style={styles.text}>Start: {JPEventStart.format('HH:mm MMM Do YYYY')}</Text>
-          <Text style={styles.text}>End: {JPEventEnd.format('HH:mm MMM Do YYYY')}</Text>
+          <Text style={styles.text}>
+            {`Start: ${JPEventStart.format('HH:mm MMM Do YYYY')}\nEnd: ${JPEventEnd.format('HH:mm MMM Do YYYY')}`}
+          </Text>
           {this.state.item.japan_current && this.timer(JPEventEnd.diff(moment()))}
-
+          {this.state.songs.length !== 0 && <Seperator style={{ backgroundColor: 'white' }} />}
           {/* SONGS */}
-          <View style={styles.cardList}>
-            {this.state.songs.map((item, index) =>
-              <TouchableOpacity key={'song' + index}
-                onPress={() => this.navigateToSongDetail(item)}
-                style={styles.card}>
-                <FastImage source={{ uri: AddHTTPS(item.image) }} style={styles.song} />
-                <View style={styles.songInfo}>
-                  <Image source={findAttribute(item.attribute)} style={styles.attributeIcon} />
-                  <Text style={styles.songName}>{item.name}</Text>
-                </View>
-              </TouchableOpacity>
-            )}
-          </View>
-
+          {this.state.songs.length !== 0
+            && <View>
+              <Text style={styles.text}>Song</Text>
+              <View style={styles.cardList}>
+                {this.state.songs.map((item, index) =>
+                  <TouchableOpacity key={'song' + index}
+                    onPress={() => this.navigateToSongDetail(item)}
+                    style={styles.card}>
+                    <FastImage source={{ uri: AddHTTPS(item.image) }} style={styles.song} />
+                    <View style={styles.songInfo}>
+                      <Image source={findAttribute(item.attribute)} style={styles.attributeIcon} />
+                      <Text style={styles.songName}>{item.name}</Text>
+                    </View>
+                  </TouchableOpacity>)}
+              </View>
+            </View>}
+          <Seperator style={{ backgroundColor: 'white' }} />
+          <Text style={styles.text}>Rewards</Text>
           {/* CARDS */}
           <View style={styles.cardList}>
             {this.state.cards.map((item, index) =>
@@ -194,14 +200,17 @@ class EventDetailScreen extends React.Component {
                 onPress={() => this.navigateToCardDetail(item)}
                 style={styles.card}>
                 <View style={styles.cardImage}>
-                  <FastImage source={{ uri: AddHTTPS(item.round_card_image) }} style={styles.roundImage} />
+                  <FastImage source={{ uri: AddHTTPS(item.round_card_image) }}
+                    style={styles.roundImage} />
                   <View style={{ width: 5 }} />
-                  <FastImage source={{ uri: AddHTTPS(item.round_card_idolized_image) }} style={styles.roundImage} />
+                  <FastImage source={{ uri: AddHTTPS(item.round_card_idolized_image) }}
+                    style={styles.roundImage} />
                 </View>
                 <Text style={{ color: 'white' }}>{item.idol.name}</Text>
               </TouchableOpacity>
             )}
           </View>
+          <View style={{ height: 10 }} />
         </ScrollView>
       </View>
     )

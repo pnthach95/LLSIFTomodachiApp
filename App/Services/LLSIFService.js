@@ -1,10 +1,13 @@
 import { create } from 'apisauce'
+import Reactotron from 'reactotron-react-native'
 import { Config } from '../Config'
 
 const LLSIFApiClient = create({
   baseURL: Config.API_URL,
   timeout: 10000
 })
+
+LLSIFApiClient.addMonitor(Reactotron.apisauce)
 
 /**
  * [Fetch cached data](https://github.com/MagiCircles/SchoolIdolAPI/wiki/API-Cached-data)

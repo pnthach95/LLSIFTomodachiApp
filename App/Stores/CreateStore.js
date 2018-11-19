@@ -3,6 +3,7 @@ import createSagaMiddleware from 'redux-saga'
 import { persistReducer, persistStore } from 'redux-persist'
 import immutableTransform from 'redux-persist-transform-immutable'
 import { createNetworkMiddleware } from 'react-native-offline'
+import Reactotron from '../Config/ReactotronConfig'
 
 /**
  * This import defaults to localStorage for web and AsyncStorage for react-native.
@@ -33,12 +34,14 @@ const persistConfig = {
   ],
 }
 
+const sagaMonitor = Reactotron.createSagaMonitor()
+
 export default (rootReducer, rootSaga) => {
   const middleware = []
   const enhancers = []
 
   // Connect the sagas to the redux store
-  const sagaMiddleware = createSagaMiddleware()
+  const sagaMiddleware = createSagaMiddleware({ sagaMonitor })
   const networkMiddleware = createNetworkMiddleware()
   middleware.push(networkMiddleware)
   middleware.push(sagaMiddleware)
@@ -48,7 +51,8 @@ export default (rootReducer, rootSaga) => {
   // Redux persist
   const persistedReducer = persistReducer(persistConfig, rootReducer)
 
-  const store = createStore(persistedReducer, compose(...enhancers))
+  // const store = createStore(persistedReducer, compose(...enhancers))
+  const store = Reactotron.createStore(persistedReducer, compose(...enhancers))
   const persistor = persistStore(store)
 
   // Kick off the root saga

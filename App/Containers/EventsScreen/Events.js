@@ -4,7 +4,6 @@ import { connect } from 'react-redux'
 import Icon from 'react-native-vector-icons/Ionicons'
 import _ from 'lodash'
 
-import { getWorldwideOnly } from '../../Stores/Settings/Selectors'
 import SkillRow from '../../Components/SkillRow/SkillRow'
 import EventItem from '../../Components/EventItem/EventItem'
 import RegionRow from '../../Components/RegionRow/RegionRow'
@@ -16,6 +15,7 @@ import SplashScreen from '../SplashScreen/SplashScreen'
 import { Colors, ApplicationStyles } from '../../Theme'
 import styles from './styles'
 import { LLSIFService } from '../../Services/LLSIFService'
+import { loadSettings } from '../../Utils'
 
 /**
  * [Event List Screen](https://github.com/MagiCircles/SchoolIdolAPI/wiki/API-Events#get-the-list-of-events)
@@ -50,7 +50,7 @@ class EventsScreen extends React.Component {
       main_unit: '',
       skill: 'All',
       attribute: '',
-      is_english: this.props.worldwideOnly ? 'True' : '',
+      is_english: '',
     }
     this.state = {
       isLoading: true,
@@ -65,7 +65,7 @@ class EventsScreen extends React.Component {
       main_unit: '',
       skill: 'All',
       attribute: '',
-      is_english: this.props.worldwideOnly ? 'True' : '',
+      is_english: '',
     }
     this._onEndReached = _.debounce(this._onEndReached, 500)
   }
@@ -82,8 +82,9 @@ class EventsScreen extends React.Component {
   }
 
   componentDidMount() {
-    this.setState({ japan_only: this.props.worldwideOnly ? 'True' : '' })
-    this.getEvents()
+    loadSettings().then(res => {
+      this.setState({ is_english: res.worldwide_only ? 'False' : '' }, () => this.getEvents())
+    })
   }
 
   /**
@@ -164,6 +165,9 @@ class EventsScreen extends React.Component {
         [{ text: 'OK', onPress: () => console.log('OK Pressed', err) }])
     })
   }
+
+  _openDrawer = () => this.props.navigation.openDrawer()
+
   /**
    * Call when pressing search button
    *
@@ -248,7 +252,8 @@ class EventsScreen extends React.Component {
       <View style={styles.container}>
         {/* HEADER */}
         <View style={[ApplicationStyles.header, styles.header]}>
-          <TextInput style={styles.textInput}
+          <SquareButton name={'ios-menu'} onPress={this._openDrawer} />
+          <TextInput style={ApplicationStyles.searchInput}
             onChangeText={text => this.setState({ search: text })}
             onSubmitEditing={this.onSearch}
             placeholder={'Type here...'}
@@ -287,9 +292,6 @@ class EventsScreen extends React.Component {
   }
 }
 
-const mapStateToProps = (state) => ({
-  worldwideOnly: getWorldwideOnly(state)
-})
-
+const mapStateToProps = (state) => ({})
 const mapDispatchToProps = (dispatch) => ({})
 export default connect(mapStateToProps, mapDispatchToProps)(EventsScreen)

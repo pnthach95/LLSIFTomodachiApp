@@ -29,8 +29,13 @@ export default class EventItem extends Component {
     }
   }
 
-  getImage = (this.props.item.english_image === null) ? AddHTTPS(this.props.item.image)
+  getImage = (this.props.item.english_image === null)
+    ? AddHTTPS(this.props.item.image)
     : AddHTTPS(this.props.item.english_image)
+
+  eventName = (this.props.item.english_name !== null)
+    ? `${this.props.item.english_name}\n${this.props.item.japanese_name}`
+    : this.props.item.japanese_name
 
   render() {
     return (
@@ -38,7 +43,7 @@ export default class EventItem extends Component {
         <FastImage
           source={{
             uri: this.getImage,
-            priority: FastImage.priority.normal,
+            priority: FastImage.priority.normal
           }}
           onLoad={(e) => {
             const { width, height } = e.nativeEvent
@@ -51,8 +56,7 @@ export default class EventItem extends Component {
           }} />
 
         <View style={styles.info}>
-          {this.props.item.english_name !== null && <Text style={styles.text}>{this.props.item.english_name}</Text>}
-          <Text style={styles.text}>{this.props.item.japanese_name}</Text>
+          <Text style={styles.text}>{this.eventName}</Text>
         </View>
       </TouchableOpacity>
     )

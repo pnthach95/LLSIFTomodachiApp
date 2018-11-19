@@ -165,6 +165,8 @@ class SongsScreen extends React.Component {
    */
   toggleFilter = () => this.setState({ isFilter: !this.state.isFilter })
 
+  _openDrawer = () => this.props.navigation.openDrawer()
+
   /**
    * Call when pressing search button
    *
@@ -234,7 +236,8 @@ class SongsScreen extends React.Component {
       <View style={styles.container}>
         {/* HEADER */}
         <View style={[ApplicationStyles.header, styles.header]}>
-          <TextInput style={styles.textInput}
+          <SquareButton name={'ios-menu'} onPress={this._openDrawer} />
+          <TextInput style={ApplicationStyles.searchInput}
             onChangeText={text => this.setState({ search: text })}
             onSubmitEditing={this.onSearch}
             placeholder={'Type here...'}

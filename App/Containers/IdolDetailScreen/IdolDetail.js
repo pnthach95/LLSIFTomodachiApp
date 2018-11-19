@@ -50,7 +50,7 @@ class IdolDetailScreen extends React.Component {
     let name = this.props.navigation.getParam('name')
     LLSIFService.fetchIdol(name).then(res1 => {
       let _filter = {
-        japanese_name: res1.japanese_name,
+        search: name,
         page_size: 1
       }
       console.log('IdolDetails', res1)
@@ -93,7 +93,7 @@ class IdolDetailScreen extends React.Component {
           </View>
           <View style={styles.centerHeader}>
             <Text>{this.state.item.name}</Text>
-            <Text>{this.state.item.japanese_name}</Text>
+            {this.state.item.japanese_name !== null && <Text>{this.state.item.japanese_name}</Text>}
           </View>
           <View style={styles.rightHeader}>
             <Image source={findMainUnit(this.state.item.main_unit)}
@@ -133,7 +133,7 @@ class IdolDetailScreen extends React.Component {
               />
             </View>
             <View style={{ paddingHorizontal: Metrics.doubleBaseMargin }}>
-              {this.state.item.school &&
+              {this.state.item.school !== null &&
                 <View>
                   <TextRow
                     item1={{ flex: column1, text: 'School' }}
@@ -145,7 +145,7 @@ class IdolDetailScreen extends React.Component {
                 item1={{ flex: column1, text: 'Attribute' }}
                 item2={{ flex: column2, text: this.state.item.attribute }} />
 
-              {this.state.item.birthday &&
+              {this.state.item.birthday !== null &&
                 <View>
                   <Seperator />
                   <TextRow
@@ -153,7 +153,7 @@ class IdolDetailScreen extends React.Component {
                     item2={{ flex: column2, text: moment(this.state.item.birthday, 'MM-DD').format('MMM Do') }} />
                 </View>}
 
-              {this.state.item.main_unit &&
+              {this.state.item.main_unit !== null &&
                 <View>
                   <Seperator />
                   <TextRow
@@ -161,7 +161,7 @@ class IdolDetailScreen extends React.Component {
                     item2={{ flex: column2, text: this.state.item.main_unit }} />
                 </View>}
 
-              {this.state.item.sub_unit &&
+              {this.state.item.sub_unit !== null &&
                 <View>
                   <Seperator />
                   <TextRow
@@ -169,7 +169,7 @@ class IdolDetailScreen extends React.Component {
                     item2={{ flex: column2, text: this.state.item.sub_unit }} />
                 </View>}
 
-              {this.state.item.astrological_sign &&
+              {this.state.item.astrological_sign !== null &&
                 <View>
                   <Seperator />
                   <TextRow
@@ -177,7 +177,7 @@ class IdolDetailScreen extends React.Component {
                     item2={{ flex: column2, text: this.state.item.astrological_sign }} />
                 </View>}
 
-              {this.state.item.blood &&
+              {this.state.item.blood !== null &&
                 <View>
                   <Seperator />
                   <TextRow
@@ -185,7 +185,7 @@ class IdolDetailScreen extends React.Component {
                     item2={{ flex: column2, text: this.state.item.blood }} />
                 </View>}
 
-              {this.state.item.height &&
+              {this.state.item.height !== null &&
                 <View>
                   <Seperator />
                   <TextRow
@@ -193,7 +193,7 @@ class IdolDetailScreen extends React.Component {
                     item2={{ flex: column2, text: this.state.item.height }} />
                 </View>}
 
-              {this.state.item.measurements &&
+              {this.state.item.measurements !== null &&
                 <View>
                   <Seperator />
                   <TextRow
@@ -201,7 +201,7 @@ class IdolDetailScreen extends React.Component {
                     item2={{ flex: column2, text: this.state.item.measurements }} />
                 </View>}
 
-              {this.state.item.favorite_food &&
+              {this.state.item.favorite_food !== null &&
                 <View>
                   <Seperator />
                   <TextRow
@@ -209,7 +209,7 @@ class IdolDetailScreen extends React.Component {
                     item2={{ flex: column2, text: this.state.item.favorite_food }} />
                 </View>}
 
-              {this.state.item.least_favorite_food &&
+              {this.state.item.least_favorite_food !== null &&
                 <View>
                   <Seperator />
                   <TextRow
@@ -217,7 +217,7 @@ class IdolDetailScreen extends React.Component {
                     item2={{ flex: column2, text: this.state.item.least_favorite_food }} />
                 </View>}
 
-              {this.state.item.hobbies &&
+              {this.state.item.hobbies !== null &&
                 <View>
                   <Seperator />
                   <TextRow
@@ -233,7 +233,7 @@ class IdolDetailScreen extends React.Component {
                     item2={{ flex: column2, text: this.state.item.year }} />
                 </View>}
 
-              {this.state.item.cv &&
+              {this.state.item.cv !== null &&
                 <View>
                   <Seperator />
                   <TextRow
@@ -266,7 +266,7 @@ class IdolDetailScreen extends React.Component {
                     }} />
                 </View>}
 
-              {this.state.item.summary &&
+              {this.state.item.summary !== null &&
                 <View>
                   <Seperator />
                   <TextRow

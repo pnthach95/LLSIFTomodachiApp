@@ -1,10 +1,9 @@
 import React from 'react'
-import { Text, View, FlatList, TextInput, TouchableOpacity, Alert } from 'react-native'
+import { Text, View, FlatList, TextInput, TouchableOpacity, Alert, ScrollView } from 'react-native'
 import { connect } from 'react-redux'
 import Icon from 'react-native-vector-icons/Ionicons'
 import _ from 'lodash'
 
-import { getWorldwideOnly } from '../../Stores/Settings/Selectors'
 import YearRow from '../../Components/YearRow/YearRow'
 import CardItem from '../../Components/CardItem/CardItem'
 import EventRow from '../../Components/EventRow/EventRow'
@@ -23,6 +22,7 @@ import { LLSIFService } from '../../Services/LLSIFService'
 import SplashScreen from '../SplashScreen/SplashScreen'
 import { Colors, ApplicationStyles } from '../../Theme'
 import styles from './styles'
+import { loadSettings } from '../../Utils'
 
 /**
  * [Card List Screen](https://github.com/MagiCircles/SchoolIdolAPI/wiki/API-Cards#get-the-list-of-cards)
@@ -63,7 +63,7 @@ class CardsScreen extends React.PureComponent {
       name: 'All',
       rarity: '',
       attribute: '',
-      japan_only: this.props.worldwideOnly ? 'False' : '',
+      japan_only: '',
       is_promo: '',
       is_special: '',
       is_event: '',
@@ -85,7 +85,7 @@ class CardsScreen extends React.PureComponent {
       name: 'All',
       rarity: '',
       attribute: '',
-      japan_only: this.props.worldwideOnly ? 'False' : '',
+      japan_only: '',
       is_promo: '',
       is_special: '',
       is_event: '',
@@ -110,8 +110,9 @@ class CardsScreen extends React.PureComponent {
   }
 
   componentDidMount() {
-    this.setState({ japan_only: this.props.worldwideOnly ? 'False' : '' })
-    this.getCards()
+    loadSettings().then(res => {
+      this.setState({ japan_only: res.worldwide_only ? 'False' : '' }, () => this.getCards())
+    })
   }
 
   /**
@@ -187,6 +188,8 @@ class CardsScreen extends React.PureComponent {
         [{ text: 'OK', onPress: () => console.log('OK Pressed', err) }])
     })
   }
+
+  _openDrawer = () => this.props.navigation.openDrawer()
 
   /**
    * Call when pressing search button
@@ -354,7 +357,8 @@ class CardsScreen extends React.PureComponent {
       <View style={styles.container}>
         {/* HEADER */}
         <View style={[ApplicationStyles.header, styles.header]}>
-          <TextInput style={styles.textInput}
+          <SquareButton name={'ios-menu'} onPress={this._openDrawer} />
+          <TextInput style={ApplicationStyles.searchInput}
             onChangeText={text => this.setState({ search: text })}
             onSubmitEditing={this.onSearch}
             placeholder={'Type here...'}
@@ -366,26 +370,28 @@ class CardsScreen extends React.PureComponent {
         {/* FILTER */}
         {this.state.isFilter &&
           <View style={styles.filterContainer}>
-            <IdolNameRow name={this.state.name} selectIdol={this.selectIdol} />
-            <RarityRow rarity={this.state.rarity} selectRarity={this.selectRarity} />
-            <AttributeRow attribute={this.state.attribute} selectAttribute={this.selectAttribute} />
-            <RegionRow japan_only={this.state.japan_only} selectRegion={this.selectRegion} />
-            <PromoCardRow is_promo={this.state.is_promo} selectPromo={this.selectPromo} />
-            <SpecialCardRow is_special={this.state.is_special} selectSpecial={this.selectSpecial} />
-            <EventRow is_event={this.state.is_event} selectEvent={this.selectEvent} />
-            <SkillRow skill={this.state.skill} selectSkill={this.selectSkill} />
-            <MainUnitRow main_unit={this.state.idol_main_unit} selectMainUnit={this.selectMainUnit} />
-            <SubUnitRow idol_sub_unit={this.state.idol_sub_unit} selectSubUnit={this.selectSubUnit} />
-            <SchoolRow idol_school={this.state.idol_school} selectSchool={this.selectSchool} />
-            <YearRow idol_year={this.state.idol_year} selectYear={this.selectYear} />
+            <ScrollView>
+              <IdolNameRow name={this.state.name} selectIdol={this.selectIdol} />
+              <RarityRow rarity={this.state.rarity} selectRarity={this.selectRarity} />
+              <AttributeRow attribute={this.state.attribute} selectAttribute={this.selectAttribute} />
+              <RegionRow japan_only={this.state.japan_only} selectRegion={this.selectRegion} />
+              <PromoCardRow is_promo={this.state.is_promo} selectPromo={this.selectPromo} />
+              <SpecialCardRow is_special={this.state.is_special} selectSpecial={this.selectSpecial} />
+              <EventRow is_event={this.state.is_event} selectEvent={this.selectEvent} />
+              <SkillRow skill={this.state.skill} selectSkill={this.selectSkill} />
+              <MainUnitRow main_unit={this.state.idol_main_unit} selectMainUnit={this.selectMainUnit} />
+              <SubUnitRow idol_sub_unit={this.state.idol_sub_unit} selectSubUnit={this.selectSubUnit} />
+              <SchoolRow idol_school={this.state.idol_school} selectSchool={this.selectSchool} />
+              <YearRow idol_year={this.state.idol_year} selectYear={this.selectYear} />
 
-            {/* RESET BUTTON */}
-            <View style={styles.resetView}>
-              <TouchableOpacity onPress={this.resetFilter}
-                style={styles.resetButton}>
-                <Text style={styles.resetText}>RESET</Text>
-              </TouchableOpacity>
-            </View>
+              {/* RESET BUTTON */}
+              <View style={styles.resetView}>
+                <TouchableOpacity onPress={this.resetFilter}
+                  style={styles.resetButton}>
+                  <Text style={styles.resetText}>RESET</Text>
+                </TouchableOpacity>
+              </View>
+            </ScrollView>
           </View>}
 
         {/* LIST */}
@@ -403,9 +409,6 @@ class CardsScreen extends React.PureComponent {
   }
 }
 
-const mapStateToProps = (state) => ({
-  worldwideOnly: getWorldwideOnly(state)
-})
-
+const mapStateToProps = (state) => ({})
 const mapDispatchToProps = (dispatch) => ({})
 export default connect(mapStateToProps, mapDispatchToProps)(CardsScreen)

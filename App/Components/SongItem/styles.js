@@ -14,6 +14,7 @@ export default StyleSheet.create({
     paddingHorizontal: 4
   },
   text: {
+    color: 'white',
     textAlign: 'center'
   }
 })

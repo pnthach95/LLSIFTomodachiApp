@@ -3,10 +3,11 @@ import { Metrics } from '../../Theme'
 
 export default StyleSheet.create({
   container: {
-    width: Metrics.widthBanner,
+    backgroundColor: '#fff5',
+    width: Metrics.screenWidth - 20,
+    borderRadius: 15,
     margin: Metrics.smallMargin,
     paddingTop: Metrics.smallMargin,
-    paddingHorizontal: Metrics.smallMargin,
     alignItems: 'center',
     justifyContent: 'center'
   },

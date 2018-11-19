@@ -17,6 +17,7 @@ export default {
     alignItems: 'center'
   },
   imageHeader: {
+    width: '60%',
     height: '100%',
     resizeMode: 'contain'
   },
@@ -33,5 +34,12 @@ export default {
   center: {
     justifyContent: 'center',
     alignItems: 'center'
+  },
+  searchInput: {
+    backgroundColor: '#dcdcdc',
+    flex: 1,
+    borderRadius: 20,
+    marginVertical: 6,
+    paddingLeft: 10
   }
 }

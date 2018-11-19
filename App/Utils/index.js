@@ -1,3 +1,4 @@
+import { AsyncStorage } from 'react-native'
 import { Colors, Images } from '../Theme'
 
 /**
@@ -84,4 +85,26 @@ export const findSubUnit = (key) => {
     default:
       return null
   }
+}
+
+export const loadSettings = async () => {
+  return new Promise((resolve, reject) => {
+    AsyncStorage.getItem('settings')
+      .then(res => {
+        if (res == null) {
+          res = {
+            worldwide_only: false
+          }
+        } else {
+          res = JSON.parse(res)
+        }
+        resolve(res)
+      })
+      .catch(err => reject(err))
+  })
+}
+
+export const saveSettings = (settings) => {
+  let j = JSON.stringify(settings)
+  AsyncStorage.setItem('settings', j)
 }

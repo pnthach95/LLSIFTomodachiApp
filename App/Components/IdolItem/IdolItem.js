@@ -3,7 +3,7 @@ import { TouchableOpacity, View, Text } from 'react-native'
 import FastImage from 'react-native-fast-image'
 import styles from './styles'
 import { Metrics } from '../../Theme'
-import { AddHTTPS, findColorByAttribute } from '../../Utils';
+import { findColorByAttribute } from '../../Utils';
 
 /**
  * Idol item for Idol List Screen
@@ -40,7 +40,7 @@ export default class IdolItem extends Component {
         ]}>
         <FastImage
           source={{
-            uri: AddHTTPS(this.props.item.chibi),
+            uri: this.props.item.chibi,
             priority: FastImage.priority.normal,
           }}
           onLoad={(e) => {

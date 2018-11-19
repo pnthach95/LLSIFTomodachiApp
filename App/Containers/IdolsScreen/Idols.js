@@ -1,14 +1,15 @@
 import React from 'react'
-import { View, Text, SectionList, FlatList } from 'react-native'
+import { View, Text, SectionList, FlatList, Image } from 'react-native'
 import { connect } from 'react-redux'
 import Icon from 'react-native-vector-icons/Ionicons'
 
 import IdolItem from '../../Components/IdolItem/IdolItem'
+import SquareButton from '../../Components/SquareButton/SquareButton'
 import { LLSIFService } from '../../Services/LLSIFService'
 import SplashScreen from '../SplashScreen/SplashScreen'
-import { Colors } from '../../Theme'
+import { Colors, ApplicationStyles, Images } from '../../Theme'
 import styles from './styles'
-import Seperator from '../../Components/Seperator/Seperator';
+import Seperator from '../../Components/Seperator/Seperator'
 
 /**
  * Idol List Screen
@@ -97,10 +98,23 @@ class IdolsScreen extends React.Component {
    */
   _renderItem = ({ item }) => <IdolItem item={item} onPress={this.navigateToIdolDetail(item.name)} />
 
+  _openDrawer = () => this.props.navigation.openDrawer()
+
   render() {
     if (this.state.isLoading) return <SplashScreen bgColor={Colors.blue} />
     return (
       <View style={styles.container}>
+        {/* HEADER */}
+        <View style={ApplicationStyles.header}>
+          <View style={styles.leftHeader} >
+            <SquareButton name={'ios-menu'} onPress={this._openDrawer} color={'white'} />
+          </View>
+          <View style={styles.centerHeader}>
+            <Image source={Images.logo} style={ApplicationStyles.imageHeader} />
+          </View>
+          <View style={styles.rightHeader} />
+        </View>
+        {/* BODY */}
         <SectionList
           sections={this.state.list}
           initialNumToRender={9}

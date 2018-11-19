@@ -11,5 +11,18 @@ export default StyleSheet.create({
   },
   list: {
     padding: Metrics.smallMargin
-  }
+  },
+  leftHeader: {
+    flex: 1
+  },
+  centerHeader: {
+    flex: 5,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  rightHeader: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'flex-end'
+  },
 })

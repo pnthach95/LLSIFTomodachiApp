@@ -6,6 +6,7 @@ import Icon from 'react-native-vector-icons/SimpleLineIcons'
 import moment from 'moment'
 
 import Seperator from '../../Components/Seperator/Seperator'
+import SquareButton from '../../Components/SquareButton/SquareButton'
 import TimerCountdown from '../../Components/TimerCountdown/Timer'
 import { AddHTTPS } from '../../Utils'
 import SplashScreen from '../SplashScreen/SplashScreen'
@@ -78,6 +79,8 @@ class MainScreen extends React.Component {
     this.props.navigation.navigate('EventDetailScreen', { event: event.toObject() })
   }
 
+  _openDrawer = () => this.props.navigation.openDrawer()
+
   render() {
     if (this.props.cachedDataIsLoading) return <SplashScreen bgColor={Colors.pink} />
     if (this.props.cachedDataErrorMessage) {
@@ -103,9 +106,14 @@ class MainScreen extends React.Component {
       <View style={styles.container}>
         {/* HEADER */}
         <View style={ApplicationStyles.header}>
-          <Image source={Images.logo} style={ApplicationStyles.imageHeader} />
+          <View style={styles.leftHeader} >
+            <SquareButton name={'ios-menu'} onPress={this._openDrawer} color={'white'} />
+          </View>
+          <View style={styles.centerHeader}>
+            <Image source={Images.logo} style={ApplicationStyles.imageHeader} />
+          </View>
+          <View style={styles.rightHeader} />
         </View>
-
         {/* BODY */}
         <ScrollView style={styles.body}
           showsVerticalScrollIndicator={false}

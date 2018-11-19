@@ -9,10 +9,8 @@ import Fade from '../../Components/Fade/Fade'
 import styles from './styles'
 import { Images, ApplicationStyles } from '../../Theme'
 import { Config } from '../../Config'
-import { AddHTTPS } from '../../Utils'
-import SettingActions from '../../Stores/Settings/Actions'
+import { AddHTTPS, loadSettings, saveSettings } from '../../Utils'
 import { getRandomCard, getBGImage } from '../../Stores/CachedData/Selectors'
-import { getWorldwideOnly } from '../../Stores/Settings/Selectors'
 
 /**
  * Left Drawer show some information
@@ -26,8 +24,14 @@ class Drawer extends Component {
     super(props)
     this.state = {
       visible: true,
-      worldwide_only: this.props.worldwideOnly
+      worldwide_only: true
     }
+  }
+
+  componentDidMount() {
+    loadSettings().then(res => {
+      this.setState({ worldwide_only: res.worldwide_only })
+    })
   }
 
   _visibleToggle = () => this.setState({ visible: !this.state.visible })
@@ -37,7 +41,7 @@ class Drawer extends Component {
       worldwide_only: !this.state.worldwide_only
     }
     this.setState({ worldwide_only: !this.state.worldwide_only })
-    this.props.setSettings(settings)
+    saveSettings(settings)
   }
 
   /**
@@ -63,7 +67,7 @@ class Drawer extends Component {
 
             <View style={styles.body}>
               <View style={styles.textBlock}>
-                <Text>This app is open-source.</Text>
+                <Text>{Config.DRAWER}</Text>
               </View>
               <View style={styles.settingRow}>
                 <Text>Worldwide only</Text>
@@ -75,7 +79,7 @@ class Drawer extends Component {
             <View style={[ApplicationStyles.center, styles.footer]}>
               <View style={styles.footerBlock}>
                 <Text style={styles.versionText}>Powered by </Text>
-                <Text onPress={() => Linking.openURL('https://schoolido.lu')}
+                <Text onPress={() => Linking.openURL(Config.SCHOOLIDO)}
                   style={[styles.versionText, { textDecorationLine: 'underline' }]}>
                   {`School Idol Tomodachi`}
                 </Text>
@@ -114,12 +118,9 @@ class Drawer extends Component {
 
 const mapStateToProps = (state) => ({
   randomCard: getRandomCard(state),
-  bgImage: getBGImage(state),
-  worldwideOnly: getWorldwideOnly(state)
+  bgImage: getBGImage(state)
 })
 
-const mapDispatchToProps = (dispatch) => ({
-  setSettings: (data) => dispatch(SettingActions.setSettings(data))
-})
+const mapDispatchToProps = (dispatch) => ({})
 
 export default connect(mapStateToProps, mapDispatchToProps)(Drawer)

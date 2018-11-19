@@ -31,12 +31,14 @@ export default class SongItem extends Component {
     }
   }
 
+  getName = this.props.item.name + (this.props.item.romaji_name != null && `\n${this.props.item.romaji_name}`)
+
   render() {
     return (
       <TouchableOpacity onPress={this.props.onPress}
         style={[
           styles.container,
-          { backgroundColor: this.state.colors[1] }
+          { backgroundColor: this.state.colors[0] }
         ]}>
         <FastImage source={{ uri: AddHTTPS(this.props.item.image) }}
           onLoad={e => {
@@ -48,8 +50,7 @@ export default class SongItem extends Component {
             height: Metrics.images.itemWidth * this.state.imgHeight / this.state.imgWidth
           }} />
         <View style={styles.info}>
-          <Text style={styles.text}>{this.props.item.name}</Text>
-          {this.props.item.romaji_name != null && <Text style={styles.text}>{this.props.item.romaji_name}</Text>}
+          <Text style={styles.text}>{this.getName}</Text>
         </View>
       </TouchableOpacity>
     )

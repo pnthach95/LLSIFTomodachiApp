@@ -15,12 +15,6 @@ export default StyleSheet.create({
   content: {
     alignItems: 'center',
   },
-  textInput: {
-    flex: 1,
-    borderColor: '#333',
-    borderWidth: 1.5,
-    margin: 6
-  },
   filterContainer: {
     backgroundColor: 'white',
     padding: 10

@@ -42,6 +42,7 @@ class SongDetailScreen extends React.Component {
     super(props)
     this.state = {
       item: this.props.navigation.getParam('item'),
+      name: '',
       imgWidth: 0,
       imgHeight: 0,
       colors: [],
@@ -88,6 +89,7 @@ class SongDetailScreen extends React.Component {
     }
     this.setState({
       isLoading: false,
+      name: this.state.item.name + (this.state.item.romaji_name !== null ? `\n${this.state.item.romaji_name}` : ''),
       currentStats: [this.state.item.easy_notes, easyArray],
       easy: [this.state.item.easy_notes, easyArray],
       normal: [this.state.item.normal_notes, normalArray],
@@ -185,8 +187,7 @@ class SongDetailScreen extends React.Component {
             <SquareButton name={'ios-arrow-back'} onPress={() => this.props.navigation.goBack()} />
           </View>
           <View style={styles.centerHeader}>
-            <Text>{this.state.item.name}</Text>
-            <Text>{this.state.item.romaji_name}</Text>
+            <Text>{this.state.name}</Text>
           </View>
           <View style={styles.rightHeader}>
             <Image source={findMainUnit(this.state.item.main_unit)}

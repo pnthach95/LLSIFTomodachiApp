@@ -31,7 +31,7 @@ export default class SongItem extends Component {
     }
   }
 
-  getName = this.props.item.name + (this.props.item.romaji_name != null && `\n${this.props.item.romaji_name}`)
+  getName = this.props.item.name + (this.props.item.romaji_name != null ? `\n${this.props.item.romaji_name}` : '')
 
   render() {
     return (

@@ -261,7 +261,6 @@ class SongsScreen extends React.Component {
           </View>}
         {/* LIST */}
         <FlatList
-          contentContainerStyle={styles.content}
           data={this.state.list}
           initialNumToRender={6}
           numColumns={2}

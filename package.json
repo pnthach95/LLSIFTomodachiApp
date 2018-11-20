@@ -1,14 +1,16 @@
 {
   "name": "LLSIFTomodachi",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "private": true,
   "scripts": {
     "start": "node node_modules/react-native/local-cli/cli.js start",
     "test": "jest",
-    "rename": "react-native-rename"
+    "rename": "react-native-rename",
+    "version:up": "node ./node_modules/react-native-version-up/index.js"
   },
   "dependencies": {
     "apisauce": "^1.0.0",
+    "color": "^3.1.0",
     "immutable": "^3.8.2",
     "lodash": "^4.17.11",
     "moment": "^2.22.2",
@@ -21,6 +23,7 @@
     "react-native-offline": "^3.14.1",
     "react-native-vector-icons": "5.0.0",
     "react-native-version-number": "^0.3.5",
+    "react-native-version-up": "^1.0.9",
     "react-navigation": "^2.18.2",
     "react-redux": "^5.0.7",
     "redux": "^3.7.2",

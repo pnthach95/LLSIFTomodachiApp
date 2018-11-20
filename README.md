@@ -62,3 +62,7 @@ I'm just a developer who play Love Live and BanG Dream.
 
 - Icon app
 - Official name
+
+## Version up
+
+`npm run version:up -- --major || --minor || --patch`

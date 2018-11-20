@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Image } from 'react-native'
+import { View, Image, StatusBar } from 'react-native'
 import { BarIndicator } from 'react-native-indicators'
 import styles from './SplashScreenStyle'
 import { Images } from '../../Theme'
@@ -22,8 +22,9 @@ export default class SplashScreen extends React.Component {
   render() {
     return (
       <View style={[styles.container, { backgroundColor: this.props.bgColor }]}>
+        <StatusBar hidden />
         <Image source={Images.logo} style={styles.logo} />
-        <BarIndicator count={9} color={'white'}/>
+        <BarIndicator count={9} color={'white'} />
       </View>
     )
   }

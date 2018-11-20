@@ -108,3 +108,8 @@ export const saveSettings = (settings) => {
   let j = JSON.stringify(settings)
   AsyncStorage.setItem('settings', j)
 }
+
+export const darkenColor = (color) => {
+  var Color = require('color')
+  return Color(color).darken(0.5)
+}

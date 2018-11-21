@@ -51,7 +51,10 @@ const AppNav = createDrawerNavigator({ Stack: Stack }, { contentComponent: Drawe
 
 class RootScreen extends Component {
   componentDidMount() {
-    console.clear()
+    if (__DEV__) {
+      console.clear()
+      console.log('App is running in DEV mode')
+    }
     this.props.startup()
   }
 
@@ -69,9 +72,7 @@ class RootScreen extends Component {
 const mapStateToProps = (state) => ({})
 
 const mapDispatchToProps = (dispatch) => ({
-  startup: () => dispatch(CachedDataActions.fetchCachedData()),
-  setSettings: (data) => dispatch(SettingActions.setSettings(data)),
-  getSettings: () => dispatch(SettingActions.getSettings())
+  startup: () => dispatch(CachedDataActions.fetchCachedData())
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(RootScreen)

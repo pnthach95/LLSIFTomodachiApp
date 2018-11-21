@@ -40,6 +40,6 @@ export default {
     flex: 1,
     borderRadius: 20,
     marginVertical: 6,
-    paddingLeft: 10
+    padding: 10
   }
 }

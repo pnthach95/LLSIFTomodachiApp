@@ -123,6 +123,7 @@ class IdolsScreen extends React.Component {
           renderSectionHeader={({ section: { title } }) => (
             <Text style={{ fontWeight: 'bold', color: 'white', fontSize: 20 }}>{title}</Text>
           )}
+          stickySectionHeadersEnabled={false}
           ListHeaderComponent={<View style={{ height: 10 }} />}
           ListFooterComponent={<View style={{ height: 10 }} />}
           SectionSeparatorComponent={data => {

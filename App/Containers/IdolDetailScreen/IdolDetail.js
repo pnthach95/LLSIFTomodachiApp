@@ -1,5 +1,5 @@
 import React from 'react'
-import { Text, View, ScrollView, Image, Linking } from 'react-native'
+import { Text, View, ScrollView, Image } from 'react-native'
 import { connect } from 'react-redux'
 import FastImage from 'react-native-fast-image'
 import LinearGradient from 'react-native-linear-gradient'
@@ -10,7 +10,7 @@ import SquareButton from '../../Components/SquareButton/SquareButton'
 import TextRow from '../../Components/TextRow/TextRow'
 import SplashScreen from '../SplashScreen/SplashScreen'
 import { LLSIFService } from '../../Services/LLSIFService'
-import { findColorByAttribute, AddHTTPS, findMainUnit, findSubUnit } from '../../Utils'
+import { findColorByAttribute, AddHTTPS, findMainUnit, findSubUnit, openLink } from '../../Utils'
 import { Metrics, ApplicationStyles, Colors } from '../../Theme'
 import styles from './styles'
 
@@ -245,7 +245,7 @@ class IdolDetailScreen extends React.Component {
                       item2={{
                         flex: column2,
                         text: 'Twitter: ' + this.state.item.cv.twitter,
-                        onPress: () => Linking.openURL('https://twitter.com/' + this.state.item.cv.twitter),
+                        onPress: () => openLink('https://twitter.com/' + this.state.item.cv.twitter),
                         textStyle: { textDecorationLine: 'underline' }
                       }} />}
                   {this.state.item.cv.instagram &&
@@ -254,14 +254,14 @@ class IdolDetailScreen extends React.Component {
                       item2={{
                         flex: column2,
                         text: 'Instagram: ' + this.state.item.cv.instagram,
-                        onPress: () => Linking.openURL('https://www.instagram.com/' + this.state.item.cv.instagram),
+                        onPress: () => openLink('https://www.instagram.com/' + this.state.item.cv.instagram),
                         textStyle: { textDecorationLine: 'underline' }
                       }} />}
                   <TextRow
                     item1={{ flex: column1, text: '' }}
                     item2={{
                       flex: column2, text: this.state.item.cv.url,
-                      onPress: () => Linking.openURL(this.state.item.cv.url),
+                      onPress: () => openLink(this.state.item.cv.url),
                       textStyle: { textDecorationLine: 'underline' }
                     }} />
                 </View>}

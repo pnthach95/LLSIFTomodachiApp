@@ -1,4 +1,4 @@
-import { AsyncStorage } from 'react-native'
+import { AsyncStorage, Alert, Linking } from 'react-native'
 import { Colors, Images } from '../Theme'
 
 /**
@@ -112,4 +112,11 @@ export const saveSettings = (settings) => {
 export const darkenColor = (color) => {
   var Color = require('color')
   return Color(color).darken(0.5)
+}
+
+export const openLink = (link) => {
+  Alert.alert('Open link', link, [
+    { text: 'Cancel', onPress: () => { }, style: 'cancel' },
+    { text: 'OK', onPress: () => Linking.openURL(link) }
+  ])
 }

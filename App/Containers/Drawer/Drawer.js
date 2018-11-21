@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, Text, Linking, ImageBackground, TouchableHighlight, Image, Switch } from 'react-native'
+import { View, Text, ImageBackground, TouchableHighlight, Image, Switch } from 'react-native'
 import { SafeAreaView } from 'react-navigation'
 import { connect } from 'react-redux'
 import Icon from 'react-native-vector-icons/Ionicons'
@@ -9,7 +9,7 @@ import Fade from '../../Components/Fade/Fade'
 import styles from './styles'
 import { Images, ApplicationStyles } from '../../Theme'
 import { Config } from '../../Config'
-import { AddHTTPS, loadSettings, saveSettings } from '../../Utils'
+import { AddHTTPS, loadSettings, saveSettings, openLink } from '../../Utils'
 import { getRandomCard, getBGImage } from '../../Stores/CachedData/Selectors'
 
 /**
@@ -79,13 +79,13 @@ class Drawer extends Component {
             <View style={[ApplicationStyles.center, styles.footer]}>
               <View style={styles.footerBlock}>
                 <Text style={styles.versionText}>Powered by </Text>
-                <Text onPress={() => Linking.openURL(Config.SCHOOLIDO)}
+                <Text onPress={() => openLink(Config.SCHOOLIDO)}
                   style={[styles.versionText, { textDecorationLine: 'underline' }]}>
                   {`School Idol Tomodachi`}
                 </Text>
               </View>
               <View style={styles.footerBlock}>
-                <TouchableHighlight onPress={() => Linking.openURL(Config.GITHUB_PROJECT)}
+                <TouchableHighlight onPress={() => openLink(Config.GITHUB_PROJECT)}
                   underlayColor={'#fff0'}
                   style={ApplicationStyles.center}>
                   <View style={ApplicationStyles.center}>

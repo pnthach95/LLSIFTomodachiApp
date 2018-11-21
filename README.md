@@ -2,22 +2,31 @@
 
 This project is a Love Live School Idol Festival app using data from [School Idol Tomodachi](http://schoolido.lu/)
 
+
+
+## Review
+
+
 ## Content
 
 The project contains:
 
-- a [React Native](https://facebook.github.io/react-native/) (v0.57.4) application (in "[ejected](https://github.com/react-community/create-react-native-app/blob/master/EJECTING.md)" mode to allow using dependencies that rely on native code)
+- a [React Native](https://facebook.github.io/react-native/) (v0.57.5) application (in "[ejected](https://github.com/react-community/create-react-native-app/blob/master/EJECTING.md)" mode to allow using dependencies that rely on native code)
 - a [clear directory layout](#directory-layout) to provide a base architecture for your application
-- [Redux](https://redux.js.org/) (v3.7) to help manage state
-- [Redux Persist](https://github.com/rt2zz/redux-persist) (v5.9) to persist the Redux state
-- [Redux Sagas](https://redux-saga.js.org) (v5.0) to separate side-effects and logic from state and UI logic
-- [React Navigation](https://reactnavigation.org/) (v2.18) with a [`NavigationService`](App/Services/NavigationService.js) to handle routing and navigation in the app, with a splash screen setup by default
+- [Redux](https://redux.js.org/) (v3.7.2) to help manage state
+- [Redux Persist](https://github.com/rt2zz/redux-persist) (v5.9.1) to persist the Redux state
+- [Redux Sagas](https://redux-saga.js.org) (v0.16.2) to separate side-effects and logic from state and UI logic
+- [React Navigation](https://reactnavigation.org/) (v2.18.2) with a [`NavigationService`](App/Services/NavigationService.js) to handle routing and navigation in the app, with a splash screen setup by default
 - [reduxsauce](https://github.com/infinitered/reduxsauce) (v1.0.0) to facilitate using Redux
 - [apisauce](https://github.com/infinitered/apisauce) (v1.0.0) to make [axios](https://github.com/axios/axios) even better
-- [react-native-fast-image](https://github.com/DylanVann/react-native-fast-image)
-- [react-native-linear-gradienet](https://github.com/react-native-community/react-native-linear-gradient)
-- [react-native-offline](https://github.com/rgommezz/react-native-offline) to handle offline mode
-- [react-native-indicators](https://github.com/n4kz/react-native-indicators) is a collection of animated loading indicators
+- [react-native-fast-image](https://github.com/DylanVann/react-native-fast-image) (v5.1.0)
+- [react-native-linear-gradienet](https://github.com/react-native-community/react-native-linear-gradient) (v2.4.3)
+- [react-native-offline](https://github.com/rgommezz/react-native-offline) (v3.14.1) to handle offline mode
+- [react-native-indicators](https://github.com/n4kz/react-native-indicators) (v0.13.0) is a collection of animated loading indicators
+- [moment](https://momentjs.com/) (v2.22.2) to handle time
+- [react-native-vector-icons](https://github.com/oblador/react-native-vector-icons) (v5.0.0)
+- [react-native-version-number](https://github.com/APSL/react-native-version-number) (v0.3.5) to get version number
+- [react-native-version-up](https://github.com/gustarus/react-native-version-up) (v1.0.9) to increase version and build number
 
 ## Directory layout
 
@@ -54,12 +63,17 @@ Assuming you have all the requirements installed, you can setup and run the proj
 
 This project is released under the [MIT License](LICENSE).
 
-## About me
+## Author
 
-I'm just a developer who play Love Live and BanG Dream.
+Phạm Ngọc Thạch
+
+Email: [thachxyz123@gmail.com](mailto:thachxyz123@gmail.com)
+
+I'm a React Native developer, play Love Live and BanG Dream everyday.
 
 ## TODO
 
+- Handle offline mode
 - Icon app
 - Official name
 

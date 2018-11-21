@@ -36,6 +36,9 @@ async function fetchCardList(filter) {
   if (response.ok) {
     return response.data.results
   }
+  if (response.status === 404) {
+    return 404
+  }
   return null
 }
 
@@ -87,9 +90,9 @@ async function fetchSongList(filter) {
   console.log('fetchSongList response', response)
   if (response.ok) {
     return response.data.results
-  } else {
-    if (response.data.detail == 'Not found')
-      return 'End results'
+  }
+  if (response.status === 404) {
+    return 404
   }
   return null
 }
@@ -106,6 +109,9 @@ async function fetchEventList(filter) {
   console.log('fetchEventList response', response)
   if (response.ok) {
     return response.data.results
+  }
+  if (response.status === 404) {
+    return 404
   }
   return null
 }

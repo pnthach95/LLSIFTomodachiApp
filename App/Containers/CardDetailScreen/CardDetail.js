@@ -204,16 +204,14 @@ class CardDetailScreen extends React.Component {
             {/* CARD IMAGES */}
             <View style={styles.imageRow}>
               {this.state.item.card_image != null &&
-                <FastImage
-                  source={{ uri: AddHTTPS(this.state.item.card_image) }}
+                <FastImage source={{ uri: AddHTTPS(this.state.item.card_image) }}
                   style={{
                     width: Metrics.images.itemWidth,
                     height: Metrics.images.itemWidth * this.state.imgHeight / this.state.imgWidth
                   }}
                   onLoad={e => this.onLoadFastImage(e)}
                 />}
-              <FastImage
-                source={{ uri: AddHTTPS(this.state.item.card_idolized_image) }}
+              <FastImage source={{ uri: AddHTTPS(this.state.item.card_idolized_image) }}
                 style={{
                   width: Metrics.images.itemWidth,
                   height: Metrics.images.itemWidth * this.state.imgHeight / this.state.imgWidth
@@ -273,8 +271,7 @@ class CardDetailScreen extends React.Component {
                     item2={{ text: this.state.item.event.english_name, flex: 4, textStyle: Fonts.style.normal }} />
                   <TouchableOpacity style={ApplicationStyles.center}
                     onPress={this.navigateToEventDetail(this.state.item.event.japanese_name)}>
-                    <FastImage
-                      source={{ uri: AddHTTPS(this.state.item.event.image) }}
+                    <FastImage source={{ uri: AddHTTPS(this.state.item.event.image) }}
                       style={styles.banner}
                       resizeMode={FastImage.resizeMode.contain}
                     />

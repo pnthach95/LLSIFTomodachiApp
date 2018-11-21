@@ -5,13 +5,14 @@ import FastImage from 'react-native-fast-image'
 import moment from 'moment'
 
 import Seperator from '../../Components/Seperator/Seperator'
-import TimerCountdown from '../../Components/TimerCountdown/Timer'
 import SquareButton from '../../Components/SquareButton/SquareButton'
+import TimerCountdown from '../../Components/TimerCountdown/Timer'
 import SplashScreen from '../SplashScreen/SplashScreen'
+import { LLSIFService } from '../../Services/LLSIFService'
 import { AddHTTPS, findAttribute } from '../../Utils'
+import { Config } from '../../Config'
 import { Metrics, ApplicationStyles, Colors } from '../../Theme'
 import styles from './styles'
-import { LLSIFService } from '../../Services/LLSIFService'
 
 /**
  * Event Detail Screen
@@ -124,9 +125,9 @@ class EventDetailScreen extends React.Component {
     /** End time of English event */
     let ENEventEnd = moment(this.state.item.english_end)
     /** Start time of Japan event */
-    let JPEventStart = moment(this.state.item.beginning, 'YYYY-MM-DDTHH:mm:ssZ')
+    let JPEventStart = moment(this.state.item.beginning, Config.DATETIME_FORMAT_INPUT)
     /** End time of Japan event */
-    let JPEventEnd = moment(this.state.item.end, 'YYYY-MM-DDTHH:mm:ssZ')
+    let JPEventEnd = moment(this.state.item.end, Config.DATETIME_FORMAT_INPUT)
     return (
       <View style={styles.container}>
         <View style={[ApplicationStyles.header, styles.header]}>
@@ -142,35 +143,40 @@ class EventDetailScreen extends React.Component {
           contentContainerStyle={styles.content}
           style={styles.scrollView}>
           {/* ENGLISH BLOCK */}
-          {this.state.item.english_name &&
+          {this.state.item.english_name !== null &&
             <View style={[styles.content, { marginVertical: 10 }]}>
               <Text style={{ color: 'white' }}>English</Text>
-              <Text style={styles.title}>{this.state.item.english_name}</Text>
+              <Text style={styles.title}>
+                {this.state.item.english_name.length === 0 ?
+                  this.state.item.romaji_name : this.state.item.english_name}
+              </Text>
               <FastImage source={{ uri: AddHTTPS(this.state.item.english_image) }}
+                resizeMode={FastImage.resizeMode.contain}
                 onLoad={e => this.onLoadFastImage(e)}
                 style={{
                   width: Metrics.widthBanner,
                   height: Metrics.widthBanner * this.state.imgHeight / this.state.imgWidth
                 }} />
               <Text style={styles.text}>
-                {`Start: ${ENEventStart.format('HH:mm MMM Do YYYY')}\nEnd: ${ENEventEnd.format('HH:mm MMM Do YYYY')}`}
+                {`Start: ${ENEventStart.format(Config.DATETIME_FORMAT_OUTPUT)}\nEnd: ${ENEventEnd.format(Config.DATETIME_FORMAT_OUTPUT)}`}
               </Text>
               {this.state.item.world_current && this.timer(ENEventEnd.diff(moment()))}
             </View>}
-          {this.state.item.english_name &&
+          {this.state.item.english_name !== null &&
             <Seperator style={{ backgroundColor: 'white' }} />}
 
           {/* JAPANESE BLOCK */}
           <Text style={{ color: 'white' }}>Japanese</Text>
           <Text style={styles.title}>{this.state.item.romaji_name}</Text>
           <FastImage source={{ uri: AddHTTPS(this.state.item.image) }}
+            resizeMode={FastImage.resizeMode.contain}
             onLoad={e => this.onLoadFastImage(e)}
             style={{
               width: Metrics.widthBanner,
               height: Metrics.widthBanner * this.state.imgHeight / this.state.imgWidth
             }} />
           <Text style={styles.text}>
-            {`Start: ${JPEventStart.format('HH:mm MMM Do YYYY')}\nEnd: ${JPEventEnd.format('HH:mm MMM Do YYYY')}`}
+            {`Start: ${JPEventStart.format(Config.DATETIME_FORMAT_OUTPUT)}\nEnd: ${JPEventEnd.format(Config.DATETIME_FORMAT_OUTPUT)}`}
           </Text>
           {this.state.item.japan_current && this.timer(JPEventEnd.diff(moment()))}
           {this.state.songs.length !== 0 && <Seperator style={{ backgroundColor: 'white' }} />}
@@ -212,8 +218,7 @@ class EventDetailScreen extends React.Component {
           </View>
           <View style={{ height: 10 }} />
         </ScrollView>
-      </View>
-    )
+      </View>)
   }
 }
 

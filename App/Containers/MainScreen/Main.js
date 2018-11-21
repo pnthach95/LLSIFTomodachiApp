@@ -8,8 +8,9 @@ import moment from 'moment'
 import Seperator from '../../Components/Seperator/Seperator'
 import SquareButton from '../../Components/SquareButton/SquareButton'
 import TimerCountdown from '../../Components/TimerCountdown/Timer'
-import { AddHTTPS } from '../../Utils'
 import SplashScreen from '../SplashScreen/SplashScreen'
+import { AddHTTPS } from '../../Utils'
+import { Config } from '../../Config'
 import { Metrics, Colors, Images, ApplicationStyles } from '../../Theme'
 import styles from './styles'
 
@@ -98,9 +99,9 @@ class MainScreen extends React.Component {
     /** Japanese event */
     let JPEvent = data.get('eventJP')
     /** Start time of Japanese event */
-    let JPEventStart = moment(JPEvent.get('beginning'), 'YYYY-MM-DDTHH:mm:ssZ')
+    let JPEventStart = moment(JPEvent.get('beginning'), Config.DATETIME_FORMAT_INPUT)
     /** End time of Japanese event */
-    let JPEventEnd = moment(JPEvent.get('end'), 'YYYY-MM-DDTHH:mm:ssZ')
+    let JPEventEnd = moment(JPEvent.get('end'), Config.DATETIME_FORMAT_INPUT)
 
     return (
       <View style={styles.container}>
@@ -130,7 +131,7 @@ class MainScreen extends React.Component {
               }} />
           </TouchableOpacity>
           <Text style={styles.text}>
-            {`Start: ${ENEventStart.format('HH:mm MMM Do YYYY')}\nEnd: ${ENEventEnd.format('HH:mm MMM Do YYYY')}`}
+            {`Start: ${ENEventStart.format(Config.DATETIME_FORMAT_OUTPUT)}\nEnd: ${ENEventEnd.format(Config.DATETIME_FORMAT_OUTPUT)}`}
           </Text>
           {ENEvent.get('world_current') && this.timer(ENEventEnd.diff(moment()))}
           <Seperator style={{ backgroundColor: 'white' }} />
@@ -147,7 +148,7 @@ class MainScreen extends React.Component {
               }} />
           </TouchableOpacity>
           <Text style={styles.text}>
-            {`Start: ${JPEventStart.format('HH:mm MMM Do YYYY')}\nEnd: ${JPEventEnd.format('HH:mm MMM Do YYYY')}`}
+            {`Start: ${JPEventStart.format(Config.DATETIME_FORMAT_OUTPUT)}\nEnd: ${JPEventEnd.format(Config.DATETIME_FORMAT_OUTPUT)}`}
           </Text>
           {JPEvent.get('japan_current') && this.timer(JPEventEnd.diff(moment()))}
           {/* <Seperator style={{ backgroundColor: 'white' }} /> */}

@@ -7,6 +7,7 @@ export default {
   promo: require('../Images/others/promo.png'),
   event: require('../Images/others/event.png'),
   empty: require('../Images/others/empty.png'),
+  alpaca: require('../Images/others/small_Alpaca.png'),
   skill: [
     require('../Images/skills/score_up.png'),
     require('../Images/skills/perfect_lock.png'),

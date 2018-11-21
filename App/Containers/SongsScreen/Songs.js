@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, FlatList, TextInput, Alert, TouchableOpacity, Text } from 'react-native'
+import { View, FlatList, TextInput, Alert, TouchableOpacity, Text, Image } from 'react-native'
 import { connect } from 'react-redux'
 import Icon from 'react-native-vector-icons/Ionicons'
 import _ from 'lodash'
@@ -11,7 +11,7 @@ import AttributeRow from '../../Components/AttributeRow/AttributeRow'
 import SquareButton from '../../Components/SquareButton/SquareButton'
 import SplashScreen from '../SplashScreen/SplashScreen'
 import { LLSIFService } from '../../Services/LLSIFService'
-import { Colors, ApplicationStyles } from '../../Theme'
+import { Colors, ApplicationStyles, Images } from '../../Theme'
 import styles from './styles'
 
 const defaultFilter = {
@@ -72,9 +72,8 @@ class SongsScreen extends React.Component {
   }
 
   static navigationOptions = {
-    tabBarIcon: ({ focused }) => (
-      <Icon name='ios-musical-notes' size={30} color={focused ? Colors.pink : Colors.inactive} />
-    ),
+    tabBarIcon: ({ focused }) => <Icon name='ios-musical-notes' size={30}
+      color={focused ? Colors.pink : Colors.inactive} />,
     tabBarLabel: 'Songs',
     tabBarOptions: {
       activeTintColor: Colors.pink,
@@ -83,7 +82,7 @@ class SongsScreen extends React.Component {
   }
 
   componentDidMount() {
-    this.getSongs()
+    this._getSongs()
   }
 
   /**
@@ -99,7 +98,7 @@ class SongsScreen extends React.Component {
    * @param {Object} item
    * @memberof SongsScreen
    */
-  _renderItem = ({ item }) => <SongItem item={item} onPress={() => this.navigateToSongDetail(item)} />
+  _renderItem = ({ item }) => <SongItem item={item} onPress={() => this._navigateToSongDetail(item)} />
 
   /**
    * Navigate to Song Detail Screen
@@ -107,7 +106,7 @@ class SongsScreen extends React.Component {
    * @param {Object} item
    * @memberof SongsScreen
    */
-  navigateToSongDetail(item) {
+  _navigateToSongDetail(item) {
     this.props.navigation.navigate('SongDetailScreen', { item: item })
   }
 
@@ -119,10 +118,10 @@ class SongsScreen extends React.Component {
    */
   _onEndReached = () => {
     if (this.state.stopSearch) return
-    this.getSongs()
+    this._getSongs()
   }
 
-  getSongs(page = this.state.page) {
+  _getSongs(page = this.state.page) {
     let _filter = {
       ordering: this.state.ordering,
       page_size: this.state.page_size,
@@ -136,8 +135,9 @@ class SongsScreen extends React.Component {
     }
     if (this.state.search != 0) { _filter.search = this.state.search }
     console.log(`========== Songs.getSongs`, _filter)
-    LLSIFService.fetchSongList(_filter).then((result) => {
-      if (_.isString(result)) {
+    LLSIFService.fetchSongList(_filter).then(result => {
+      if (result === 404) {
+        console.log('LLSIFService.fetchSongList 404')
         this.setState({ stopSearch: true })
       } else {
         var x = [...this.state.list, ...result]
@@ -163,7 +163,7 @@ class SongsScreen extends React.Component {
    *
    * @memberof SongsScreen
    */
-  toggleFilter = () => this.setState({ isFilter: !this.state.isFilter })
+  _toggleFilter = () => this.setState({ isFilter: !this.state.isFilter })
 
   _openDrawer = () => this.props.navigation.openDrawer()
 
@@ -172,9 +172,9 @@ class SongsScreen extends React.Component {
    *
    * @memberof SongsScreen
    */
-  onSearch = () => {
+  _onSearch = () => {
     this.setState({ list: [], page: 1, isFilter: false, stopSearch: false })
-    this.getSongs(1)
+    this._getSongs(1)
   }
 
   /**
@@ -182,7 +182,7 @@ class SongsScreen extends React.Component {
    *
    * @memberof SongsScreen
    */
-  resetFilter = () => {
+  _resetFilter = () => {
     this.setState({
       ordering: defaultFilter.ordering,
       page_size: defaultFilter.page_size,
@@ -204,31 +204,28 @@ class SongsScreen extends React.Component {
    * @param {String} value
    * @memberof SongsScreen
    */
-  selectEvent = (value) => () => this.setState({ is_event: value })
+  _selectEvent = (value) => () => this.setState({ is_event: value })
 
   /**
    * Save `attribute`
    *
    * @memberof SongsScreen
    */
-  selectAttribute = (value) => () => this.setState({ attribute: value })
+  _selectAttribute = (value) => () => this.setState({ attribute: value })
 
   /**
    * Save `main_unit`
    *
    * @memberof SongsScreen
    */
-  selectMainUnit = (value) => () => this.setState({ main_unit: value })
+  _selectMainUnit = (value) => () => this.setState({ main_unit: value })
 
   /**
    * Render footer in FlatList
    */
-  renderFooter = () => {
-    return (
-      <View style={[ApplicationStyles.center, { margin: 10 }]}>
-        <Text>End result</Text>
-      </View>)
-  }
+  renderFooter = <View style={[ApplicationStyles.center, { margin: 10 }]}>
+    <Image source={Images.alpaca} />
+  </View>
 
   render() {
     if (this.state.isLoading) return <SplashScreen />
@@ -239,26 +236,31 @@ class SongsScreen extends React.Component {
           <SquareButton name={'ios-menu'} onPress={this._openDrawer} />
           <TextInput style={ApplicationStyles.searchInput}
             onChangeText={text => this.setState({ search: text })}
-            onSubmitEditing={this.onSearch}
+            onSubmitEditing={this._onSearch}
             placeholder={'Type here...'}
             value={this.state.search} />
-          <SquareButton name={'ios-search'} onPress={this.onSearch} />
-          <SquareButton name={'ios-more'} onPress={this.toggleFilter} />
+          <SquareButton name={'ios-search'} onPress={this._onSearch} />
+          <SquareButton name={'ios-more'} onPress={this._toggleFilter} />
         </View>
         {/* FILTER */}
         {this.state.isFilter &&
           <View style={styles.filterContainer}>
-            <AttributeRow attribute={this.state.attribute} selectAttribute={this.selectAttribute} />
-            <EventRow is_event={this.state.is_event} selectEvent={this.selectEvent} />
-            <MainUnitRow main_unit={this.state.main_unit} selectMainUnit={this.selectMainUnit} />
+            <AttributeRow attribute={this.state.attribute} selectAttribute={this._selectAttribute} />
+            <EventRow is_event={this.state.is_event} selectEvent={this._selectEvent} />
+            <MainUnitRow main_unit={this.state.main_unit} selectMainUnit={this._selectMainUnit} />
 
             <View style={styles.resetView}>
-              <TouchableOpacity onPress={this.resetFilter}
+              <TouchableOpacity onPress={this._resetFilter}
                 style={styles.resetButton}>
                 <Text style={styles.resetText}>RESET</Text>
               </TouchableOpacity>
             </View>
           </View>}
+
+        {this.state.list.length === 0 && <View style={{ margin: 10 }}>
+          <Text style={{ textAlign: 'center' }}>No result</Text>
+        </View>}
+
         {/* LIST */}
         <FlatList
           data={this.state.list}

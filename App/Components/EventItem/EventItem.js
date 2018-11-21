@@ -33,7 +33,8 @@ export default class EventItem extends Component {
     ? AddHTTPS(this.props.item.image)
     : AddHTTPS(this.props.item.english_image)
 
-  eventName = (this.props.item.english_name != null) ? `${this.props.item.english_name}\n` : '' + this.props.item.japanese_name
+  eventName = ((this.props.item.english_name != null && this.props.item.english_name.length !== 0) ?
+    `${this.props.item.english_name}\n` : '') + this.props.item.japanese_name
 
   render() {
     return (
@@ -43,6 +44,7 @@ export default class EventItem extends Component {
             uri: this.getImage,
             priority: FastImage.priority.normal
           }}
+          resizeMode={FastImage.resizeMode.contain}
           onLoad={(e) => {
             const { width, height } = e.nativeEvent
             this.setState({ imgWidth: width, imgHeight: height })

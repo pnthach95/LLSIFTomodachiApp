@@ -4,7 +4,6 @@ import { createStackNavigator, createBottomTabNavigator, createDrawerNavigator }
 import { connect } from 'react-redux'
 
 import CachedDataActions from '../../Stores/CachedData/Actions'
-import SettingActions from '../../Stores/Settings/Actions'
 import { ApplicationStyles } from '../../Theme'
 import NavigationService from '../../Services/NavigationService'
 

@@ -1,5 +1,5 @@
 import React from 'react'
-import { Text, View, FlatList, TextInput, TouchableOpacity, Alert, ScrollView } from 'react-native'
+import { Text, View, FlatList, TextInput, TouchableOpacity, Alert, ScrollView, Image } from 'react-native'
 import { connect } from 'react-redux'
 import Icon from 'react-native-vector-icons/Ionicons'
 import _ from 'lodash'
@@ -20,7 +20,7 @@ import SquareButton from '../../Components/SquareButton/SquareButton'
 import SpecialCardRow from '../../Components/SpecialCardRow/SpecialCardRow'
 import { LLSIFService } from '../../Services/LLSIFService'
 import SplashScreen from '../SplashScreen/SplashScreen'
-import { Colors, ApplicationStyles } from '../../Theme'
+import { Colors, ApplicationStyles, Images } from '../../Theme'
 import styles from './styles'
 import { loadSettings } from '../../Utils'
 
@@ -99,9 +99,9 @@ class CardsScreen extends React.PureComponent {
   }
 
   static navigationOptions = {
-    tabBarIcon: ({ focused }) => (
-      <Icon name='ios-photos' size={30} color={focused ? Colors.pink : Colors.inactive} />
-    ),
+    tabBarIcon: ({ focused }) =>
+      <Icon name='ios-photos' size={30}
+        color={focused ? Colors.pink : Colors.inactive} />,
     tabBarLabel: 'Cards',
     tabBarOptions: {
       activeTintColor: Colors.pink,
@@ -111,7 +111,7 @@ class CardsScreen extends React.PureComponent {
 
   componentDidMount() {
     loadSettings().then(res => {
-      this.setState({ japan_only: res.worldwide_only ? 'False' : '' }, () => this.getCards())
+      this.setState({ japan_only: res.worldwide_only ? 'False' : '' }, () => this._getCards())
     })
   }
 
@@ -127,7 +127,7 @@ class CardsScreen extends React.PureComponent {
    *
    * @memberof CardsScreen
    */
-  _renderItem = ({ item }) => <CardItem item={item} onPress={this.navigateToCardDetail(item)} />
+  _renderItem = ({ item }) => <CardItem item={item} onPress={this._navigateToCardDetail(item)} />
 
   /**
    * Navigate to Card Detail Screen
@@ -135,7 +135,7 @@ class CardsScreen extends React.PureComponent {
    * @param {Object} item Card's information
    * @memberof CardsScreen
    */
-  navigateToCardDetail = (item) => () => this.props.navigation.navigate('CardDetailScreen', { item: item })
+  _navigateToCardDetail = (item) => () => this.props.navigation.navigate('CardDetailScreen', { item: item })
 
   /**
    * Get card list
@@ -143,7 +143,7 @@ class CardsScreen extends React.PureComponent {
    * @param {Number} [page=this.state.page] Page number
    * @memberof CardsScreen
    */
-  getCards(page = this.state.page) {
+  _getCards(page = this.state.page) {
     let _skill = this.state.skill
     let _name = this.state.name
     let _sub_unit = this.state.idol_sub_unit
@@ -167,23 +167,20 @@ class CardsScreen extends React.PureComponent {
     }
     if (this.state.search != '') { _filter.search = this.state.search }
     console.log(`========== Cards.getCards`, _filter)
-    LLSIFService.fetchCardList(_filter).then((result) => {
-      if (_.isString(result)) {
+    LLSIFService.fetchCardList(_filter).then(result => {
+      if (result === 404) {
+        console.log('LLSIFService.fetchCardList 404')
         this.setState({ stopSearch: true })
       } else {
         var x = [...this.state.data, ...result]
-        x = x.filter((thing, index, self) =>
-          index === self.findIndex((t) => (
-            t.id === thing.id
-          ))
-        )
+        x = x.filter((thing, index, self) => index === self.findIndex(t => t.id === thing.id))
         this.setState({
           data: x,
           isLoading: false,
           page: page + 1
         })
       }
-    }).catch((err) => {
+    }).catch(err => {
       Alert.alert('Error', 'Error when get cards',
         [{ text: 'OK', onPress: () => console.log('OK Pressed', err) }])
     })
@@ -196,9 +193,9 @@ class CardsScreen extends React.PureComponent {
    *
    * @memberof CardsScreen
    */
-  onSearch = () => {
+  _onSearch = () => {
     this.setState({ data: [], isFilter: false, stopSearch: false })
-    this.getCards(1)
+    this._getCards(1)
   }
 
   /**
@@ -209,7 +206,7 @@ class CardsScreen extends React.PureComponent {
    */
   _onEndReached = () => {
     if (this.state.stopSearch) return
-    this.getCards()
+    this._getCards()
   }
 
   /**
@@ -217,7 +214,7 @@ class CardsScreen extends React.PureComponent {
    *
    * @memberof CardsScreen
    */
-  toggleFilter = () => this.setState({ isFilter: !this.state.isFilter })
+  _toggleFilter = () => this.setState({ isFilter: !this.state.isFilter })
 
   /**
    * Save is_promo
@@ -225,7 +222,7 @@ class CardsScreen extends React.PureComponent {
    * @param {String} value
    * @memberof CardsScreen
    */
-  selectPromo = (value) => () => this.setState({ is_promo: value })
+  _selectPromo = (value) => () => this.setState({ is_promo: value })
 
   /**
    * Save is_special
@@ -233,7 +230,7 @@ class CardsScreen extends React.PureComponent {
    * @param {String} value
    * @memberof CardsScreen
    */
-  selectSpecial = (value) => () => this.setState({ is_special: value })
+  _selectSpecial = (value) => () => this.setState({ is_special: value })
 
   /**
    * Save is_event
@@ -241,7 +238,7 @@ class CardsScreen extends React.PureComponent {
    * @param {String} value
    * @memberof CardsScreen
    */
-  selectEvent = (value) => () => this.setState({ is_event: value })
+  _selectEvent = (value) => () => this.setState({ is_event: value })
 
   /**
    * Save idol_main_unit
@@ -249,7 +246,7 @@ class CardsScreen extends React.PureComponent {
    * @param {String} value
    * @memberof CardsScreen
    */
-  selectMainUnit = (value) => () => this.setState({ idol_main_unit: value })
+  _selectMainUnit = (value) => () => this.setState({ idol_main_unit: value })
 
   /**
    * Save rarity
@@ -257,7 +254,7 @@ class CardsScreen extends React.PureComponent {
    * @param {String} value
    * @memberof CardsScreen
    */
-  selectRarity = (value) => () => this.setState({ rarity: value })
+  _selectRarity = (value) => () => this.setState({ rarity: value })
 
   /**
    * Save attribute
@@ -265,7 +262,7 @@ class CardsScreen extends React.PureComponent {
    * @param {String} value
    * @memberof CardsScreen
    */
-  selectAttribute = (value) => () => this.setState({ attribute: value })
+  _selectAttribute = (value) => () => this.setState({ attribute: value })
 
   /**
    * Save idol_year
@@ -273,7 +270,7 @@ class CardsScreen extends React.PureComponent {
    * @param {String} value
    * @memberof CardsScreen
    */
-  selectYear = (value) => () => this.setState({ idol_year: value })
+  _selectYear = (value) => () => this.setState({ idol_year: value })
 
   /**
    * Save region
@@ -281,7 +278,7 @@ class CardsScreen extends React.PureComponent {
    * @param {String} value
    * @memberof CardsScreen
    */
-  selectRegion = (value) => () => this.setState({ japan_only: value })
+  _selectRegion = (value) => () => this.setState({ japan_only: value })
 
   /**
    * Save idol_sub_unit
@@ -290,7 +287,7 @@ class CardsScreen extends React.PureComponent {
    * @param {String} itemIndex unused
    * @memberof CardsScreen
    */
-  selectSubUnit = (itemValue, itemIndex) => this.setState({ idol_sub_unit: itemValue })
+  _selectSubUnit = (itemValue, itemIndex) => this.setState({ idol_sub_unit: itemValue })
 
   /**
    * Save idol name
@@ -299,7 +296,7 @@ class CardsScreen extends React.PureComponent {
    * @param {String} itemIndex unused
    * @memberof CardsScreen
    */
-  selectIdol = (itemValue, itemIndex) => this.setState({ name: itemValue })
+  _selectIdol = (itemValue, itemIndex) => this.setState({ name: itemValue })
 
   /**
    * Save school
@@ -308,7 +305,7 @@ class CardsScreen extends React.PureComponent {
    * @param {String} itemIndex unused
    * @memberof CardsScreen
    */
-  selectSchool = (itemValue, itemIndex) => this.setState({ idol_school: itemValue })
+  _selectSchool = (itemValue, itemIndex) => this.setState({ idol_school: itemValue })
 
   /**
    * Save skill
@@ -317,14 +314,14 @@ class CardsScreen extends React.PureComponent {
    * @param {String} itemIndex unused
    * @memberof CardsScreen
    */
-  selectSkill = (itemValue, itemIndex) => this.setState({ skill: itemValue })
+  _selectSkill = (itemValue, itemIndex) => this.setState({ skill: itemValue })
 
   /**
    * Reset filter variables
    *
    * @memberof CardsScreen
    */
-  resetFilter = () => {
+  _resetFilter = () => {
     this.setState({
       name: this.defaultFilter.name,
       rarity: this.defaultFilter.rarity,
@@ -347,8 +344,8 @@ class CardsScreen extends React.PureComponent {
    *
    * @memberof CardsScreen
    */
-  renderFooter = () => <View style={[ApplicationStyles.center, { margin: 10 }]}>
-    <Text>End results</Text>
+  renderFooter = <View style={[ApplicationStyles.center, { margin: 10 }]}>
+    <Image source={Images.alpaca} />
   </View>
 
   render() {
@@ -360,39 +357,43 @@ class CardsScreen extends React.PureComponent {
           <SquareButton name={'ios-menu'} onPress={this._openDrawer} />
           <TextInput style={ApplicationStyles.searchInput}
             onChangeText={text => this.setState({ search: text })}
-            onSubmitEditing={this.onSearch}
+            onSubmitEditing={this._onSearch}
             placeholder={'Type here...'}
             value={this.state.search} />
-          <SquareButton name={'ios-search'} onPress={this.onSearch} />
-          <SquareButton name={'ios-more'} onPress={this.toggleFilter} />
+          <SquareButton name={'ios-search'} onPress={this._onSearch} />
+          <SquareButton name={'ios-more'} onPress={this._toggleFilter} />
         </View>
 
         {/* FILTER */}
         {this.state.isFilter &&
           <View style={styles.filterContainer}>
             <ScrollView>
-              <IdolNameRow name={this.state.name} selectIdol={this.selectIdol} />
-              <RarityRow rarity={this.state.rarity} selectRarity={this.selectRarity} />
-              <AttributeRow attribute={this.state.attribute} selectAttribute={this.selectAttribute} />
-              <RegionRow japan_only={this.state.japan_only} selectRegion={this.selectRegion} />
-              <PromoCardRow is_promo={this.state.is_promo} selectPromo={this.selectPromo} />
-              <SpecialCardRow is_special={this.state.is_special} selectSpecial={this.selectSpecial} />
-              <EventRow is_event={this.state.is_event} selectEvent={this.selectEvent} />
-              <SkillRow skill={this.state.skill} selectSkill={this.selectSkill} />
-              <MainUnitRow main_unit={this.state.idol_main_unit} selectMainUnit={this.selectMainUnit} />
-              <SubUnitRow idol_sub_unit={this.state.idol_sub_unit} selectSubUnit={this.selectSubUnit} />
-              <SchoolRow idol_school={this.state.idol_school} selectSchool={this.selectSchool} />
-              <YearRow idol_year={this.state.idol_year} selectYear={this.selectYear} />
+              <IdolNameRow name={this.state.name} selectIdol={this._selectIdol} />
+              <RarityRow rarity={this.state.rarity} selectRarity={this._selectRarity} />
+              <AttributeRow attribute={this.state.attribute} selectAttribute={this._selectAttribute} />
+              <RegionRow japan_only={this.state.japan_only} selectRegion={this._selectRegion} />
+              <PromoCardRow is_promo={this.state.is_promo} selectPromo={this._selectPromo} />
+              <SpecialCardRow is_special={this.state.is_special} selectSpecial={this._selectSpecial} />
+              <EventRow is_event={this.state.is_event} selectEvent={this._selectEvent} />
+              <SkillRow skill={this.state.skill} selectSkill={this._selectSkill} />
+              <MainUnitRow main_unit={this.state.idol_main_unit} selectMainUnit={this._selectMainUnit} />
+              <SubUnitRow idol_sub_unit={this.state.idol_sub_unit} selectSubUnit={this._selectSubUnit} />
+              <SchoolRow idol_school={this.state.idol_school} selectSchool={this._selectSchool} />
+              <YearRow idol_year={this.state.idol_year} selectYear={this._selectYear} />
 
               {/* RESET BUTTON */}
               <View style={styles.resetView}>
-                <TouchableOpacity onPress={this.resetFilter}
+                <TouchableOpacity onPress={this._resetFilter}
                   style={styles.resetButton}>
                   <Text style={styles.resetText}>RESET</Text>
                 </TouchableOpacity>
               </View>
             </ScrollView>
           </View>}
+
+        {this.state.data.length === 0 && <View style={{ margin: 10 }}>
+          <Text style={styles.resetText}>No result</Text>
+        </View>}
 
         {/* LIST */}
         <FlatList

@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, FlatList, Text, TextInput, Alert, TouchableOpacity } from 'react-native'
+import { View, FlatList, Text, TextInput, Alert, TouchableOpacity, Image } from 'react-native'
 import { connect } from 'react-redux'
 import Icon from 'react-native-vector-icons/Ionicons'
 import _ from 'lodash'
@@ -12,7 +12,7 @@ import MainUnitRow from '../../Components/MainUnitRow/MainUnitRow'
 import AttributeRow from '../../Components/AttributeRow/AttributeRow'
 import SquareButton from '../../Components/SquareButton/SquareButton'
 import SplashScreen from '../SplashScreen/SplashScreen'
-import { Colors, ApplicationStyles } from '../../Theme'
+import { Colors, ApplicationStyles, Images } from '../../Theme'
 import styles from './styles'
 import { LLSIFService } from '../../Services/LLSIFService'
 import { loadSettings } from '../../Utils'
@@ -71,9 +71,9 @@ class EventsScreen extends React.Component {
   }
 
   static navigationOptions = {
-    tabBarIcon: ({ focused }) => (
-      <Icon name='md-calendar' size={30} color={focused ? Colors.pink : Colors.inactive} />
-    ),
+    tabBarIcon: ({ focused }) =>
+      <Icon name='md-calendar' size={30}
+        color={focused ? Colors.pink : Colors.inactive} />,
     tabBarLabel: 'Events',
     tabBarOptions: {
       activeTintColor: Colors.pink,
@@ -83,7 +83,7 @@ class EventsScreen extends React.Component {
 
   componentDidMount() {
     loadSettings().then(res => {
-      this.setState({ is_english: res.worldwide_only ? 'False' : '' }, () => this.getEvents())
+      this.setState({ is_english: res.worldwide_only ? 'False' : '' }, () => this._getEvents())
     })
   }
 
@@ -99,7 +99,7 @@ class EventsScreen extends React.Component {
    *
    * @memberof EventsScreen
    */
-  _renderItem = ({ item }) => <EventItem item={item} onPress={this.navigateToEventDetail(item)} />
+  _renderItem = ({ item }) => <EventItem item={item} onPress={this._navigateToEventDetail(item)} />
 
   /**
    * Navigate to Event Detail Screen
@@ -107,7 +107,7 @@ class EventsScreen extends React.Component {
    * @param {Object} item
    * @memberof EventsScreen
    */
-  navigateToEventDetail = (item) => () => this.props.navigation.navigate('EventDetailScreen', { eventName: item.japanese_name })
+  _navigateToEventDetail = (item) => () => this.props.navigation.navigate('EventDetailScreen', { eventName: item.japanese_name })
 
   /**
    * Call when scrolling to the end of list.
@@ -117,7 +117,7 @@ class EventsScreen extends React.Component {
    */
   _onEndReached = () => {
     if (this.state.stopSearch) return
-    this.getEvents()
+    this._getEvents()
   }
 
   /**
@@ -126,7 +126,7 @@ class EventsScreen extends React.Component {
    * @param {Number} [page=this.state.page] Page number
    * @memberof EventsScreen
    */
-  getEvents(page = this.state.page) {
+  _getEvents(page = this.state.page) {
     var _filter = {
       ordering: this.state.ordering,
       page_size: this.state.page_size,
@@ -145,7 +145,8 @@ class EventsScreen extends React.Component {
     if (this.state.search.length != 0) _filter.search = this.state.search
     console.log(`========== Events.getEvents`, _filter)
     LLSIFService.fetchEventList(_filter).then((result) => {
-      if (_.isString(result)) {
+      if (result === 404) {
+        console.log('LLSIFService.fetchEventList 404')
         this.setState({ stopSearch: true })
       } else {
         var x = [...this.state.list, ...result]
@@ -173,9 +174,9 @@ class EventsScreen extends React.Component {
    *
    * @memberof EventsScreen
    */
-  onSearch = () => {
+  _onSearch = () => {
     this.setState({ list: [], page: 1, isFilter: false, stopSearch: false })
-    this.getEvents(1)
+    this._getEvents(1)
   }
 
   /**
@@ -183,7 +184,7 @@ class EventsScreen extends React.Component {
    *
    * @memberof EventsScreen
    */
-  resetFilter = () => {
+  _resetFilter = () => {
     this.setState({
       ordering: this.defaultFilter.ordering,
       page_size: this.defaultFilter.page_size,
@@ -202,7 +203,7 @@ class EventsScreen extends React.Component {
    *
    * @memberof EventsScreen
    */
-  toggleFilter = () => this.setState({ isFilter: !this.state.isFilter })
+  _toggleFilter = () => this.setState({ isFilter: !this.state.isFilter })
 
   /**
    * Save `attribute`
@@ -210,7 +211,7 @@ class EventsScreen extends React.Component {
    * @param {String} value
    * @memberof EventsScreen
    */
-  selectAttribute = (value) => () => this.setState({ attribute: value })
+  _selectAttribute = (value) => () => this.setState({ attribute: value })
 
   /**
    * Save `main_unit`
@@ -218,7 +219,7 @@ class EventsScreen extends React.Component {
    * @param {String} value
    * @memberof EventsScreen
    */
-  selectMainUnit = (value) => () => this.setState({ main_unit: value })
+  _selectMainUnit = (value) => () => this.setState({ main_unit: value })
 
   /**
    * Save `is_english`
@@ -226,7 +227,7 @@ class EventsScreen extends React.Component {
    * @param {String} value
    * @memberof EventsScreen
    */
-  selectRegion = (value) => () => this.setState({ is_english: value })
+  _selectRegion = (value) => () => this.setState({ is_english: value })
 
   /**
    * Save `skill`
@@ -235,7 +236,7 @@ class EventsScreen extends React.Component {
    * @param {String} itemIndex unused
    * @memberof EventsScreen
    */
-  selectSkill = (itemValue, itemIndex) => this.setState({ skill: itemValue })
+  _selectSkill = (itemValue, itemIndex) => this.setState({ skill: itemValue })
 
   /**
    * Save `idol`
@@ -244,7 +245,16 @@ class EventsScreen extends React.Component {
    * @param {String} itemIndex unused
    * @memberof EventsScreen
    */
-  selectIdol = (itemValue, itemIndex) => this.setState({ idol: itemValue })
+  _selectIdol = (itemValue, itemIndex) => this.setState({ idol: itemValue })
+
+  /**
+   * Render footer of FlatList
+   *
+   * @memberof EventsScreen
+   */
+  renderFooter = <View style={[ApplicationStyles.center, { margin: 10 }]}>
+    <Image source={Images.alpaca} />
+  </View>
 
   render() {
     if (this.state.isLoading) return <SplashScreen bgColor={Colors.violet} />
@@ -255,23 +265,23 @@ class EventsScreen extends React.Component {
           <SquareButton name={'ios-menu'} onPress={this._openDrawer} />
           <TextInput style={ApplicationStyles.searchInput}
             onChangeText={text => this.setState({ search: text })}
-            onSubmitEditing={this.onSearch}
+            onSubmitEditing={this._onSearch}
             placeholder={'Type here...'}
             value={this.state.search} />
-          <SquareButton name={'ios-search'} onPress={this.onSearch} />
-          <SquareButton name={'ios-more'} onPress={this.toggleFilter} />
+          <SquareButton name={'ios-search'} onPress={this._onSearch} />
+          <SquareButton name={'ios-more'} onPress={this._toggleFilter} />
         </View>
 
         {/* FILTER */}
         {this.state.isFilter &&
           <View style={styles.filterContainer}>
-            <IdolNameRow name={this.state.idol} selectIdol={this.selectIdol} />
-            <MainUnitRow main_unit={this.state.main_unit} selectMainUnit={this.selectMainUnit} />
-            <SkillRow skill={this.state.skill} selectSkill={this.selectSkill} />
-            <AttributeRow attribute={this.state.attribute} selectAttribute={this.selectAttribute} />
-            <RegionRow japan_only={this.state.is_english} selectRegion={this.selectRegion} />
+            <IdolNameRow name={this.state.idol} selectIdol={this._selectIdol} />
+            <MainUnitRow main_unit={this.state.main_unit} selectMainUnit={this._selectMainUnit} />
+            <SkillRow skill={this.state.skill} selectSkill={this._selectSkill} />
+            <AttributeRow attribute={this.state.attribute} selectAttribute={this._selectAttribute} />
+            <RegionRow japan_only={this.state.is_english} selectRegion={this._selectRegion} />
             <View style={styles.resetView}>
-              <TouchableOpacity onPress={this.resetFilter}
+              <TouchableOpacity onPress={this._resetFilter}
                 style={styles.resetButton}>
                 <Text style={styles.resetText}>RESET</Text>
               </TouchableOpacity>
@@ -279,12 +289,16 @@ class EventsScreen extends React.Component {
           </View>}
 
         {/* LIST */}
+        {this.state.list.length === 0 && <View style={{ margin: 10 }}>
+          <Text style={styles.resetText}>No result</Text>
+        </View>}
         <FlatList
           contentContainerStyle={styles.content}
           data={this.state.list}
           initialNumToRender={6}
           keyExtractor={this._keyExtractor}
           style={styles.list}
+          ListFooterComponent={this.renderFooter}
           onEndReached={this._onEndReached}
           renderItem={this._renderItem} />
       </View>

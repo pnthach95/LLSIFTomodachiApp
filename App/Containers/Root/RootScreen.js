@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
-import { View } from 'react-native'
+import { View, SafeAreaView } from 'react-native'
 import { createStackNavigator, createBottomTabNavigator, createDrawerNavigator } from 'react-navigation'
 import { connect } from 'react-redux'
 
+import StatusBarBackground from '../../Components/StatusBarBackground/StatusBar'
 import CachedDataActions from '../../Stores/CachedData/Actions'
 import { ApplicationStyles } from '../../Theme'
 import NavigationService from '../../Services/NavigationService'
@@ -59,11 +60,14 @@ class RootScreen extends Component {
 
   render() {
     return (
-      <View style={ApplicationStyles.screen}>
-        <AppNav
-          // Initialize the NavigationService (see https://reactnavigation.org/docs/en/navigating-without-navigation-prop.html)
-          ref={(navigatorRef) => { NavigationService.setTopLevelNavigator(navigatorRef) }} />
-      </View>
+      <SafeAreaView style={ApplicationStyles.screen}>
+        <View style={ApplicationStyles.screen}>
+          <StatusBarBackground />
+          <AppNav
+            // Initialize the NavigationService (see https://reactnavigation.org/docs/en/navigating-without-navigation-prop.html)
+            ref={(navigatorRef) => { NavigationService.setTopLevelNavigator(navigatorRef) }} />
+        </View>
+      </SafeAreaView>
     )
   }
 }

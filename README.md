@@ -3,10 +3,6 @@
 This project is a Love Live School Idol Festival app using data from [School Idol Tomodachi](http://schoolido.lu/)
 
 
-
-## Review
-
-
 ## Content
 
 The project contains:
@@ -59,7 +55,24 @@ Assuming you have all the requirements installed, you can setup and run the proj
 - `react-native run-android` to run the Android application (remember to start a simulator or connect an Android phone)
 - `react-native run-ios` to run the iOS application (remember to start a simulator or connect an iPhone phone)
 
+
+## Review
+
+![](docs/images/Screenshot_20181121-132306.png)
+![](docs/images/Screenshot_20181121-132335.png)
+![](docs/images/Screenshot_20181121-132351.png)
+![](docs/images/Screenshot_20181121-132401.png)
+![](docs/images/Screenshot_20181121-132410.png)
+![](docs/images/Screenshot_20181121-132421.png)
+![](docs/images/Screenshot_20181121-132506.png)
+![](docs/images/Screenshot_20181121-132521.png)
+![](docs/images/Screenshot_20181121-132555.png)
+![](docs/images/Screenshot_20181121-132615.png)
+
+
 ## License
+
+© Phạm Ngọc Thạch
 
 This project is released under the [MIT License](LICENSE).
 

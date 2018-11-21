@@ -2,27 +2,30 @@
 
 This project is a Love Live School Idol Festival app using data from [School Idol Tomodachi](http://schoolido.lu/)
 
+[Download APK file here](https://github.com/pnthach95/LLSIFTomodachiApp/releases)
+
+[Report bug](https://github.com/pnthach95/LLSIFTomodachiApp/issues)
+
 
 ## Content
 
 The project contains:
 
-- a [React Native](https://facebook.github.io/react-native/) (v0.57.5) application (in "[ejected](https://github.com/react-community/create-react-native-app/blob/master/EJECTING.md)" mode to allow using dependencies that rely on native code)
-- a [clear directory layout](#directory-layout) to provide a base architecture for your application
-- [Redux](https://redux.js.org/) (v3.7.2) to help manage state
-- [Redux Persist](https://github.com/rt2zz/redux-persist) (v5.9.1) to persist the Redux state
-- [Redux Sagas](https://redux-saga.js.org) (v0.16.2) to separate side-effects and logic from state and UI logic
-- [React Navigation](https://reactnavigation.org/) (v2.18.2) with a [`NavigationService`](App/Services/NavigationService.js) to handle routing and navigation in the app, with a splash screen setup by default
-- [reduxsauce](https://github.com/infinitered/reduxsauce) (v1.0.0) to facilitate using Redux
-- [apisauce](https://github.com/infinitered/apisauce) (v1.0.0) to make [axios](https://github.com/axios/axios) even better
+- [React Native](https://facebook.github.io/react-native/) (v0.57.5) (in "[ejected](https://github.com/react-community/create-react-native-app/blob/master/EJECTING.md)" mode)
+- [Redux](https://redux.js.org/) (v3.7.2)
+- [Redux Persist](https://github.com/rt2zz/redux-persist) (v5.9.1)
+- [Redux Sagas](https://redux-saga.js.org) (v0.16.2)
+- [React Navigation](https://reactnavigation.org/) (v2.18.2)
+- [reduxsauce](https://github.com/infinitered/reduxsauce) (v1.0.0)
+- [apisauce](https://github.com/infinitered/apisauce) (v1.0.0)
 - [react-native-fast-image](https://github.com/DylanVann/react-native-fast-image) (v5.1.0)
 - [react-native-linear-gradienet](https://github.com/react-native-community/react-native-linear-gradient) (v2.4.3)
-- [react-native-offline](https://github.com/rgommezz/react-native-offline) (v3.14.1) to handle offline mode
-- [react-native-indicators](https://github.com/n4kz/react-native-indicators) (v0.13.0) is a collection of animated loading indicators
-- [moment](https://momentjs.com/) (v2.22.2) to handle time
+- [react-native-offline](https://github.com/rgommezz/react-native-offline) (v3.14.1)
+- [react-native-indicators](https://github.com/n4kz/react-native-indicators) (v0.13.0)
+- [moment](https://momentjs.com/) (v2.22.2)
 - [react-native-vector-icons](https://github.com/oblador/react-native-vector-icons) (v5.0.0)
-- [react-native-version-number](https://github.com/APSL/react-native-version-number) (v0.3.5) to get version number
-- [react-native-version-up](https://github.com/gustarus/react-native-version-up) (v1.0.9) to increase version and build number
+- [react-native-version-number](https://github.com/APSL/react-native-version-number) (v0.3.5)
+- [react-native-version-up](https://github.com/gustarus/react-native-version-up) (v1.0.9)
 
 ## Directory layout
 
@@ -35,8 +38,6 @@ The project contains:
 - [`App/Stores`](App/Stores): redux [actions, reducers and stores](https://redux.js.org/basics)
 - [`App/Theme`](App/Theme): base styles for the application
 - [`App/Utils`](App/Utils): some utility tools
-
-For more information on each directory, click the link and read the directory's README.
 
 ## Requirements
 
@@ -55,7 +56,6 @@ Assuming you have all the requirements installed, you can setup and run the proj
 - `react-native run-android` to run the Android application (remember to start a simulator or connect an Android phone)
 - `react-native run-ios` to run the iOS application (remember to start a simulator or connect an iPhone phone)
 
-
 ## Review
 
 ![](docs/images/Screenshot_20181121-132306.png)
@@ -69,13 +69,6 @@ Assuming you have all the requirements installed, you can setup and run the proj
 ![](docs/images/Screenshot_20181121-132555.png)
 ![](docs/images/Screenshot_20181121-132615.png)
 
-
-## License
-
-© Phạm Ngọc Thạch
-
-This project is released under the [MIT License](LICENSE).
-
 ## Author
 
 Phạm Ngọc Thạch
@@ -86,9 +79,17 @@ I'm a React Native developer, play Love Live and BanG Dream everyday.
 
 ## TODO
 
+- Splash image
 - Handle offline mode
 - Icon app
 - Official name
+- Compatible with iOS
+
+## License
+
+© Phạm Ngọc Thạch
+
+This project is released under the [MIT License](LICENSE).
 
 ## Version up
 

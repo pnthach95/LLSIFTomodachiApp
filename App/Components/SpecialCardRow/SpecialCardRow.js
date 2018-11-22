@@ -1,7 +1,7 @@
 import React from 'react'
-import { Text, View, TouchableOpacity } from 'react-native'
+import { Text, Row, Button, Grid, Col } from 'native-base'
 import PropTypes from 'prop-types'
-import styles from '../../Theme/RowStyles'
+import rstyles from '../../Theme/RowStyles'
 
 /**
  * Special Card Row (None, True, False)
@@ -17,34 +17,36 @@ import styles from '../../Theme/RowStyles'
 class SpecialCardRow extends React.Component {
   render() {
     return (
-      <View style={{ flexDirection: 'row' }}>
-        <View style={styles.leftView}>
+      <Grid>
+        <Col style={rstyles.leftView}>
           <Text>Special card</Text>
-        </View>
-        <View style={styles.rightView}>
-          <TouchableOpacity onPress={this.props.selectSpecial('')}
-            style={[
-              styles.button,
-              this.props.is_special == '' && styles.selectedValue
-            ]}>
-            <Text style={styles.buttonText}>All</Text>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={this.props.selectSpecial('True')}
-            style={[
-              styles.button,
-              this.props.is_special == 'True' && styles.selectedValue
-            ]}>
-            <Text style={styles.buttonText}>Only</Text>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={this.props.selectSpecial('False')}
-            style={[
-              styles.button,
-              this.props.is_special == 'False' && styles.selectedValue
-            ]}>
-            <Text style={styles.buttonText}>None</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
+        </Col>
+        <Col style={rstyles.rightView}>
+          <Row>
+            <Button onPress={this.props.selectSpecial('')}
+              success={this.props.is_special === ''}
+              transparent={this.props.is_special !== ''}
+              dark={this.props.is_special !== ''}
+              style={rstyles.button1}>
+              <Text uppercase={false}>All</Text>
+            </Button>
+            <Button onPress={this.props.selectSpecial('True')}
+              success={this.props.is_special === 'True'}
+              transparent={this.props.is_special !== 'True'}
+              dark={this.props.is_special !== 'True'}
+              style={rstyles.button1}>
+              <Text uppercase={false}>Only</Text>
+            </Button>
+            <Button onPress={this.props.selectSpecial('False')}
+              success={this.props.is_special === 'False'}
+              transparent={this.props.is_special !== 'False'}
+              dark={this.props.is_special !== 'False'}
+              style={rstyles.button1}>
+              <Text uppercase={false}>None</Text>
+            </Button>
+          </Row>
+        </Col>
+      </Grid>
     )
   }
 }

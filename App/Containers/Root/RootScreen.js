@@ -63,7 +63,7 @@ class RootScreen extends Component {
     return (
       <StyleProvider style={getTheme(material)}>
         <Container>
-          <StatusBarBackground />
+          {/* <StatusBarBackground /> */}
           <AppNav
             // Initialize the NavigationService (see https://reactnavigation.org/docs/en/navigating-without-navigation-prop.html)
             ref={(navigatorRef) => { NavigationService.setTopLevelNavigator(navigatorRef) }} />

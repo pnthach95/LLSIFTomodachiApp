@@ -1,9 +1,9 @@
 import React from 'react'
-import { Text, View, Picker } from 'react-native'
+import { Text, Picker, Grid, Col } from 'native-base'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import { getSchools } from '../../Stores/CachedData/Selectors'
-import styles from '../../Theme/RowStyles'
+import rstyles from '../../Theme/RowStyles'
 
 /**
  * School Row.
@@ -21,19 +21,19 @@ import styles from '../../Theme/RowStyles'
 class SchoolRow extends React.Component {
   render() {
     return (
-      <View style={{ flexDirection: 'row' }}>
-        <View style={styles.leftView}>
+      <Grid>
+        <Col style={rstyles.leftView}>
           <Text>School</Text>
-        </View>
-        <View style={{ flex: 2 }}>
+        </Col>
+        <Col style={rstyles.rightView}>
           <Picker mode={'dropdown'}
             selectedValue={this.props.idol_school}
             onValueChange={this.props.selectSchool}>
             {this.props.schools.map((item, index) =>
               <Picker.Item key={'school' + index} label={item} value={item} />)}
           </Picker>
-        </View>
-      </View>
+        </Col>
+      </Grid>
     )
   }
 }
@@ -43,10 +43,6 @@ SchoolRow.propTypes = {
   selectSchool: PropTypes.func.isRequired
 }
 
-const mapStateToProps = (state) => ({
-  schools: getSchools(state)
-})
-
+const mapStateToProps = (state) => ({ schools: getSchools(state) })
 const mapDispatchToProps = (dispatch) => ({})
-
 export default connect(mapStateToProps, mapDispatchToProps)(SchoolRow)

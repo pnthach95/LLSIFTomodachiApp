@@ -1,8 +1,9 @@
 import React from 'react'
-import { Text, View, TouchableOpacity, Image } from 'react-native'
+import { Image } from 'react-native'
+import { Text, Row, Button, Grid, Col } from 'native-base'
 import PropTypes from 'prop-types'
 import { Images } from '../../Theme'
-import styles from '../../Theme/RowStyles'
+import rstyles from '../../Theme/RowStyles'
 
 /**
  * Rarity Row (None, N, R, SR, SSR, UR)
@@ -18,56 +19,51 @@ import styles from '../../Theme/RowStyles'
 class RarityRow extends React.Component {
   render() {
     return (
-      <View style={{ flexDirection: 'row' }}>
-        <View style={styles.leftView}>
+      <Grid>
+        <Col style={rstyles.leftView}>
           <Text>Rarity</Text>
-        </View>
-        <View style={styles.rightView}>
-          <TouchableOpacity onPress={this.props.selectRarity('')}
-            style={[
-              styles.button1,
-              { paddingLeft: 0 },
-              this.props.rarity === '' && styles.selectedValue1
-            ]}>
-            <Image source={Images.empty} style={styles.buttonImage} />
-          </TouchableOpacity>
-          <TouchableOpacity onPress={this.props.selectRarity('N')}
-            style={[
-              styles.button1,
-              this.props.rarity === 'N' && styles.selectedValue1
-            ]}>
-            <Image source={Images.rarity[0]} style={styles.buttonImage} />
-          </TouchableOpacity>
-          <TouchableOpacity onPress={this.props.selectRarity('R')}
-            style={[
-              styles.button1,
-              this.props.rarity === 'R' && styles.selectedValue1
-            ]}>
-            <Image source={Images.rarity[1]} style={styles.buttonImage} />
-          </TouchableOpacity>
-          <TouchableOpacity onPress={this.props.selectRarity('SR')}
-            style={[
-              styles.button1,
-              this.props.rarity === 'SR' && styles.selectedValue1
-            ]}>
-            <Image source={Images.rarity[2]} style={styles.buttonImage} />
-          </TouchableOpacity>
-          <TouchableOpacity onPress={this.props.selectRarity('SSR')}
-            style={[
-              styles.button1,
-              this.props.rarity === 'SSR' && styles.selectedValue1
-            ]}>
-            <Image source={Images.rarity[3]} style={styles.buttonImage} />
-          </TouchableOpacity>
-          <TouchableOpacity onPress={this.props.selectRarity('UR')}
-            style={[
-              styles.button1,
-              this.props.rarity === 'UR' && styles.selectedValue1
-            ]}>
-            <Image source={Images.rarity[4]} style={styles.buttonImage} />
-          </TouchableOpacity>
-        </View>
-      </View>
+        </Col>
+        <Col style={rstyles.rightView}>
+          <Row>
+            <Button onPress={this.props.selectRarity('')}
+              success={this.props.rarity === ''}
+              transparent={this.props.rarity !== ''}
+              style={rstyles.button1}>
+              <Image source={Images.empty} style={rstyles.buttonImage} />
+            </Button>
+            <Button onPress={this.props.selectRarity('N')}
+              success={this.props.rarity === 'N'}
+              transparent={this.props.rarity !== 'N'}
+              style={rstyles.button1}>
+              <Image source={Images.rarity[0]} style={rstyles.buttonImage} />
+            </Button>
+            <Button onPress={this.props.selectRarity('R')}
+              success={this.props.rarity === 'R'}
+              transparent={this.props.rarity !== 'R'}
+              style={rstyles.button1}>
+              <Image source={Images.rarity[1]} style={rstyles.buttonImage} />
+            </Button>
+            <Button onPress={this.props.selectRarity('SR')}
+              success={this.props.rarity === 'SR'}
+              transparent={this.props.rarity !== 'SR'}
+              style={rstyles.button1}>
+              <Image source={Images.rarity[2]} style={rstyles.buttonImage} />
+            </Button>
+            <Button onPress={this.props.selectRarity('SSR')}
+              success={this.props.rarity === 'SSR'}
+              transparent={this.props.rarity !== 'SSR'}
+              style={rstyles.button1}>
+              <Image source={Images.rarity[3]} style={rstyles.buttonImage} />
+            </Button>
+            <Button onPress={this.props.selectRarity('UR')}
+              success={this.props.rarity === 'UR'}
+              transparent={this.props.rarity !== 'UR'}
+              style={rstyles.button1}>
+              <Image source={Images.rarity[4]} style={rstyles.buttonImage} />
+            </Button>
+          </Row>
+        </Col>
+      </Grid>
     )
   }
 }

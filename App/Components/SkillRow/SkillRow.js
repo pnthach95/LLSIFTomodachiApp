@@ -1,9 +1,9 @@
 import React from 'react'
-import { Text, View, Picker } from 'react-native'
+import { Text, Picker, Grid, Col } from 'native-base'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import { getSkills } from '../../Stores/CachedData/Selectors'
-import styles from '../../Theme/RowStyles'
+import rstyles from '../../Theme/RowStyles'
 
 /**
  * Skill Row.
@@ -21,19 +21,19 @@ import styles from '../../Theme/RowStyles'
 class SkillRow extends React.Component {
   render() {
     return (
-      <View style={{ flexDirection: 'row' }}>
-        <View style={styles.leftView}>
+      <Grid>
+        <Col style={rstyles.leftView}>
           <Text>Skill</Text>
-        </View>
-        <View style={{ flex: 2 }}>
+        </Col>
+        <Col style={rstyles.rightView}>
           <Picker mode={'dropdown'}
             selectedValue={this.props.skill}
             onValueChange={this.props.selectSkill}>
             {this.props.skills.map((item, index) =>
               <Picker.Item key={'skill' + index} label={item} value={item} />)}
           </Picker>
-        </View>
-      </View>
+        </Col>
+      </Grid>
     )
   }
 }
@@ -43,10 +43,6 @@ SkillRow.propTypes = {
   selectSkill: PropTypes.func.isRequired
 }
 
-const mapStateToProps = (state) => ({
-  skills: getSkills(state)
-})
-
+const mapStateToProps = (state) => ({ skills: getSkills(state) })
 const mapDispatchToProps = (dispatch) => ({})
-
 export default connect(mapStateToProps, mapDispatchToProps)(SkillRow)

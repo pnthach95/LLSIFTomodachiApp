@@ -1,7 +1,7 @@
 import React from 'react'
-import { Text, View, TouchableOpacity } from 'react-native'
+import { Text, Row, Button, Grid, Col } from 'native-base'
 import PropTypes from 'prop-types'
-import styles from '../../Theme/RowStyles'
+import rstyles from '../../Theme/RowStyles'
 
 /**
  * Region Row (None, False, True)
@@ -16,34 +16,36 @@ import styles from '../../Theme/RowStyles'
 class RegionRow extends React.Component {
   render() {
     return (
-      <View style={{ flexDirection: 'row' }}>
-        <View style={styles.leftView}>
+      <Grid>
+        <Col style={rstyles.leftView}>
           <Text>Region</Text>
-        </View>
-        <View style={styles.rightView}>
-          <TouchableOpacity onPress={this.props.selectRegion('')}
-            style={[
-              styles.button,
-              this.props.japan_only == '' && styles.selectedValue
-            ]}>
-            <Text style={styles.buttonText}>All</Text>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={this.props.selectRegion('False')}
-            style={[
-              styles.button,
-              this.props.japan_only == 'False' && styles.selectedValue
-            ]}>
-            <Text style={styles.buttonText}>EN Only</Text>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={this.props.selectRegion('True')}
-            style={[
-              styles.button,
-              this.props.japan_only == 'True' && styles.selectedValue
-            ]}>
-            <Text style={styles.buttonText}>JP Only</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
+        </Col>
+        <Col style={rstyles.rightView}>
+          <Row>
+            <Button onPress={this.props.selectRegion('')}
+              success={this.props.japan_only === ''}
+              transparent={this.props.japan_only !== ''}
+              dark={this.props.japan_only !== ''}
+              style={rstyles.button1}>
+              <Text uppercase={false}>All</Text>
+            </Button>
+            <Button onPress={this.props.selectRegion('False')}
+              success={this.props.japan_only === 'False'}
+              transparent={this.props.japan_only !== 'False'}
+              dark={this.props.japan_only !== 'False'}
+              style={rstyles.button1}>
+              <Text uppercase={false}>EN Only</Text>
+            </Button>
+            <Button onPress={this.props.selectRegion('True')}
+              success={this.props.japan_only === 'True'}
+              transparent={this.props.japan_only !== 'True'}
+              dark={this.props.japan_only !== 'True'}
+              style={rstyles.button1}>
+              <Text uppercase={false}>JP Only</Text>
+            </Button>
+          </Row>
+        </Col>
+      </Grid>
     )
   }
 }

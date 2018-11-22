@@ -1,5 +1,6 @@
 import React from 'react'
-import { Text, View, FlatList, TextInput, TouchableOpacity, Alert, ScrollView, Image } from 'react-native'
+import { View, FlatList, Alert, ScrollView, Image } from 'react-native'
+import { Text, Header, Container, Button, Input, InputGroup } from 'native-base'
 import { connect } from 'react-redux'
 import Icon from 'react-native-vector-icons/Ionicons'
 import _ from 'lodash'
@@ -16,7 +17,6 @@ import IdolNameRow from '../../Components/IdolNameRow/IdolNameRow'
 import MainUnitRow from '../../Components/MainUnitRow/MainUnitRow'
 import AttributeRow from '../../Components/AttributeRow/AttributeRow'
 import PromoCardRow from '../../Components/PromoCardRow/PromoCardRow'
-import SquareButton from '../../Components/SquareButton/SquareButton'
 import SpecialCardRow from '../../Components/SpecialCardRow/SpecialCardRow'
 import { LLSIFService } from '../../Services/LLSIFService'
 import SplashScreen from '../SplashScreen/SplashScreen'
@@ -214,7 +214,10 @@ class CardsScreen extends React.PureComponent {
    *
    * @memberof CardsScreen
    */
-  _toggleFilter = () => this.setState({ isFilter: !this.state.isFilter })
+  _toggleFilter = () => {
+    console.log('Cards._toggleFilter')
+    this.setState({ isFilter: !this.state.isFilter })
+  }
 
   /**
    * Save is_promo
@@ -349,63 +352,61 @@ class CardsScreen extends React.PureComponent {
   </View>
 
   render() {
-    if (this.state.isLoading) return <SplashScreen bgColor={Colors.green} />
+    if (this.state.isLoading)
+      return <SplashScreen bgColor={Colors.green} />
     return (
-      <View style={styles.container}>
+      <Container style={styles.container}>
         {/* HEADER */}
-        <View style={[ApplicationStyles.header, styles.header]}>
-          <SquareButton name={'ios-menu'} onPress={this._openDrawer} />
-          <TextInput style={ApplicationStyles.searchInput}
-            onChangeText={text => this.setState({ search: text })}
-            onSubmitEditing={this._onSearch}
-            placeholder={'Type here...'}
-            value={this.state.search} />
-          <SquareButton name={'ios-search'} onPress={this._onSearch} />
-          <SquareButton name={'ios-more'} onPress={this._toggleFilter} />
-        </View>
+        <Header searchBar>
+          <InputGroup style={ApplicationStyles.searchInput}>
+            <Icon name={'ios-menu'} size={30} onPress={this._openDrawer}
+              color={'green'} style={ApplicationStyles.mediumButton} />
+            <Input placeholder={'Type here...'}
+              onChangeText={text => this.setState({ search: text })}
+              onSubmitEditing={this._onSearch}
+              value={this.state.search} />
+            <Icon name={'ios-search'} size={30} onPress={this._onSearch}
+              color={'green'} style={ApplicationStyles.mediumButton} />
+            <Icon name={'ios-more'} size={30} onPress={this._toggleFilter}
+              color={'green'} style={ApplicationStyles.mediumButton} />
+          </InputGroup>
+        </Header>
 
         {/* FILTER */}
         {this.state.isFilter &&
-          <View style={styles.filterContainer}>
-            <ScrollView>
-              <IdolNameRow name={this.state.name} selectIdol={this._selectIdol} />
-              <RarityRow rarity={this.state.rarity} selectRarity={this._selectRarity} />
-              <AttributeRow attribute={this.state.attribute} selectAttribute={this._selectAttribute} />
-              <RegionRow japan_only={this.state.japan_only} selectRegion={this._selectRegion} />
-              <PromoCardRow is_promo={this.state.is_promo} selectPromo={this._selectPromo} />
-              <SpecialCardRow is_special={this.state.is_special} selectSpecial={this._selectSpecial} />
-              <EventRow is_event={this.state.is_event} selectEvent={this._selectEvent} />
-              <SkillRow skill={this.state.skill} selectSkill={this._selectSkill} />
-              <MainUnitRow main_unit={this.state.idol_main_unit} selectMainUnit={this._selectMainUnit} />
-              <SubUnitRow idol_sub_unit={this.state.idol_sub_unit} selectSubUnit={this._selectSubUnit} />
-              <SchoolRow idol_school={this.state.idol_school} selectSchool={this._selectSchool} />
-              <YearRow idol_year={this.state.idol_year} selectYear={this._selectYear} />
+          <ScrollView style={styles.filterContainer}
+            contentContainerStyle={styles.insideFilterContainer}>
+            <IdolNameRow name={this.state.name} selectIdol={this._selectIdol} />
+            <RarityRow rarity={this.state.rarity} selectRarity={this._selectRarity} />
+            <AttributeRow attribute={this.state.attribute} selectAttribute={this._selectAttribute} />
+            <RegionRow japan_only={this.state.japan_only} selectRegion={this._selectRegion} />
+            <PromoCardRow is_promo={this.state.is_promo} selectPromo={this._selectPromo} />
+            <SpecialCardRow is_special={this.state.is_special} selectSpecial={this._selectSpecial} />
+            <EventRow is_event={this.state.is_event} selectEvent={this._selectEvent} />
+            <SkillRow skill={this.state.skill} selectSkill={this._selectSkill} />
+            <MainUnitRow main_unit={this.state.idol_main_unit} selectMainUnit={this._selectMainUnit} />
+            <SubUnitRow idol_sub_unit={this.state.idol_sub_unit} selectSubUnit={this._selectSubUnit} />
+            <SchoolRow idol_school={this.state.idol_school} selectSchool={this._selectSchool} />
+            <YearRow idol_year={this.state.idol_year} selectYear={this._selectYear} />
 
-              {/* RESET BUTTON */}
-              <View style={styles.resetView}>
-                <TouchableOpacity onPress={this._resetFilter}
-                  style={styles.resetButton}>
-                  <Text style={styles.resetText}>RESET</Text>
-                </TouchableOpacity>
-              </View>
-            </ScrollView>
-          </View>}
+            {/* RESET BUTTON */}
+            <Button danger block onPress={this._resetFilter}>
+              <Text>RESET</Text>
+            </Button>
+          </ScrollView>}
 
-        {this.state.data.length === 0 && <View style={{ margin: 10 }}>
-          <Text style={styles.resetText}>No result</Text>
-        </View>}
-
+        {this.state.data.length === 0 &&
+          <Text style={styles.resetText}>No result</Text>}
         {/* LIST */}
-        <FlatList
-          data={this.state.data}
+        <FlatList data={this.state.data}
+          style={styles.list}
           numColumns={2}
           initialNumToRender={8}
           keyExtractor={this._keyExtractor}
           onEndReached={this._onEndReached}
-          style={styles.list}
           ListFooterComponent={this.renderFooter}
           renderItem={this._renderItem} />
-      </View>
+      </Container>
     )
   }
 }

@@ -38,8 +38,11 @@ export default {
   searchInput: {
     backgroundColor: '#dcdcdc',
     flex: 1,
-    borderRadius: 20,
+    borderRadius: 5,
     marginVertical: 6,
     padding: 10
+  },
+  mediumButton: {
+    paddingHorizontal: 10,
   }
 }

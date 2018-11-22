@@ -1,7 +1,7 @@
 import React from 'react'
-import { Text, View, TouchableOpacity } from 'react-native'
+import { Text, Row, Button, Grid, Col } from 'native-base'
 import PropTypes from 'prop-types'
-import styles from '../../Theme/RowStyles'
+import rstyles from '../../Theme/RowStyles'
 
 /**
  * Event Card Row (None, True, False)
@@ -17,34 +17,36 @@ import styles from '../../Theme/RowStyles'
 class EventRow extends React.Component {
   render() {
     return (
-      <View style={{ flexDirection: 'row' }}>
-        <View style={styles.leftView}>
+      <Grid>
+        <Col style={rstyles.leftView}>
           <Text>Event</Text>
-        </View>
-        <View style={styles.rightView}>
-          <TouchableOpacity onPress={this.props.selectEvent('')}
-            style={[
-              styles.button,
-              this.props.is_event == '' && styles.selectedValue
-            ]}>
-            <Text style={styles.buttonText}>All</Text>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={this.props.selectEvent('True')}
-            style={[
-              styles.button,
-              this.props.is_event == 'True' && styles.selectedValue
-            ]}>
-            <Text style={styles.buttonText}>Only</Text>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={this.props.selectEvent('False')}
-            style={[
-              styles.button,
-              this.props.is_event == 'False' && styles.selectedValue
-            ]}>
-            <Text style={styles.buttonText}>None</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
+        </Col>
+        <Col style={rstyles.rightView}>
+          <Row>
+            <Button onPress={this.props.selectEvent('')}
+              success={this.props.is_event === ''}
+              transparent={this.props.is_event !== ''}
+              dark={this.props.is_event !== ''}
+              style={rstyles.button1}>
+              <Text uppercase={false}>All</Text>
+            </Button>
+            <Button onPress={this.props.selectEvent('True')}
+              success={this.props.is_event === 'True'}
+              transparent={this.props.is_event !== 'True'}
+              dark={this.props.is_event !== 'True'}
+              style={rstyles.button1}>
+              <Text uppercase={false}>Only</Text>
+            </Button>
+            <Button onPress={this.props.selectEvent('False')}
+              success={this.props.is_event === 'False'}
+              transparent={this.props.is_event !== 'False'}
+              dark={this.props.is_event !== 'False'}
+              style={rstyles.button1}>
+              <Text uppercase={false}>None</Text>
+            </Button>
+          </Row>
+        </Col>
+      </Grid>
     )
   }
 }

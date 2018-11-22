@@ -1,9 +1,9 @@
 import React from 'react'
-import { Text, View, Picker } from 'react-native'
 import { connect } from 'react-redux'
+import { Text, Picker, Grid, Col } from 'native-base'
 import PropTypes from 'prop-types'
 import { getIdols } from '../../Stores/CachedData/Selectors'
-import styles from '../../Theme/RowStyles'
+import rstyles from '../../Theme/RowStyles'
 
 /**
  * Idol Name Row.
@@ -21,19 +21,19 @@ import styles from '../../Theme/RowStyles'
 class IdolNameRow extends React.Component {
   render() {
     return (
-      <View style={{ flexDirection: 'row' }}>
-        <View style={styles.leftView}>
+      <Grid>
+        <Col style={rstyles.leftView}>
           <Text>Idol</Text>
-        </View>
-        <View style={{ flex: 2 }}>
+        </Col>
+        <Col style={rstyles.rightView}>
           <Picker mode={'dropdown'}
             selectedValue={this.props.name}
             onValueChange={this.props.selectIdol}>
             {this.props.idols.map((item, index) =>
               <Picker.Item key={'idol' + index} label={item} value={item} />)}
           </Picker>
-        </View>
-      </View>
+        </Col>
+      </Grid>
     )
   }
 }
@@ -43,10 +43,6 @@ IdolNameRow.propTypes = {
   selectIdol: PropTypes.func.isRequired
 }
 
-const mapStateToProps = (state) => ({
-  idols: getIdols(state)
-})
-
+const mapStateToProps = (state) => ({ idols: getIdols(state) })
 const mapDispatchToProps = (dispatch) => ({})
-
 export default connect(mapStateToProps, mapDispatchToProps)(IdolNameRow)

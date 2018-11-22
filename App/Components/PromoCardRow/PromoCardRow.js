@@ -1,7 +1,7 @@
 import React from 'react'
-import { Text, View, TouchableOpacity } from 'react-native'
+import { Text, Row, Button, Grid, Col } from 'native-base'
 import PropTypes from 'prop-types'
-import styles from '../../Theme/RowStyles'
+import rstyles from '../../Theme/RowStyles'
 
 /**
  * Promo Card Row (None, True, False)
@@ -17,34 +17,36 @@ import styles from '../../Theme/RowStyles'
 class PromoCardRow extends React.Component {
   render() {
     return (
-      <View style={{ flexDirection: 'row' }}>
-        <View style={styles.leftView}>
+      <Grid>
+        <Col style={rstyles.leftView}>
           <Text>Promo card</Text>
-        </View>
-        <View style={styles.rightView}>
-          <TouchableOpacity onPress={this.props.selectPromo('')}
-            style={[
-              styles.button,
-              this.props.is_promo == '' && styles.selectedValue
-            ]}>
-            <Text style={styles.buttonText}>All</Text>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={this.props.selectPromo('True')}
-            style={[
-              styles.button,
-              this.props.is_promo == 'True' && styles.selectedValue
-            ]}>
-            <Text style={styles.buttonText}>Only</Text>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={this.props.selectPromo('False')}
-            style={[
-              styles.button,
-              this.props.is_promo == 'False' && styles.selectedValue
-            ]}>
-            <Text style={styles.buttonText}>None</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
+        </Col>
+        <Col style={rstyles.rightView}>
+          <Row>
+            <Button onPress={this.props.selectPromo('')}
+              success={this.props.is_promo === ''}
+              transparent={this.props.is_promo !== ''}
+              dark={this.props.is_promo !== ''}
+              style={rstyles.button1}>
+              <Text uppercase={false}>All</Text>
+            </Button>
+            <Button onPress={this.props.selectPromo('True')}
+              success={this.props.is_promo === 'True'}
+              transparent={this.props.is_promo !== 'True'}
+              dark={this.props.is_promo !== 'True'}
+              style={rstyles.button1}>
+              <Text uppercase={false}>Only</Text>
+            </Button>
+            <Button onPress={this.props.selectPromo('False')}
+              success={this.props.is_promo === 'False'}
+              transparent={this.props.is_promo !== 'False'}
+              dark={this.props.is_promo !== 'False'}
+              style={rstyles.button1}>
+              <Text uppercase={false}>None</Text>
+            </Button>
+          </Row>
+        </Col>
+      </Grid>
     )
   }
 }

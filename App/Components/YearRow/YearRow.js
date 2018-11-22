@@ -1,7 +1,7 @@
 import React from 'react'
-import { Text, View, TouchableOpacity } from 'react-native'
+import { Text, Row, Button, Grid, Col } from 'native-base'
 import PropTypes from 'prop-types'
-import styles from '../../Theme/RowStyles'
+import rstyles from '../../Theme/RowStyles'
 
 /**
  * Year Row (None, First, Second, Third)
@@ -17,41 +17,43 @@ import styles from '../../Theme/RowStyles'
 class YearRow extends React.Component {
   render() {
     return (
-      <View style={{ flexDirection: 'row' }}>
-        <View style={styles.leftView}>
+      <Grid>
+        <Col style={rstyles.leftView}>
           <Text>Year</Text>
-        </View>
-        <View style={styles.rightView}>
-          <TouchableOpacity onPress={this.props.selectYear('')}
-            style={[
-              styles.button,
-              this.props.idol_year == '' && styles.selectedValue
-            ]}>
-            <Text style={styles.buttonText}>All</Text>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={this.props.selectYear('First')}
-            style={[
-              styles.button,
-              this.props.idol_year == 'First' && styles.selectedValue
-            ]}>
-            <Text style={styles.buttonText}>1st</Text>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={this.props.selectYear('Second')}
-            style={[
-              styles.button,
-              this.props.idol_year == 'Second' && styles.selectedValue
-            ]}>
-            <Text style={styles.buttonText}>2nd</Text>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={this.props.selectYear('Third')}
-            style={[
-              styles.button,
-              this.props.idol_year == 'Third' && styles.selectedValue
-            ]}>
-            <Text style={styles.buttonText}>3rd</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
+        </Col>
+        <Col style={rstyles.rightView}>
+          <Row>
+            <Button onPress={this.props.selectYear('')}
+              success={this.props.idol_year === ''}
+              transparent={this.props.idol_year !== ''}
+              dark={this.props.idol_year !== ''}
+              style={rstyles.button1}>
+              <Text uppercase={false}>All</Text>
+            </Button>
+            <Button onPress={this.props.selectYear('First')}
+              success={this.props.idol_year === 'First'}
+              transparent={this.props.idol_year !== 'First'}
+              dark={this.props.idol_year !== 'First'}
+              style={rstyles.button1}>
+              <Text uppercase={false}>1st</Text>
+            </Button>
+            <Button onPress={this.props.selectYear('Second')}
+              success={this.props.idol_year === 'Second'}
+              transparent={this.props.idol_year !== 'Second'}
+              dark={this.props.idol_year !== 'Second'}
+              style={rstyles.button1}>
+              <Text uppercase={false}>2nd</Text>
+            </Button>
+            <Button onPress={this.props.selectYear('Third')}
+              success={this.props.idol_year === 'Third'}
+              transparent={this.props.idol_year !== 'Third'}
+              dark={this.props.idol_year !== 'Third'}
+              style={rstyles.button1}>
+              <Text uppercase={false}>3rd</Text>
+            </Button>
+          </Row>
+        </Col>
+      </Grid>
     )
   }
 }

@@ -1,9 +1,9 @@
 import React from 'react'
-import { Text, View, Picker } from 'react-native'
+import { Text, Picker, Grid, Col } from 'native-base'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import { getSubunits } from '../../Stores/CachedData/Selectors'
-import styles from '../../Theme/RowStyles'
+import rstyles from '../../Theme/RowStyles'
 
 /**
  * Sub Unit Row.
@@ -21,19 +21,19 @@ import styles from '../../Theme/RowStyles'
 class SubUnitRow extends React.Component {
   render() {
     return (
-      <View style={{ flexDirection: 'row' }}>
-        <View style={styles.leftView}>
+      <Grid>
+        <Col style={rstyles.leftView}>
           <Text>Sub unit</Text>
-        </View>
-        <View style={{ flex: 2 }}>
+        </Col>
+        <Col style={rstyles.rightView}>
           <Picker mode={'dropdown'}
             selectedValue={this.props.idol_sub_unit}
             onValueChange={this.props.selectSubUnit}>
             {this.props.subUnits.map((item, index) =>
               <Picker.Item key={'subUnit' + index} label={item} value={item} />)}
           </Picker>
-        </View>
-      </View>
+        </Col>
+      </Grid>
     )
   }
 }
@@ -43,10 +43,6 @@ SubUnitRow.propTypes = {
   selectSubUnit: PropTypes.func.isRequired
 }
 
-const mapStateToProps = (state) => ({
-  subUnits: getSubunits(state)
-})
-
+const mapStateToProps = (state) => ({ subUnits: getSubunits(state) })
 const mapDispatchToProps = (dispatch) => ({})
-
 export default connect(mapStateToProps, mapDispatchToProps)(SubUnitRow)

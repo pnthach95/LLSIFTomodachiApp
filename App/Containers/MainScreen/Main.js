@@ -1,12 +1,11 @@
 import React from 'react'
-import { Text, View, Image, ScrollView, TouchableOpacity, Alert } from 'react-native'
+import { Image, TouchableOpacity, Alert } from 'react-native'
+import { Text, Header, Left, Body, Container, Button, Icon, Content, H1 } from 'native-base'
 import { connect } from 'react-redux'
 import FastImage from 'react-native-fast-image'
-import Icon from 'react-native-vector-icons/SimpleLineIcons'
 import moment from 'moment'
 
 import Seperator from '../../Components/Seperator/Seperator'
-import SquareButton from '../../Components/SquareButton/SquareButton'
 import TimerCountdown from '../../Components/TimerCountdown/Timer'
 import SplashScreen from '../SplashScreen/SplashScreen'
 import { AddHTTPS } from '../../Utils'
@@ -40,9 +39,9 @@ class MainScreen extends React.Component {
   }
 
   static navigationOptions = {
-    tabBarIcon: ({ focused }) => (
-      <Icon name='home' size={25} color={focused ? Colors.pink : Colors.inactive} />
-    ),
+    tabBarIcon: ({ focused }) =>
+      <Icon name='home' type='SimpleLineIcons'
+        color={focused ? Colors.pink : Colors.inactive} />,
     tabBarLabel: 'Home',
     tabBarOptions: {
       activeTintColor: Colors.pink,
@@ -61,11 +60,10 @@ class MainScreen extends React.Component {
     return <TimerCountdown
       initialSecondsRemaining={time}
       allowFontScaling={true}
-      style={styles.text}
-    />
+      style={[styles.text, styles.paddingVertical]} />
   }
 
-  onLoadFastImage(e) {
+  _onLoadFastImage(e) {
     const { width, height } = e.nativeEvent
     this.setState({ imgWidth: width, imgHeight: height })
   }
@@ -76,17 +74,18 @@ class MainScreen extends React.Component {
    * @param {Object} event Event object
    * @memberof MainScreen
    */
-  navigateToEventDetail(event) {
+  _navigateToEventDetail(event) {
     this.props.navigation.navigate('EventDetailScreen', { event: event.toObject() })
   }
 
   _openDrawer = () => this.props.navigation.openDrawer()
 
   render() {
-    if (this.props.cachedDataIsLoading) return <SplashScreen bgColor={Colors.pink} />
+    if (this.props.cachedDataIsLoading)
+      return <SplashScreen bgColor={Colors.pink} />
     if (this.props.cachedDataErrorMessage) {
       Alert.alert('Error', this.props.cachedDataErrorMessage)
-      return <View style={{ backgroundColor: Colors.pink }} />
+      return <Container style={styles.container} />
     }
     let data = this.props.cachedData
     let currentContests = data.get('current_contests')
@@ -104,50 +103,60 @@ class MainScreen extends React.Component {
     let JPEventEnd = moment(JPEvent.get('end'), Config.DATETIME_FORMAT_INPUT)
 
     return (
-      <View style={styles.container}>
+      <Container style={styles.container}>
         {/* HEADER */}
-        <View style={ApplicationStyles.header}>
-          <View style={styles.leftHeader} >
-            <SquareButton name={'ios-menu'} onPress={this._openDrawer} color={'white'} />
-          </View>
-          <View style={styles.centerHeader}>
-            <Image source={Images.logo} style={ApplicationStyles.imageHeader} />
-          </View>
-          <View style={styles.rightHeader} />
-        </View>
+        <Header transparent>
+          <Left>
+            <Button transparent onPress={this._openDrawer}>
+              <Icon name={'ios-menu'} size={30} color={'white'} />
+            </Button>
+          </Left>
+          <Body>
+            <Image source={Images.logo}
+              style={ApplicationStyles.imageHeader} />
+          </Body>
+        </Header>
         {/* BODY */}
-        <ScrollView style={styles.body}
+        <Content padder
           showsVerticalScrollIndicator={false}
           contentContainerStyle={styles.content}>
           {/* ENGLISH BLOCK */}
-          <Text style={{ color: 'white' }}>English Event: {ENEvent.get('english_status')}</Text>
-          <Text style={styles.title}>{ENEvent.get('english_name')}</Text>
-          <TouchableOpacity onPress={() => this.navigateToEventDetail(ENEvent)}>
+          <Text style={styles.text}>
+            {`English Event: ${ENEvent.get('english_status')}`}
+          </Text>
+          <H1 style={[styles.text, styles.paddingVertical]}>
+            {ENEvent.get('english_name')}
+          </H1>
+          <TouchableOpacity onPress={() => this._navigateToEventDetail(ENEvent)}>
             <FastImage source={{ uri: AddHTTPS(ENEvent.get('english_image')) }}
-              onLoad={e => this.onLoadFastImage(e)}
+              onLoad={e => this._onLoadFastImage(e)}
               style={{
                 width: Metrics.widthBanner,
                 height: Metrics.widthBanner * this.state.imgHeight / this.state.imgWidth
               }} />
           </TouchableOpacity>
-          <Text style={styles.text}>
+          <Text style={[styles.text, styles.paddingVertical]}>
             {`Start: ${ENEventStart.format(Config.DATETIME_FORMAT_OUTPUT)}\nEnd: ${ENEventEnd.format(Config.DATETIME_FORMAT_OUTPUT)}`}
           </Text>
           {ENEvent.get('world_current') && this.timer(ENEventEnd.diff(moment()))}
           <Seperator style={{ backgroundColor: 'white' }} />
 
           {/* JAPANESE BLOCK */}
-          <Text style={{ color: 'white' }}>Japanese Event: {JPEvent.get('japan_status')}</Text>
-          <Text style={styles.title}>{JPEvent.get('romaji_name')}</Text>
-          <TouchableOpacity onPress={() => this.navigateToEventDetail(JPEvent)}>
+          <Text style={{ color: 'white' }}>
+            {`Japanese Event: ${JPEvent.get('japan_status')}`}
+          </Text>
+          <H1 style={[styles.text, styles.paddingVertical]}>
+            {JPEvent.get('romaji_name')}
+          </H1>
+          <TouchableOpacity onPress={() => this._navigateToEventDetail(JPEvent)}>
             <FastImage source={{ uri: AddHTTPS(JPEvent.get('image')) }}
-              onLoad={e => this.onLoadFastImage(e)}
+              onLoad={e => this._onLoadFastImage(e)}
               style={{
                 width: Metrics.widthBanner,
                 height: Metrics.widthBanner * this.state.imgHeight / this.state.imgWidth
               }} />
           </TouchableOpacity>
-          <Text style={styles.text}>
+          <Text style={[styles.text, styles.paddingVertical]}>
             {`Start: ${JPEventStart.format(Config.DATETIME_FORMAT_OUTPUT)}\nEnd: ${JPEventEnd.format(Config.DATETIME_FORMAT_OUTPUT)}`}
           </Text>
           {JPEvent.get('japan_current') && this.timer(JPEventEnd.diff(moment()))}
@@ -166,9 +175,8 @@ class MainScreen extends React.Component {
                 }} />
             </View>
           ))} */}
-          <View style={{ height: 14 }} />
-        </ScrollView>
-      </View >)
+        </Content>
+      </Container>)
   }
 }
 

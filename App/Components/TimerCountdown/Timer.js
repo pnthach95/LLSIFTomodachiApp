@@ -8,7 +8,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
 
 Object.defineProperty(exports, "__esModule", { value: true });
 const React = __importStar(require("react"));
-import { Text } from "react-native"
+import { Text } from 'native-base';
 
 export default class TimerCountdown extends React.Component {
   constructor() {

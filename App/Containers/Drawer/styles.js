@@ -17,8 +17,9 @@ export default StyleSheet.create({
   },
   logo: {
     alignSelf: 'center',
-    height: 80,
-    width: '75%'
+    marginTop: 22,
+    height: 70,
+    width: '70%'
   },
   textBlock: {
     padding: 10

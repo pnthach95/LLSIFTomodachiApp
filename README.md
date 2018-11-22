@@ -55,6 +55,7 @@ Assuming you have all the requirements installed, you can setup and run the proj
 - `yarn install` or `npm i` to install the dependencies
 - `react-native run-android` to run the Android application (remember to start a simulator or connect an Android phone)
 - `react-native run-ios` to run the iOS application (remember to start a simulator or connect an iPhone phone)
+- Make sure to enable Remote JS Debugging after the app shows up
 
 ## Review
 

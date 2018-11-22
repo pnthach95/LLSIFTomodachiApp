@@ -1,13 +1,11 @@
 import React, { Component } from 'react'
-import { View, Text, ImageBackground, TouchableHighlight, Image, Switch } from 'react-native'
-import { SafeAreaView } from 'react-navigation'
+import { ImageBackground, Image } from 'react-native'
 import { connect } from 'react-redux'
-import Icon from 'react-native-vector-icons/Ionicons'
 import VersionNumber from 'react-native-version-number'
+import { Container, Header, Content, Footer, Button, Body, Icon, Text, CheckBox, ListItem } from 'native-base'
 
-import Fade from '../../Components/Fade/Fade'
 import styles from './styles'
-import { Images, ApplicationStyles } from '../../Theme'
+import { Images } from '../../Theme'
 import { Config } from '../../Config'
 import { AddHTTPS, loadSettings, saveSettings, openLink } from '../../Utils'
 import { getRandomCard, getBGImage } from '../../Stores/CachedData/Selectors'
@@ -29,18 +27,14 @@ class Drawer extends Component {
   }
 
   componentDidMount() {
-    loadSettings().then(res => {
-      this.setState({ worldwide_only: res.worldwide_only })
-    })
+    loadSettings().then(res => this.setState({ worldwide_only: res.worldwide_only }))
   }
 
   _visibleToggle = () => this.setState({ visible: !this.state.visible })
 
   _worldwideToggle = () => {
-    let settings = {
-      worldwide_only: !this.state.worldwide_only
-    }
-    this.setState({ worldwide_only: !this.state.worldwide_only })
+    let settings = { worldwide_only: !this.state.worldwide_only }
+    this.setState(settings)
     saveSettings(settings)
   }
 
@@ -50,68 +44,56 @@ class Drawer extends Component {
    * @param {Object} item Card's information
    * @memberof Drawer
    */
-  navigateToCardDetail = (item) => () => {
+  _navigateToCardDetail = (item) => () => {
     this.setState({ visible: true })
     this.props.navigation.navigate('CardDetailScreen', { item: item })
   }
 
   render() {
     return (
-      <SafeAreaView>
-        <ImageBackground style={styles.fullscreen}
-          source={{ uri: AddHTTPS(this.props.bgImage) }}>
-          <Fade visible={this.state.visible} style={styles.container}>
-            <View style={[ApplicationStyles.center, styles.header]}>
-              <Image source={Images.logo} style={styles.logo} resizeMode={'contain'} />
-            </View>
+      <Container>
+        <ImageBackground source={{ uri: AddHTTPS(this.props.bgImage) }}
+          style={styles.fullscreen}>
+          <Header style={styles.header}>
+            <Body>
+              {this.state.visible ?
+                <Image source={Images.logo} style={styles.logo} resizeMode={'contain'} /> :
+                <Button light full onPress={this._navigateToCardDetail(this.props.randomCard)}>
+                  <Text uppercase={false} style={styles.versionText}>View card info</Text>
+                </Button>}
+            </Body>
+          </Header>
 
-            <View style={styles.body}>
-              <View style={styles.textBlock}>
+          <Container style={styles.transparent}>
+            {this.state.visible && <Container style={styles.container}>
+              <Content style={styles.textBlock}>
                 <Text>{Config.DRAWER}</Text>
-              </View>
-              <View style={styles.settingRow}>
-                <Text>Worldwide only</Text>
-                <Switch value={this.state.worldwide_only}
-                  onValueChange={this._worldwideToggle} />
-              </View>
-            </View>
-
-            <View style={[ApplicationStyles.center, styles.footer]}>
-              <View style={styles.footerBlock}>
-                <Text style={styles.versionText}>Powered by </Text>
-                <Text onPress={() => openLink(Config.SCHOOLIDO)}
-                  style={[styles.versionText, { textDecorationLine: 'underline' }]}>
+              </Content>
+              <ListItem noIndent onPress={this._worldwideToggle} style={styles.settingRow}>
+                <CheckBox checked={this.state.worldwide_only} color={'green'} />
+                <Text style={styles.textButton}>Worldwide only</Text>
+              </ListItem>
+              <Text style={styles.versionText}>
+                Powered by <Text onPress={() => openLink(Config.SCHOOLIDO)}
+                  style={{ textDecorationLine: 'underline' }}>
                   {`School Idol Tomodachi`}
                 </Text>
-              </View>
-              <View style={styles.footerBlock}>
-                <TouchableHighlight onPress={() => openLink(Config.GITHUB_PROJECT)}
-                  underlayColor={'#fff0'}
-                  style={ApplicationStyles.center}>
-                  <View style={ApplicationStyles.center}>
-                    <Icon name={'logo-github'} size={50} />
-                    <Text>Project</Text>
-                  </View>
-                </TouchableHighlight>
-              </View>
-            </View>
-          </Fade>
+              </Text>
+              <Button full light iconRight onPress={() => openLink(Config.GITHUB_PROJECT)}>
+                <Text uppercase={false}>Project on</Text>
+                <Icon name={'logo-github'} />
+              </Button>
+            </Container>}
+          </Container>
 
-          {!this.state.visible && <Fade visible={!this.state.visible}>
-            <TouchableHighlight onPress={this.navigateToCardDetail(this.props.randomCard)}
-              underlayColor={'#fff'}
-              style={[ApplicationStyles.center, styles.viewMore]}>
-              <Text style={styles.versionText}>View card info</Text>
-            </TouchableHighlight>
-          </Fade>}
-
-          <TouchableHighlight onPress={this._visibleToggle}
-            underlayColor={'#fff'}
-            style={[ApplicationStyles.center, styles.versionContainer]}>
-            <Text style={styles.versionText}>Version {VersionNumber.appVersion}</Text>
-          </TouchableHighlight>
+          <Footer style={styles.footer}>
+            <Text uppercase={false} onPress={this._visibleToggle}
+              style={styles.versionText}>
+              {`Version ${VersionNumber.appVersion}`}
+            </Text>
+          </Footer>
         </ImageBackground>
-      </SafeAreaView>
+      </Container>
     )
   }
 }
@@ -122,5 +104,4 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = (dispatch) => ({})
-
 export default connect(mapStateToProps, mapDispatchToProps)(Drawer)

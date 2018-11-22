@@ -3,6 +3,7 @@ import { Image, TouchableOpacity, Alert } from 'react-native'
 import { Text, Header, Left, Body, Container, Button, Icon, Content, H1 } from 'native-base'
 import { connect } from 'react-redux'
 import FastImage from 'react-native-fast-image'
+import SimpleLineIcon from 'react-native-vector-icons/SimpleLineIcons'
 import moment from 'moment'
 
 import Seperator from '../../Components/Seperator/Seperator'
@@ -40,7 +41,7 @@ class MainScreen extends React.Component {
 
   static navigationOptions = {
     tabBarIcon: ({ focused }) =>
-      <Icon name='home' type='SimpleLineIcons'
+      <SimpleLineIcon name='home' size={28}
         color={focused ? Colors.pink : Colors.inactive} />,
     tabBarLabel: 'Home',
     tabBarOptions: {
@@ -60,7 +61,7 @@ class MainScreen extends React.Component {
     return <TimerCountdown
       initialSecondsRemaining={time}
       allowFontScaling={true}
-      style={[styles.text, styles.paddingVertical]} />
+      style={styles.text} />
   }
 
   _onLoadFastImage(e) {

@@ -1,5 +1,5 @@
 import React from 'react'
-import { Text, View, Picker } from 'react-native'
+import { Text, View, Picker, Platform } from 'react-native'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import { getSubunits } from '../../Stores/CachedData/Selectors'
@@ -26,7 +26,7 @@ class SubUnitRow extends React.Component {
           <Text>Sub unit</Text>
         </View>
         <View style={{ flex: 2 }}>
-          <Picker mode={'dropdown'}
+          <Picker mode={Platform.OS === 'android' ? 'dropdown' : 'dialog'}
             selectedValue={this.props.idol_sub_unit}
             onValueChange={this.props.selectSubUnit}>
             {this.props.subUnits.map((item, index) =>

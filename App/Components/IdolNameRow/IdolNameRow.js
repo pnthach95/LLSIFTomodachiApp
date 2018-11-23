@@ -1,5 +1,6 @@
 import React from 'react'
-import { Text, View, Picker, Platform } from 'react-native'
+import { Text, View } from 'react-native'
+import RNPickerSelect from 'react-native-picker-select'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import { getIdols } from '../../Stores/CachedData/Selectors'
@@ -26,12 +27,10 @@ class IdolNameRow extends React.Component {
           <Text>Idol</Text>
         </View>
         <View style={{ flex: 2 }}>
-          <Picker mode={Platform.OS === 'ios' ? 'dialog' : 'dropdown'}
-            selectedValue={this.props.name}
-            onValueChange={this.props.selectIdol}>
-            {this.props.idols.map((item, index) =>
-              <Picker.Item key={'idol' + index} label={item} value={item} />)}
-          </Picker>
+          <RNPickerSelect onValueChange={this.props.selectIdol}
+            items={this.props.idols}
+            placeholder={{ label: 'All', value: 'All' }}
+            value={this.props.name} />
         </View>
       </View>
     )

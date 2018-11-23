@@ -63,5 +63,3 @@ export default class ImageViewerScreen extends React.Component {
     )
   }
 }
-
-

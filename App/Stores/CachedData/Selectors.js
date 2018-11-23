@@ -9,23 +9,38 @@ export const getMaxStats = (state) => {
 export const getIdols = (state) => {
   let x = state.cachedData.get('cachedData').get('cards_info').get('idols')
   let y = x.map((item) => item.get('name'))
-  let z = ['All', ...y]
+  var z = []
+  for (let i = 0; i < y.length; i++) {
+    z.push({ label: y[i], value: y[i] })
+  }
   return z
 }
 
 export const getSubunits = (state) => {
-  return ['All', ...state.cachedData.get('cachedData').get('cards_info').get('sub_units')]
+  let y = state.cachedData.get('cachedData').get('cards_info').get('sub_units')
+  var z = []
+  for (let i = 0; i < y.length; i++) {
+    z.push({ label: y[i], value: y[i] })
+  }
+  return z
 }
 
 export const getSchools = (state) => {
-  return ['All', ...state.cachedData.get('cachedData').get('cards_info').get('schools')]
+  let y = state.cachedData.get('cachedData').get('cards_info').get('schools')
+  var z = []
+  for (let i = 0; i < y.length; i++) {
+    z.push({ label: y[i], value: y[i] })
+  }
+  return z
 }
 
 export const getSkills = (state) => {
   let x = state.cachedData.get('cachedData').get('cards_info').get('skills')
-  let y = x.map((item) => item.get('skill'))
-  let z = ['All', ...y]
-  return z
+  let y = x.map((item) => {
+    let z = item.get('skill')
+    return { label: z, value: z }
+  })
+  return y
 }
 
 export const getSongMaxStat = (state) => {
@@ -42,7 +57,7 @@ export const getRandomCard = (state) => {
   }
 }
 
-export const getBGImage = (state) =>{
+export const getBGImage = (state) => {
   try {
     return state.cachedData.get('cachedData').get('bgImage')
   } catch (error) {

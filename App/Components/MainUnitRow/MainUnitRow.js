@@ -26,21 +26,21 @@ class MainUnitRow extends React.Component {
           <TouchableOpacity onPress={this.props.selectMainUnit('')}
             style={[
               styles.button,
-              this.props.main_unit == '' && styles.selectedValue
+              this.props.main_unit === '' && styles.selectedValue
             ]}>
             <Text style={styles.buttonText}>All</Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={this.props.selectMainUnit(`μ's`)}
             style={[
               styles.button1,
-              this.props.main_unit == `μ's` && styles.selectedValue1
+              this.props.main_unit === `μ's` && styles.selectedValue1
             ]}>
             <Image source={Images.mainUnit[0]} style={styles.buttonImage1} />
           </TouchableOpacity>
           <TouchableOpacity onPress={this.props.selectMainUnit('Aqours')}
             style={[
               styles.button1,
-              this.props.main_unit == 'Aqours' && styles.selectedValue1
+              this.props.main_unit === 'Aqours' && styles.selectedValue1
             ]}>
             <Image source={Images.mainUnit[1]} style={styles.buttonImage1} />
           </TouchableOpacity>

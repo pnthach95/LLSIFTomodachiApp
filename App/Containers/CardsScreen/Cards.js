@@ -165,7 +165,7 @@ class CardsScreen extends React.PureComponent {
       idol_school: _school === 'All' ? '' : _school,
       idol_year: this.state.idol_year
     }
-    if (this.state.search != '') { _filter.search = this.state.search }
+    if (this.state.search !== '') { _filter.search = this.state.search }
     console.log(`========== Cards.getCards`, _filter)
     LLSIFService.fetchCardList(_filter).then(result => {
       if (result === 404) {

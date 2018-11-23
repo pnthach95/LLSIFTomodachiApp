@@ -19,7 +19,7 @@ export function* fetchCachedData() {
   let randomCard = yield call(LLSIFService.fetchRandomCard)
   let r = Math.floor(Math.random() * 10)
   var bgImage = ''
-  if (randomCard.clean_ur != null && r < 6) {
+  if (randomCard.clean_ur !== null && r < 6) {
     bgImage = randomCard.clean_ur
   } else {
     bgImage = randomCard.clean_ur_idolized

@@ -10,7 +10,7 @@ export function* setSettings(action) {
 
 export function* getSettings() {
   let data = yield call(loadSettings)
-  if (data == null) {
+  if (data === null) {
     data = {
       worldwide_only: false
     }

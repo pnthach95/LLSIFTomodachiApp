@@ -25,21 +25,21 @@ class SpecialCardRow extends React.Component {
           <TouchableOpacity onPress={this.props.selectSpecial('')}
             style={[
               styles.button,
-              this.props.is_special == '' && styles.selectedValue
+              this.props.is_special === '' && styles.selectedValue
             ]}>
             <Text style={styles.buttonText}>All</Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={this.props.selectSpecial('True')}
             style={[
               styles.button,
-              this.props.is_special == 'True' && styles.selectedValue
+              this.props.is_special === 'True' && styles.selectedValue
             ]}>
             <Text style={styles.buttonText}>Only</Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={this.props.selectSpecial('False')}
             style={[
               styles.button,
-              this.props.is_special == 'False' && styles.selectedValue
+              this.props.is_special === 'False' && styles.selectedValue
             ]}>
             <Text style={styles.buttonText}>None</Text>
           </TouchableOpacity>

@@ -25,28 +25,28 @@ class YearRow extends React.Component {
           <TouchableOpacity onPress={this.props.selectYear('')}
             style={[
               styles.button,
-              this.props.idol_year == '' && styles.selectedValue
+              this.props.idol_year === '' && styles.selectedValue
             ]}>
             <Text style={styles.buttonText}>All</Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={this.props.selectYear('First')}
             style={[
               styles.button,
-              this.props.idol_year == 'First' && styles.selectedValue
+              this.props.idol_year === 'First' && styles.selectedValue
             ]}>
             <Text style={styles.buttonText}>1st</Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={this.props.selectYear('Second')}
             style={[
               styles.button,
-              this.props.idol_year == 'Second' && styles.selectedValue
+              this.props.idol_year === 'Second' && styles.selectedValue
             ]}>
             <Text style={styles.buttonText}>2nd</Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={this.props.selectYear('Third')}
             style={[
               styles.button,
-              this.props.idol_year == 'Third' && styles.selectedValue
+              this.props.idol_year === 'Third' && styles.selectedValue
             ]}>
             <Text style={styles.buttonText}>3rd</Text>
           </TouchableOpacity>

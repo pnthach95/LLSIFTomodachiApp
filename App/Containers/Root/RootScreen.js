@@ -19,6 +19,7 @@ import CardDetailScreen from '../CardDetailScreen/CardDetail'
 import EventDetailScreen from '../EventDetailScreen/EventDetail'
 import IdolDetailScreen from '../IdolDetailScreen/IdolDetail'
 import SongDetailScreen from '../SongDetailScreen/SongDetail'
+import ImageViewer from '../ImageViewer/ImageViewer'
 
 const LLSIFTab = createBottomTabNavigator(
   {
@@ -39,7 +40,8 @@ const Stack = createStackNavigator(
     CardDetailScreen: CardDetailScreen,
     EventDetailScreen: EventDetailScreen,
     IdolDetailScreen: IdolDetailScreen,
-    SongDetailScreen: SongDetailScreen
+    SongDetailScreen: SongDetailScreen,
+    ImageViewerScreen: ImageViewer
   },
   {
     initialRouteName: 'LLSIFScreen',

@@ -1,5 +1,5 @@
 import React from 'react'
-import { Text, View, Picker } from 'react-native'
+import { Text, View, Picker, Platform } from 'react-native'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import { getSkills } from '../../Stores/CachedData/Selectors'
@@ -26,7 +26,7 @@ class SkillRow extends React.Component {
           <Text>Skill</Text>
         </View>
         <View style={{ flex: 2 }}>
-          <Picker mode={'dropdown'}
+          <Picker mode={Platform.OS === 'ios' ? 'dialog' : 'dropdown'}
             selectedValue={this.props.skill}
             onValueChange={this.props.selectSkill}>
             {this.props.skills.map((item, index) =>
@@ -43,10 +43,6 @@ SkillRow.propTypes = {
   selectSkill: PropTypes.func.isRequired
 }
 
-const mapStateToProps = (state) => ({
-  skills: getSkills(state)
-})
-
+const mapStateToProps = (state) => ({ skills: getSkills(state) })
 const mapDispatchToProps = (dispatch) => ({})
-
 export default connect(mapStateToProps, mapDispatchToProps)(SkillRow)

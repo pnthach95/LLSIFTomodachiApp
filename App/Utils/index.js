@@ -91,7 +91,7 @@ export const loadSettings = async () => {
   return new Promise((resolve, reject) => {
     AsyncStorage.getItem('settings')
       .then(res => {
-        if (res == null) {
+        if (res === null) {
           res = {
             worldwide_only: false
           }

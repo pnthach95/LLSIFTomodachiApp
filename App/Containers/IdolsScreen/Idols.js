@@ -54,7 +54,7 @@ class IdolsScreen extends React.Component {
             {
               key: school,
               list: res.filter(value => {
-                return value.school == school
+                return value.school === school
               })
             }]
         }
@@ -66,7 +66,7 @@ class IdolsScreen extends React.Component {
           {
             key: 'Other',
             list: res.filter(value => {
-              return value.school == null
+              return value.school === null
             })
           }]
       }
@@ -127,7 +127,7 @@ class IdolsScreen extends React.Component {
           ListHeaderComponent={<View style={{ height: 10 }} />}
           ListFooterComponent={<View style={{ height: 10 }} />}
           SectionSeparatorComponent={data => {
-            if (data.leadingItem && data.leadingItem.key == 'Other') return null
+            if (data.leadingItem && data.leadingItem.key === 'Other') return null
             return <Seperator style={{ backgroundColor: 'white', marginBottom: data.leadingItem ? 20 : 0 }} />
           }}
           renderItem={({ item, index, section }) => <FlatList

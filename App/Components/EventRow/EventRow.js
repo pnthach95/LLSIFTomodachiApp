@@ -25,21 +25,21 @@ class EventRow extends React.Component {
           <TouchableOpacity onPress={this.props.selectEvent('')}
             style={[
               styles.button,
-              this.props.is_event == '' && styles.selectedValue
+              this.props.is_event === '' && styles.selectedValue
             ]}>
             <Text style={styles.buttonText}>All</Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={this.props.selectEvent('True')}
             style={[
               styles.button,
-              this.props.is_event == 'True' && styles.selectedValue
+              this.props.is_event === 'True' && styles.selectedValue
             ]}>
             <Text style={styles.buttonText}>Only</Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={this.props.selectEvent('False')}
             style={[
               styles.button,
-              this.props.is_event == 'False' && styles.selectedValue
+              this.props.is_event === 'False' && styles.selectedValue
             ]}>
             <Text style={styles.buttonText}>None</Text>
           </TouchableOpacity>

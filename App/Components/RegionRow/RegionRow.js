@@ -24,21 +24,21 @@ class RegionRow extends React.Component {
           <TouchableOpacity onPress={this.props.selectRegion('')}
             style={[
               styles.button,
-              this.props.japan_only == '' && styles.selectedValue
+              this.props.japan_only === '' && styles.selectedValue
             ]}>
             <Text style={styles.buttonText}>All</Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={this.props.selectRegion('False')}
             style={[
               styles.button,
-              this.props.japan_only == 'False' && styles.selectedValue
+              this.props.japan_only === 'False' && styles.selectedValue
             ]}>
             <Text style={styles.buttonText}>EN Only</Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={this.props.selectRegion('True')}
             style={[
               styles.button,
-              this.props.japan_only == 'True' && styles.selectedValue
+              this.props.japan_only === 'True' && styles.selectedValue
             ]}>
             <Text style={styles.buttonText}>JP Only</Text>
           </TouchableOpacity>

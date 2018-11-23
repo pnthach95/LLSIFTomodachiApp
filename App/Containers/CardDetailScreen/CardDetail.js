@@ -139,14 +139,14 @@ class CardDetailScreen extends React.Component {
       <TouchableOpacity onPress={() => this.setState({ currentStats: stats, buttonID: id })}
         style={[
           styles.button, style,
-          { backgroundColor: this.state.buttonID == id ? Colors.violet : Colors.inactive }
+          { backgroundColor: this.state.buttonID === id ? Colors.violet : Colors.inactive }
         ]}>
         <Text style={[Fonts.style.normal, { color: 'white' }]}>{text}</Text>
       </TouchableOpacity>
     )
   }
 
-  onLoadFastImage(e) {
+  _onLoadFastImage(e) {
     const { width, height } = e.nativeEvent
     this.setState({ imgWidth: width, imgHeight: height })
   }
@@ -157,7 +157,7 @@ class CardDetailScreen extends React.Component {
    * @param {String} name Event name
    * @memberof CardDetailScreen
    */
-  navigateToEventDetail = (name) => () => this.props.navigation.navigate('EventDetailScreen', { eventName: name })
+  _navigateToEventDetail = (name) => () => this.props.navigation.navigate('EventDetailScreen', { eventName: name })
 
   /**
    * Navigate to Idol Detail Screen
@@ -165,10 +165,18 @@ class CardDetailScreen extends React.Component {
    * @param {String} name Idol name
    * @memberof CardDetailScreen
    */
-  navigateToIdolDetail = (name) => () => this.props.navigation.navigate('IdolDetailScreen', { name: name })
+  _navigateToIdolDetail = (name) => () => this.props.navigation.navigate('IdolDetailScreen', { name: name })
+
+  _renderImage = (props) => {
+    let propss = props
+    return <FastImage source={{ uri: props.source.uri }} />
+  }
 
   render() {
     if (this.state.isLoading) return <SplashScreen />
+    let images = []
+    if (this.state.item.card_image !== null) images.push({ url: AddHTTPS(this.state.item.card_image) })
+    images.push({ url: AddHTTPS(this.state.item.card_idolized_image) })
     return (
       <View style={styles.container}>
         {/* HEADER */}
@@ -182,7 +190,7 @@ class CardDetailScreen extends React.Component {
           </View>
           <View style={styles.centerHeader}>
             <TouchableOpacity
-              onPress={this.navigateToIdolDetail(this.state.item.idol.name)}>
+              onPress={this._navigateToIdolDetail(this.state.item.idol.name)}>
               <Text style={Fonts.style.normal}>{this.state.item.idol.name}</Text>
             </TouchableOpacity>
           </View>
@@ -197,72 +205,67 @@ class CardDetailScreen extends React.Component {
         {/* MAIN VIEW */}
         <LinearGradient style={{ flex: 1 }}
           colors={[this.state.colors[1], this.state.colors[0], 'white']}>
-          <ScrollView
-            showsVerticalScrollIndicator={false}
+          <ScrollView showsVerticalScrollIndicator={false}
             style={styles.scrollView}>
 
             {/* CARD IMAGES */}
             <View style={styles.imageRow}>
-              {this.state.item.card_image != null &&
-                <FastImage source={{ uri: AddHTTPS(this.state.item.card_image) }}
+              {this.state.item.card_image !== null &&
+                <TouchableOpacity onPress={() => this.props.navigation.navigate('ImageViewerScreen', { index: 0, images: images })}>
+                  <FastImage source={{ uri: AddHTTPS(this.state.item.card_image) }}
+                    style={{
+                      width: Metrics.images.itemWidth,
+                      height: Metrics.images.itemWidth * this.state.imgHeight / this.state.imgWidth
+                    }}
+                    onLoad={e => this._onLoadFastImage(e)} />
+                </TouchableOpacity>}
+              <TouchableOpacity onPress={() => this.props.navigation.navigate('ImageViewerScreen', { index: images.length - 1, images: images })}>
+                <FastImage source={{ uri: AddHTTPS(this.state.item.card_idolized_image) }}
                   style={{
                     width: Metrics.images.itemWidth,
                     height: Metrics.images.itemWidth * this.state.imgHeight / this.state.imgWidth
                   }}
-                  onLoad={e => this.onLoadFastImage(e)}
-                />}
-              <FastImage source={{ uri: AddHTTPS(this.state.item.card_idolized_image) }}
-                style={{
-                  width: Metrics.images.itemWidth,
-                  height: Metrics.images.itemWidth * this.state.imgHeight / this.state.imgWidth
-                }}
-                onLoad={e => this.onLoadFastImage(e)}
-              />
+                  onLoad={e => this._onLoadFastImage(e)} />
+              </TouchableOpacity>
             </View>
 
             {/* INFORMATION */}
             <View style={{ paddingHorizontal: Metrics.doubleBaseMargin }}>
               <TextRow
                 item1={{ flex: 1, text: 'Card ID' }}
-                item2={{ flex: 2, text: this.state.item.game_id }}
-              />
+                item2={{ flex: 2, text: this.state.item.game_id }} />
               <TextRow
                 item1={{ flex: 1, text: 'Release date' }}
-                item2={{ flex: 2, text: moment(this.state.item.release_date).format('MMM Do YYYY') }}
-              />
+                item2={{ flex: 2, text: moment(this.state.item.release_date).format('MMM Do YYYY') }} />
               <View style={{ flexDirection: 'row' }}>
                 {this.state.item.is_promo && <Text>Promo card</Text>}
                 {this.state.item.is_promo && this.state.item.japan_only && <Text> - </Text>}
                 {this.state.item.japan_only && <Text>Japan only</Text>}
               </View>
 
-              {(this.state.item.skill != null && this.state.item.skill.length != 0) &&
+              {(this.state.item.skill !== null && this.state.item.skill.length !== 0) &&
                 <View>
                   <Seperator />
                   <TextRow
                     item1={{ flex: 1, text: 'Skill' }}
-                    item2={{ flex: 2, text: this.state.item.skill }}
-                  />
+                    item2={{ flex: 2, text: this.state.item.skill }} />
                   <TextRow
                     item1={{ flex: 1, text: '' }}
-                    item2={{ flex: 2, text: this.state.item.skill_details, textStyle: styles.subtitleText }}
-                  />
+                    item2={{ flex: 2, text: this.state.item.skill_details, textStyle: styles.subtitleText }} />
                 </View>}
 
-              {(this.state.item.center_skill != null && this.state.item.center_skill.length != 0) &&
+              {(this.state.item.center_skill !== null && this.state.item.center_skill.length !== 0) &&
                 <View>
                   <Seperator />
                   <TextRow
                     item1={{ flex: 1, text: 'Center skill' }}
-                    item2={{ flex: 2, text: this.state.item.center_skill }}
-                  />
+                    item2={{ flex: 2, text: this.state.item.center_skill }} />
                   <TextRow
                     item1={{ flex: 1, text: '' }}
-                    item2={{ flex: 2, text: this.state.item.center_skill_details, textStyle: styles.subtitleText }}
-                  />
+                    item2={{ flex: 2, text: this.state.item.center_skill_details, textStyle: styles.subtitleText }} />
                 </View>}
 
-              {this.state.item.event != null &&
+              {this.state.item.event !== null &&
                 <View>
                   <Seperator />
                   <TextRow item1={{ text: 'Event', flex: 1, textStyle: Fonts.style.normal }}
@@ -270,13 +273,11 @@ class CardDetailScreen extends React.Component {
                   <TextRow item1={{ text: '', flex: 1, textStyle: Fonts.style.normal }}
                     item2={{ text: this.state.item.event.english_name, flex: 4, textStyle: Fonts.style.normal }} />
                   <TouchableOpacity style={ApplicationStyles.center}
-                    onPress={this.navigateToEventDetail(this.state.item.event.japanese_name)}>
+                    onPress={this._navigateToEventDetail(this.state.item.event.japanese_name)}>
                     <FastImage source={{ uri: AddHTTPS(this.state.item.event.image) }}
                       style={styles.banner}
-                      resizeMode={FastImage.resizeMode.contain}
-                    />
+                      resizeMode={FastImage.resizeMode.contain} />
                   </TouchableOpacity>
-
                 </View>}
 
               {this.state.item.hp !== 0 &&
@@ -294,9 +295,9 @@ class CardDetailScreen extends React.Component {
               <View>
                 <View style={styles.buttonRow}>
                   {this.statButton(0, 'Level 1', this.state.minStats, styles.leftRadius)}
-                  {this.state.item.non_idolized_maximum_statistics_smile != 0 &&
+                  {this.state.item.non_idolized_maximum_statistics_smile !== 0 &&
                     this.statButton(1, `Level ${this.state.item.non_idolized_max_level}`, this.state.nonIdolMaxStats)}
-                  {this.state.item.idolized_max_level != 0 &&
+                  {this.state.item.idolized_max_level !== 0 &&
                     this.statButton(2, `Level ${this.state.item.idolized_max_level}`, this.state.idolMaxStats, styles.rightRadius)}
                 </View>
                 {this.progressView(this.state.currentStats)}
@@ -309,8 +310,6 @@ class CardDetailScreen extends React.Component {
   }
 }
 
-const mapStateToProps = (state) => ({
-  maxStats: getMaxStats(state)
-})
+const mapStateToProps = (state) => ({ maxStats: getMaxStats(state) })
 const mapDispatchToProps = (dispatch) => ({})
 export default connect(mapStateToProps, mapDispatchToProps)(CardDetailScreen)

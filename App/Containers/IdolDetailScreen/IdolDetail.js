@@ -55,7 +55,7 @@ class IdolDetailScreen extends React.Component {
       }
       console.log('IdolDetails', res1)
       LLSIFService.fetchCardList(_filter).then(res2 => {
-        if (res2.length == 0) {
+        if (res2.length === 0) {
           _filter.name = res1.name
           _filter.japanese_name = ''
           LLSIFService.fetchCardList(_filter).then(res3 => {

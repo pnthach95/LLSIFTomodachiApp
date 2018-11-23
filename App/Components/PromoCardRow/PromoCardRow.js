@@ -25,21 +25,21 @@ class PromoCardRow extends React.Component {
           <TouchableOpacity onPress={this.props.selectPromo('')}
             style={[
               styles.button,
-              this.props.is_promo == '' && styles.selectedValue
+              this.props.is_promo === '' && styles.selectedValue
             ]}>
             <Text style={styles.buttonText}>All</Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={this.props.selectPromo('True')}
             style={[
               styles.button,
-              this.props.is_promo == 'True' && styles.selectedValue
+              this.props.is_promo === 'True' && styles.selectedValue
             ]}>
             <Text style={styles.buttonText}>Only</Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={this.props.selectPromo('False')}
             style={[
               styles.button,
-              this.props.is_promo == 'False' && styles.selectedValue
+              this.props.is_promo === 'False' && styles.selectedValue
             ]}>
             <Text style={styles.buttonText}>None</Text>
           </TouchableOpacity>

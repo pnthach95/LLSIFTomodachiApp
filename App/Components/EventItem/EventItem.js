@@ -33,7 +33,7 @@ export default class EventItem extends Component {
     ? AddHTTPS(this.props.item.image)
     : AddHTTPS(this.props.item.english_image)
 
-  eventName = ((this.props.item.english_name != null && this.props.item.english_name.length !== 0) ?
+  eventName = ((this.props.item.english_name !== null && this.props.item.english_name.length !== 0) ?
     `${this.props.item.english_name}\n` : '') + this.props.item.japanese_name
 
   render() {

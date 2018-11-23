@@ -161,7 +161,7 @@ class SongDetailScreen extends React.Component {
       <TouchableOpacity
         style={[
           styles.button, style,
-          { backgroundColor: this.state.buttonID == id ? Colors.violet : Colors.inactive }
+          { backgroundColor: this.state.buttonID === id ? Colors.violet : Colors.inactive }
         ]}
         onPress={() => this.setState({ currentStats: stat, buttonID: id })}>
         <Text style={{ color: 'white' }}>{text}</Text>
@@ -233,7 +233,7 @@ class SongDetailScreen extends React.Component {
                     style={styles.eventImage} />
                 </TouchableOpacity>
               </View>}
-            {(this.state.item.daily_rotation != null && this.state.item.daily_rotation.length != 0) &&
+            {(this.state.item.daily_rotation !== null && this.state.item.daily_rotation.length !== 0) &&
               <View style={styles.event}>
                 <TextRow item1={{ text: 'Daily rotation', flex: 1 }}
                   item2={{ text: this.state.item.daily_rotation + ' - ' + this.state.item.daily_rotation_position, flex: 1 }} />
@@ -245,8 +245,8 @@ class SongDetailScreen extends React.Component {
               {this.statButton(1, 'Normal', this.state.normal)}
               {this.statButton(2, 'Hard', this.state.hard)}
               {this.statButton(3, 'Expert', this.state.expert,
-                (this.state.random[1].length == 0 && !this.state.master[0]) && styles.rightRadius)}
-              {this.state.random[1].length != 0 &&
+                (this.state.random[1].length === 0 && !this.state.master[0]) && styles.rightRadius)}
+              {this.state.random[1].length !== 0 &&
                 this.statButton(4, 'Random', this.state.random,
                   !this.state.master[0] && styles.rightRadius)}
               {this.state.master[0] &&

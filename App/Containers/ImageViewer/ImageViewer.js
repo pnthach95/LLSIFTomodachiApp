@@ -1,7 +1,6 @@
 import React from 'react'
-import { View, Platform } from 'react-native'
-import PhotoView from 'react-native-photo-view'
-import { TabView, PagerScroll, PagerPan } from 'react-native-tab-view'
+import { View, Text } from 'react-native'
+import Gallery from 'react-native-image-gallery'
 import Icon from 'react-native-vector-icons/Ionicons'
 import styles from './styles'
 
@@ -12,53 +11,44 @@ export default class ImageViewerScreen extends React.Component {
     this.state = {
       loading: true,
       index: index,
-      images: images.map(image => ({
-        url: image,
-        loading: true,
-      })),
-      routes: images.map((image, index) => ({ key: index + 'image' })),
-      hideHeader: true,
+      images: images.map(image => ({ source: { uri: image.url } })),
+      hideHeader: false,
     };
   }
 
-  renderPager = props =>
-    Platform.OS === 'ios'
-      ? <PagerScroll {...props} />
-      : <PagerPan {...props} />;
-
-  renderScene = ({ route }) => {
-    if (Math.abs(this.state.index - this.state.routes.indexOf(route)) > 2) {
-      return null;
-    }
-    const image = this.state.images[parseInt(route.key[0])].url;
-    return (
-      <View key={image.url} style={styles.slide}>
-        <PhotoView
-          source={{ uri: image.url }}
-          resizeMode="contain"
-          androidScaleType="fitCenter"
-          minimumZoomScale={1}
-          maximumZoomScale={3}
-          style={styles.photo} />
-      </View>
-    );
+  _handleOnPressImage = () => {
+    this.setState(prevState => ({
+      hideHeader: !prevState.hideHeader,
+    }));
   };
 
-  handleChangeTab = index => this.setState({ index })
+  _onChangeImage = (index) => this.setState({ index })
 
-  render() {
+  header() {
     return (
-      <View style={styles.container}>
+      <View style={styles.headerAbsolutePosition}>
         <Icon name={'ios-close'} size={40} color={'white'}
           onPress={() => this.props.navigation.goBack()}
           style={styles.close} />
-        <TabView
-          renderTabBar={() => <View />}
-          style={styles.slide}
-          navigationState={this.state}
-          renderScene={this.renderScene}
-          renderPager={this.renderPager}
-          onIndexChange={this.handleChangeTab} />
+      </View>)
+  }
+
+  error = () => <View style={styles.loaderContainer}>
+    <Icon name={'ios-close-circle-outline'} color={'red'} size={60} />
+    <Text style={styles.textCenter}>This image cannot be displayed</Text>
+  </View>
+
+  render() {
+    const { index } = this.props.navigation.state.params
+    let { images, hideHeader } = this.state;
+    return (
+      <View style={styles.container}>
+        <Gallery images={images} pageMargin={10}
+          style={styles.container} initialPage={index}
+          onPageSelected={this._onChangeImage}
+          errorComponent={this.error}
+          onSingleTapConfirmed={this._handleOnPressImage} />
+        {hideHeader || this.header()}
       </View>
     )
   }

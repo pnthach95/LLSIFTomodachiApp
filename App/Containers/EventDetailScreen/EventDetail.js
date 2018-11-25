@@ -10,7 +10,7 @@ import TimerCountdown from '../../Components/TimerCountdown/Timer'
 import SplashScreen from '../SplashScreen/SplashScreen'
 import { LLSIFService } from '../../Services/LLSIFService'
 import { AddHTTPS, findAttribute } from '../../Utils'
-import { Config } from '../../Config'
+import { Config, EventStatus } from '../../Config'
 import { Metrics, ApplicationStyles, Colors } from '../../Theme'
 import styles from './styles'
 
@@ -114,8 +114,7 @@ class EventDetailScreen extends React.Component {
     return <TimerCountdown
       initialSecondsRemaining={time}
       allowFontScaling={true}
-      style={styles.text}
-    />
+      style={styles.text} />
   }
 
   render() {
@@ -160,7 +159,14 @@ class EventDetailScreen extends React.Component {
               <Text style={styles.text}>
                 {`Start: ${ENEventStart.format(Config.DATETIME_FORMAT_OUTPUT)}\nEnd: ${ENEventEnd.format(Config.DATETIME_FORMAT_OUTPUT)}`}
               </Text>
-              {this.state.item.world_current && this.timer(ENEventEnd.diff(moment()))}
+              {this.state.item.world_current &&
+                <Text style={styles.text}>
+                  {this.timer(ENEventEnd.diff(moment()))}{` left`}
+                </Text>}
+              {this.state.item.english_status === EventStatus.ANNOUNCED &&
+                <Text style={styles.text}>
+                  {`Starts in `}{this.timer(ENEventStart.diff(moment()))}
+                </Text>}
             </View>}
           {this.state.item.english_name !== null &&
             <Seperator style={{ backgroundColor: 'white' }} />}
@@ -178,8 +184,16 @@ class EventDetailScreen extends React.Component {
           <Text style={styles.text}>
             {`Start: ${JPEventStart.format(Config.DATETIME_FORMAT_OUTPUT)}\nEnd: ${JPEventEnd.format(Config.DATETIME_FORMAT_OUTPUT)}`}
           </Text>
-          {this.state.item.japan_current && this.timer(JPEventEnd.diff(moment()))}
-          {this.state.songs.length !== 0 && <Seperator style={{ backgroundColor: 'white' }} />}
+          {this.state.item.japan_current &&
+            <Text style={styles.text}>
+              {this.timer(JPEventEnd.diff(moment()))}{` left`}
+            </Text>}
+          {this.state.item.japan_status === EventStatus.ANNOUNCED &&
+            <Text style={styles.text}>
+              {`Starts in `}{this.timer(JPEventStart.diff(moment()))}
+            </Text>}
+          {this.state.songs.length !== 0 &&
+            <Seperator style={{ backgroundColor: 'white' }} />}
           {/* SONGS */}
           {this.state.songs.length !== 0
             && <View>

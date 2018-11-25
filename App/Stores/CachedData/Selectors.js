@@ -7,38 +7,31 @@ export const getMaxStats = (state) => {
 }
 
 export const getIdols = (state) => {
-  let x = state.cachedData.get('cachedData').get('cards_info').get('idols')
-  let y = x.map((item) => item.get('name'))
-  var z = []
-  for (let i = 0; i < y.length; i++) {
-    z.push({ label: y[i], value: y[i] })
-  }
-  return z
+  let x = state.cachedData.get('cachedData').get('cards_info').get('idols').toArray()
+  let y = x.map(item => {
+    let name = item.get('name')
+    return { label: name, value: name }
+  })
+  return y
 }
 
 export const getSubunits = (state) => {
-  let y = state.cachedData.get('cachedData').get('cards_info').get('sub_units')
-  var z = []
-  for (let i = 0; i < y.length; i++) {
-    z.push({ label: y[i], value: y[i] })
-  }
+  let y = state.cachedData.get('cachedData').get('cards_info').get('sub_units').toArray()
+  var z = y.map(item => ({ label: item, value: item }))
   return z
 }
 
 export const getSchools = (state) => {
-  let y = state.cachedData.get('cachedData').get('cards_info').get('schools')
-  var z = []
-  for (let i = 0; i < y.length; i++) {
-    z.push({ label: y[i], value: y[i] })
-  }
+  let y = state.cachedData.get('cachedData').get('cards_info').get('schools').toArray()
+  var z = y.map(item => ({ label: item, value: item }))
   return z
 }
 
 export const getSkills = (state) => {
-  let x = state.cachedData.get('cachedData').get('cards_info').get('skills')
-  let y = x.map((item) => {
-    let z = item.get('skill')
-    return { label: z, value: z }
+  let x = state.cachedData.get('cachedData').get('cards_info').get('skills').toArray()
+  let y = x.map(item => {
+    let skill = item.get('skill')
+    return { label: skill, value: skill }
   })
   return y
 }

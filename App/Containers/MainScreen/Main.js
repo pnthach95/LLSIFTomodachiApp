@@ -10,7 +10,7 @@ import SquareButton from '../../Components/SquareButton/SquareButton'
 import TimerCountdown from '../../Components/TimerCountdown/Timer'
 import SplashScreen from '../SplashScreen/SplashScreen'
 import { AddHTTPS } from '../../Utils'
-import { Config } from '../../Config'
+import { Config, EventStatus } from '../../Config'
 import { Metrics, Colors, Images, ApplicationStyles } from '../../Theme'
 import styles from './styles'
 
@@ -133,7 +133,14 @@ class MainScreen extends React.Component {
           <Text style={styles.text}>
             {`Start: ${ENEventStart.format(Config.DATETIME_FORMAT_OUTPUT)}\nEnd: ${ENEventEnd.format(Config.DATETIME_FORMAT_OUTPUT)}`}
           </Text>
-          {ENEvent.get('world_current') && this.timer(ENEventEnd.diff(moment()))}
+          {ENEvent.get('world_current') &&
+            <Text style={styles.text}>
+              {this.timer(ENEventEnd.diff(moment()))}{` left`}
+            </Text>}
+          {ENEvent.get('english_status') === EventStatus.ANNOUNCED &&
+            <Text style={styles.text}>
+              {`Starts in `}{this.timer(ENEventStart.diff(moment()))}
+            </Text>}
           <Seperator style={{ backgroundColor: 'white' }} />
 
           {/* JAPANESE BLOCK */}
@@ -150,7 +157,14 @@ class MainScreen extends React.Component {
           <Text style={styles.text}>
             {`Start: ${JPEventStart.format(Config.DATETIME_FORMAT_OUTPUT)}\nEnd: ${JPEventEnd.format(Config.DATETIME_FORMAT_OUTPUT)}`}
           </Text>
-          {JPEvent.get('japan_current') && this.timer(JPEventEnd.diff(moment()))}
+          {JPEvent.get('japan_current') &&
+            <Text style={styles.text}>
+              {this.timer(JPEventEnd.diff(moment()))}{` left`}
+            </Text>}
+          {JPEvent.get('japan_status') === EventStatus.ANNOUNCED &&
+            <Text style={styles.text}>
+              {`Starts in `}{this.timer(JPEventStart.diff(moment()))}
+            </Text>}
           {/* <Seperator style={{ backgroundColor: 'white' }} /> */}
 
           {/* CONTEST BLOCK */}

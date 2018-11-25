@@ -148,7 +148,6 @@ android {
 }
 
 dependencies {
-    compile project(':react-native-photo-view')
     compile project(':react-native-version-number')
     compile project(':react-native-vector-icons')
     compile project(':react-native-linear-gradient')

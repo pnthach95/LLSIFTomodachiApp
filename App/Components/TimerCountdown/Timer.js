@@ -65,7 +65,7 @@ export default class TimerCountdown extends React.Component {
       const d = days == 0 ? '' : days + (days == 1 ? ' day ' : ' days ')
       h = h === '00' ? '' : h + (h == 1 ? ' hour ' : ' hours ')
       m = m === '00' ? '' : m + (m == 1 ? ' minute ' : ' minutes ')
-      return d + h + m + s + ' seconds left'
+      return d + h + m + s + ' seconds'
     };
   }
 

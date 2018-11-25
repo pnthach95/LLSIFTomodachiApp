@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native'
+import { StyleSheet, Platform } from 'react-native'
 import { Metrics } from '../../Theme'
 
 export default StyleSheet.create({
@@ -14,9 +14,38 @@ export default StyleSheet.create({
     height: Metrics.screenHeight,
   },
   close: {
+    paddingLeft: 20
+  },
+  loaderContainer: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
     position: 'absolute',
-    left: 20,
-    top: 10,
-    zIndex: 10
+    top: '50%',
+    bottom: '50%',
+    left: '50%',
+    right: '50%',
+  },
+  headerAbsolutePosition: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    height: Platform.OS === 'ios' ? 44 : 56,
+    zIndex: 100,
+    backgroundColor: '#0005',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  text: {
+    color: 'white',
+    paddingRight: 20
+  },
+  textCenter: {
+    color: 'white',
+    textAlign: 'center',
+    fontSize: 26
   }
 })

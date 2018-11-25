@@ -8,7 +8,7 @@ import VersionNumber from 'react-native-version-number'
 import Fade from '../../Components/Fade/Fade'
 import styles from './styles'
 import { Images, ApplicationStyles } from '../../Theme'
-import { Config } from '../../Config'
+import { Config, RELEASE_NOTE } from '../../Config'
 import { AddHTTPS, loadSettings, saveSettings, openLink } from '../../Utils'
 import { getRandomCard, getBGImage } from '../../Stores/CachedData/Selectors'
 
@@ -67,7 +67,7 @@ class Drawer extends Component {
 
             <View style={styles.body}>
               <View style={styles.textBlock}>
-                <Text>{Config.DRAWER}</Text>
+                <Text>{RELEASE_NOTE}</Text>
               </View>
               <View style={styles.settingRow}>
                 <Text>Worldwide only</Text>

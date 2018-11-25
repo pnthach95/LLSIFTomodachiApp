@@ -21,6 +21,7 @@ Change log:
 
 - Version 0.1.1:
   • Update countdown text, image viewer.
+  • Show upcoming events in home screen.
   • Fix UI.
 
 - Version 0.1.0:

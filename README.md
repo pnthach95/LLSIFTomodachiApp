@@ -2,9 +2,8 @@
 
 This project is a Love Live School Idol Festival app using data from [School Idol Tomodachi](http://schoolido.lu/)
 
-[Download APK file here](https://github.com/pnthach95/LLSIFTomodachiApp/releases)
-
-[Report bug](https://github.com/pnthach95/LLSIFTomodachiApp/issues)
+[![Download APK file here](https://img.shields.io/github/downloads/pnthach95/LLSIFTomodachiApp/total.svg?style=flat-square)](https://github.com/pnthach95/LLSIFTomodachiApp/releases)
+[![GitHub issues](https://img.shields.io/github/issues/pnthach95/LLSIFTomodachiApp.svg?style=flat-square)](https://github.com/pnthach95/LLSIFTomodachiApp/issues)
 
 
 ## Content

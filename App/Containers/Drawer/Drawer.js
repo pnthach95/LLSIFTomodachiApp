@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, Text, ImageBackground, TouchableHighlight, Image, Switch } from 'react-native'
+import { View, Text, ImageBackground, TouchableHighlight, Image, Switch, ScrollView } from 'react-native'
 import { SafeAreaView } from 'react-navigation'
 import { connect } from 'react-redux'
 import Icon from 'react-native-vector-icons/Ionicons'
@@ -66,9 +66,10 @@ class Drawer extends Component {
             </View>
 
             <View style={styles.body}>
-              <View style={styles.textBlock}>
+              <ScrollView alwaysBounceVertical={false}
+                contentContainerStyle={styles.textBlock}>
                 <Text>{RELEASE_NOTE}</Text>
-              </View>
+              </ScrollView>
               <View style={styles.settingRow}>
                 <Text>Worldwide only</Text>
                 <Switch value={this.state.worldwide_only}

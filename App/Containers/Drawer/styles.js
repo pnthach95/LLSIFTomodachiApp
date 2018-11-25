@@ -21,12 +21,12 @@ export default StyleSheet.create({
   },
   body: {
     height: Metrics.screenHeight - 290,
-    paddingVertical: 10,
+    paddingVertical: 6,
     justifyContent: 'space-between',
     alignItems: 'stretch'
   },
   textBlock: {
-    paddingHorizontal: 10
+    padding: 10
   },
   settingRow: {
     flexDirection: 'row',

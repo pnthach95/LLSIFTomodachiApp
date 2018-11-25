@@ -10,12 +10,12 @@ import { LLSIFService } from '../Services/LLSIFService'
 export function* fetchCachedData() {
   yield put(CachedDataActions.fetchCachedDataLoading())
   var data = yield call(LLSIFService.fetchCachedData)
-  let eventEN = data.current_event_en.japanese_name
-  let eventJP = data.current_event_jp.japanese_name
-  let data1 = yield call(LLSIFService.fetchEventData, eventEN)
-  let data2 = yield call(LLSIFService.fetchEventData, eventJP)
-  data.eventEN = data1
-  data.eventJP = data2
+  let eventEN = yield call(LLSIFService.fetchEventList,
+    { ordering: '-english_beginning', 'page_size': 1 })
+  let eventJP = yield call(LLSIFService.fetchEventList,
+    { ordering: '-beginning', 'page_size': 1 })
+  data.eventEN = eventEN[0]
+  data.eventJP = eventJP[0]
   let randomCard = yield call(LLSIFService.fetchRandomCard)
   let r = Math.floor(Math.random() * 10)
   var bgImage = ''

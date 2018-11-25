@@ -13,7 +13,26 @@ export const Config = {
   DEFAULT_BACKGROUND: '//i.schoolido.lu/c/1722idolizedRuby.png'
 }
 
-export const RELEASE_NOTE = `This app is open-source.\n\nPress Version to view background.\n\nChange log:\n- Add drawer button.\n- Add "Worldwide only" option.\n- Add card viewer.\n- Fix chibi images in Idol tab.\n- Fix 404 error.\n- Change some UIs.`
+export const RELEASE_NOTE = `This app is open-source.
+
+Press Version to view background.
+
+Change log:
+
+- Version 0.1.1:
+  • Update countdown text, image viewer.
+  • Fix UI.
+
+- Version 0.1.0:
+  • Add drawer button.
+  • Add "Worldwide only" option.
+  • Add card viewer.
+  • Fix chibi images in Idol tab.
+  • Fix 404 error.
+  • Change some UIs.
+  
+- Version 0.0.1:
+  Initial release.`
 
 export const EventStatus = {
   UNKNOWN: 'unknown',

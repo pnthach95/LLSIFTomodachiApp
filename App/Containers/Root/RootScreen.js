@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { View, SafeAreaView } from 'react-native'
 import { createStackNavigator, createBottomTabNavigator, createDrawerNavigator } from 'react-navigation'
 import { connect } from 'react-redux'
+import firebase from 'react-native-firebase'
 
 import StatusBarBackground from '../../Components/StatusBarBackground/StatusBar'
 import CachedDataActions from '../../Stores/CachedData/Actions'
@@ -57,7 +58,41 @@ class RootScreen extends Component {
       console.clear()
       console.log('App is running in DEV mode')
     }
+    firebase.messaging().hasPermission()
+      .then(enabled => {
+        if (enabled) {
+          // user has permissions
+        } else {
+          // user doesn't have permission
+          firebase.messaging().requestPermission()
+            .then(() => {
+              // User has authorised  
+            })
+            .catch(error => {
+              // User has rejected permissions  
+            });
+        }
+      });
+    this.notificationDisplayedListener = firebase.notifications().onNotificationDisplayed((notification) => {
+      // Process your notification as required
+      // ANDROID: Remote notifications do not contain the channel ID. You will have to specify this manually if you'd like to re-display the notification.
+      console.log(notification)
+    });
+    this.notificationListener = firebase.notifications().onNotification((notification) => {
+      // Process your notification as required
+      console.log(notification)
+    });
+    this.messageListener = firebase.messaging().onMessage((message) => {
+      // Process your message as required
+      console.log(message)
+    });
     this.props.startup()
+  }
+
+  componentWillUnmount() {
+    this.notificationDisplayedListener();
+    this.notificationListener();
+    this.messageListener();
   }
 
   render() {

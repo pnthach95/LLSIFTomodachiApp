@@ -1,3 +1,4 @@
 {
-  "flow.enabled": false
+  "flow.enabled": false,
+  "java.configuration.updateBuildConfiguration": "disabled"
 }

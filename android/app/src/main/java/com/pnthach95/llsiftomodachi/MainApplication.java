@@ -3,6 +3,9 @@ package com.pnthach95.llsiftomodachi;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import io.invertase.firebase.RNFirebasePackage;
+import io.invertase.firebase.messaging.RNFirebaseMessagingPackage;
+import io.invertase.firebase.notifications.RNFirebaseNotificationsPackage;
 import io.sentry.RNSentryPackage;
 
 import com.apsl.versionnumber.RNVersionNumberPackage;
@@ -29,12 +32,14 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
-            new RNSentryPackage(),
-            new RNVersionNumberPackage(),
-            new VectorIconsPackage(),
-            new LinearGradientPackage(),
-            new FastImageViewPackage()
-      );
+          new RNFirebasePackage(),
+          new RNFirebaseMessagingPackage(),
+          new RNFirebaseNotificationsPackage(),
+          new RNSentryPackage(),
+          new RNVersionNumberPackage(),
+          new VectorIconsPackage(),
+          new LinearGradientPackage(),
+          new FastImageViewPackage());
     }
 
     @Override

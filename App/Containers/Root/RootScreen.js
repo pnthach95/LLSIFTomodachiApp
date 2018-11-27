@@ -76,16 +76,18 @@ class RootScreen extends Component {
     this.notificationDisplayedListener = firebase.notifications().onNotificationDisplayed((notification) => {
       // Process your notification as required
       // ANDROID: Remote notifications do not contain the channel ID. You will have to specify this manually if you'd like to re-display the notification.
-      console.log(notification)
+      console.log('notificationDisplayedListener', notification)
     });
     this.notificationListener = firebase.notifications().onNotification((notification) => {
       // Process your notification as required
-      console.log(notification)
+      console.log('notificationListener', notification);
     });
     this.messageListener = firebase.messaging().onMessage((message) => {
       // Process your message as required
-      console.log(message)
+      console.log('messageListener', message)
     });
+    firebase.messaging().subscribeToTopic('en_event')
+    firebase.messaging().subscribeToTopic('jp_event')
     this.props.startup()
   }
 

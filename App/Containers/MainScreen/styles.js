@@ -32,7 +32,7 @@ export default StyleSheet.create({
   text: {
     color: 'white',
     fontSize: 16,
-    padding: Metrics.baseMargin,
+    padding: 6,
     textAlign: 'center'
   },
   title: {

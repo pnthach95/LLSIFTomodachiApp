@@ -46,7 +46,7 @@ const Stack = createStackNavigator(
   },
   {
     initialRouteName: 'LLSIFScreen',
-    headerMode: 'none',
+    headerMode: 'none'
   }
 )
 
@@ -66,10 +66,10 @@ class RootScreen extends Component {
           // user doesn't have permission
           firebase.messaging().requestPermission()
             .then(() => {
-              // User has authorised  
+              // User has authorised
             })
             .catch(error => {
-              // User has rejected permissions  
+              // User has rejected permissions
             });
         }
       });
@@ -88,6 +88,7 @@ class RootScreen extends Component {
     });
     firebase.messaging().subscribeToTopic('en_event')
     firebase.messaging().subscribeToTopic('jp_event')
+    firebase.messaging().subscribeToTopic('admin_message')
     this.props.startup()
   }
 
@@ -103,7 +104,8 @@ class RootScreen extends Component {
         <View style={ApplicationStyles.screen}>
           <StatusBarBackground />
           <AppNav
-            // Initialize the NavigationService (see https://reactnavigation.org/docs/en/navigating-without-navigation-prop.html)
+            // Initialize the NavigationService
+            // (see https://reactnavigation.org/docs/en/navigating-without-navigation-prop.html)
             ref={(navigatorRef) => { NavigationService.setTopLevelNavigator(navigatorRef) }} />
         </View>
       </SafeAreaView>

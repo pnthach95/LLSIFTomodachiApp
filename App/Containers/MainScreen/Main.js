@@ -121,7 +121,9 @@ class MainScreen extends React.Component {
           contentContainerStyle={styles.content}>
           {/* ENGLISH BLOCK */}
           <Text style={{ color: 'white' }}>English Event: {ENEvent.get('english_status')}</Text>
-          <Text style={styles.title}>{ENEvent.get('english_name')}</Text>
+          <View style={styles.textbox}>
+            <Text style={styles.title}>{ENEvent.get('english_name')}</Text>
+          </View>
           <TouchableOpacity onPress={() => this.navigateToEventDetail(ENEvent)}>
             <FastImage source={{ uri: AddHTTPS(ENEvent.get('english_image')) }}
               onLoad={e => this.onLoadFastImage(e)}
@@ -130,22 +132,30 @@ class MainScreen extends React.Component {
                 height: Metrics.widthBanner * this.state.imgHeight / this.state.imgWidth
               }} />
           </TouchableOpacity>
-          <Text style={styles.text}>
-            {`Start: ${ENEventStart.format(Config.DATETIME_FORMAT_OUTPUT)}\nEnd: ${ENEventEnd.format(Config.DATETIME_FORMAT_OUTPUT)}`}
-          </Text>
+          <View style={styles.textbox}>
+            <Text style={styles.text}>
+              {`Start: ${ENEventStart.format(Config.DATETIME_FORMAT_OUTPUT)}\nEnd: ${ENEventEnd.format(Config.DATETIME_FORMAT_OUTPUT)}`}
+            </Text>
+          </View>
           {ENEvent.get('world_current') &&
-            <Text style={styles.text}>
-              {this.timer(ENEventEnd.diff(moment()))}{` left`}
-            </Text>}
+            <View style={styles.textbox}>
+              <Text style={styles.text}>
+                {this.timer(ENEventEnd.diff(moment()))}{` left`}
+              </Text>
+            </View>}
           {ENEvent.get('english_status') === EventStatus.ANNOUNCED &&
-            <Text style={styles.text}>
-              {`Starts in `}{this.timer(ENEventStart.diff(moment()))}
-            </Text>}
+            <View style={styles.textbox}>
+              <Text style={styles.text}>
+                {`Starts in `}{this.timer(ENEventStart.diff(moment()))}
+              </Text>
+            </View>}
           <Seperator style={{ backgroundColor: 'white' }} />
 
           {/* JAPANESE BLOCK */}
           <Text style={{ color: 'white' }}>Japanese Event: {JPEvent.get('japan_status')}</Text>
-          <Text style={styles.title}>{JPEvent.get('romaji_name')}</Text>
+          <View style={styles.textbox}>
+            <Text style={styles.title}>{JPEvent.get('romaji_name')}</Text>
+          </View>
           <TouchableOpacity onPress={() => this.navigateToEventDetail(JPEvent)}>
             <FastImage source={{ uri: AddHTTPS(JPEvent.get('image')) }}
               onLoad={e => this.onLoadFastImage(e)}
@@ -154,17 +164,23 @@ class MainScreen extends React.Component {
                 height: Metrics.widthBanner * this.state.imgHeight / this.state.imgWidth
               }} />
           </TouchableOpacity>
-          <Text style={styles.text}>
-            {`Start: ${JPEventStart.format(Config.DATETIME_FORMAT_OUTPUT)}\nEnd: ${JPEventEnd.format(Config.DATETIME_FORMAT_OUTPUT)}`}
-          </Text>
+          <View style={styles.textbox}>
+            <Text style={styles.text}>
+              {`Start: ${JPEventStart.format(Config.DATETIME_FORMAT_OUTPUT)}\nEnd: ${JPEventEnd.format(Config.DATETIME_FORMAT_OUTPUT)}`}
+            </Text>
+          </View>
           {JPEvent.get('japan_current') &&
-            <Text style={styles.text}>
-              {this.timer(JPEventEnd.diff(moment()))}{` left`}
-            </Text>}
+            <View style={styles.textbox}>
+              <Text style={styles.text}>
+                {this.timer(JPEventEnd.diff(moment()))}{` left`}
+              </Text>
+            </View>}
           {JPEvent.get('japan_status') === EventStatus.ANNOUNCED &&
-            <Text style={styles.text}>
-              {`Starts in `}{this.timer(JPEventStart.diff(moment()))}
-            </Text>}
+            <View style={styles.textbox}>
+              <Text style={styles.text}>
+                {`Starts in `}{this.timer(JPEventStart.diff(moment()))}
+              </Text>
+            </View>}
           {/* <Seperator style={{ backgroundColor: 'white' }} /> */}
 
           {/* CONTEST BLOCK */}

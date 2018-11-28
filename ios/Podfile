@@ -1,0 +1,22 @@
+# Uncomment the next line to define a global platform for your project
+platform :ios, '9.0'
+
+target 'LLSIFTomodachi' do
+  # Uncomment the next line if you're using Swift or would like to use dynamic frameworks
+  # use_frameworks!
+
+  # Pods for LLSIFTomodachi
+  pod 'Firebase/Core', '~> 5.11.0'
+  pod 'Firebase/Messaging', '~> 5.11.0'
+
+  target 'LLSIFTomodachi-tvOSTests' do
+    inherit! :search_paths
+    # Pods for testing
+  end
+
+  target 'LLSIFTomodachiTests' do
+    inherit! :search_paths
+    # Pods for testing
+  end
+
+end

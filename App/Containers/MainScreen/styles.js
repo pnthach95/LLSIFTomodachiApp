@@ -28,17 +28,20 @@ export default StyleSheet.create({
   },
   content: {
     alignItems: 'center',
+    padding: Metrics.baseMargin
   },
   text: {
     color: 'white',
     fontSize: 16,
-    padding: 6,
     textAlign: 'center'
+  },
+  textbox: {
+    paddingVertical: 4,
+    paddingHorizontal: Metrics.baseMargin,
   },
   title: {
     color: 'white',
     fontSize: 24,
-    padding: Metrics.baseMargin,
     textAlign: 'center'
   }
 })

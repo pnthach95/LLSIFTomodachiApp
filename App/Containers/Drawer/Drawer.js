@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { View, Text, ImageBackground, TouchableHighlight, Image, Switch, ScrollView } from 'react-native'
 import { SafeAreaView } from 'react-navigation'
+import Accordion from 'react-native-collapsible/Accordion'
 import { connect } from 'react-redux'
 import Icon from 'react-native-vector-icons/Ionicons'
 import VersionNumber from 'react-native-version-number'
@@ -23,6 +24,7 @@ class Drawer extends Component {
   constructor(props) {
     super(props)
     this.state = {
+      activeSections: [0],
       visible: true,
       worldwide_only: true
     }
@@ -55,6 +57,64 @@ class Drawer extends Component {
     this.props.navigation.navigate('CardDetailScreen', { item: item })
   }
 
+  _renderSectionTitle = section => {
+    return (
+      <View style={styles.content}>
+        <Text>{section.content}</Text>
+      </View>
+    );
+  };
+
+  _renderHeader = section => {
+    return (
+      <View>
+        <Text>{section}</Text>
+      </View>
+    );
+  };
+
+  _renderContent = section => {
+    if (section === 'About app')
+      return (
+        <View style={styles.body}>
+          <ScrollView alwaysBounceVertical={false}
+            contentContainerStyle={styles.textBlock}>
+            <Text>{RELEASE_NOTE}</Text>
+          </ScrollView>
+          <View style={styles.settingRow}>
+            <Text>Worldwide only</Text>
+            <Switch value={this.state.worldwide_only}
+              onValueChange={this._worldwideToggle} />
+          </View>
+        </View>
+      );
+    return (
+      <View style={[ApplicationStyles.center, styles.footer]}>
+        <View style={styles.footerBlock}>
+          <Text style={styles.versionText}>Powered by </Text>
+          <Text onPress={() => openLink(Config.SCHOOLIDO)}
+            style={[styles.versionText, { textDecorationLine: 'underline' }]}>
+            {`School Idol Tomodachi`}
+          </Text>
+        </View>
+        <View style={styles.footerBlock}>
+          <TouchableHighlight onPress={() => openLink(Config.GITHUB_PROJECT)}
+            underlayColor={'#fff0'}
+            style={ApplicationStyles.center}>
+            <View style={ApplicationStyles.center}>
+              <Icon name={'logo-github'} size={50} />
+              <Text>Project</Text>
+            </View>
+          </TouchableHighlight>
+        </View>
+      </View>
+    );
+  };
+
+  _updateSections = activeSections => {
+    this.setState({ activeSections });
+  };
+
   render() {
     return (
       <SafeAreaView>
@@ -65,37 +125,13 @@ class Drawer extends Component {
               <Image source={Images.logo} style={styles.logo} resizeMode={'contain'} />
             </View>
 
-            <View style={styles.body}>
-              <ScrollView alwaysBounceVertical={false}
-                contentContainerStyle={styles.textBlock}>
-                <Text>{RELEASE_NOTE}</Text>
-              </ScrollView>
-              <View style={styles.settingRow}>
-                <Text>Worldwide only</Text>
-                <Switch value={this.state.worldwide_only}
-                  onValueChange={this._worldwideToggle} />
-              </View>
-            </View>
-
-            <View style={[ApplicationStyles.center, styles.footer]}>
-              <View style={styles.footerBlock}>
-                <Text style={styles.versionText}>Powered by </Text>
-                <Text onPress={() => openLink(Config.SCHOOLIDO)}
-                  style={[styles.versionText, { textDecorationLine: 'underline' }]}>
-                  {`School Idol Tomodachi`}
-                </Text>
-              </View>
-              <View style={styles.footerBlock}>
-                <TouchableHighlight onPress={() => openLink(Config.GITHUB_PROJECT)}
-                  underlayColor={'#fff0'}
-                  style={ApplicationStyles.center}>
-                  <View style={ApplicationStyles.center}>
-                    <Icon name={'logo-github'} size={50} />
-                    <Text>Project</Text>
-                  </View>
-                </TouchableHighlight>
-              </View>
-            </View>
+            <Accordion
+              activeSections={[0]}
+              sections={['About app', 'Options']}
+              renderSectionTitle={this._renderSectionTitle}
+              renderHeader={this._renderHeader}
+              renderContent={this._renderContent}
+              onChange={this._updateSections} />
           </Fade>
 
           {!this.state.visible && <Fade visible={!this.state.visible}>
@@ -123,5 +159,4 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = (dispatch) => ({})
-
 export default connect(mapStateToProps, mapDispatchToProps)(Drawer)

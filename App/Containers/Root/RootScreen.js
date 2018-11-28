@@ -86,7 +86,7 @@ class RootScreen extends Component {
       // Process your message as required
       console.log('messageListener', message)
     });
-    firebase.messaging().subscribeToTopic('en_event')
+    firebase.messaging().subscribeToTopic('ww_event')
     firebase.messaging().subscribeToTopic('jp_event')
     firebase.messaging().subscribeToTopic('admin_message')
     this.props.startup()

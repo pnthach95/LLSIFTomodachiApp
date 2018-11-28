@@ -7,6 +7,7 @@ import firebase from 'react-native-firebase'
 import StatusBarBackground from '../../Components/StatusBarBackground/StatusBar'
 import CachedDataActions from '../../Stores/CachedData/Actions'
 import { ApplicationStyles } from '../../Theme'
+import { loadSettings } from '../../Utils'
 import NavigationService from '../../Services/NavigationService'
 
 import MainScreen from '../MainScreen/Main'
@@ -86,8 +87,18 @@ class RootScreen extends Component {
       // Process your message as required
       console.log('messageListener', message)
     });
-    firebase.messaging().subscribeToTopic('ww_event')
-    firebase.messaging().subscribeToTopic('jp_event')
+    loadSettings().then(res => {
+      if (res.jp_event) {
+        firebase.messaging().subscribeToTopic('jp_event')
+      } else {
+        firebase.messaging().unsubscribeFromTopic('jp_event')
+      }
+      if (res.ww_event) {
+        firebase.messaging().subscribeToTopic('ww_event')
+      } else {
+        firebase.messaging().unsubscribeFromTopic('ww_event')
+      }
+    })
     firebase.messaging().subscribeToTopic('admin_message')
     this.props.startup()
   }

@@ -93,6 +93,8 @@ export const loadSettings = async () => {
       .then(res => {
         if (res === null) {
           res = {
+            ww_event: true,
+            jp_event: true,
             worldwide_only: false
           }
         } else {

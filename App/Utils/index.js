@@ -1,14 +1,12 @@
-import { AsyncStorage, Alert, Linking } from 'react-native'
-import { Colors, Images } from '../Theme'
+import { AsyncStorage, Alert, Linking } from 'react-native';
+import { Colors, Images } from '../Theme';
 
 /**
  * Add `https:` for image link
  * 
  * @param {String} link 
  */
-export const AddHTTPS = (link) => {
-  return 'https:' + link
-}
+export const AddHTTPS = (link) => { return 'https:' + link }
 
 /**
  * Find color by attribute
@@ -98,27 +96,27 @@ export const loadSettings = async () => {
             worldwide_only: false
           }
         } else {
-          res = JSON.parse(res)
+          res = JSON.parse(res);
         }
-        resolve(res)
+        resolve(res);
       })
-      .catch(err => reject(err))
+      .catch(err => reject(err));
   })
 }
 
 export const saveSettings = (settings) => {
-  let j = JSON.stringify(settings)
-  AsyncStorage.setItem('settings', j)
+  let j = JSON.stringify(settings);
+  AsyncStorage.setItem('settings', j);
 }
 
 export const darkenColor = (color) => {
-  var Color = require('color')
-  return Color(color).darken(0.5)
+  var Color = require('color');
+  return Color(color).darken(0.5);
 }
 
 export const openLink = (link) => {
   Alert.alert('Open link', link, [
     { text: 'Cancel', onPress: () => { }, style: 'cancel' },
     { text: 'OK', onPress: () => Linking.openURL(link) }
-  ])
+  ]);
 }

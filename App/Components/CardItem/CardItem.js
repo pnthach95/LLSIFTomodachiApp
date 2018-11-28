@@ -1,9 +1,9 @@
-import React, { Component } from 'react'
-import { TouchableOpacity, View, Image } from 'react-native'
-import FastImage from 'react-native-fast-image'
-import styles from './styles'
-import { Metrics, ApplicationStyles, Images } from '../../Theme'
-import { AddHTTPS, findColorByAttribute } from '../../Utils'
+import React, { Component } from 'react';
+import { TouchableOpacity, View, Image } from 'react-native';
+import FastImage from 'react-native-fast-image';
+import styles from './styles';
+import { Metrics, ApplicationStyles, Images } from '../../Theme';
+import { AddHTTPS, findColorByAttribute } from '../../Utils';
 
 /**
  * Card item for Card List Screen
@@ -118,6 +118,6 @@ export default class CardItem extends Component {
               ]} />}
         </View>
       </TouchableOpacity>
-    )
+    );
   }
 }

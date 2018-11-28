@@ -1,10 +1,10 @@
-import React from 'react'
-import { Text, View } from 'react-native'
-import RNPickerSelect from 'react-native-picker-select'
-import { connect } from 'react-redux'
-import PropTypes from 'prop-types'
-import { getSubunits } from '../../Stores/CachedData/Selectors'
-import styles from '../../Theme/RowStyles'
+import React from 'react';
+import { Text, View } from 'react-native';
+import RNPickerSelect from 'react-native-picker-select';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import { getSubunits } from '../../Stores/CachedData/Selectors';
+import styles from '../../Theme/RowStyles';
 
 /**
  * Sub Unit Row.
@@ -33,15 +33,15 @@ class SubUnitRow extends React.Component {
             value={this.props.idol_sub_unit} />
         </View>
       </View>
-    )
+    );
   }
 }
 
 SubUnitRow.propTypes = {
   idol_sub_unit: PropTypes.string.isRequired,
   selectSubUnit: PropTypes.func.isRequired
-}
+};
 
-const mapStateToProps = (state) => ({ subUnits: getSubunits(state) })
-const mapDispatchToProps = (dispatch) => ({})
-export default connect(mapStateToProps, mapDispatchToProps)(SubUnitRow)
+const mapStateToProps = (state) => ({ subUnits: getSubunits(state) });
+const mapDispatchToProps = (dispatch) => ({});
+export default connect(mapStateToProps, mapDispatchToProps)(SubUnitRow);

@@ -1,8 +1,8 @@
-import React from 'react'
-import { Text, View, TouchableOpacity, Image } from 'react-native'
-import PropTypes from 'prop-types'
-import { Images } from '../../Theme'
-import styles from '../../Theme/RowStyles'
+import React from 'react';
+import { Text, View, TouchableOpacity, Image } from 'react-native';
+import PropTypes from 'prop-types';
+import { Images } from '../../Theme';
+import styles from '../../Theme/RowStyles';
 
 /**
  * Rarity Row (None, N, R, SR, SSR, UR)
@@ -68,13 +68,13 @@ class RarityRow extends React.Component {
           </TouchableOpacity>
         </View>
       </View>
-    )
+    );
   }
 }
 
 RarityRow.propTypes = {
   rarity: PropTypes.string.isRequired,
   selectRarity: PropTypes.func.isRequired
-}
+};
 
-export default RarityRow
+export default RarityRow;

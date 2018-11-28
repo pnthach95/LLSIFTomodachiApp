@@ -1,7 +1,7 @@
-import React from 'react'
-import { Text, View, TouchableOpacity } from 'react-native'
-import PropTypes from 'prop-types'
-import styles from '../../Theme/RowStyles'
+import React from 'react';
+import { Text, View, TouchableOpacity } from 'react-native';
+import PropTypes from 'prop-types';
+import styles from '../../Theme/RowStyles';
 
 /**
  * Event Card Row (None, True, False)
@@ -45,13 +45,13 @@ class EventRow extends React.Component {
           </TouchableOpacity>
         </View>
       </View>
-    )
+    );
   }
 }
 
 EventRow.propTypes = {
   is_event: PropTypes.string.isRequired,
   selectEvent: PropTypes.func.isRequired
-}
+};
 
-export default EventRow
+export default EventRow;

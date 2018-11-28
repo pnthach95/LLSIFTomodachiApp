@@ -1,9 +1,9 @@
-import React, { Component } from 'react'
-import { TouchableOpacity, View, Text } from 'react-native'
-import FastImage from 'react-native-fast-image'
-import styles from './styles'
-import { Metrics } from '../../Theme'
-import { AddHTTPS } from '../../Utils'
+import React, { Component } from 'react';
+import { TouchableOpacity, View, Text } from 'react-native';
+import FastImage from 'react-native-fast-image';
+import styles from './styles';
+import { Metrics } from '../../Theme';
+import { AddHTTPS } from '../../Utils';
 
 /**
  * Event item for Event List Screen
@@ -31,10 +31,10 @@ export default class EventItem extends Component {
 
   getImage = (this.props.item.english_image === null)
     ? AddHTTPS(this.props.item.image)
-    : AddHTTPS(this.props.item.english_image)
+    : AddHTTPS(this.props.item.english_image);
 
   eventName = ((this.props.item.english_name !== null && this.props.item.english_name.length !== 0) ?
-    `${this.props.item.english_name}\n` : '') + this.props.item.japanese_name
+    `${this.props.item.english_name}\n` : '') + this.props.item.japanese_name;
 
   render() {
     return (
@@ -59,6 +59,6 @@ export default class EventItem extends Component {
           <Text style={styles.text}>{this.eventName}</Text>
         </View>
       </TouchableOpacity>
-    )
+    );
   }
 }

@@ -1,8 +1,8 @@
-import React from 'react'
-import { Text, View, TouchableOpacity, Image } from 'react-native'
-import PropTypes from 'prop-types'
-import { Images } from '../../Theme'
-import styles from '../../Theme/RowStyles'
+import React from 'react';
+import { Text, View, TouchableOpacity, Image } from 'react-native';
+import PropTypes from 'prop-types';
+import { Images } from '../../Theme';
+import styles from '../../Theme/RowStyles';
 
 /**
  * Attribute Row (None, Smile, Pure, Cool, All)
@@ -61,13 +61,13 @@ class AttributeRow extends React.Component {
           </TouchableOpacity>
         </View>
       </View>
-    )
+    );
   }
 }
 
 AttributeRow.propTypes = {
   attribute: PropTypes.string.isRequired,
   selectAttribute: PropTypes.func.isRequired
-}
+};
 
-export default AttributeRow
+export default AttributeRow;

@@ -1,7 +1,7 @@
-import React from 'react'
-import { Text, View, TouchableOpacity } from 'react-native'
-import PropTypes from 'prop-types'
-import styles from '../../Theme/RowStyles'
+import React from 'react';
+import { Text, View, TouchableOpacity } from 'react-native';
+import PropTypes from 'prop-types';
+import styles from '../../Theme/RowStyles';
 
 /**
  * Promo Card Row (None, True, False)
@@ -52,6 +52,6 @@ class PromoCardRow extends React.Component {
 PromoCardRow.propTypes = {
   is_promo: PropTypes.string.isRequired,
   selectPromo: PropTypes.func.isRequired
-}
+};
 
-export default PromoCardRow
+export default PromoCardRow;

@@ -1,6 +1,6 @@
-import React from 'react'
-import { View, Text } from 'react-native'
-import styles from './styles'
+import React from 'react';
+import { View, Text } from 'react-native';
+import styles from './styles';
 
 /**
  * Emulate stat in Card Detail Screen
@@ -24,6 +24,6 @@ export default class ProgressBar extends React.Component {
 					{this.props.progress < 20 && <Text style={styles.text}>{this.props.number}</Text>}
 				</View>
 			</View>
-		)
+		);
 	}
 }

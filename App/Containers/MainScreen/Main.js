@@ -1,18 +1,18 @@
-import React from 'react'
-import { Text, View, Image, ScrollView, TouchableOpacity, Alert } from 'react-native'
-import { connect } from 'react-redux'
-import FastImage from 'react-native-fast-image'
-import Icon from 'react-native-vector-icons/SimpleLineIcons'
-import moment from 'moment'
+import React from 'react';
+import { Text, View, Image, ScrollView, TouchableOpacity, Alert } from 'react-native';
+import { connect } from 'react-redux';
+import FastImage from 'react-native-fast-image';
+import Icon from 'react-native-vector-icons/SimpleLineIcons';
+import moment from 'moment';
 
-import Seperator from '../../Components/Seperator/Seperator'
-import SquareButton from '../../Components/SquareButton/SquareButton'
-import TimerCountdown from '../../Components/TimerCountdown/Timer'
-import SplashScreen from '../SplashScreen/SplashScreen'
-import { AddHTTPS } from '../../Utils'
-import { Config, EventStatus } from '../../Config'
-import { Metrics, Colors, Images, ApplicationStyles } from '../../Theme'
-import styles from './styles'
+import Seperator from '../../Components/Seperator/Seperator';
+import SquareButton from '../../Components/SquareButton/SquareButton';
+import TimerCountdown from '../../Components/TimerCountdown/Timer';
+import SplashScreen from '../SplashScreen/SplashScreen';
+import { AddHTTPS } from '../../Utils';
+import { Config, EventStatus } from '../../Config';
+import { Metrics, Colors, Images, ApplicationStyles } from '../../Theme';
+import styles from './styles';
 
 /**
  * Main Screen
@@ -40,9 +40,8 @@ class MainScreen extends React.Component {
   }
 
   static navigationOptions = {
-    tabBarIcon: ({ focused }) => (
-      <Icon name='home' size={25} color={focused ? Colors.pink : Colors.inactive} />
-    ),
+    tabBarIcon: ({ focused }) => <Icon name='home' size={25}
+      color={focused ? Colors.pink : Colors.inactive} />,
     tabBarLabel: 'Home',
     tabBarOptions: {
       activeTintColor: Colors.pink,
@@ -66,8 +65,8 @@ class MainScreen extends React.Component {
   }
 
   onLoadFastImage(e) {
-    const { width, height } = e.nativeEvent
-    this.setState({ imgWidth: width, imgHeight: height })
+    const { width, height } = e.nativeEvent;
+    this.setState({ imgWidth: width, imgHeight: height });
   }
 
   /**
@@ -77,31 +76,31 @@ class MainScreen extends React.Component {
    * @memberof MainScreen
    */
   navigateToEventDetail(event) {
-    this.props.navigation.navigate('EventDetailScreen', { event: event.toObject() })
+    this.props.navigation.navigate('EventDetailScreen', { event: event.toObject() });
   }
 
-  _openDrawer = () => this.props.navigation.openDrawer()
+  _openDrawer = () => this.props.navigation.openDrawer();
 
   render() {
-    if (this.props.cachedDataIsLoading) return <SplashScreen bgColor={Colors.pink} />
+    if (this.props.cachedDataIsLoading) return <SplashScreen bgColor={Colors.pink} />;
     if (this.props.cachedDataErrorMessage) {
-      Alert.alert('Error', this.props.cachedDataErrorMessage)
-      return <View style={{ backgroundColor: Colors.pink }} />
+      Alert.alert('Error', this.props.cachedDataErrorMessage);
+      return <View style={{ backgroundColor: Colors.pink }} />;
     }
-    let data = this.props.cachedData
-    let currentContests = data.get('current_contests')
+    let data = this.props.cachedData;
+    let currentContests = data.get('current_contests');
     /** English event */
-    let ENEvent = data.get('eventEN')
+    let ENEvent = data.get('eventEN');
     /** Start time of English event */
-    let ENEventStart = moment(ENEvent.get('english_beginning'))
+    let ENEventStart = moment(ENEvent.get('english_beginning'));
     /** End time of English event */
-    let ENEventEnd = moment(ENEvent.get('english_end'))
+    let ENEventEnd = moment(ENEvent.get('english_end'));
     /** Japanese event */
-    let JPEvent = data.get('eventJP')
+    let JPEvent = data.get('eventJP');
     /** Start time of Japanese event */
-    let JPEventStart = moment(JPEvent.get('beginning'), Config.DATETIME_FORMAT_INPUT)
+    let JPEventStart = moment(JPEvent.get('beginning'), Config.DATETIME_FORMAT_INPUT);
     /** End time of Japanese event */
-    let JPEventEnd = moment(JPEvent.get('end'), Config.DATETIME_FORMAT_INPUT)
+    let JPEventEnd = moment(JPEvent.get('end'), Config.DATETIME_FORMAT_INPUT);
 
     return (
       <View style={styles.container}>
@@ -206,7 +205,7 @@ const mapStateToProps = (state) => ({
   cachedData: state.cachedData.get('cachedData'),
   cachedDataErrorMessage: state.cachedData.get('cachedDataErrorMessage'),
   cachedDataIsLoading: state.cachedData.get('cachedDataIsLoading')
-})
+});
 
-const mapDispatchToProps = (dispatch) => ({})
-export default connect(mapStateToProps, mapDispatchToProps)(MainScreen)
+const mapDispatchToProps = (dispatch) => ({});
+export default connect(mapStateToProps, mapDispatchToProps)(MainScreen);

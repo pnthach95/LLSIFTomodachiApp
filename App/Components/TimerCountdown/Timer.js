@@ -8,7 +8,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
 
 Object.defineProperty(exports, "__esModule", { value: true });
 const React = __importStar(require("react"));
-import { Text } from "react-native"
+import { Text } from "react-native";
 
 export default class TimerCountdown extends React.Component {
   constructor() {
@@ -52,20 +52,20 @@ export default class TimerCountdown extends React.Component {
     };
     this.getFormattedTime = (milliseconds) => {
       if (this.props.formatSecondsRemaining) {
-        return this.props.formatSecondsRemaining(milliseconds)
+        return this.props.formatSecondsRemaining(milliseconds);
       }
-      const remainingSec = Math.round(milliseconds / 1000)
-      const seconds = parseInt((remainingSec % 60).toString(), 10)
-      const minutes = parseInt(((remainingSec / 60) % 60).toString(), 10)
-      const hours = parseInt(((remainingSec / 3600) % 24).toString(), 10)
-      const days = parseInt((remainingSec / (3600 * 24)).toString(), 10)
-      const s = seconds < 10 ? '0' + seconds : seconds
-      let m = minutes < 10 ? '0' + minutes : minutes
-      let h = hours < 10 ? '0' + hours : hours
-      const d = days == 0 ? '' : days + (days == 1 ? ' day ' : ' days ')
-      h = h === '00' ? '' : h + (h == 1 ? ' hour ' : ' hours ')
-      m = m === '00' ? '' : m + (m == 1 ? ' minute ' : ' minutes ')
-      return d + h + m + s + ' seconds'
+      const remainingSec = Math.round(milliseconds / 1000);
+      const seconds = parseInt((remainingSec % 60).toString(), 10);
+      const minutes = parseInt(((remainingSec / 60) % 60).toString(), 10);
+      const hours = parseInt(((remainingSec / 3600) % 24).toString(), 10);
+      const days = parseInt((remainingSec / (3600 * 24)).toString(), 10);
+      const s = seconds < 10 ? '0' + seconds : seconds;
+      let m = minutes < 10 ? '0' + minutes : minutes;
+      let h = hours < 10 ? '0' + hours : hours;
+      const d = days == 0 ? '' : days + (days == 1 ? ' day ' : ' days ');
+      h = h === '00' ? '' : h + (h == 1 ? ' hour ' : ' hours ');
+      m = m === '00' ? '' : m + (m == 1 ? ' minute ' : ' minutes ');
+      return d + h + m + s + ' seconds';
     };
   }
 
@@ -102,7 +102,8 @@ export default class TimerCountdown extends React.Component {
     return (
       <Text allowFontScaling={allowFontScaling} style={style}>
         {this.getFormattedTime(secondsRemaining)}
-      </Text>);
+      </Text>
+    );
   }
 }
 
@@ -111,4 +112,4 @@ TimerCountdown.defaultProps = {
   formatSecondsRemaining: null,
   onTick: null,
   onTimeElapsed: null
-}
+};

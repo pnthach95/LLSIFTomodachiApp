@@ -1,18 +1,18 @@
-import React, { Component } from 'react'
-import { View, Text, ImageBackground, TouchableHighlight, Image, Switch, ScrollView } from 'react-native'
-import { SafeAreaView } from 'react-navigation'
-import { connect } from 'react-redux'
-import Accordion from 'react-native-collapsible/Accordion'
-import firebase from 'react-native-firebase'
-import Icon from 'react-native-vector-icons/Ionicons'
-import VersionNumber from 'react-native-version-number'
+import React, { Component } from 'react';
+import { View, Text, ImageBackground, TouchableHighlight, Image, Switch, ScrollView } from 'react-native';
+import { SafeAreaView } from 'react-navigation';
+import { connect } from 'react-redux';
+import Accordion from 'react-native-collapsible/Accordion';
+import firebase from 'react-native-firebase';
+import Icon from 'react-native-vector-icons/Ionicons';
+import VersionNumber from 'react-native-version-number';
 
-import Fade from '../../Components/Fade/Fade'
-import styles from './styles'
-import { Images, ApplicationStyles } from '../../Theme'
-import { Config, RELEASE_NOTE } from '../../Config'
-import { AddHTTPS, loadSettings, saveSettings, openLink } from '../../Utils'
-import { getRandomCard, getBGImage } from '../../Stores/CachedData/Selectors'
+import Fade from '../../Components/Fade/Fade';
+import styles from './styles';
+import { Images, ApplicationStyles } from '../../Theme';
+import { Config, RELEASE_NOTE } from '../../Config';
+import { AddHTTPS, loadSettings, saveSettings, openLink } from '../../Utils';
+import { getRandomCard, getBGImage } from '../../Stores/CachedData/Selectors';
 
 /**
  * Left Drawer show some information
@@ -40,7 +40,7 @@ class Drawer extends Component {
         jp_event: res.jp_event,
         worldwide_only: res.worldwide_only
       })
-    })
+    });
   }
 
   _visibleToggle = () => this.setState({ visible: !this.state.visible })
@@ -51,8 +51,8 @@ class Drawer extends Component {
       jp_event: this.state.jp_event,
       worldwide_only: !this.state.worldwide_only
     }
-    this.setState({ worldwide_only: !this.state.worldwide_only })
-    saveSettings(settings)
+    this.setState({ worldwide_only: !this.state.worldwide_only });
+    saveSettings(settings);
   }
 
   _wwEventToggle = () => {
@@ -62,12 +62,12 @@ class Drawer extends Component {
       worldwide_only: this.state.worldwide_only
     }
     if (!this.state.ww_event) {
-      firebase.messaging().subscribeToTopic('ww_event')
+      firebase.messaging().subscribeToTopic('ww_event');
     } else {
-      firebase.messaging().unsubscribeFromTopic('ww_event')
+      firebase.messaging().unsubscribeFromTopic('ww_event');
     }
-    this.setState({ ww_event: !this.state.ww_event })
-    saveSettings(settings)
+    this.setState({ ww_event: !this.state.ww_event });
+    saveSettings(settings);
   }
 
   _jpEventToggle = () => {
@@ -77,12 +77,12 @@ class Drawer extends Component {
       worldwide_only: this.state.worldwide_only
     }
     if (!this.state.jp_event) {
-      firebase.messaging().subscribeToTopic('jp_event')
+      firebase.messaging().subscribeToTopic('jp_event');
     } else {
-      firebase.messaging().unsubscribeFromTopic('jp_event')
+      firebase.messaging().unsubscribeFromTopic('jp_event');
     }
-    this.setState({ jp_event: !this.state.jp_event })
-    saveSettings(settings)
+    this.setState({ jp_event: !this.state.jp_event });
+    saveSettings(settings);
   }
 
   /**
@@ -92,8 +92,8 @@ class Drawer extends Component {
    * @memberof Drawer
    */
   navigateToCardDetail = (item) => () => {
-    this.setState({ visible: true })
-    this.props.navigation.navigate('CardDetailScreen', { item: item })
+    this.setState({ visible: true });
+    this.props.navigation.navigate('CardDetailScreen', { item: item });
   }
 
   _renderSectionTitle = section => {
@@ -213,7 +213,7 @@ class Drawer extends Component {
 const mapStateToProps = (state) => ({
   randomCard: getRandomCard(state),
   bgImage: getBGImage(state)
-})
+});
 
-const mapDispatchToProps = (dispatch) => ({})
-export default connect(mapStateToProps, mapDispatchToProps)(Drawer)
+const mapDispatchToProps = (dispatch) => ({});
+export default connect(mapStateToProps, mapDispatchToProps)(Drawer);

@@ -1,5 +1,4 @@
 import { StyleSheet } from 'react-native'
-import { Metrics } from '../../Theme'
 
 export default StyleSheet.create({
   fullscreen: {
@@ -30,15 +29,19 @@ export default StyleSheet.create({
   },
   settingRow: {
     flexDirection: 'row',
-    backgroundColor: '#fffa',
+    backgroundColor: '#fff6',
     padding: 10,
     marginBottom: 5,
+    marginLeft: 10,
     alignItems: 'center',
     justifyContent: 'space-between'
   },
   group: {
     padding: 10,
-    backgroundColor: '#fff7'
+    marginTop: 5,
+    borderBottomWidth: 1,
+    borderBottomColor: '#0005',
+    backgroundColor: '#fff9'
   },
   footer: {
     alignSelf: 'flex-end',

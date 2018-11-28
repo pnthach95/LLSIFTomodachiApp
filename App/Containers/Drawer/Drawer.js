@@ -24,7 +24,7 @@ class Drawer extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      collapsed: false,
+      isCollapsed: true,
       visible: true,
       ww_event: true,
       jp_event: true,
@@ -69,7 +69,7 @@ class Drawer extends Component {
     saveSettings(settings);
   }
 
-  _groupToggle = () => this.setState({ isCollapsed: !this.state.isCollapsed })
+  _groupToggle = () => this.setState({ isCollapsed: !this.state.isCollapsed });
 
   _jpEventToggle = () => {
     let settings = {
@@ -114,28 +114,30 @@ class Drawer extends Component {
               <View style={{ flex: 1 }}>
                 <TouchableOpacity onPress={this._groupToggle}
                   style={styles.group}>
-                  <Text>Options</Text>
+                  <Text>OPTIONS</Text>
                 </TouchableOpacity>
                 {this.state.isCollapsed && <View style={styles.body}>
-                  <View style={styles.settingRow}>
-                    <Text>Worldwide only</Text>
-                    <Switch value={this.state.worldwide_only}
-                      onValueChange={this._worldwideToggle} />
-                  </View>
-                  <View style={styles.settingRow}>
-                    <Text>Notify Worldwide event</Text>
-                    <Switch value={this.state.ww_event}
-                      onValueChange={this._wwEventToggle} />
-                  </View>
-                  <View style={styles.settingRow}>
-                    <Text>Notify Japanese event</Text>
-                    <Switch value={this.state.jp_event}
-                      onValueChange={this._jpEventToggle} />
-                  </View>
+                  <ScrollView alwaysBounceVertical={false}>
+                    <View style={styles.settingRow}>
+                      <Text>Worldwide only</Text>
+                      <Switch value={this.state.worldwide_only}
+                        onValueChange={this._worldwideToggle} />
+                    </View>
+                    <View style={styles.settingRow}>
+                      <Text>Notify Worldwide event</Text>
+                      <Switch value={this.state.ww_event}
+                        onValueChange={this._wwEventToggle} />
+                    </View>
+                    <View style={styles.settingRow}>
+                      <Text>Notify Japanese event</Text>
+                      <Switch value={this.state.jp_event}
+                        onValueChange={this._jpEventToggle} />
+                    </View>
+                  </ScrollView>
                 </View>}
                 <TouchableOpacity onPress={this._groupToggle}
                   style={styles.group}>
-                  <Text>About</Text>
+                  <Text>ABOUT ME</Text>
                 </TouchableOpacity>
                 {!this.state.isCollapsed && <View style={{ flex: 1 }}>
                   <ScrollView alwaysBounceVertical={false}
@@ -165,13 +167,15 @@ class Drawer extends Component {
               </View>
             </Fade>
 
-            {!this.state.visible && <Fade visible={!this.state.visible}>
-              <TouchableHighlight onPress={this._navigateToCardDetail(this.props.randomCard)}
-                underlayColor={'#fff'}
-                style={[ApplicationStyles.center, styles.viewMore]}>
-                <Text style={styles.versionText}>View card info</Text>
-              </TouchableHighlight>
-            </Fade>}
+            {!this.state.visible &&
+              <Fade visible={!this.state.visible}
+                style={[styles.container, { backgroundColor: '#0000' }]}>
+                <TouchableHighlight onPress={this._navigateToCardDetail(this.props.randomCard)}
+                  underlayColor={'#fffa'}
+                  style={[ApplicationStyles.center, styles.viewMore]}>
+                  <Text style={styles.versionText}>View card info</Text>
+                </TouchableHighlight>
+              </Fade>}
 
             <TouchableHighlight onPress={this._visibleToggle}
               underlayColor={'#fff'}

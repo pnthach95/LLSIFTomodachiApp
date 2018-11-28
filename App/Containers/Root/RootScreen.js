@@ -56,7 +56,7 @@ const AppNav = createDrawerNavigator({ Stack: Stack }, { contentComponent: Drawe
 class RootScreen extends Component {
   componentDidMount() {
     if (__DEV__) {
-      console.clear();
+      // console.clear();
       console.log('App is running in DEV mode');
     }
     firebase.messaging().hasPermission()

@@ -7,7 +7,8 @@ export default StyleSheet.create({
     height: '100%'
   },
   container: {
-    height: Metrics.screenHeight - 50,
+    flex: 0,
+    flexGrow: 1,
     backgroundColor: '#ddda'
   },
   header: {
@@ -20,24 +21,27 @@ export default StyleSheet.create({
     width: '75%'
   },
   body: {
-    height: Metrics.screenHeight - 290,
+    flex: 1,
     paddingVertical: 6,
-    justifyContent: 'space-between',
     alignItems: 'stretch'
   },
   textBlock: {
-    padding: 10
+    paddingHorizontal: 10
   },
   settingRow: {
     flexDirection: 'row',
     backgroundColor: '#fffa',
     padding: 10,
+    marginBottom: 5,
     alignItems: 'center',
     justifyContent: 'space-between'
   },
+  group: {
+    padding: 10,
+    backgroundColor: '#fff7'
+  },
   footer: {
-    position: 'absolute',
-    bottom: 10,
+    alignSelf: 'flex-end',
     backgroundColor: '#eeec',
     width: '100%',
     height: 150
@@ -47,8 +51,7 @@ export default StyleSheet.create({
     marginVertical: 10
   },
   versionContainer: {
-    position: 'absolute',
-    bottom: 0,
+    alignSelf: 'flex-end',
     backgroundColor: 'white',
     width: '100%',
     height: 50
@@ -57,7 +60,7 @@ export default StyleSheet.create({
     textAlign: 'center'
   },
   viewMore: {
-    backgroundColor: 'white',
+    backgroundColor: '#fff9',
     width: '100%',
     height: 50
   }

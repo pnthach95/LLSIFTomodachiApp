@@ -42,8 +42,9 @@ export default class EventItem extends Component {
     let isAnnounced = japan_status === EventStatus.ANNOUNCED || english_status === EventStatus.ANNOUNCED;
     let isOngoing = japan_status === EventStatus.ONGOING || english_status === EventStatus.ONGOING;
     let label = (isAnnounced) ? EventStatus.ANNOUNCED : ((isOngoing) ? EventStatus.ONGOING : '');
+    let color = (isAnnounced) ? '#ee0a' : ((isOngoing) ? '#0a0a' : '#fff5');
     return (
-      <TouchableOpacity onPress={this.props.onPress} style={styles.container}>
+      <TouchableOpacity onPress={this.props.onPress} style={[styles.container, { backgroundColor: color }]}>
         <FastImage
           source={{
             uri: this.getImage,
@@ -59,11 +60,10 @@ export default class EventItem extends Component {
             width: Metrics.widthBanner,
             height: Metrics.widthBanner * this.state.imgHeight / this.state.imgWidth
           }} />
-        <View style={[styles.onTop, { backgroundColor: label === EventStatus.ANNOUNCED ? 'yellow' : 'green' }]}>
-          <Text>{label.toUpperCase()}</Text>
-        </View>
         <View style={styles.textBox}>
-          <Text style={styles.text}>{this.eventName}</Text>
+          <Text style={styles.text}>
+            {(label.length > 0 ? ('[' + label.toUpperCase() + ']\n') : '') + this.eventName}
+          </Text>
         </View>
       </TouchableOpacity>
     );

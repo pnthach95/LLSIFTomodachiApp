@@ -4,6 +4,7 @@ import FastImage from 'react-native-fast-image';
 import styles from './styles';
 import { Metrics } from '../../Theme';
 import { AddHTTPS } from '../../Utils';
+import { EventStatus } from '../../Config';
 
 /**
  * Event item for Event List Screen
@@ -37,6 +38,10 @@ export default class EventItem extends Component {
     `${this.props.item.english_name}\n` : '') + this.props.item.japanese_name;
 
   render() {
+    const { english_status, japan_status } = this.props.item;
+    let isAnnounced = japan_status === EventStatus.ANNOUNCED || english_status !== EventStatus.ANNOUNCED;
+    let isOngoing = japan_status === EventStatus.ONGOING || english_status !== EventStatus.ONGOING;
+    let label = (isAnnounced) ? EventStatus.ANNOUNCED : ((isOngoing) ? EventStatus.ONGOING : '');
     return (
       <TouchableOpacity onPress={this.props.onPress} style={styles.container}>
         <FastImage
@@ -54,8 +59,10 @@ export default class EventItem extends Component {
             width: Metrics.widthBanner,
             height: Metrics.widthBanner * this.state.imgHeight / this.state.imgWidth
           }} />
-
-        <View style={styles.info}>
+        <View style={[styles.onTop, { backgroundColor: label === EventStatus.ANNOUNCED ? 'yellow' : 'green' }]}>
+          <Text>{label.toUpperCase()}</Text>
+        </View>
+        <View style={styles.textBox}>
           <Text style={styles.text}>{this.eventName}</Text>
         </View>
       </TouchableOpacity>

@@ -11,8 +11,15 @@ export default StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center'
   },
-  info: {
-    paddingVertical: Metrics.smallMargin,
+  onTop: {
+    position: 'absolute',
+    left: Metrics.smallMargin,
+    top: Metrics.smallMargin,
+    zIndex: 10,
+    padding: 5
+  },
+  textBox: {
+    paddingVertical: Metrics.smallMargin
   },
   text: {
     color: 'white',

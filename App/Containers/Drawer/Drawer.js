@@ -124,12 +124,12 @@ class Drawer extends Component {
                         onValueChange={this._worldwideToggle} />
                     </View>
                     <View style={styles.settingRow}>
-                      <Text>Notify Worldwide event</Text>
+                      <Text>Notify WW event</Text>
                       <Switch value={this.state.ww_event}
                         onValueChange={this._wwEventToggle} />
                     </View>
                     <View style={styles.settingRow}>
-                      <Text>Notify Japanese event</Text>
+                      <Text>Notify JP event</Text>
                       <Switch value={this.state.jp_event}
                         onValueChange={this._jpEventToggle} />
                     </View>

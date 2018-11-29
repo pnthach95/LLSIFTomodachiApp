@@ -108,6 +108,9 @@ class RootScreen extends Component {
           // Get information about the notification that was opened
           const notification = notificationOpen.notification;
           console.log('firebase.notifications().getInitialNotification()', action, notification);
+          if (notification.data.event !== undefined) {
+            NavigationService.navigate('EventDetailScreen', { eventName: notification.data.event });
+          }
         }
       });
 

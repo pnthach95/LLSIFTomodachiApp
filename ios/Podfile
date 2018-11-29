@@ -12,6 +12,8 @@ target 'LLSIFTomodachi' do
   target 'LLSIFTomodachi-tvOSTests' do
     inherit! :search_paths
     # Pods for testing
+    pod 'react-native-splash-screen', :path => '../node_modules/react-native-splash-screen'
+
   end
 
   target 'LLSIFTomodachiTests' do

@@ -22,13 +22,16 @@ import styles from '../../Theme/RowStyles';
 class SchoolRow extends React.Component {
   render() {
     return (
-      <View style={{ flexDirection: 'row' }}>
+      <View style={styles.pickerRow}>
         <View style={styles.leftView}>
           <Text>School</Text>
         </View>
         <View style={{ flex: 2 }}>
           <RNPickerSelect onValueChange={this.props.selectSchool}
             items={this.props.schools}
+            hideIcon={true}
+            style={{ inputIOS: styles.picker, inputAndroid: styles.picker }}
+            placeholderTextColor={'black'}
             placeholder={{ label: 'All', value: 'All' }}
             value={this.props.idol_school} />
         </View>

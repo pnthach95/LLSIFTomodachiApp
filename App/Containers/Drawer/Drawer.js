@@ -112,12 +112,14 @@ class Drawer extends Component {
                 <Image source={Images.logo} style={styles.logo} resizeMode={'contain'} />
               </View>
               <View style={{ flex: 1 }}>
-                <TouchableOpacity onPress={this._groupToggle}
-                  style={styles.group}>
-                  <Text>OPTIONS</Text>
+                <TouchableOpacity onPress={this._groupToggle}>
+                  <View style={styles.group}>
+                    <Text>OPTIONS</Text>
+                    <Icon name={this.state.isCollapsed ? 'ios-arrow-up' : 'ios-arrow-down'} />
+                  </View>
                 </TouchableOpacity>
                 {this.state.isCollapsed && <View style={styles.body}>
-                  <ScrollView alwaysBounceVertical={false}>
+                  <ScrollView bounces={false}>
                     <View style={styles.settingRow}>
                       <Text>Worldwide only</Text>
                       <Switch value={this.state.worldwide_only}
@@ -135,12 +137,14 @@ class Drawer extends Component {
                     </View>
                   </ScrollView>
                 </View>}
-                <TouchableOpacity onPress={this._groupToggle}
-                  style={styles.group}>
-                  <Text>ABOUT ME</Text>
+                <TouchableOpacity onPress={this._groupToggle}>
+                  <View style={styles.group}>
+                    <Text>ABOUT ME</Text>
+                    <Icon name={!this.state.isCollapsed ? 'ios-arrow-up' : 'ios-arrow-down'} />
+                  </View>
                 </TouchableOpacity>
                 {!this.state.isCollapsed && <View style={{ flex: 1 }}>
-                  <ScrollView alwaysBounceVertical={false}
+                  <ScrollView bounces={false}
                     style={styles.textBlock}>
                     <Text>{RELEASE_NOTE}</Text>
                   </ScrollView>

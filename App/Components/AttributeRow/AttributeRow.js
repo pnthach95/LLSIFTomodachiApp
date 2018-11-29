@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, TouchableOpacity, Image } from 'react-native';
+import { Text, View, TouchableOpacity, Image, ScrollView } from 'react-native';
 import PropTypes from 'prop-types';
 import { Images } from '../../Theme';
 import styles from '../../Theme/RowStyles';
@@ -23,6 +23,8 @@ class AttributeRow extends React.Component {
           <Text>Attribute</Text>
         </View>
         <View style={styles.rightView}>
+        <ScrollView horizontal
+        showsHorizontalScrollIndicator={false}>
           <TouchableOpacity onPress={this.props.selectAttribute('')}
             style={[
               styles.button1,
@@ -59,6 +61,7 @@ class AttributeRow extends React.Component {
             ]}>
             <Image source={Images.attribute[3]} style={styles.buttonImage} />
           </TouchableOpacity>
+          </ScrollView>
         </View>
       </View>
     );

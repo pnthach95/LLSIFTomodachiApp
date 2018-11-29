@@ -17,6 +17,8 @@ export default StyleSheet.create({
     fontSize: 16
   },
   button: {
+    alignItems: 'center',
+    justifyContent: 'center',
     paddingHorizontal: 7,
     paddingVertical: 3,
     marginVertical: 3,
@@ -65,5 +67,12 @@ export default StyleSheet.create({
   resetText: {
     color: 'white',
     textAlign: 'center'
+  },
+  picker: {
+    borderBottomWidth: 1
+  },
+  pickerRow: {
+    flexDirection: 'row',
+    marginVertical: 7
   }
 })

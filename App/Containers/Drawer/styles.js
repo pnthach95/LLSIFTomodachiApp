@@ -37,6 +37,8 @@ export default StyleSheet.create({
     justifyContent: 'space-between'
   },
   group: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     padding: 10,
     marginTop: 5,
     borderBottomWidth: 1,

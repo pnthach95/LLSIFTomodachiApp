@@ -367,7 +367,7 @@ class CardsScreen extends React.PureComponent {
         {/* FILTER */}
         {this.state.isFilter &&
           <View style={styles.filterContainer}>
-            <ScrollView>
+          <ScrollView contentContainerStyle={{ padding: 10 }}>
               <IdolNameRow name={this.state.name} selectIdol={this._selectIdol} />
               <RarityRow rarity={this.state.rarity} selectRarity={this._selectRarity} />
               <AttributeRow attribute={this.state.attribute} selectAttribute={this._selectAttribute} />

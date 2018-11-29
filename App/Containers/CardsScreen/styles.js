@@ -14,8 +14,7 @@ export default StyleSheet.create({
   },
   filterContainer: {
     height: '50%',
-    backgroundColor: 'white',
-    padding: 10
+    backgroundColor: 'white'
   },
   resetButton: {
     backgroundColor: 'red',

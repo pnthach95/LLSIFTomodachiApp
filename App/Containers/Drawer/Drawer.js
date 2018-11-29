@@ -121,7 +121,7 @@ class Drawer extends Component {
                 {this.state.isCollapsed && <View style={styles.body}>
                   <ScrollView bounces={false}>
                     <View style={styles.settingRow}>
-                      <Text>Worldwide only</Text>
+                      <Text>Search Worldwide only</Text>
                       <Switch value={this.state.worldwide_only}
                         onValueChange={this._worldwideToggle} />
                     </View>

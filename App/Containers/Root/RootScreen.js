@@ -74,19 +74,43 @@ class RootScreen extends Component {
             });
         }
       });
+
     this.notificationDisplayedListener = firebase.notifications().onNotificationDisplayed((notification) => {
       // Process your notification as required
       // ANDROID: Remote notifications do not contain the channel ID. You will have to specify this manually if you'd like to re-display the notification.
       console.log('notificationDisplayedListener', notification);
     });
+
     this.notificationListener = firebase.notifications().onNotification((notification) => {
       // Process your notification as required
       console.log('notificationListener', notification);
     });
+
     this.messageListener = firebase.messaging().onMessage((message) => {
       // Process your message as required
       console.log('messageListener', message);
     });
+
+    this.notificationOpenedListener = firebase.notifications().onNotificationOpened((notificationOpen) => {
+      // Get the action triggered by the notification being opened
+      const action = notificationOpen.action;
+      // Get information about the notification that was opened
+      const notification = notificationOpen.notification;
+      console.log('notificationOpenedListener', action, notification);
+    });
+
+    firebase.notifications().getInitialNotification()
+      .then((notificationOpen) => {
+        if (notificationOpen) {
+          // App was opened by a notification
+          // Get the action triggered by the notification being opened
+          const action = notificationOpen.action;
+          // Get information about the notification that was opened
+          const notification = notificationOpen.notification;
+          console.log('firebase.notifications().getInitialNotification()', action, notification);
+        }
+      });
+
     loadSettings().then(res => {
       if (res.jp_event) {
         firebase.messaging().subscribeToTopic('jp_event');
@@ -106,6 +130,7 @@ class RootScreen extends Component {
   componentWillUnmount() {
     this.notificationDisplayedListener();
     this.notificationListener();
+    this.notificationOpenedListener();
     this.messageListener();
   }
 

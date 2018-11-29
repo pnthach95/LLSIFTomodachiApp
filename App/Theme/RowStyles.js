@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native'
+import { StyleSheet, Platform } from 'react-native'
 import { Metrics, Colors } from './index'
 
 export default StyleSheet.create({
@@ -73,6 +73,6 @@ export default StyleSheet.create({
   },
   pickerRow: {
     flexDirection: 'row',
-    marginVertical: 7
+    marginVertical: Platform.OS === 'ios' ? 7 : 0
   }
 })

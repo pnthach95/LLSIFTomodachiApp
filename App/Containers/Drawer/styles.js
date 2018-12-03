@@ -38,6 +38,7 @@ export default StyleSheet.create({
   },
   group: {
     flexDirection: 'row',
+    alignItems: 'center',
     justifyContent: 'space-between',
     padding: 10,
     marginTop: 5,

@@ -115,7 +115,7 @@ class Drawer extends Component {
                 <TouchableOpacity onPress={this._groupToggle}>
                   <View style={styles.group}>
                     <Text>OPTIONS</Text>
-                    <Icon name={this.state.isCollapsed ? 'ios-arrow-up' : 'ios-arrow-down'} />
+                    <Icon name={this.state.isCollapsed ? 'ios-arrow-up' : 'ios-arrow-down'} size={20} />
                   </View>
                 </TouchableOpacity>
                 {this.state.isCollapsed && <View style={styles.body}>
@@ -140,7 +140,7 @@ class Drawer extends Component {
                 <TouchableOpacity onPress={this._groupToggle}>
                   <View style={styles.group}>
                     <Text>ABOUT ME</Text>
-                    <Icon name={!this.state.isCollapsed ? 'ios-arrow-up' : 'ios-arrow-down'} />
+                    <Icon name={!this.state.isCollapsed ? 'ios-arrow-up' : 'ios-arrow-down'} size={20}/>
                   </View>
                 </TouchableOpacity>
                 {!this.state.isCollapsed && <View style={{ flex: 1 }}>

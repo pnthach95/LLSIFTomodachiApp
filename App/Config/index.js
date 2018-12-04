@@ -19,6 +19,11 @@ Press Version to view background.
 
 Change log:
 
+- Version 0.2.0:
+  • Add notification when events started.
+  • Update notifications settings.
+  • Fix UI.
+
 - Version 0.1.1:
   • Update countdown text, image viewer.
   • Show upcoming events in home screen.

@@ -1,6 +1,6 @@
-import React from 'react'
-import { View, Text } from 'react-native'
-import { Fonts } from '../../Theme'
+import React from 'react';
+import { View, Text } from 'react-native';
+import { Fonts } from '../../Theme';
 
 /**
  * TextRow
@@ -25,6 +25,6 @@ export default class TextRow extends React.Component {
             style={[Fonts.style.normal, this.props.item2.textStyle]}>{this.props.item2.text}</Text>
         </View>
       </View>
-    )
+    );
   }
 }

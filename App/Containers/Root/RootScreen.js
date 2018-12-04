@@ -1,25 +1,27 @@
-import React, { Component } from 'react'
-import { View, SafeAreaView } from 'react-native'
-import { createStackNavigator, createBottomTabNavigator, createDrawerNavigator } from 'react-navigation'
-import { connect } from 'react-redux'
+import React, { Component } from 'react';
+import { View, SafeAreaView } from 'react-native';
+import { createStackNavigator, createBottomTabNavigator, createDrawerNavigator } from 'react-navigation';
+import { connect } from 'react-redux';
+import firebase from 'react-native-firebase';
 
-import StatusBarBackground from '../../Components/StatusBarBackground/StatusBar'
-import CachedDataActions from '../../Stores/CachedData/Actions'
-import { ApplicationStyles } from '../../Theme'
-import NavigationService from '../../Services/NavigationService'
+import StatusBarBackground from '../../Components/StatusBarBackground/StatusBar';
+import CachedDataActions from '../../Stores/CachedData/Actions';
+import { ApplicationStyles } from '../../Theme';
+import { loadSettings } from '../../Utils';
+import NavigationService from '../../Services/NavigationService';
 
-import MainScreen from '../MainScreen/Main'
-import CardsScreen from '../CardsScreen/Cards'
-import IdolsScreen from '../IdolsScreen/Idols'
-import EventsScreen from '../EventsScreen/Events'
-import SongsScreen from '../SongsScreen/Songs'
-import Drawer from '../Drawer/Drawer'
+import MainScreen from '../MainScreen/Main';
+import CardsScreen from '../CardsScreen/Cards';
+import IdolsScreen from '../IdolsScreen/Idols';
+import EventsScreen from '../EventsScreen/Events';
+import SongsScreen from '../SongsScreen/Songs';
+import Drawer from '../Drawer/Drawer';
 
-import CardDetailScreen from '../CardDetailScreen/CardDetail'
-import EventDetailScreen from '../EventDetailScreen/EventDetail'
-import IdolDetailScreen from '../IdolDetailScreen/IdolDetail'
-import SongDetailScreen from '../SongDetailScreen/SongDetail'
-import ImageViewer from '../ImageViewer/ImageViewer'
+import CardDetailScreen from '../CardDetailScreen/CardDetail';
+import EventDetailScreen from '../EventDetailScreen/EventDetail';
+import IdolDetailScreen from '../IdolDetailScreen/IdolDetail';
+import SongDetailScreen from '../SongDetailScreen/SongDetail';
+import ImageViewer from '../ImageViewer/ImageViewer';
 
 const LLSIFTab = createBottomTabNavigator(
   {
@@ -30,9 +32,9 @@ const LLSIFTab = createBottomTabNavigator(
     SongsScreen: SongsScreen
   },
   { initialRouteName: 'MainScreen' }
-)
+);
 
-LLSIFTab.navigationOptions = { header: null }
+LLSIFTab.navigationOptions = { header: null };
 
 const Stack = createStackNavigator(
   {
@@ -45,19 +47,95 @@ const Stack = createStackNavigator(
   },
   {
     initialRouteName: 'LLSIFScreen',
-    headerMode: 'none',
+    headerMode: 'none'
   }
-)
+);
 
-const AppNav = createDrawerNavigator({ Stack: Stack }, { contentComponent: Drawer })
+const AppNav = createDrawerNavigator({ Stack: Stack }, { contentComponent: Drawer });
 
 class RootScreen extends Component {
   componentDidMount() {
     if (__DEV__) {
-      console.clear()
-      console.log('App is running in DEV mode')
+      // console.clear();
+      console.log('App is running in DEV mode');
     }
-    this.props.startup()
+    firebase.messaging().hasPermission()
+      .then(enabled => {
+        if (enabled) {
+          // user has permissions
+        } else {
+          // user doesn't have permission
+          firebase.messaging().requestPermission()
+            .then(() => {
+              // User has authorised
+            })
+            .catch(error => {
+              // User has rejected permissions
+            });
+        }
+      });
+
+    this.notificationDisplayedListener = firebase.notifications().onNotificationDisplayed((notification) => {
+      // Process your notification as required
+      // ANDROID: Remote notifications do not contain the channel ID. You will have to specify this manually if you'd like to re-display the notification.
+      console.log('notificationDisplayedListener', notification);
+    });
+
+    this.notificationListener = firebase.notifications().onNotification((notification) => {
+      // Process your notification as required
+      console.log('notificationListener', notification);
+    });
+
+    this.messageListener = firebase.messaging().onMessage((message) => {
+      // Process your message as required
+      console.log('messageListener', message);
+    });
+
+    this.notificationOpenedListener = firebase.notifications().onNotificationOpened((notificationOpen) => {
+      // Get the action triggered by the notification being opened
+      const action = notificationOpen.action;
+      // Get information about the notification that was opened
+      const notification = notificationOpen.notification;
+      console.log('notificationOpenedListener', action, notification);
+    });
+
+    firebase.notifications().getInitialNotification()
+      .then((notificationOpen) => {
+        if (notificationOpen) {
+          // App was opened by a notification
+          // Get the action triggered by the notification being opened
+          const action = notificationOpen.action;
+          // Get information about the notification that was opened
+          const notification = notificationOpen.notification;
+          console.log('firebase.notifications().getInitialNotification()', action, notification);
+          if (notification.data.event !== undefined) {
+            NavigationService.navigate('EventDetailScreen', { eventName: notification.data.event });
+          }
+        }
+      });
+
+    loadSettings().then(res => {
+      if (res.jp_event) {
+        firebase.messaging().subscribeToTopic('jp_event');
+      } else {
+        firebase.messaging().unsubscribeFromTopic('jp_event');
+      }
+      if (res.ww_event) {
+        firebase.messaging().subscribeToTopic('ww_event');
+      } else {
+        firebase.messaging().unsubscribeFromTopic('ww_event');
+      }
+    });
+    firebase.messaging().subscribeToTopic('admin_message');
+    // firebase.messaging().subscribeToTopic('test_only');
+    this.props.startup();
+  }
+
+  componentWillUnmount() {
+    this.notificationDisplayedListener();
+    this.notificationListener();
+    this.notificationOpenedListener();
+    this.messageListener();
   }
 
   render() {
@@ -66,7 +144,8 @@ class RootScreen extends Component {
         <View style={ApplicationStyles.screen}>
           <StatusBarBackground />
           <AppNav
-            // Initialize the NavigationService (see https://reactnavigation.org/docs/en/navigating-without-navigation-prop.html)
+            // Initialize the NavigationService
+            // (see https://reactnavigation.org/docs/en/navigating-without-navigation-prop.html)
             ref={(navigatorRef) => { NavigationService.setTopLevelNavigator(navigatorRef) }} />
         </View>
       </SafeAreaView>
@@ -74,10 +153,10 @@ class RootScreen extends Component {
   }
 }
 
-const mapStateToProps = (state) => ({})
+const mapStateToProps = (state) => ({});
 
 const mapDispatchToProps = (dispatch) => ({
   startup: () => dispatch(CachedDataActions.fetchCachedData())
-})
+});
 
-export default connect(mapStateToProps, mapDispatchToProps)(RootScreen)
+export default connect(mapStateToProps, mapDispatchToProps)(RootScreen);

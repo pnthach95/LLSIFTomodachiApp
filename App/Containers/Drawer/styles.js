@@ -1,5 +1,4 @@
 import { StyleSheet } from 'react-native'
-import { Metrics } from '../../Theme'
 
 export default StyleSheet.create({
   fullscreen: {
@@ -7,7 +6,8 @@ export default StyleSheet.create({
     height: '100%'
   },
   container: {
-    height: Metrics.screenHeight - 50,
+    flex: 0,
+    flexGrow: 1,
     backgroundColor: '#ddda'
   },
   header: {
@@ -20,24 +20,34 @@ export default StyleSheet.create({
     width: '75%'
   },
   body: {
-    height: Metrics.screenHeight - 290,
+    flex: 1,
     paddingVertical: 6,
-    justifyContent: 'space-between',
     alignItems: 'stretch'
   },
   textBlock: {
-    padding: 10
+    paddingHorizontal: 10
   },
   settingRow: {
     flexDirection: 'row',
-    backgroundColor: '#fffa',
+    backgroundColor: '#fff6',
     padding: 10,
+    marginBottom: 5,
+    marginLeft: 10,
     alignItems: 'center',
     justifyContent: 'space-between'
   },
+  group: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    padding: 10,
+    marginTop: 5,
+    borderBottomWidth: 1,
+    borderBottomColor: '#0005',
+    backgroundColor: '#fff9'
+  },
   footer: {
-    position: 'absolute',
-    bottom: 10,
+    alignSelf: 'flex-end',
     backgroundColor: '#eeec',
     width: '100%',
     height: 150
@@ -47,8 +57,7 @@ export default StyleSheet.create({
     marginVertical: 10
   },
   versionContainer: {
-    position: 'absolute',
-    bottom: 0,
+    alignSelf: 'flex-end',
     backgroundColor: 'white',
     width: '100%',
     height: 50
@@ -57,7 +66,7 @@ export default StyleSheet.create({
     textAlign: 'center'
   },
   viewMore: {
-    backgroundColor: 'white',
+    backgroundColor: '#fff9',
     width: '100%',
     height: 50
   }

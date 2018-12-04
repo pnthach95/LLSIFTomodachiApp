@@ -1,9 +1,9 @@
-import React, { Component } from 'react'
-import { TouchableOpacity, View, Text } from 'react-native'
-import FastImage from 'react-native-fast-image'
-import styles from './styles'
-import { Metrics } from '../../Theme'
-import { AddHTTPS, findColorByAttribute } from '../../Utils'
+import React, { Component } from 'react';
+import { TouchableOpacity, View, Text } from 'react-native';
+import FastImage from 'react-native-fast-image';
+import styles from './styles';
+import { Metrics } from '../../Theme';
+import { AddHTTPS, findColorByAttribute } from '../../Utils';
 
 /**
  * Song item for Song List Screen
@@ -23,15 +23,15 @@ import { AddHTTPS, findColorByAttribute } from '../../Utils'
  */
 export default class SongItem extends Component {
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
       imgWidth: Metrics.images.itemWidth,
       imgHeight: Metrics.images.itemWidth,
       colors: findColorByAttribute(props.item.attribute)
-    }
+    };
   }
 
-  getName = this.props.item.name + (this.props.item.romaji_name !== null ? `\n${this.props.item.romaji_name}` : '')
+  getName = this.props.item.name + (this.props.item.romaji_name !== null ? `\n${this.props.item.romaji_name}` : '');
 
   render() {
     return (
@@ -53,6 +53,6 @@ export default class SongItem extends Component {
           <Text style={styles.text}>{this.getName}</Text>
         </View>
       </TouchableOpacity>
-    )
+    );
   }
 }

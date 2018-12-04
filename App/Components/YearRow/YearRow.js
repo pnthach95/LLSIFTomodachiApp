@@ -1,7 +1,7 @@
-import React from 'react'
-import { Text, View, TouchableOpacity } from 'react-native'
-import PropTypes from 'prop-types'
-import styles from '../../Theme/RowStyles'
+import React from 'react';
+import { Text, View, TouchableOpacity } from 'react-native';
+import PropTypes from 'prop-types';
+import styles from '../../Theme/RowStyles';
 
 /**
  * Year Row (None, First, Second, Third)
@@ -52,13 +52,13 @@ class YearRow extends React.Component {
           </TouchableOpacity>
         </View>
       </View>
-    )
+    );
   }
 }
 
 YearRow.propTypes = {
   idol_year: PropTypes.string.isRequired,
   selectYear: PropTypes.func.isRequired
-}
+};
 
-export default YearRow
+export default YearRow;

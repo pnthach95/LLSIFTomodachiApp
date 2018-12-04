@@ -1,7 +1,7 @@
-import React from 'react'
-import { Text, View, TouchableOpacity } from 'react-native'
-import PropTypes from 'prop-types'
-import styles from '../../Theme/RowStyles'
+import React from 'react';
+import { Text, View, TouchableOpacity } from 'react-native';
+import PropTypes from 'prop-types';
+import styles from '../../Theme/RowStyles';
 
 /**
  * Special Card Row (None, True, False)
@@ -45,13 +45,13 @@ class SpecialCardRow extends React.Component {
           </TouchableOpacity>
         </View>
       </View>
-    )
+    );
   }
 }
 
 SpecialCardRow.propTypes = {
   is_special: PropTypes.string.isRequired,
   selectSpecial: PropTypes.func.isRequired
-}
+};
 
-export default SpecialCardRow
+export default SpecialCardRow;

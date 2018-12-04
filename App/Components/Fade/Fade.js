@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
 import { Animated } from 'react-native';
 
 /**
@@ -47,10 +47,10 @@ export default class Fade extends Component {
         {
           scale: this._visibility.interpolate({
             inputRange: [0, 1],
-            outputRange: [1.1, 1],
-          }),
-        },
-      ],
+            outputRange: [1.1, 1]
+          })
+        }
+      ]
     };
 
     const combinedStyle = [containerStyle, style];

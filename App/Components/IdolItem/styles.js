@@ -1,5 +1,5 @@
-import { StyleSheet } from 'react-native'
-import { Metrics, Colors } from '../../Theme'
+import { StyleSheet } from 'react-native';
+import { Metrics, Colors } from '../../Theme';
 
 export default StyleSheet.create({
   container: {
@@ -7,7 +7,7 @@ export default StyleSheet.create({
     width: Metrics.images.smallItemWidth,
     margin: Metrics.smallMargin,
     paddingTop: Metrics.smallMargin,
-    paddingHorizontal: Metrics.smallMargin,
+    paddingHorizontal: Metrics.smallMargin
   },
   info: {
     flexDirection: 'row',
@@ -18,4 +18,4 @@ export default StyleSheet.create({
   text: {
     textAlign: 'center'
   }
-})
+});

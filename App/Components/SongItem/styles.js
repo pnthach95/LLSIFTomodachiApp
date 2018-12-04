@@ -1,11 +1,11 @@
-import { StyleSheet } from 'react-native'
-import { Metrics, Colors } from '../../Theme'
+import { StyleSheet } from 'react-native';
+import { Metrics, Colors } from '../../Theme';
 
 export default StyleSheet.create({
   container: {
     backgroundColor: Colors.itemColor,
     width: Metrics.images.itemWidth,
-    margin: Metrics.smallMargin,
+    margin: Metrics.smallMargin
   },
   info: {
     paddingVertical: Metrics.smallMargin,
@@ -17,4 +17,4 @@ export default StyleSheet.create({
     color: 'white',
     textAlign: 'center'
   }
-})
+});

@@ -1,10 +1,10 @@
-import React from 'react'
-import { Text, View } from 'react-native'
-import RNPickerSelect from 'react-native-picker-select'
-import { connect } from 'react-redux'
-import PropTypes from 'prop-types'
-import { getSkills } from '../../Stores/CachedData/Selectors'
-import styles from '../../Theme/RowStyles'
+import React from 'react';
+import { Text, View } from 'react-native';
+import RNPickerSelect from 'react-native-picker-select';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import { getSkills } from '../../Stores/CachedData/Selectors';
+import styles from '../../Theme/RowStyles';
 
 /**
  * Skill Row.
@@ -22,26 +22,29 @@ import styles from '../../Theme/RowStyles'
 class SkillRow extends React.Component {
   render() {
     return (
-      <View style={{ flexDirection: 'row' }}>
+      <View style={styles.pickerRow}>
         <View style={styles.leftView}>
           <Text>Skill</Text>
         </View>
         <View style={{ flex: 2 }}>
           <RNPickerSelect onValueChange={this.props.selectSkill}
             items={this.props.skills}
+            hideIcon={true}
+            style={{ inputIOS: styles.picker, inputAndroid: styles.picker }}
+            placeholderTextColor={'black'}
             placeholder={{ label: 'All', value: 'All' }}
             value={this.props.skill} />
         </View>
       </View>
-    )
+    );
   }
 }
 
 SkillRow.propTypes = {
   skill: PropTypes.string.isRequired,
   selectSkill: PropTypes.func.isRequired
-}
+};
 
-const mapStateToProps = (state) => ({ skills: getSkills(state) })
-const mapDispatchToProps = (dispatch) => ({})
-export default connect(mapStateToProps, mapDispatchToProps)(SkillRow)
+const mapStateToProps = (state) => ({ skills: getSkills(state) });
+const mapDispatchToProps = (dispatch) => ({});
+export default connect(mapStateToProps, mapDispatchToProps)(SkillRow);

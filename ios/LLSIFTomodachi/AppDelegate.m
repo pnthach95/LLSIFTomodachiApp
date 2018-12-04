@@ -6,7 +6,9 @@
  */
 
 #import "AppDelegate.h"
-
+#import <Firebase.h>
+#import "RNFirebaseNotifications.h"
+#import "RNFirebaseMessaging.h"
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTRootView.h>
 #if __has_include(<React/RNSentry.h>)
@@ -19,9 +21,12 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+  [FIRApp configure];
+  [RNFirebaseNotifications configure];
   NSURL *jsCodeLocation;
 
-  jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index" fallbackResource:nil];RCTRootView *rootView = [[RCTRootView alloc] initWithBundleURL:jsCodeLocation
+  jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index" fallbackResource:nil];
+RCTRootView *rootView = [[RCTRootView alloc] initWithBundleURL:jsCodeLocation
                                                       moduleName:@"LLSIFTomodachi"
                                                initialProperties:nil
                                                    launchOptions:launchOptions];
@@ -37,6 +42,19 @@
   self.window.rootViewController = rootViewController;
   [self.window makeKeyAndVisible];
   return YES;
+}
+
+- (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification {
+  [[RNFirebaseNotifications instance] didReceiveLocalNotification:notification];
+}
+
+- (void)application:(UIApplication *)application didReceiveRemoteNotification:(nonnull NSDictionary *)userInfo
+                                                       fetchCompletionHandler:(nonnull void (^)(UIBackgroundFetchResult))completionHandler{
+  [[RNFirebaseNotifications instance] didReceiveRemoteNotification:userInfo fetchCompletionHandler:completionHandler];
+}
+
+- (void)application:(UIApplication *)application didRegisterUserNotificationSettings:(UIUserNotificationSettings *)notificationSettings {
+  [[RNFirebaseMessaging instance] didRegisterUserNotificationSettings:notificationSettings];
 }
 
 @end

@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "286856199192",
+    "firebase_url": "https://llsif-notification.firebaseio.com",
+    "project_id": "llsif-notification",
+    "storage_bucket": "llsif-notification.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:286856199192:android:2508c7a705a78fc7",
+        "android_client_info": {
+          "package_name": "com.pnthach95.llsiftomodachi"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "286856199192-alctr4gkr50hlvt5rt8io6s1rd4uet7u.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBISo1GONeYbjAiOahJhyvvebcZETzKZfk"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

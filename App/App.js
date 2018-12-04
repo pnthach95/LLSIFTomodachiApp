@@ -1,14 +1,14 @@
-import React, { Component } from 'react'
-import { Provider } from 'react-redux'
-import { PersistGate } from 'redux-persist/lib/integration/react'
-import createStore from './Stores'
-import RootScreen from './Containers/Root/RootScreen'
-import SplashScreen from './Containers/SplashScreen/SplashScreen'
-import { Colors } from './Theme'
+import React, { Component } from 'react';
+import { Provider } from 'react-redux';
+import { PersistGate } from 'redux-persist/lib/integration/react';
 import { Sentry } from 'react-native-sentry';
-Sentry.config('https://ac9aa894ab9341fba115b29731378b6b@sentry.io/1330276').install();
+import createStore from './Stores';
+import RootScreen from './Containers/Root/RootScreen';
+import SplashScreen from './Containers/SplashScreen/SplashScreen';
+import { Colors } from './Theme';
 
-const { store, persistor } = createStore()
+Sentry.config('https://ac9aa894ab9341fba115b29731378b6b@sentry.io/1330276').install();
+const { store, persistor } = createStore();
 
 export default class App extends Component {
   render() {

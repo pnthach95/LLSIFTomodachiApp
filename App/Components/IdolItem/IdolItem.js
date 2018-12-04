@@ -1,8 +1,8 @@
-import React, { Component } from 'react'
-import { TouchableOpacity, View, Text } from 'react-native'
-import FastImage from 'react-native-fast-image'
-import styles from './styles'
-import { Metrics } from '../../Theme'
+import React, { Component } from 'react';
+import { TouchableOpacity, View, Text } from 'react-native';
+import FastImage from 'react-native-fast-image';
+import styles from './styles';
+import { Metrics } from '../../Theme';
 import { findColorByAttribute } from '../../Utils';
 
 /**
@@ -23,12 +23,12 @@ import { findColorByAttribute } from '../../Utils';
  */
 export default class IdolItem extends Component {
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
       imgWidth: Metrics.images.smallItemWidth,
       imgHeight: Metrics.images.smallItemWidth,
       colors: findColorByAttribute(props.item.attribute)
-    }
+    };
   }
 
   render() {
@@ -56,6 +56,6 @@ export default class IdolItem extends Component {
           <Text style={styles.text}>{this.props.item.name}</Text>
         </View>
       </TouchableOpacity>
-    )
+    );
   }
 }

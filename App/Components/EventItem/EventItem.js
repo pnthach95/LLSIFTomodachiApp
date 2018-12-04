@@ -1,9 +1,10 @@
-import React, { Component } from 'react'
-import { TouchableOpacity, View, Text } from 'react-native'
-import FastImage from 'react-native-fast-image'
-import styles from './styles'
-import { Metrics } from '../../Theme'
-import { AddHTTPS } from '../../Utils'
+import React, { Component } from 'react';
+import { TouchableOpacity, View, Text } from 'react-native';
+import FastImage from 'react-native-fast-image';
+import styles from './styles';
+import { Metrics } from '../../Theme';
+import { AddHTTPS } from '../../Utils';
+import { EventStatus } from '../../Config';
 
 /**
  * Event item for Event List Screen
@@ -31,14 +32,19 @@ export default class EventItem extends Component {
 
   getImage = (this.props.item.english_image === null)
     ? AddHTTPS(this.props.item.image)
-    : AddHTTPS(this.props.item.english_image)
+    : AddHTTPS(this.props.item.english_image);
 
   eventName = ((this.props.item.english_name !== null && this.props.item.english_name.length !== 0) ?
-    `${this.props.item.english_name}\n` : '') + this.props.item.japanese_name
+    `${this.props.item.english_name}\n` : '') + this.props.item.japanese_name;
 
   render() {
+    const { english_status, japan_status } = this.props.item;
+    let isAnnounced = japan_status === EventStatus.ANNOUNCED || english_status === EventStatus.ANNOUNCED;
+    let isOngoing = japan_status === EventStatus.ONGOING || english_status === EventStatus.ONGOING;
+    let label = (isAnnounced) ? EventStatus.ANNOUNCED : ((isOngoing) ? EventStatus.ONGOING : '');
+    let color = (isAnnounced) ? '#ee0a' : ((isOngoing) ? '#0a0a' : '#fff5');
     return (
-      <TouchableOpacity onPress={this.props.onPress} style={styles.container}>
+      <TouchableOpacity onPress={this.props.onPress} style={[styles.container, { backgroundColor: color }]}>
         <FastImage
           source={{
             uri: this.getImage,
@@ -54,11 +60,12 @@ export default class EventItem extends Component {
             width: Metrics.widthBanner,
             height: Metrics.widthBanner * this.state.imgHeight / this.state.imgWidth
           }} />
-
-        <View style={styles.info}>
-          <Text style={styles.text}>{this.eventName}</Text>
+        <View style={styles.textBox}>
+          <Text style={styles.text}>
+            {(label.length > 0 ? ('[' + label.toUpperCase() + ']\n') : '') + this.eventName}
+          </Text>
         </View>
       </TouchableOpacity>
-    )
+    );
   }
 }

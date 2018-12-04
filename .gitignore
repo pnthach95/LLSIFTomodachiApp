@@ -60,8 +60,17 @@ buck-out/
 !.vscode/settings.json
 !.vscode/tasks.json
 !.vscode/extensions.json
-android/app/.settings/org.eclipse.buildship.core.prefs
-android/app/bin/.settings/org.eclipse.buildship.core.prefs
+android/app/.settings/
+android/app/bin/.settings/
 android/app/bin/.project
 android/app/.project
 android/.project
+android/.settings/
+android/app/.classpath
+
+# Security
+android/sentry.properties
+android/gradle.properties
+android/app/google-services.json
+ios/sentry.properties
+ios/LLSIFTomodachi/GoogleService-Info.plist

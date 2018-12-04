@@ -1,8 +1,8 @@
-import React from 'react'
-import { Text, View, TouchableOpacity, Image } from 'react-native'
-import PropTypes from 'prop-types'
-import { Images } from '../../Theme'
-import styles from '../../Theme/RowStyles'
+import React from 'react';
+import { Text, View, TouchableOpacity, Image } from 'react-native';
+import PropTypes from 'prop-types';
+import { Images } from '../../Theme';
+import styles from '../../Theme/RowStyles';
 
 /**
  * Main Unit Row (None, μ's, Aqours)
@@ -46,13 +46,13 @@ class MainUnitRow extends React.Component {
           </TouchableOpacity>
         </View>
       </View>
-    )
+    );
   }
 }
 
 MainUnitRow.propTypes = {
   main_unit: PropTypes.string.isRequired,
   selectMainUnit: PropTypes.func.isRequired
-}
+};
 
-export default MainUnitRow
+export default MainUnitRow;

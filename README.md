@@ -82,11 +82,9 @@ I'm a React Native developer, play Love Live and BanG Dream everyday.
 
 ## TODO
 
-- Splash image
+- Sort option in filter
 - Handle offline mode
-- Icon app
 - Official name
-- Compatible with iOS
 
 ## License
 

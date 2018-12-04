@@ -127,6 +127,7 @@ class RootScreen extends Component {
       }
     });
     firebase.messaging().subscribeToTopic('admin_message');
+    // firebase.messaging().subscribeToTopic('test_only');
     this.props.startup();
   }
 

@@ -20,6 +20,7 @@ Press Version to view background.
 Change log:
 
 - Version 0.2.0:
+  • Add icon app.
   • Add notification when events started.
   • Update notifications settings.
   • Fix UI.

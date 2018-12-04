@@ -126,8 +126,8 @@ class RootScreen extends Component {
         firebase.messaging().unsubscribeFromTopic('ww_event');
       }
     });
-    firebase.messaging().subscribeToTopic('admin_message');
-    // firebase.messaging().subscribeToTopic('test_only');
+    // firebase.messaging().subscribeToTopic('admin_message');
+    firebase.messaging().subscribeToTopic('test_only');
     this.props.startup();
   }
 

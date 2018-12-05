@@ -9,7 +9,7 @@ import CachedDataActions from '../../Stores/CachedData/Actions';
 import { ApplicationStyles } from '../../Theme';
 import { loadSettings } from '../../Utils';
 import NavigationService from '../../Services/NavigationService';
-import {FirebaseTopic} from '../../Config';
+import { FirebaseTopic } from '../../Config';
 
 import MainScreen from '../MainScreen/Main';
 import CardsScreen from '../CardsScreen/Cards';
@@ -62,16 +62,17 @@ class RootScreen extends Component {
     }
     firebase.messaging().hasPermission()
       .then(enabled => {
+        console.log('firebase.messaging.hasPermission', enabled);
         if (enabled) {
           // user has permissions
         } else {
           // user doesn't have permission
           firebase.messaging().requestPermission()
             .then(() => {
-              // User has authorised
+              console.log('User has authorised');
             })
             .catch(error => {
-              // User has rejected permissions
+              console.log('User has rejected permissions');
             });
         }
       });

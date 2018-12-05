@@ -39,10 +39,10 @@ export default {
     require('../Images/attribute/3.png')
   ],
   rarity: [
-    require('../Images/rarity/NSmile.png'),
-    require('../Images/rarity/RSmile.png'),
-    require('../Images/rarity/SRSmile.png'),
-    require('../Images/rarity/SSRSmile.png'),
-    require('../Images/rarity/URSmile.png')
+    require('../Images/rarity/N.png'),
+    require('../Images/rarity/R.png'),
+    require('../Images/rarity/SR.png'),
+    require('../Images/rarity/SSR.png'),
+    require('../Images/rarity/UR.png')
   ]
 }

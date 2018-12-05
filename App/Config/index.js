@@ -47,3 +47,9 @@ export const EventStatus = {
   ONGOING: 'ongoing',
   FINISHED: 'finished'
 }
+
+export const FirebaseTopic = {
+  JP_EVENT: (__DEV__) ? 'jp_event_test' : 'jp_event',
+  WW_EVENT: (__DEV__) ? 'ww_event_test' : 'ww_event',
+  MESSAGE: (__DEV__) ? 'admin_message' : 'test_only'
+}

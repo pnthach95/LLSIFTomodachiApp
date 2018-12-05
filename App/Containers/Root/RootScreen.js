@@ -9,6 +9,7 @@ import CachedDataActions from '../../Stores/CachedData/Actions';
 import { ApplicationStyles } from '../../Theme';
 import { loadSettings } from '../../Utils';
 import NavigationService from '../../Services/NavigationService';
+import {FirebaseTopic} from '../../Config';
 
 import MainScreen from '../MainScreen/Main';
 import CardsScreen from '../CardsScreen/Cards';
@@ -57,7 +58,7 @@ class RootScreen extends Component {
   componentDidMount() {
     if (__DEV__) {
       // console.clear();
-      console.log('App is running in DEV mode');
+      console.log('App is running in DEV mode', FirebaseTopic);
     }
     firebase.messaging().hasPermission()
       .then(enabled => {
@@ -116,18 +117,17 @@ class RootScreen extends Component {
 
     loadSettings().then(res => {
       if (res.jp_event) {
-        firebase.messaging().subscribeToTopic('jp_event');
+        firebase.messaging().subscribeToTopic(FirebaseTopic.JP_EVENT);
       } else {
-        firebase.messaging().unsubscribeFromTopic('jp_event');
+        firebase.messaging().unsubscribeFromTopic(FirebaseTopic.JP_EVENT);
       }
       if (res.ww_event) {
-        firebase.messaging().subscribeToTopic('ww_event');
+        firebase.messaging().subscribeToTopic(FirebaseTopic.WW_EVENT);
       } else {
-        firebase.messaging().unsubscribeFromTopic('ww_event');
+        firebase.messaging().unsubscribeFromTopic(FirebaseTopic.WW_EVENT);
       }
     });
-    // firebase.messaging().subscribeToTopic('admin_message');
-    firebase.messaging().subscribeToTopic('test_only');
+    firebase.messaging().subscribeToTopic(FirebaseTopic.MESSAGE);
     this.props.startup();
   }
 

@@ -12,6 +12,8 @@
     "start": "node node_modules/react-native/local-cli/cli.js start",
     "test": "jest",
     "rename": "react-native-rename",
+    "android:build": "cd android && ./gradlew assembleRelease",
+    "android:install": "cd android && ./gradlew assembleRelease && ./gradlew installRelease",
     "version:up": "node ./node_modules/react-native-version-up/index.js"
   },
   "dependencies": {

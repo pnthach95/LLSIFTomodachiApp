@@ -13,7 +13,7 @@ export default StyleSheet.create({
     padding: Metrics.smallMargin
   },
   filterContainer: {
-    height: '50%',
+    height: '40%',
     backgroundColor: 'white'
   },
   resetButton: {

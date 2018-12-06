@@ -16,7 +16,6 @@ LLSIFApiClient.addMonitor(Reactotron.apisauce)
  */
 async function fetchCachedData() {
   const response = await LLSIFApiClient.get(Config.CACHED_DATA)
-  console.log('fetchCachedData', response)
   if (response.ok) {
     return response.data
   }
@@ -31,8 +30,6 @@ async function fetchCachedData() {
  */
 async function fetchCardList(filter) {
   const response = await LLSIFApiClient.get(Config.CARDS, filter)
-  console.log('fetchCardList filter', filter)
-  console.log('fetchCardList response', response)
   if (response.ok) {
     return response.data.results
   }
@@ -69,8 +66,6 @@ async function fetchIdolList() {
  */
 async function fetchIdol(name) {
   const response = await LLSIFApiClient.get(Config.IDOLS + name)
-  console.log('fetchIdol name', name)
-  console.log('fetchIdol response', response)
   if (response.ok) {
     return response.data
   }
@@ -86,8 +81,6 @@ async function fetchIdol(name) {
 async function fetchSongList(filter) {
   filter.expand_event = ''
   const response = await LLSIFApiClient.get(Config.SONGS, filter)
-  console.log('fetchSongList filter', filter)
-  console.log('fetchSongList response', response)
   if (response.ok) {
     return response.data.results
   }
@@ -105,8 +98,6 @@ async function fetchSongList(filter) {
  */
 async function fetchEventList(filter) {
   const response = await LLSIFApiClient.get(Config.EVENTS, filter)
-  console.log('fetchEventList filter', filter)
-  console.log('fetchEventList response', response)
   if (response.ok) {
     return response.data.results
   }
@@ -124,8 +115,6 @@ async function fetchEventList(filter) {
  */
 async function fetchEventData(name) {
   const response = await LLSIFApiClient.get(Config.EVENTS + name)
-  console.log('fetchEventData name', name)
-  console.log('fetchEventData response', response)
   if (response.ok) {
     return response.data
   }
@@ -140,7 +129,6 @@ async function fetchRandomCard() {
     idol_main_unit: `μ's,Aqours`
   }
   const response = await LLSIFApiClient.get(Config.CARDS, filter)
-  console.log('fetchRandomCard', response)
   if (response.ok) {
     return response.data.results[0]
   }

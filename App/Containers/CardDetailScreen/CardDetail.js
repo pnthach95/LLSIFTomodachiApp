@@ -83,7 +83,7 @@ class CardDetailScreen extends React.Component {
         this.state.item.minimum_statistics_cool
       ]
     })
-    console.log('CardDetails.state.item', this.state.item)
+    // console.log('CardDetails.state.item', this.state.item)
   }
 
   progressSmile(stat) {

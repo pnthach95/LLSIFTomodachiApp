@@ -99,7 +99,7 @@ class SongDetailScreen extends React.Component {
       master: [this.state.item.master_notes, masterArray],
       colors: findColorByAttribute(this.state.item.attribute)
     })
-    console.log('SongDetails', this.state.item)
+    // console.log('SongDetails', this.state.item)
   }
 
   onLoadFastImage(e) {

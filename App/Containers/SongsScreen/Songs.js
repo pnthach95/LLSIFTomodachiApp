@@ -134,10 +134,10 @@ class SongsScreen extends React.Component {
       main_unit: this.state.main_unit
     }
     if (this.state.search !== 0) { _filter.search = this.state.search }
-    console.log(`========== Songs.getSongs`, _filter)
+    // console.log(`========== Songs.getSongs`, _filter)
     LLSIFService.fetchSongList(_filter).then(result => {
       if (result === 404) {
-        console.log('LLSIFService.fetchSongList 404')
+        // console.log('LLSIFService.fetchSongList 404')
         this.setState({ stopSearch: true })
       } else {
         var x = [...this.state.list, ...result]

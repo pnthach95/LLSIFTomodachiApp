@@ -62,17 +62,17 @@ class RootScreen extends Component {
     }
     firebase.messaging().hasPermission()
       .then(enabled => {
-        console.log('firebase.messaging.hasPermission', enabled);
+        // console.log('firebase.messaging.hasPermission', enabled);
         if (enabled) {
           // user has permissions
         } else {
           // user doesn't have permission
           firebase.messaging().requestPermission()
             .then(() => {
-              console.log('User has authorised');
+              // console.log('User has authorised');
             })
             .catch(error => {
-              console.log('User has rejected permissions');
+              // console.log('User has rejected permissions');
             });
         }
       });
@@ -80,17 +80,17 @@ class RootScreen extends Component {
     this.notificationDisplayedListener = firebase.notifications().onNotificationDisplayed((notification) => {
       // Process your notification as required
       // ANDROID: Remote notifications do not contain the channel ID. You will have to specify this manually if you'd like to re-display the notification.
-      console.log('notificationDisplayedListener', notification);
+      // console.log('notificationDisplayedListener', notification);
     });
 
     this.notificationListener = firebase.notifications().onNotification((notification) => {
       // Process your notification as required
-      console.log('notificationListener', notification);
+      // console.log('notificationListener', notification);
     });
 
     this.messageListener = firebase.messaging().onMessage((message) => {
       // Process your message as required
-      console.log('messageListener', message);
+      // console.log('messageListener', message);
     });
 
     this.notificationOpenedListener = firebase.notifications().onNotificationOpened((notificationOpen) => {
@@ -98,7 +98,7 @@ class RootScreen extends Component {
       const action = notificationOpen.action;
       // Get information about the notification that was opened
       const notification = notificationOpen.notification;
-      console.log('notificationOpenedListener', action, notification);
+      // console.log('notificationOpenedListener', action, notification);
     });
 
     firebase.notifications().getInitialNotification()
@@ -109,7 +109,7 @@ class RootScreen extends Component {
           const action = notificationOpen.action;
           // Get information about the notification that was opened
           const notification = notificationOpen.notification;
-          console.log('firebase.notifications().getInitialNotification()', action, notification);
+          // console.log('firebase.notifications().getInitialNotification()', action, notification);
           if (notification.data.event !== undefined) {
             NavigationService.navigate('EventDetailScreen', { eventName: notification.data.event });
           }

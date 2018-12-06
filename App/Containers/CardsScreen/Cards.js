@@ -166,10 +166,10 @@ class CardsScreen extends React.PureComponent {
       idol_year: this.state.idol_year
     }
     if (this.state.search !== '') { _filter.search = this.state.search }
-    console.log(`========== Cards.getCards`, _filter)
+    // console.log(`========== Cards.getCards`, _filter)
     LLSIFService.fetchCardList(_filter).then(result => {
       if (result === 404) {
-        console.log('LLSIFService.fetchCardList 404')
+        // console.log('LLSIFService.fetchCardList 404')
         this.setState({ stopSearch: true })
       } else {
         var x = [...this.state.data, ...result]
@@ -367,7 +367,7 @@ class CardsScreen extends React.PureComponent {
         {/* FILTER */}
         {this.state.isFilter &&
           <View style={styles.filterContainer}>
-          <ScrollView contentContainerStyle={{ padding: 10 }}>
+            <ScrollView contentContainerStyle={{ padding: 10 }}>
               <IdolNameRow name={this.state.name} selectIdol={this._selectIdol} />
               <RarityRow rarity={this.state.rarity} selectRarity={this._selectRarity} />
               <AttributeRow attribute={this.state.attribute} selectAttribute={this._selectAttribute} />

@@ -1,39 +1,32 @@
-/**
- * Reducers specify how the application's state changes in response to actions sent to the store.
- *
- * @see https://redux.js.org/basics/reducers
- */
-
-import { INITIAL_STATE } from './InitialState'
-import { createReducer } from 'reduxsauce'
-import { CardListTypes } from './Actions'
+import { INITIAL_STATE } from './InitialState';
+import { createReducer } from 'reduxsauce';
+import { CardListTypes } from './Actions';
 
 export const fetchCardListLoading = (state) =>
   state.merge({
     cardListIsLoading: true,
-    cardListErrorMessage: '',
-  })
+    cardListErrorMessage: ''
+  });
 
 const generateNewData = (state, cardList) => {
-  let oldData = state.get('cardList')
-  let z = oldData.map(item => item.toObject())
-  let newData = [...oldData, ...cardList]
-  return newData
+  let oldData = state.get('cardList');
+  let newData = [...oldData, ...cardList];
+  return newData;
 }
 
 export const fetchCardListSuccess = (state, { cardList }) =>
   state.merge({
     cardList: generateNewData(state, cardList),
     cardListIsLoading: false,
-    cardListErrorMessage: null,
-  })
+    cardListErrorMessage: null
+  });
 
 export const fetchCardListFailure = (state, { errorMessage }) =>
   state.merge({
     cardList: null,
     cardListIsLoading: false,
-    cardListErrorMessage: errorMessage,
-  })
+    cardListErrorMessage: errorMessage
+  });
 
 /**
  * @see https://github.com/infinitered/reduxsauce#createreducer
@@ -41,5 +34,5 @@ export const fetchCardListFailure = (state, { errorMessage }) =>
 export const reducer = createReducer(INITIAL_STATE, {
   [CardListTypes.FETCH_CARD_LIST_LOADING]: fetchCardListLoading,
   [CardListTypes.FETCH_CARD_LIST_SUCCESS]: fetchCardListSuccess,
-  [CardListTypes.FETCH_CARD_LIST_FAILURE]: fetchCardListFailure,
-})
+  [CardListTypes.FETCH_CARD_LIST_FAILURE]: fetchCardListFailure
+});

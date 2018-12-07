@@ -1,3 +1,3 @@
 export const getWorldwideOnly = (state) => {
-  return state.settings.get('worldwide_only')
+  return state.settings.get('worldwide_only');
 }

@@ -29,7 +29,7 @@ import styles from './styles';
  */
 class MainScreen extends React.Component {
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
       imgWidth: 0,
       imgHeight: 0,
@@ -57,13 +57,16 @@ class MainScreen extends React.Component {
    * @memberof MainScreen
    */
   timer(time) {
-    return <TimerCountdown
-      initialSecondsRemaining={time}
-      allowFontScaling={true}
-      style={styles.text}
-    />
+    return <TimerCountdown initialSecondsRemaining={time}
+      allowFontScaling={true} style={styles.text} />
   }
 
+  /**
+   * Get width, height of image in FastImage
+   *
+   * @param {*} e
+   * @memberof MainScreen
+   */
   onLoadFastImage(e) {
     const { width, height } = e.nativeEvent;
     this.setState({ imgWidth: width, imgHeight: height });
@@ -119,7 +122,9 @@ class MainScreen extends React.Component {
           showsVerticalScrollIndicator={false}
           contentContainerStyle={styles.content}>
           {/* ENGLISH BLOCK */}
-          <Text style={{ color: 'white' }}>English Event: {ENEvent.get('english_status')}</Text>
+          <Text style={{ color: 'white' }}>
+            {`English Event: ${ENEvent.get('english_status')}`}
+          </Text>
           <View style={styles.textbox}>
             <Text style={styles.title}>{ENEvent.get('english_name')}</Text>
           </View>
@@ -151,7 +156,9 @@ class MainScreen extends React.Component {
           <Seperator style={{ backgroundColor: 'white' }} />
 
           {/* JAPANESE BLOCK */}
-          <Text style={{ color: 'white' }}>Japanese Event: {JPEvent.get('japan_status')}</Text>
+          <Text style={{ color: 'white' }}>
+            {`Japanese Event: ${JPEvent.get('japan_status')}`}
+          </Text>
           <View style={styles.textbox}>
             <Text style={styles.title}>{JPEvent.get('romaji_name')}</Text>
           </View>

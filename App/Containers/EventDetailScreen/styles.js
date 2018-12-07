@@ -1,5 +1,5 @@
-import { StyleSheet } from 'react-native'
-import { Colors, Metrics } from '../../Theme'
+import { StyleSheet } from 'react-native';
+import { Colors, Metrics } from '../../Theme';
 
 export default StyleSheet.create({
   container: {
@@ -74,4 +74,4 @@ export default StyleSheet.create({
     color: 'white',
     paddingLeft: 10
   }
-})
+});

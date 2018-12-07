@@ -1,4 +1,4 @@
-import { Map } from 'immutable'
+import { Map } from 'immutable';
 
 /**
  * The initial values for the redux state.
@@ -6,5 +6,5 @@ import { Map } from 'immutable'
 export const INITIAL_STATE = Map({
   cardList: [],
   cardListErrorMessage: null,
-  cardListIsLoading: true,
-})
+  cardListIsLoading: true
+});

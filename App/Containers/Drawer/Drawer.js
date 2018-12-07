@@ -22,14 +22,14 @@ import { getRandomCard, getBGImage } from '../../Stores/CachedData/Selectors';
  */
 class Drawer extends Component {
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
       isCollapsed: true,
       visible: true,
       ww_event: true,
       jp_event: true,
       worldwide_only: true
-    }
+    };
   }
 
   componentDidMount() {
@@ -38,28 +38,43 @@ class Drawer extends Component {
         ww_event: res.ww_event,
         jp_event: res.jp_event,
         worldwide_only: res.worldwide_only
-      })
+      });
     });
   }
 
-  _visibleToggle = () => this.setState({ visible: !this.state.visible })
+  /**
+   * Show/hide option layout
+   *
+   * @memberof Drawer
+   */
+  _visibleToggle = () => this.setState({ visible: !this.state.visible });
 
+  /**
+   * Toggle worldwide option
+   *
+   * @memberof Drawer
+   */
   _worldwideToggle = () => {
     let settings = {
       ww_event: this.state.ww_event,
       jp_event: this.state.jp_event,
       worldwide_only: !this.state.worldwide_only
-    }
+    };
     this.setState({ worldwide_only: !this.state.worldwide_only });
     saveSettings(settings);
   }
 
+  /**
+   * Toggle receiving worldwide event notification option
+   *
+   * @memberof Drawer
+   */
   _wwEventToggle = () => {
     let settings = {
       ww_event: !this.state.ww_event,
       jp_event: this.state.jp_event,
       worldwide_only: this.state.worldwide_only
-    }
+    };
     if (!this.state.ww_event) {
       firebase.messaging().subscribeToTopic('ww_event');
     } else {
@@ -69,14 +84,24 @@ class Drawer extends Component {
     saveSettings(settings);
   }
 
+  /**
+   * Collapse content group
+   *
+   * @memberof Drawer
+   */
   _groupToggle = () => this.setState({ isCollapsed: !this.state.isCollapsed });
 
+  /**
+   * Toggle receiving japanese event notification option
+   *
+   * @memberof Drawer
+   */
   _jpEventToggle = () => {
     let settings = {
       ww_event: this.state.ww_event,
       jp_event: !this.state.jp_event,
       worldwide_only: this.state.worldwide_only
-    }
+    };
     if (!this.state.jp_event) {
       firebase.messaging().subscribeToTopic('jp_event');
     } else {
@@ -97,15 +122,13 @@ class Drawer extends Component {
     this.props.navigation.navigate('CardDetailScreen', { item: item });
   }
 
-  toggleExpanded = () => {
-    this.setState({ collapsed: !this.state.collapsed });
-  };
+  toggleExpanded = () => this.setState({ collapsed: !this.state.collapsed });
 
   render() {
     return (
       <SafeAreaView>
-        <ImageBackground style={styles.fullscreen}
-          source={{ uri: AddHTTPS(this.props.bgImage) }}>
+        <ImageBackground source={{ uri: AddHTTPS(this.props.bgImage) }}
+          style={styles.fullscreen}>
           <View style={{ flex: 1 }}>
             <Fade visible={this.state.visible} style={styles.container}>
               <View style={[ApplicationStyles.center, styles.header]}>
@@ -140,7 +163,7 @@ class Drawer extends Component {
                 <TouchableOpacity onPress={this._groupToggle}>
                   <View style={styles.group}>
                     <Text>ABOUT ME</Text>
-                    <Icon name={!this.state.isCollapsed ? 'ios-arrow-up' : 'ios-arrow-down'} size={20}/>
+                    <Icon name={!this.state.isCollapsed ? 'ios-arrow-up' : 'ios-arrow-down'} size={20} />
                   </View>
                 </TouchableOpacity>
                 {!this.state.isCollapsed && <View style={{ flex: 1 }}>

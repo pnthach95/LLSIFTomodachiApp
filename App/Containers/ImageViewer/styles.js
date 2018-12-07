@@ -1,5 +1,5 @@
-import { StyleSheet, Platform } from 'react-native'
-import { Metrics } from '../../Theme'
+import { StyleSheet, Platform } from 'react-native';
+import { Metrics } from '../../Theme';
 
 export default StyleSheet.create({
   container: {
@@ -48,4 +48,4 @@ export default StyleSheet.create({
     textAlign: 'center',
     fontSize: 26
   }
-})
+});

@@ -1,5 +1,5 @@
-import { Dimensions, Platform } from 'react-native'
-const { width, height } = Dimensions.get('screen')
+import { Dimensions, Platform } from 'react-native';
+const { width, height } = Dimensions.get('screen');
 
 export default {
   marginHorizontal: 10,

@@ -1,14 +1,14 @@
-import { put, call } from 'redux-saga/effects'
-import CardListActions from '../Stores/CardList/Actions'
-import { LLSIFService } from '../Services/LLSIFService'
+import { put, call } from 'redux-saga/effects';
+import CardListActions from '../Stores/CardList/Actions';
+import { LLSIFService } from '../Services/LLSIFService';
 
 export function* fetchCardList(action) {
-  yield put(CardListActions.fetchCardListLoading())
+  yield put(CardListActions.fetchCardListLoading());
   // console.log('fetchCardList:', JSON.stringify(action.filter))
-  var data = yield call(LLSIFService.fetchCardList, action.filter)
+  var data = yield call(LLSIFService.fetchCardList, action.filter);
   if (data) {
-    yield put(CardListActions.fetchCardListSuccess(data))
+    yield put(CardListActions.fetchCardListSuccess(data));
   } else {
-    yield put(CardListActions.fetchCardListFailure('There was an error while fetching card list.'))
+    yield put(CardListActions.fetchCardListFailure('There was an error while fetching card list.'));
   }
 }

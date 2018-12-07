@@ -1,5 +1,5 @@
-import { StyleSheet } from 'react-native'
-import { Metrics } from '../../Theme'
+import { StyleSheet } from 'react-native';
+import { Metrics } from '../../Theme';
 
 export default StyleSheet.create({
   container: {
@@ -67,4 +67,4 @@ export default StyleSheet.create({
     paddingVertical: Metrics.baseMargin,
     marginHorizontal: 1
   },
-})
+});

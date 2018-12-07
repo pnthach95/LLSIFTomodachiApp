@@ -1,7 +1,7 @@
-import Reactotron, { asyncStorage } from 'reactotron-react-native'
-import { reactotronRedux } from 'reactotron-redux'
-import sagaPlugin from 'reactotron-redux-saga'
-import apisaucePlugin from 'reactotron-apisauce'
+import Reactotron, { asyncStorage } from 'reactotron-react-native';
+import { reactotronRedux } from 'reactotron-redux';
+import sagaPlugin from 'reactotron-redux-saga';
+import apisaucePlugin from 'reactotron-apisauce';
 
 const reactotron = Reactotron
   .configure({ name: 'Love Live', host: '192.168.1.142', port: 9090 })
@@ -10,11 +10,11 @@ const reactotron = Reactotron
   .use(reactotronRedux())
   .use(sagaPlugin())
   .use(apisaucePlugin())
-  .connect()
+  .connect();
 
 if (__DEV__) {
-  reactotron.connect()
-  reactotron.clear()
+  reactotron.connect();
+  reactotron.clear();
 }
 
-export default reactotron
+export default reactotron;

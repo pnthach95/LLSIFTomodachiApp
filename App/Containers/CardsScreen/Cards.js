@@ -1,28 +1,28 @@
-import React from 'react'
-import { Text, View, FlatList, TextInput, TouchableOpacity, Alert, ScrollView, Image } from 'react-native'
-import { connect } from 'react-redux'
-import Icon from 'react-native-vector-icons/Ionicons'
-import _ from 'lodash'
+import React from 'react';
+import { Text, View, FlatList, TextInput, TouchableOpacity, Alert, ScrollView, Image } from 'react-native';
+import { connect } from 'react-redux';
+import Icon from 'react-native-vector-icons/Ionicons';
+import _ from 'lodash';
 
-import YearRow from '../../Components/YearRow/YearRow'
-import CardItem from '../../Components/CardItem/CardItem'
-import EventRow from '../../Components/EventRow/EventRow'
-import SkillRow from '../../Components/SkillRow/SkillRow'
-import RarityRow from '../../Components/RarityRow/RarityRow'
-import RegionRow from '../../Components/RegionRow/RegionRow'
-import SchoolRow from '../../Components/SchoolRow/SchoolRow'
-import SubUnitRow from '../../Components/SubUnitRow/SubUnitRow'
-import IdolNameRow from '../../Components/IdolNameRow/IdolNameRow'
-import MainUnitRow from '../../Components/MainUnitRow/MainUnitRow'
-import AttributeRow from '../../Components/AttributeRow/AttributeRow'
-import PromoCardRow from '../../Components/PromoCardRow/PromoCardRow'
-import SquareButton from '../../Components/SquareButton/SquareButton'
-import SpecialCardRow from '../../Components/SpecialCardRow/SpecialCardRow'
-import { LLSIFService } from '../../Services/LLSIFService'
-import SplashScreen from '../SplashScreen/SplashScreen'
-import { Colors, ApplicationStyles, Images } from '../../Theme'
-import styles from './styles'
-import { loadSettings } from '../../Utils'
+import YearRow from '../../Components/YearRow/YearRow';
+import CardItem from '../../Components/CardItem/CardItem';
+import EventRow from '../../Components/EventRow/EventRow';
+import SkillRow from '../../Components/SkillRow/SkillRow';
+import RarityRow from '../../Components/RarityRow/RarityRow';
+import RegionRow from '../../Components/RegionRow/RegionRow';
+import SchoolRow from '../../Components/SchoolRow/SchoolRow';
+import SubUnitRow from '../../Components/SubUnitRow/SubUnitRow';
+import IdolNameRow from '../../Components/IdolNameRow/IdolNameRow';
+import MainUnitRow from '../../Components/MainUnitRow/MainUnitRow';
+import AttributeRow from '../../Components/AttributeRow/AttributeRow';
+import PromoCardRow from '../../Components/PromoCardRow/PromoCardRow';
+import SquareButton from '../../Components/SquareButton/SquareButton';
+import SpecialCardRow from '../../Components/SpecialCardRow/SpecialCardRow';
+import { LLSIFService } from '../../Services/LLSIFService';
+import SplashScreen from '../SplashScreen/SplashScreen';
+import { Colors, ApplicationStyles, Images } from '../../Theme';
+import styles from './styles';
+import { loadSettings } from '../../Utils';
 
 /**
  * [Card List Screen](https://github.com/MagiCircles/SchoolIdolAPI/wiki/API-Cards#get-the-list-of-cards)
@@ -54,7 +54,7 @@ import { loadSettings } from '../../Utils'
  */
 class CardsScreen extends React.PureComponent {
   constructor(props) {
-    super(props)
+    super(props);
     this.defaultFilter = {
       search: '',
       ordering: '-release_date',
@@ -72,7 +72,7 @@ class CardsScreen extends React.PureComponent {
       idol_sub_unit: 'All',
       idol_school: 'All',
       idol_year: ''
-    }
+    };
     this.state = {
       isLoading: true,
       data: [],
@@ -94,14 +94,13 @@ class CardsScreen extends React.PureComponent {
       idol_sub_unit: 'All',
       idol_school: 'All',
       idol_year: ''
-    }
-    this._onEndReached = _.debounce(this._onEndReached, 1000)
+    };
+    this._onEndReached = _.debounce(this._onEndReached, 1000);
   }
 
   static navigationOptions = {
-    tabBarIcon: ({ focused }) =>
-      <Icon name='ios-photos' size={30}
-        color={focused ? Colors.pink : Colors.inactive} />,
+    tabBarIcon: ({ focused }) => <Icon name='ios-photos' size={30}
+      color={focused ? Colors.pink : Colors.inactive} />,
     tabBarLabel: 'Cards',
     tabBarOptions: {
       activeTintColor: Colors.pink,
@@ -112,7 +111,7 @@ class CardsScreen extends React.PureComponent {
   componentDidMount() {
     loadSettings().then(res => {
       this.setState({ japan_only: res.worldwide_only ? 'False' : '' }, () => this._getCards())
-    })
+    });
   }
 
   /**
@@ -120,14 +119,14 @@ class CardsScreen extends React.PureComponent {
    *
    * @memberof CardsScreen
    */
-  _keyExtractor = (item, index) => `card ${item.id}`
+  _keyExtractor = (item, index) => `card ${item.id}`;
 
   /**
    * Render item in FlatList
    *
    * @memberof CardsScreen
    */
-  _renderItem = ({ item }) => <CardItem item={item} onPress={this._navigateToCardDetail(item)} />
+  _renderItem = ({ item }) => <CardItem item={item} onPress={this._navigateToCardDetail(item)} />;
 
   /**
    * Navigate to Card Detail Screen
@@ -135,7 +134,7 @@ class CardsScreen extends React.PureComponent {
    * @param {Object} item Card's information
    * @memberof CardsScreen
    */
-  _navigateToCardDetail = (item) => () => this.props.navigation.navigate('CardDetailScreen', { item: item })
+  _navigateToCardDetail = (item) => () => this.props.navigation.navigate('CardDetailScreen', { item: item });
 
   /**
    * Get card list
@@ -144,10 +143,10 @@ class CardsScreen extends React.PureComponent {
    * @memberof CardsScreen
    */
   _getCards(page = this.state.page) {
-    let _skill = this.state.skill
-    let _name = this.state.name
-    let _sub_unit = this.state.idol_sub_unit
-    let _school = this.state.idol_school
+    let _skill = this.state.skill;
+    let _name = this.state.name;
+    let _sub_unit = this.state.idol_sub_unit;
+    let _school = this.state.idol_school;
     let _filter = {
       ordering: this.state.ordering,
       page_size: this.state.page_size,
@@ -164,29 +163,34 @@ class CardsScreen extends React.PureComponent {
       idol_sub_unit: _sub_unit === 'All' ? '' : _sub_unit,
       idol_school: _school === 'All' ? '' : _school,
       idol_year: this.state.idol_year
-    }
+    };
     if (this.state.search !== '') { _filter.search = this.state.search }
-    // console.log(`========== Cards.getCards`, _filter)
+    // console.log(`========== Cards.getCards`, _filter);
     LLSIFService.fetchCardList(_filter).then(result => {
       if (result === 404) {
-        // console.log('LLSIFService.fetchCardList 404')
-        this.setState({ stopSearch: true })
+        // console.log('LLSIFService.fetchCardList 404');
+        this.setState({ stopSearch: true });
       } else {
-        var x = [...this.state.data, ...result]
-        x = x.filter((thing, index, self) => index === self.findIndex(t => t.id === thing.id))
+        var x = [...this.state.data, ...result];
+        x = x.filter((thing, index, self) => index === self.findIndex(t => t.id === thing.id));
         this.setState({
           data: x,
           isLoading: false,
           page: page + 1
-        })
+        });
       }
     }).catch(err => {
       Alert.alert('Error', 'Error when get cards',
-        [{ text: 'OK', onPress: () => console.log('OK Pressed', err) }])
+        [{ text: 'OK', onPress: () => console.log('OK Pressed', err) }]);
     })
   }
 
-  _openDrawer = () => this.props.navigation.openDrawer()
+  /**
+   * Open drawer
+   *
+   * @memberof CardsScreen
+   */
+  _openDrawer = () => this.props.navigation.openDrawer();
 
   /**
    * Call when pressing search button
@@ -194,8 +198,8 @@ class CardsScreen extends React.PureComponent {
    * @memberof CardsScreen
    */
   _onSearch = () => {
-    this.setState({ data: [], isFilter: false, stopSearch: false })
-    this._getCards(1)
+    this.setState({ data: [], isFilter: false, stopSearch: false });
+    this._getCards(1);
   }
 
   /**
@@ -205,8 +209,8 @@ class CardsScreen extends React.PureComponent {
    * @memberof CardsScreen
    */
   _onEndReached = () => {
-    if (this.state.stopSearch) return
-    this._getCards()
+    if (this.state.stopSearch) return;
+    this._getCards();
   }
 
   /**
@@ -214,7 +218,7 @@ class CardsScreen extends React.PureComponent {
    *
    * @memberof CardsScreen
    */
-  _toggleFilter = () => this.setState({ isFilter: !this.state.isFilter })
+  _toggleFilter = () => this.setState({ isFilter: !this.state.isFilter });
 
   /**
    * Save is_promo
@@ -222,7 +226,7 @@ class CardsScreen extends React.PureComponent {
    * @param {String} value
    * @memberof CardsScreen
    */
-  _selectPromo = (value) => () => this.setState({ is_promo: value })
+  _selectPromo = (value) => () => this.setState({ is_promo: value });
 
   /**
    * Save is_special
@@ -230,7 +234,7 @@ class CardsScreen extends React.PureComponent {
    * @param {String} value
    * @memberof CardsScreen
    */
-  _selectSpecial = (value) => () => this.setState({ is_special: value })
+  _selectSpecial = (value) => () => this.setState({ is_special: value });
 
   /**
    * Save is_event
@@ -238,7 +242,7 @@ class CardsScreen extends React.PureComponent {
    * @param {String} value
    * @memberof CardsScreen
    */
-  _selectEvent = (value) => () => this.setState({ is_event: value })
+  _selectEvent = (value) => () => this.setState({ is_event: value });
 
   /**
    * Save idol_main_unit
@@ -246,7 +250,7 @@ class CardsScreen extends React.PureComponent {
    * @param {String} value
    * @memberof CardsScreen
    */
-  _selectMainUnit = (value) => () => this.setState({ idol_main_unit: value })
+  _selectMainUnit = (value) => () => this.setState({ idol_main_unit: value });
 
   /**
    * Save rarity
@@ -254,7 +258,7 @@ class CardsScreen extends React.PureComponent {
    * @param {String} value
    * @memberof CardsScreen
    */
-  _selectRarity = (value) => () => this.setState({ rarity: value })
+  _selectRarity = (value) => () => this.setState({ rarity: value });
 
   /**
    * Save attribute
@@ -262,7 +266,7 @@ class CardsScreen extends React.PureComponent {
    * @param {String} value
    * @memberof CardsScreen
    */
-  _selectAttribute = (value) => () => this.setState({ attribute: value })
+  _selectAttribute = (value) => () => this.setState({ attribute: value });
 
   /**
    * Save idol_year
@@ -270,7 +274,7 @@ class CardsScreen extends React.PureComponent {
    * @param {String} value
    * @memberof CardsScreen
    */
-  _selectYear = (value) => () => this.setState({ idol_year: value })
+  _selectYear = (value) => () => this.setState({ idol_year: value });
 
   /**
    * Save region
@@ -278,7 +282,7 @@ class CardsScreen extends React.PureComponent {
    * @param {String} value
    * @memberof CardsScreen
    */
-  _selectRegion = (value) => () => this.setState({ japan_only: value })
+  _selectRegion = (value) => () => this.setState({ japan_only: value });
 
   /**
    * Save idol_sub_unit
@@ -287,7 +291,7 @@ class CardsScreen extends React.PureComponent {
    * @param {String} itemIndex unused
    * @memberof CardsScreen
    */
-  _selectSubUnit = (itemValue, itemIndex) => this.setState({ idol_sub_unit: itemValue })
+  _selectSubUnit = (itemValue, itemIndex) => this.setState({ idol_sub_unit: itemValue });
 
   /**
    * Save idol name
@@ -296,7 +300,7 @@ class CardsScreen extends React.PureComponent {
    * @param {String} itemIndex unused
    * @memberof CardsScreen
    */
-  _selectIdol = (itemValue, itemIndex) => this.setState({ name: itemValue })
+  _selectIdol = (itemValue, itemIndex) => this.setState({ name: itemValue });
 
   /**
    * Save school
@@ -305,7 +309,7 @@ class CardsScreen extends React.PureComponent {
    * @param {String} itemIndex unused
    * @memberof CardsScreen
    */
-  _selectSchool = (itemValue, itemIndex) => this.setState({ idol_school: itemValue })
+  _selectSchool = (itemValue, itemIndex) => this.setState({ idol_school: itemValue });
 
   /**
    * Save skill
@@ -314,7 +318,7 @@ class CardsScreen extends React.PureComponent {
    * @param {String} itemIndex unused
    * @memberof CardsScreen
    */
-  _selectSkill = (itemValue, itemIndex) => this.setState({ skill: itemValue })
+  _selectSkill = (itemValue, itemIndex) => this.setState({ skill: itemValue });
 
   /**
    * Reset filter variables
@@ -336,7 +340,7 @@ class CardsScreen extends React.PureComponent {
       idol_school: this.defaultFilter.idol_school,
       idol_year: this.defaultFilter.idol_year,
       search: ''
-    })
+    });
   }
 
   /**
@@ -349,17 +353,17 @@ class CardsScreen extends React.PureComponent {
   </View>
 
   render() {
-    if (this.state.isLoading) return <SplashScreen bgColor={Colors.green} />
+    if (this.state.isLoading) return <SplashScreen bgColor={Colors.green} />;
     return (
       <View style={styles.container}>
         {/* HEADER */}
         <View style={[ApplicationStyles.header, styles.header]}>
           <SquareButton name={'ios-menu'} onPress={this._openDrawer} />
-          <TextInput style={ApplicationStyles.searchInput}
+          <TextInput value={this.state.search}
             onChangeText={text => this.setState({ search: text })}
             onSubmitEditing={this._onSearch}
-            placeholder={'Type here...'}
-            value={this.state.search} />
+            placeholder={'Search card...'}
+            style={ApplicationStyles.searchInput} />
           <SquareButton name={'ios-search'} onPress={this._onSearch} />
           <SquareButton name={'ios-more'} onPress={this._toggleFilter} />
         </View>
@@ -396,8 +400,7 @@ class CardsScreen extends React.PureComponent {
         </View>}
 
         {/* LIST */}
-        <FlatList
-          data={this.state.data}
+        <FlatList data={this.state.data}
           numColumns={2}
           initialNumToRender={8}
           keyExtractor={this._keyExtractor}
@@ -410,6 +413,6 @@ class CardsScreen extends React.PureComponent {
   }
 }
 
-const mapStateToProps = (state) => ({})
-const mapDispatchToProps = (dispatch) => ({})
-export default connect(mapStateToProps, mapDispatchToProps)(CardsScreen)
+const mapStateToProps = (state) => ({});
+const mapDispatchToProps = (dispatch) => ({});
+export default connect(mapStateToProps, mapDispatchToProps)(CardsScreen);

@@ -1,11 +1,11 @@
-import { createActions } from 'reduxsauce'
+import { createActions } from 'reduxsauce';
 
 const { Types, Creators } = createActions({
   fetchCardList: ['filter'],
   fetchCardListLoading: null,
   fetchCardListSuccess: ['cardList'],
-  fetchCardListFailure: ['errorMessage'],
-})
+  fetchCardListFailure: ['errorMessage']
+});
 
-export const CardListTypes = Types
-export default Creators
+export const CardListTypes = Types;
+export default Creators;

@@ -1,18 +1,18 @@
-import React from 'react'
-import { Text, View, ScrollView, TouchableOpacity, Image } from 'react-native'
-import { connect } from 'react-redux'
-import FastImage from 'react-native-fast-image'
-import LinearGradient from 'react-native-linear-gradient'
+import React from 'react';
+import { Text, View, ScrollView, TouchableOpacity, Image } from 'react-native';
+import { connect } from 'react-redux';
+import FastImage from 'react-native-fast-image';
+import LinearGradient from 'react-native-linear-gradient';
 
-import { getSongMaxStat } from '../../Stores/CachedData/Selectors'
-import StarBar from '../../Components/StarBar/StarBar'
-import ProgressBar from '../../Components/ProgressBar/ProgressBar'
-import SquareButton from '../../Components/SquareButton/SquareButton'
-import TextRow from '../../Components/TextRow/TextRow'
-import SplashScreen from '../SplashScreen/SplashScreen'
-import { findColorByAttribute, AddHTTPS, findMainUnit } from '../../Utils'
-import { Metrics, ApplicationStyles, Colors } from '../../Theme'
-import styles from './styles'
+import { getSongMaxStat } from '../../Stores/CachedData/Selectors';
+import StarBar from '../../Components/StarBar/StarBar';
+import ProgressBar from '../../Components/ProgressBar/ProgressBar';
+import SquareButton from '../../Components/SquareButton/SquareButton';
+import TextRow from '../../Components/TextRow/TextRow';
+import SplashScreen from '../SplashScreen/SplashScreen';
+import { findColorByAttribute, AddHTTPS, findMainUnit } from '../../Utils';
+import { Metrics, ApplicationStyles, Colors } from '../../Theme';
+import styles from './styles';
 
 /**
  * Song Detail Screen
@@ -39,7 +39,7 @@ import styles from './styles'
  */
 class SongDetailScreen extends React.Component {
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
       item: this.props.navigation.getParam('item'),
       name: '',
@@ -59,32 +59,32 @@ class SongDetailScreen extends React.Component {
   }
 
   componentDidMount() {
-    easyArray = []
+    var easyArray = [];
     for (i = 0; i < this.state.item.easy_difficulty; i++) {
-      easyArray.push(this.setColor(i))
+      easyArray.push(this.setColor(i));
     }
-    normalArray = []
+    var normalArray = [];
     for (i = 0; i < this.state.item.normal_difficulty; i++) {
-      normalArray.push(this.setColor(i))
+      normalArray.push(this.setColor(i));
     }
-    hardArray = []
+    var hardArray = [];
     for (i = 0; i < this.state.item.hard_difficulty; i++) {
-      hardArray.push(this.setColor(i))
+      hardArray.push(this.setColor(i));
     }
-    expertArray = []
+    var expertArray = [];
     for (i = 0; i < this.state.item.expert_difficulty; i++) {
-      expertArray.push(this.setColor(i))
+      expertArray.push(this.setColor(i));
     }
-    expertRandomArray = []
+    var expertRandomArray = [];
     if (this.state.item.expert_random_difficulty) {
       for (i = 0; i < this.state.item.expert_random_difficulty; i++) {
-        expertRandomArray.push(this.setColor(i))
+        expertRandomArray.push(this.setColor(i));
       }
     }
-    masterArray = []
+    masterArray = [];
     if (this.state.item.master_difficulty) {
       for (i = 0; i < this.state.item.master_difficulty; i++) {
-        masterArray.push(this.setColor(i))
+        masterArray.push(this.setColor(i));
       }
     }
     this.setState({
@@ -98,13 +98,19 @@ class SongDetailScreen extends React.Component {
       random: [this.state.item.expert_notes, expertRandomArray],
       master: [this.state.item.master_notes, masterArray],
       colors: findColorByAttribute(this.state.item.attribute)
-    })
+    });
     // console.log('SongDetails', this.state.item)
   }
 
+  /**
+   * Get width, height of image in FastImage
+   *
+   * @param {*} e
+   * @memberof SongDetailScreen
+   */
   onLoadFastImage(e) {
-    const { width, height } = e.nativeEvent
-    this.setState({ imgWidth: width, imgHeight: height })
+    const { width, height } = e.nativeEvent;
+    this.setState({ imgWidth: width, imgHeight: height });
   }
 
   /**
@@ -116,12 +122,12 @@ class SongDetailScreen extends React.Component {
    */
   setColor(index) {
     if (index < 3)
-      return 0
+      return 0;
     if (index < 6)
-      return 1
+      return 1;
     if (index < 9)
-      return 2
-    return 3
+      return 2;
+    return 3;
   }
 
   /**
@@ -131,10 +137,10 @@ class SongDetailScreen extends React.Component {
    * @memberof SongDetailScreen
    */
   formatTime(time) {
-    let minutes = parseInt(((time / 60) % 60).toString(), 10)
-    var seconds = time % 60
-    if (seconds < 10) seconds = '0' + seconds
-    return minutes + ':' + seconds
+    let minutes = parseInt(((time / 60) % 60).toString(), 10);
+    var seconds = time % 60;
+    if (seconds < 10) seconds = '0' + seconds;
+    return minutes + ':' + seconds;
   }
 
   /**
@@ -144,7 +150,7 @@ class SongDetailScreen extends React.Component {
    * @memberof SongDetailScreen
    */
   navigateToEventDetail(event) {
-    this.props.navigation.navigate('EventDetailScreen', { event: event })
+    this.props.navigation.navigate('EventDetailScreen', { event: event });
   }
 
   /**
@@ -158,19 +164,18 @@ class SongDetailScreen extends React.Component {
    */
   statButton(id, text, stat, style) {
     return (
-      <TouchableOpacity
+      <TouchableOpacity onPress={() => this.setState({ currentStats: stat, buttonID: id })}
         style={[
           styles.button, style,
           { backgroundColor: this.state.buttonID === id ? Colors.violet : Colors.inactive }
-        ]}
-        onPress={() => this.setState({ currentStats: stat, buttonID: id })}>
+        ]}>
         <Text style={{ color: 'white' }}>{text}</Text>
       </TouchableOpacity>
     )
   }
 
   progressStat(stat) {
-    return 100 * stat / this.props.songMaxStat
+    return 100 * stat / this.props.songMaxStat;
   }
 
   render() {
@@ -184,7 +189,8 @@ class SongDetailScreen extends React.Component {
           { backgroundColor: this.state.colors[1] }
         ]}>
           <View style={styles.leftHeader}>
-            <SquareButton name={'ios-arrow-back'} onPress={() => this.props.navigation.goBack()} />
+            <SquareButton name={'ios-arrow-back'}
+              onPress={() => this.props.navigation.goBack()} />
           </View>
           <View style={styles.centerHeader}>
             <Text>{this.state.name}</Text>
@@ -265,7 +271,7 @@ class SongDetailScreen extends React.Component {
 
 const mapStateToProps = (state) => ({
   songMaxStat: getSongMaxStat(state)
-})
+});
 
-const mapDispatchToProps = (dispatch) => ({})
-export default connect(mapStateToProps, mapDispatchToProps)(SongDetailScreen)
+const mapDispatchToProps = (dispatch) => ({});
+export default connect(mapStateToProps, mapDispatchToProps)(SongDetailScreen);

@@ -1,11 +1,11 @@
-import { createActions } from 'reduxsauce'
+import { createActions } from 'reduxsauce';
 
 const { Types, Creators } = createActions({
   fetchCachedData: null,
   fetchCachedDataLoading: null,
   fetchCachedDataSuccess: ['cachedData'],
-  fetchCachedDataFailure: ['errorMessage'],
+  fetchCachedDataFailure: ['errorMessage']
 })
 
-export const CachedDataTypes = Types
-export default Creators
+export const CachedDataTypes = Types;
+export default Creators;

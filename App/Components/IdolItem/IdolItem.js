@@ -41,11 +41,11 @@ export default class IdolItem extends Component {
         <FastImage
           source={{
             uri: this.props.item.chibi,
-            priority: FastImage.priority.normal,
+            priority: FastImage.priority.normal
           }}
           onLoad={(e) => {
-            const { width, height } = e.nativeEvent
-            this.setState({ imgWidth: width, imgHeight: height })
+            const { width, height } = e.nativeEvent;
+            this.setState({ imgWidth: width, imgHeight: height });
           }}
           style={{
             width: Metrics.images.smallItemWidth,

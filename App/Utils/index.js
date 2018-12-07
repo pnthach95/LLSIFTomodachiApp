@@ -16,13 +16,13 @@ export const AddHTTPS = (link) => { return 'https:' + link }
 export const findColorByAttribute = (key) => {
   switch (key) {
     case 'Smile':
-      return [Colors.pink, Colors.lightPink]
+      return [Colors.pink, Colors.lightPink];
     case 'Pure':
-      return [Colors.green, Colors.lightGreen]
+      return [Colors.green, Colors.lightGreen];
     case 'Cool':
-      return [Colors.blue, Colors.lightBlue]
+      return [Colors.blue, Colors.lightBlue];
     default:
-      return [Colors.violet, Colors.lightViolet]
+      return [Colors.violet, Colors.lightViolet];
   }
 }
 
@@ -33,13 +33,13 @@ export const findColorByAttribute = (key) => {
 export const findAttribute = (key) => {
   switch (key) {
     case 'Smile':
-      return Images.attribute[0]
+      return Images.attribute[0];
     case 'Pure':
-      return Images.attribute[1]
+      return Images.attribute[1];
     case 'Cool':
-      return Images.attribute[2]
+      return Images.attribute[2];
     default:
-      return Images.attribute[3]
+      return Images.attribute[3];
   }
 }
 
@@ -50,11 +50,11 @@ export const findAttribute = (key) => {
 export const findMainUnit = (key) => {
   switch (key) {
     case 'Aqours':
-      return Images.mainUnit[1]
+      return Images.mainUnit[1];
     case `μ's`:
-      return Images.mainUnit[0]
+      return Images.mainUnit[0];
     default:
-      return null
+      return null;
   }
 }
 
@@ -65,23 +65,23 @@ export const findMainUnit = (key) => {
 export const findSubUnit = (key) => {
   switch (key) {
     case 'Printemps':
-      return Images.subUnit[0]
+      return Images.subUnit[0];
     case 'Lily White':
-      return Images.subUnit[1]
+      return Images.subUnit[1];
     case 'Bibi':
-      return Images.subUnit[2]
+      return Images.subUnit[2];
     case 'CYaRon!':
-      return Images.subUnit[3]
+      return Images.subUnit[3];
     case 'AZALEA':
-      return Images.subUnit[4]
+      return Images.subUnit[4];
     case 'Guilty Kiss':
-      return Images.subUnit[5]
+      return Images.subUnit[5];
     case 'Saint Snow':
-      return Images.subUnit[6]
+      return Images.subUnit[6];
     case 'A-RISE':
-      return Images.subUnit[7]
+      return Images.subUnit[7];
     default:
-      return null
+      return null;
   }
 }
 
@@ -105,8 +105,7 @@ export const loadSettings = async () => {
 }
 
 export const saveSettings = (settings) => {
-  let j = JSON.stringify(settings);
-  AsyncStorage.setItem('settings', j);
+  AsyncStorage.setItem('settings', JSON.stringify(settings));
 }
 
 export const darkenColor = (color) => {

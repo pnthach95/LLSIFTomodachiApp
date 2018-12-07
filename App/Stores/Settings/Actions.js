@@ -1,4 +1,4 @@
-import { createActions } from 'reduxsauce'
+import { createActions } from 'reduxsauce';
 
 const { Types, Creators } = createActions({
   setSettings: ['settings'],
@@ -6,5 +6,5 @@ const { Types, Creators } = createActions({
   saveSettings: ['settings']
 })
 
-export const SettingTypes = Types
-export default Creators
+export const SettingTypes = Types;
+export default Creators;

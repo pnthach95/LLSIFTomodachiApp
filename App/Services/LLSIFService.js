@@ -1,13 +1,13 @@
-import { create } from 'apisauce'
-import Reactotron from 'reactotron-react-native'
-import { Config } from '../Config'
+import { create } from 'apisauce';
+import Reactotron from 'reactotron-react-native';
+import { Config } from '../Config';
 
 const LLSIFApiClient = create({
   baseURL: Config.API_URL,
   timeout: 10000
-})
+});
 
-LLSIFApiClient.addMonitor(Reactotron.apisauce)
+LLSIFApiClient.addMonitor(Reactotron.apisauce);
 
 /**
  * [Fetch cached data](https://github.com/MagiCircles/SchoolIdolAPI/wiki/API-Cached-data)
@@ -15,11 +15,11 @@ LLSIFApiClient.addMonitor(Reactotron.apisauce)
  * @returns
  */
 async function fetchCachedData() {
-  const response = await LLSIFApiClient.get(Config.CACHED_DATA)
+  const response = await LLSIFApiClient.get(Config.CACHED_DATA);
   if (response.ok) {
-    return response.data
+    return response.data;
   }
-  return null
+  return null;
 }
 
 /**
@@ -29,14 +29,14 @@ async function fetchCachedData() {
  * @returns
  */
 async function fetchCardList(filter) {
-  const response = await LLSIFApiClient.get(Config.CARDS, filter)
+  const response = await LLSIFApiClient.get(Config.CARDS, filter);
   if (response.ok) {
-    return response.data.results
+    return response.data.results;
   }
   if (response.status === 404) {
-    return 404
+    return 404;
   }
-  return null
+  return null;
 }
 
 /**
@@ -45,17 +45,17 @@ async function fetchCardList(filter) {
  * @returns
  */
 async function fetchIdolList() {
-  const response1 = await LLSIFApiClient.get(Config.IDOLS, { page_size: 100 })
-  const response2 = await LLSIFApiClient.get(Config.IDOLS, { page_size: 100, page: 2 })
-  var data1 = []
-  var data2 = []
+  const response1 = await LLSIFApiClient.get(Config.IDOLS, { page_size: 100 });
+  const response2 = await LLSIFApiClient.get(Config.IDOLS, { page_size: 100, page: 2 });
+  var data1 = [];
+  var data2 = [];
   if (response1.ok) {
-    data1 = response1.data.results
-  } else return null
+    data1 = response1.data.results;
+  } else return null;
   if (response2.ok) {
-    data2 = response2.data.results
+    data2 = response2.data.results;
   }
-  return [...data1, ...data2]
+  return [...data1, ...data2];
 }
 
 /**
@@ -65,11 +65,11 @@ async function fetchIdolList() {
  * @returns
  */
 async function fetchIdol(name) {
-  const response = await LLSIFApiClient.get(Config.IDOLS + name)
+  const response = await LLSIFApiClient.get(Config.IDOLS + name);
   if (response.ok) {
-    return response.data
+    return response.data;
   }
-  return null
+  return null;
 }
 
 /**
@@ -79,15 +79,15 @@ async function fetchIdol(name) {
  * @returns
  */
 async function fetchSongList(filter) {
-  filter.expand_event = ''
-  const response = await LLSIFApiClient.get(Config.SONGS, filter)
+  filter.expand_event = '';
+  const response = await LLSIFApiClient.get(Config.SONGS, filter);
   if (response.ok) {
-    return response.data.results
+    return response.data.results;
   }
   if (response.status === 404) {
-    return 404
+    return 404;
   }
-  return null
+  return null;
 }
 
 /**
@@ -97,14 +97,14 @@ async function fetchSongList(filter) {
  * @returns
  */
 async function fetchEventList(filter) {
-  const response = await LLSIFApiClient.get(Config.EVENTS, filter)
+  const response = await LLSIFApiClient.get(Config.EVENTS, filter);
   if (response.ok) {
-    return response.data.results
+    return response.data.results;
   }
   if (response.status === 404) {
-    return 404
+    return 404;
   }
-  return null
+  return null;
 }
 
 /**
@@ -114,11 +114,11 @@ async function fetchEventList(filter) {
  * @returns
  */
 async function fetchEventData(name) {
-  const response = await LLSIFApiClient.get(Config.EVENTS + name)
+  const response = await LLSIFApiClient.get(Config.EVENTS + name);
   if (response.ok) {
-    return response.data
+    return response.data;
   }
-  return null
+  return null;
 }
 
 async function fetchRandomCard() {
@@ -127,12 +127,12 @@ async function fetchRandomCard() {
     page_size: 1,
     rarity: 'SSR,UR',
     idol_main_unit: `μ's,Aqours`
-  }
-  const response = await LLSIFApiClient.get(Config.CARDS, filter)
+  };
+  const response = await LLSIFApiClient.get(Config.CARDS, filter);
   if (response.ok) {
-    return response.data.results[0]
+    return response.data.results[0];
   }
-  return null
+  return null;
 }
 
 export const LLSIFService = {

@@ -1,20 +1,20 @@
-import React from 'react'
-import { Text, View, ScrollView, TouchableOpacity, Image } from 'react-native'
-import { connect } from 'react-redux'
-import FastImage from 'react-native-fast-image'
-import LinearGradient from 'react-native-linear-gradient'
-import Icon from 'react-native-vector-icons/Ionicons'
-import moment from 'moment'
+import React from 'react';
+import { Text, View, ScrollView, TouchableOpacity, Image } from 'react-native';
+import { connect } from 'react-redux';
+import FastImage from 'react-native-fast-image';
+import LinearGradient from 'react-native-linear-gradient';
+import Icon from 'react-native-vector-icons/Ionicons';
+import moment from 'moment';
 
-import { getMaxStats } from '../../Stores/CachedData/Selectors'
-import Seperator from '../../Components/Seperator/Seperator'
-import ProgressBar from '../../Components/ProgressBar/ProgressBar'
-import SquareButton from '../../Components/SquareButton/SquareButton'
-import TextRow from '../../Components/TextRow/TextRow'
-import SplashScreen from '../SplashScreen/SplashScreen'
-import { findColorByAttribute, AddHTTPS, findMainUnit, findSubUnit } from '../../Utils'
-import { Metrics, Fonts, ApplicationStyles, Colors, Images } from '../../Theme'
-import styles from './styles'
+import { getMaxStats } from '../../Stores/CachedData/Selectors';
+import Seperator from '../../Components/Seperator/Seperator';
+import ProgressBar from '../../Components/ProgressBar/ProgressBar';
+import SquareButton from '../../Components/SquareButton/SquareButton';
+import TextRow from '../../Components/TextRow/TextRow';
+import SplashScreen from '../SplashScreen/SplashScreen';
+import { findColorByAttribute, AddHTTPS, findMainUnit, findSubUnit } from '../../Utils';
+import { Metrics, Fonts, ApplicationStyles, Colors, Images } from '../../Theme';
+import styles from './styles';
 
 /**
  * Card detail screen
@@ -37,7 +37,7 @@ import styles from './styles'
  */
 class CardDetailScreen extends React.Component {
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
       item: this.props.navigation.getParam('item'),
       imgWidth: 0,
@@ -50,7 +50,7 @@ class CardDetailScreen extends React.Component {
       idolMaxStats: [],
       currentStats: [],
       buttonID: 0
-    }
+    };
   }
 
   componentDidMount() {
@@ -82,33 +82,33 @@ class CardDetailScreen extends React.Component {
         this.state.item.minimum_statistics_pure,
         this.state.item.minimum_statistics_cool
       ]
-    })
-    // console.log('CardDetails.state.item', this.state.item)
+    });
+    // console.log('CardDetails.state.item', this.state.item);
   }
 
   progressSmile(stat) {
-    return 100 * stat / this.state.maxStats[0]
+    return 100 * stat / this.state.maxStats[0];
   }
 
   progressPure(stat) {
-    return 100 * stat / this.state.maxStats[1]
+    return 100 * stat / this.state.maxStats[1];
   }
 
   progressCool(stat) {
-    return 100 * stat / this.state.maxStats[2]
+    return 100 * stat / this.state.maxStats[2];
   }
 
   progressUnit(text, stat, color) {
     var icon = function (text) {
       switch (text) {
         case 'Smile':
-          return 0
+          return 0;
         case 'Pure':
-          return 1
+          return 1;
         default:
-          return 2
+          return 2;
       }
-    }
+    };
     return (
       <View style={{ width: '100%' }}>
         <Text style={[Fonts.style.normal, styles.progressText]}>{text}</Text>
@@ -125,13 +125,11 @@ class CardDetailScreen extends React.Component {
   }
 
   progressView(stats) {
-    return (
-      <View>
-        {this.progressUnit('Smile', stats[0], Colors.pink)}
-        {this.progressUnit('Pure', stats[1], Colors.green)}
-        {this.progressUnit('Cool', stats[2], Colors.blue)}
-      </View>
-    )
+    return (<View>
+      {this.progressUnit('Smile', stats[0], Colors.pink)}
+      {this.progressUnit('Pure', stats[1], Colors.green)}
+      {this.progressUnit('Cool', stats[2], Colors.blue)}
+    </View>)
   }
 
   statButton(id, text, stats, style) {
@@ -157,7 +155,7 @@ class CardDetailScreen extends React.Component {
    * @param {String} name Event name
    * @memberof CardDetailScreen
    */
-  _navigateToEventDetail = (name) => () => this.props.navigation.navigate('EventDetailScreen', { eventName: name })
+  _navigateToEventDetail = (name) => () => this.props.navigation.navigate('EventDetailScreen', { eventName: name });
 
   /**
    * Navigate to Idol Detail Screen
@@ -165,18 +163,22 @@ class CardDetailScreen extends React.Component {
    * @param {String} name Idol name
    * @memberof CardDetailScreen
    */
-  _navigateToIdolDetail = (name) => () => this.props.navigation.navigate('IdolDetailScreen', { name: name })
+  _navigateToIdolDetail = (name) => () => this.props.navigation.navigate('IdolDetailScreen', { name: name });
 
   _renderImage = (props) => {
-    let propss = props
     return <FastImage source={{ uri: props.source.uri }} />
   }
 
   render() {
-    if (this.state.isLoading) return <SplashScreen />
+    if (this.state.isLoading) return <SplashScreen />;
     let images = []
     if (this.state.item.card_image !== null) images.push({ url: AddHTTPS(this.state.item.card_image) })
     images.push({ url: AddHTTPS(this.state.item.card_idolized_image) })
+    var tmp = [];
+    var propertyLine = '';
+    if (this.state.item.is_promo) tmp.push('Promo card');
+    if (this.state.item.japan_only) tmp.push('Japan only');
+    propertyLine = tmp.join(' - ');
     return (
       <View style={styles.container}>
         {/* HEADER */}
@@ -189,8 +191,7 @@ class CardDetailScreen extends React.Component {
             <SquareButton name={'ios-arrow-back'} onPress={() => this.props.navigation.goBack()} />
           </View>
           <View style={styles.centerHeader}>
-            <TouchableOpacity
-              onPress={this._navigateToIdolDetail(this.state.item.idol.name)}>
+            <TouchableOpacity onPress={this._navigateToIdolDetail(this.state.item.idol.name)}>
               <Text style={Fonts.style.normal}>{this.state.item.idol.name}</Text>
             </TouchableOpacity>
           </View>
@@ -231,37 +232,27 @@ class CardDetailScreen extends React.Component {
 
             {/* INFORMATION */}
             <View style={{ paddingHorizontal: Metrics.doubleBaseMargin }}>
-              <TextRow
-                item1={{ flex: 1, text: 'Card ID' }}
+              <TextRow item1={{ flex: 1, text: 'Card ID' }}
                 item2={{ flex: 2, text: this.state.item.game_id }} />
-              <TextRow
-                item1={{ flex: 1, text: 'Release date' }}
+              <TextRow item1={{ flex: 1, text: 'Release date' }}
                 item2={{ flex: 2, text: moment(this.state.item.release_date).format('MMM Do YYYY') }} />
-              <View style={{ flexDirection: 'row' }}>
-                {this.state.item.is_promo && <Text>Promo card</Text>}
-                {this.state.item.is_promo && this.state.item.japan_only && <Text> - </Text>}
-                {this.state.item.japan_only && <Text>Japan only</Text>}
-              </View>
+              {propertyLine.length > 0 && <Text>{propertyLine}</Text>}
 
               {(this.state.item.skill !== null && this.state.item.skill.length !== 0) &&
                 <View>
                   <Seperator />
-                  <TextRow
-                    item1={{ flex: 1, text: 'Skill' }}
+                  <TextRow item1={{ flex: 1, text: 'Skill' }}
                     item2={{ flex: 2, text: this.state.item.skill }} />
-                  <TextRow
-                    item1={{ flex: 1, text: '' }}
+                  <TextRow item1={{ flex: 1, text: '' }}
                     item2={{ flex: 2, text: this.state.item.skill_details, textStyle: styles.subtitleText }} />
                 </View>}
 
               {(this.state.item.center_skill !== null && this.state.item.center_skill.length !== 0) &&
                 <View>
                   <Seperator />
-                  <TextRow
-                    item1={{ flex: 1, text: 'Center skill' }}
+                  <TextRow item1={{ flex: 1, text: 'Center skill' }}
                     item2={{ flex: 2, text: this.state.item.center_skill }} />
-                  <TextRow
-                    item1={{ flex: 1, text: '' }}
+                  <TextRow item1={{ flex: 1, text: '' }}
                     item2={{ flex: 2, text: this.state.item.center_skill_details, textStyle: styles.subtitleText }} />
                 </View>}
 
@@ -310,6 +301,6 @@ class CardDetailScreen extends React.Component {
   }
 }
 
-const mapStateToProps = (state) => ({ maxStats: getMaxStats(state) })
-const mapDispatchToProps = (dispatch) => ({})
-export default connect(mapStateToProps, mapDispatchToProps)(CardDetailScreen)
+const mapStateToProps = (state) => ({ maxStats: getMaxStats(state) });
+const mapDispatchToProps = (dispatch) => ({});
+export default connect(mapStateToProps, mapDispatchToProps)(CardDetailScreen);

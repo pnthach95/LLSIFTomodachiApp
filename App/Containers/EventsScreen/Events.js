@@ -1,21 +1,21 @@
-import React from 'react'
-import { View, FlatList, Text, TextInput, Alert, TouchableOpacity, Image } from 'react-native'
-import { connect } from 'react-redux'
-import Icon from 'react-native-vector-icons/Ionicons'
-import _ from 'lodash'
+import React from 'react';
+import { View, FlatList, Text, TextInput, Alert, TouchableOpacity, Image } from 'react-native';
+import { connect } from 'react-redux';
+import Icon from 'react-native-vector-icons/Ionicons';
+import _ from 'lodash';
 
-import SkillRow from '../../Components/SkillRow/SkillRow'
-import EventItem from '../../Components/EventItem/EventItem'
-import RegionRow from '../../Components/RegionRow/RegionRow'
-import IdolNameRow from '../../Components/IdolNameRow/IdolNameRow'
-import MainUnitRow from '../../Components/MainUnitRow/MainUnitRow'
-import AttributeRow from '../../Components/AttributeRow/AttributeRow'
-import SquareButton from '../../Components/SquareButton/SquareButton'
-import SplashScreen from '../SplashScreen/SplashScreen'
-import { Colors, ApplicationStyles, Images } from '../../Theme'
-import styles from './styles'
-import { LLSIFService } from '../../Services/LLSIFService'
-import { loadSettings } from '../../Utils'
+import SkillRow from '../../Components/SkillRow/SkillRow';
+import EventItem from '../../Components/EventItem/EventItem';
+import RegionRow from '../../Components/RegionRow/RegionRow';
+import IdolNameRow from '../../Components/IdolNameRow/IdolNameRow';
+import MainUnitRow from '../../Components/MainUnitRow/MainUnitRow';
+import AttributeRow from '../../Components/AttributeRow/AttributeRow';
+import SquareButton from '../../Components/SquareButton/SquareButton';
+import SplashScreen from '../SplashScreen/SplashScreen';
+import { Colors, ApplicationStyles, Images } from '../../Theme';
+import styles from './styles';
+import { LLSIFService } from '../../Services/LLSIFService';
+import { loadSettings } from '../../Utils';
 
 /**
  * [Event List Screen](https://github.com/MagiCircles/SchoolIdolAPI/wiki/API-Events#get-the-list-of-events)
@@ -40,7 +40,7 @@ import { loadSettings } from '../../Utils'
  */
 class EventsScreen extends React.Component {
   constructor(props) {
-    super(props)
+    super(props);
     this.defaultFilter = {
       ordering: '-beginning',
       page_size: 30,
@@ -51,7 +51,7 @@ class EventsScreen extends React.Component {
       skill: 'All',
       attribute: '',
       is_english: '',
-    }
+    };
     this.state = {
       isLoading: true,
       list: [],
@@ -66,8 +66,8 @@ class EventsScreen extends React.Component {
       skill: 'All',
       attribute: '',
       is_english: '',
-    }
-    this._onEndReached = _.debounce(this._onEndReached, 500)
+    };
+    this._onEndReached = _.debounce(this._onEndReached, 500);
   }
 
   static navigationOptions = {
@@ -83,7 +83,7 @@ class EventsScreen extends React.Component {
 
   componentDidMount() {
     loadSettings().then(res => {
-      this.setState({ is_english: res.worldwide_only ? 'False' : '' }, () => this._getEvents())
+      this.setState({ is_english: res.worldwide_only ? 'False' : '' }, () => this._getEvents());
     })
   }
 
@@ -92,14 +92,14 @@ class EventsScreen extends React.Component {
    *
    * @memberof EventsScreen
    */
-  _keyExtractor = (item, index) => `event ${item.japanese_name}`
+  _keyExtractor = (item, index) => `event ${item.japanese_name}`;
 
   /**
    * Render item in FlatList
    *
    * @memberof EventsScreen
    */
-  _renderItem = ({ item }) => <EventItem item={item} onPress={this._navigateToEventDetail(item)} />
+  _renderItem = ({ item }) => <EventItem item={item} onPress={this._navigateToEventDetail(item)} />;
 
   /**
    * Navigate to Event Detail Screen
@@ -107,7 +107,7 @@ class EventsScreen extends React.Component {
    * @param {Object} item
    * @memberof EventsScreen
    */
-  _navigateToEventDetail = (item) => () => this.props.navigation.navigate('EventDetailScreen', { eventName: item.japanese_name })
+  _navigateToEventDetail = (item) => () => this.props.navigation.navigate('EventDetailScreen', { eventName: item.japanese_name });
 
   /**
    * Call when scrolling to the end of list.
@@ -116,8 +116,8 @@ class EventsScreen extends React.Component {
    * @memberof CardsScreen
    */
   _onEndReached = () => {
-    if (this.state.stopSearch) return
-    this._getEvents()
+    if (this.state.stopSearch) return;
+    this._getEvents();
   }
 
   /**
@@ -131,43 +131,46 @@ class EventsScreen extends React.Component {
       ordering: this.state.ordering,
       page_size: this.state.page_size,
       page: page
-    }
-    if (this.state.idol !== 'All') _filter.idol = this.state.idol
-    if (this.state.skill !== 'All') _filter.skill = this.state.skill
-    var _is_english = this.state.is_english
+    };
+    if (this.state.idol !== 'All') _filter.idol = this.state.idol;
+    if (this.state.skill !== 'All') _filter.skill = this.state.skill;
+    var _is_english = this.state.is_english;
     if (_is_english.length !== 0) {
-      if (_is_english === 'True') _is_english = 'False'
-      else _is_english = 'True'
-      _filter.is_english = _is_english
+      if (_is_english === 'True') _is_english = 'False';
+      else _is_english = 'True';
+      _filter.is_english = _is_english;
     }
-    if (this.state.main_unit.length !== 0) _filter.main_unit = this.state.main_unit
-    if (this.state.attribute.length !== 0) _filter.attribute = this.state.attribute
-    if (this.state.search.length !== 0) _filter.search = this.state.search
-    // console.log(`========== Events.getEvents`, _filter)
+    if (this.state.main_unit.length !== 0) _filter.main_unit = this.state.main_unit;
+    if (this.state.attribute.length !== 0) _filter.attribute = this.state.attribute;
+    if (this.state.search.length !== 0) _filter.search = this.state.search;
+    // console.log(`========== Events.getEvents`, _filter);
     LLSIFService.fetchEventList(_filter).then((result) => {
       if (result === 404) {
-        // console.log('LLSIFService.fetchEventList 404')
-        this.setState({ stopSearch: true })
+        // console.log('LLSIFService.fetchEventList 404');
+        this.setState({ stopSearch: true });
       } else {
-        var x = [...this.state.list, ...result]
+        var x = [...this.state.list, ...result];
         x = x.filter((thing, index, self) =>
-          index === self.findIndex((t) => (
-            t.japanese_name === thing.japanese_name
-          ))
-        )
+          index === self.findIndex(t => t.japanese_name === thing.japanese_name)
+        );
         this.setState({
           list: x,
           isLoading: false,
           page: page + 1
-        })
+        });
       }
-    }).catch((err) => {
+    }).catch(err => {
       Alert.alert('Error', 'Error when get songs',
-        [{ text: 'OK', onPress: () => console.log('OK Pressed', err) }])
-    })
+        [{ text: 'OK', onPress: () => console.log('OK Pressed', err) }]);
+    });
   }
 
-  _openDrawer = () => this.props.navigation.openDrawer()
+  /**
+   * Open drawer
+   *
+   * @memberof EventsScreen
+   */
+  _openDrawer = () => this.props.navigation.openDrawer();
 
   /**
    * Call when pressing search button
@@ -175,8 +178,8 @@ class EventsScreen extends React.Component {
    * @memberof EventsScreen
    */
   _onSearch = () => {
-    this.setState({ list: [], page: 1, isFilter: false, stopSearch: false })
-    this._getEvents(1)
+    this.setState({ list: [], page: 1, isFilter: false, stopSearch: false });
+    this._getEvents(1);
   }
 
   /**
@@ -195,7 +198,7 @@ class EventsScreen extends React.Component {
       skill: this.defaultFilter.skill,
       attribute: this.defaultFilter.attribute,
       is_english: this.defaultFilter.is_english
-    })
+    });
   }
 
   /**
@@ -203,7 +206,7 @@ class EventsScreen extends React.Component {
    *
    * @memberof EventsScreen
    */
-  _toggleFilter = () => this.setState({ isFilter: !this.state.isFilter })
+  _toggleFilter = () => this.setState({ isFilter: !this.state.isFilter });
 
   /**
    * Save `attribute`
@@ -211,7 +214,7 @@ class EventsScreen extends React.Component {
    * @param {String} value
    * @memberof EventsScreen
    */
-  _selectAttribute = (value) => () => this.setState({ attribute: value })
+  _selectAttribute = (value) => () => this.setState({ attribute: value });
 
   /**
    * Save `main_unit`
@@ -219,7 +222,7 @@ class EventsScreen extends React.Component {
    * @param {String} value
    * @memberof EventsScreen
    */
-  _selectMainUnit = (value) => () => this.setState({ main_unit: value })
+  _selectMainUnit = (value) => () => this.setState({ main_unit: value });
 
   /**
    * Save `is_english`
@@ -227,7 +230,7 @@ class EventsScreen extends React.Component {
    * @param {String} value
    * @memberof EventsScreen
    */
-  _selectRegion = (value) => () => this.setState({ is_english: value })
+  _selectRegion = (value) => () => this.setState({ is_english: value });
 
   /**
    * Save `skill`
@@ -236,7 +239,7 @@ class EventsScreen extends React.Component {
    * @param {String} itemIndex unused
    * @memberof EventsScreen
    */
-  _selectSkill = (itemValue, itemIndex) => this.setState({ skill: itemValue })
+  _selectSkill = (itemValue, itemIndex) => this.setState({ skill: itemValue });
 
   /**
    * Save `idol`
@@ -245,7 +248,7 @@ class EventsScreen extends React.Component {
    * @param {String} itemIndex unused
    * @memberof EventsScreen
    */
-  _selectIdol = (itemValue, itemIndex) => this.setState({ idol: itemValue })
+  _selectIdol = (itemValue, itemIndex) => this.setState({ idol: itemValue });
 
   /**
    * Render footer of FlatList
@@ -257,17 +260,17 @@ class EventsScreen extends React.Component {
   </View>
 
   render() {
-    if (this.state.isLoading) return <SplashScreen bgColor={Colors.violet} />
+    if (this.state.isLoading) return <SplashScreen bgColor={Colors.violet} />;
     return (
       <View style={styles.container}>
         {/* HEADER */}
         <View style={[ApplicationStyles.header, styles.header]}>
           <SquareButton name={'ios-menu'} onPress={this._openDrawer} />
-          <TextInput style={ApplicationStyles.searchInput}
+          <TextInput value={this.state.search}
             onChangeText={text => this.setState({ search: text })}
             onSubmitEditing={this._onSearch}
-            placeholder={'Type here...'}
-            value={this.state.search} />
+            placeholder={'Search event...'}
+            style={ApplicationStyles.searchInput} />
           <SquareButton name={'ios-search'} onPress={this._onSearch} />
           <SquareButton name={'ios-more'} onPress={this._toggleFilter} />
         </View>
@@ -292,9 +295,8 @@ class EventsScreen extends React.Component {
         {this.state.list.length === 0 && <View style={{ margin: 10 }}>
           <Text style={styles.resetText}>No result</Text>
         </View>}
-        <FlatList
+        <FlatList data={this.state.list}
           contentContainerStyle={styles.content}
-          data={this.state.list}
           initialNumToRender={6}
           keyExtractor={this._keyExtractor}
           style={styles.list}
@@ -306,6 +308,6 @@ class EventsScreen extends React.Component {
   }
 }
 
-const mapStateToProps = (state) => ({})
-const mapDispatchToProps = (dispatch) => ({})
-export default connect(mapStateToProps, mapDispatchToProps)(EventsScreen)
+const mapStateToProps = (state) => ({});
+const mapDispatchToProps = (dispatch) => ({});
+export default connect(mapStateToProps, mapDispatchToProps)(EventsScreen);

@@ -13,7 +13,7 @@ export const Config = {
   DEFAULT_BACKGROUND: '//i.schoolido.lu/c/1722idolizedRuby.png'
 }
 
-export const RELEASE_NOTE = `This app is open-source.
+export const RELEASE_NOTE = `This app is free and open-source.
 
 Press Version to view background.
 

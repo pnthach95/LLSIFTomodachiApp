@@ -23,19 +23,21 @@ import { EventStatus } from '../../Config';
  */
 export default class EventItem extends Component {
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
       imgWidth: Metrics.widthBanner,
       imgHeight: 100
-    }
+    };
   }
 
   getImage = (this.props.item.english_image === null)
     ? AddHTTPS(this.props.item.image)
     : AddHTTPS(this.props.item.english_image);
 
-  eventName = ((this.props.item.english_name !== null && this.props.item.english_name.length !== 0) ?
-    `${this.props.item.english_name}\n` : '') + this.props.item.japanese_name;
+  eventName = ((this.props.item.english_name !== null
+    && this.props.item.english_name.length !== 0)
+    ? `${this.props.item.english_name}\n` : '')
+    + this.props.item.japanese_name;
 
   render() {
     const { english_status, japan_status } = this.props.item;
@@ -44,7 +46,8 @@ export default class EventItem extends Component {
     let label = (isAnnounced) ? EventStatus.ANNOUNCED : ((isOngoing) ? EventStatus.ONGOING : '');
     let color = (isAnnounced) ? '#ee0a' : ((isOngoing) ? '#0a0a' : '#fff5');
     return (
-      <TouchableOpacity onPress={this.props.onPress} style={[styles.container, { backgroundColor: color }]}>
+      <TouchableOpacity onPress={this.props.onPress}
+        style={[styles.container, { backgroundColor: color }]}>
         <FastImage
           source={{
             uri: this.getImage,

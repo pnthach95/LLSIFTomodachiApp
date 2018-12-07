@@ -23,12 +23,12 @@ import { AddHTTPS, findColorByAttribute } from '../../Utils';
  */
 export default class CardItem extends Component {
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
       imgWidth: 0,
       imgHeight: 0,
       colors: findColorByAttribute(props.item.attribute)
-    }
+    };
   }
 
   /**
@@ -45,19 +45,19 @@ export default class CardItem extends Component {
       case 'Rhythmical Charm':
       case 'Total Charm':
       case 'Timer Charm':
-        return Images.skill[0]
+        return Images.skill[0];
       case 'Perfect Lock':
       case 'Total Trick':
       case 'Timer Trick':
-        return Images.skill[1]
+        return Images.skill[1];
       case 'Healer':
       case 'Timer Yell':
       case 'Total Yell':
       case 'Rhythmical Yell':
       case 'Perfect Yell':
-        return Images.skill[2]
+        return Images.skill[2];
       default:
-        return Images.skill[3]
+        return Images.skill[3];
     }
   }
 

@@ -1,13 +1,13 @@
-import React from 'react'
-import { View, Text } from 'react-native'
-import Gallery from 'react-native-image-gallery'
-import Icon from 'react-native-vector-icons/Ionicons'
-import styles from './styles'
+import React from 'react';
+import { View, Text } from 'react-native';
+import Gallery from 'react-native-image-gallery';
+import Icon from 'react-native-vector-icons/Ionicons';
+import styles from './styles';
 
 export default class ImageViewerScreen extends React.Component {
   constructor(props) {
-    super(props)
-    const { images, index } = this.props.navigation.state.params
+    super(props);
+    const { images, index } = this.props.navigation.state.params;
     this.state = {
       loading: true,
       index: index,
@@ -17,9 +17,7 @@ export default class ImageViewerScreen extends React.Component {
   }
 
   _handleOnPressImage = () => {
-    this.setState(prevState => ({
-      hideHeader: !prevState.hideHeader,
-    }));
+    this.setState(prevState => ({ hideHeader: !prevState.hideHeader }));
   };
 
   _onChangeImage = (index) => this.setState({ index })
@@ -39,7 +37,7 @@ export default class ImageViewerScreen extends React.Component {
   </View>
 
   render() {
-    const { index } = this.props.navigation.state.params
+    const { index } = this.props.navigation.state.params;
     let { images, hideHeader } = this.state;
     return (
       <View style={styles.container}>

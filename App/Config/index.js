@@ -19,6 +19,9 @@ Press Version to view background.
 
 Change log:
 
+- Version 0.2.2:
+  • Fix memory leaking issue on some devices.
+
 - Version 0.2.1:
   • Add notification icons.
 

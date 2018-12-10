@@ -259,6 +259,10 @@ class EventsScreen extends React.Component {
     <Image source={Images.alpaca} />
   </View>
 
+  renderEmpty = <View style={{ margin: 10 }}>
+    <Text style={styles.resetText}>No result</Text>
+  </View>
+
   render() {
     if (this.state.isLoading) return <SplashScreen bgColor={Colors.violet} />;
     return (
@@ -266,12 +270,15 @@ class EventsScreen extends React.Component {
         {/* HEADER */}
         <View style={[ApplicationStyles.header, styles.header]}>
           <SquareButton name={'ios-menu'} onPress={this._openDrawer} />
-          <TextInput value={this.state.search}
-            onChangeText={text => this.setState({ search: text })}
-            onSubmitEditing={this._onSearch}
-            placeholder={'Search event...'}
-            style={ApplicationStyles.searchInput} />
-          <SquareButton name={'ios-search'} onPress={this._onSearch} />
+          <View style={ApplicationStyles.searchHeader}>
+            <TextInput value={this.state.search}
+              onChangeText={text => this.setState({ search: text })}
+              onSubmitEditing={this._onSearch}
+              placeholder={'Search event...'}
+              style={ApplicationStyles.searchInput} />
+            <SquareButton name={'ios-search'} onPress={this._onSearch}
+              style={ApplicationStyles.searchButton} />
+          </View>
           <SquareButton name={'ios-more'} onPress={this._toggleFilter} />
         </View>
 
@@ -292,14 +299,12 @@ class EventsScreen extends React.Component {
           </View>}
 
         {/* LIST */}
-        {this.state.list.length === 0 && <View style={{ margin: 10 }}>
-          <Text style={styles.resetText}>No result</Text>
-        </View>}
         <FlatList data={this.state.list}
           contentContainerStyle={styles.content}
           initialNumToRender={6}
           keyExtractor={this._keyExtractor}
           style={styles.list}
+          ListEmptyComponent={this.renderEmpty}
           ListFooterComponent={this.renderFooter}
           onEndReached={this._onEndReached}
           renderItem={this._renderItem} />

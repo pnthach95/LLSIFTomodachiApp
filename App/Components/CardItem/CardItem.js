@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { TouchableOpacity, View, Image } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import styles from './styles';
+import Seperator from '../Seperator/Seperator';
 import { Metrics, ApplicationStyles, Images } from '../../Theme';
 import { AddHTTPS, findColorByAttribute } from '../../Utils';
 
@@ -74,11 +75,14 @@ export default class CardItem extends Component {
             this.setState({ imgWidth: width, imgHeight: height })
           }}
           style={{
+            borderTopLeftRadius: 4,
+            borderTopRightRadius: 4,
             width: Metrics.images.itemWidth,
             height: Metrics.images.itemWidth * this.state.imgHeight / this.state.imgWidth
           }} />
 
         {/* FOOTER */}
+        <Seperator style={{ backgroundColor: this.state.colors[0], marginVertical: 0 }} />
         <View style={[
           styles.info,
           { backgroundColor: this.state.colors[1] }

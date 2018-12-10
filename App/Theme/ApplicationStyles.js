@@ -35,10 +35,21 @@ export default {
     alignItems: 'center'
   },
   searchInput: {
+    paddingVertical: 10,
+    paddingLeft: 10,
+    width: Metrics.screenWidth - Metrics.navBarHeight * 3,
+  },
+  searchHeader: {
+    flexDirection: 'row',
+    width: Metrics.screenWidth - Metrics.navBarHeight * 2,
     backgroundColor: '#dcdcdc',
-    flex: 1,
     borderRadius: 20,
     marginVertical: 6,
-    padding: 10
+    justifyContent: 'space-between'
+  },
+  searchButton: {
+    width: Metrics.navBarHeight - 10,
+    height: Metrics.navBarHeight - 10,
+    marginRight: 6
   }
 }

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, FlatList, TextInput, TouchableOpacity, Alert, ScrollView, Image } from 'react-native';
+import { Text, View, FlatList, TextInput, TouchableOpacity, Alert, ScrollView, Image, LayoutAnimation, UIManager } from 'react-native';
 import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/Ionicons';
 import _ from 'lodash';
@@ -17,6 +17,7 @@ import MainUnitRow from '../../Components/MainUnitRow/MainUnitRow';
 import AttributeRow from '../../Components/AttributeRow/AttributeRow';
 import PromoCardRow from '../../Components/PromoCardRow/PromoCardRow';
 import SquareButton from '../../Components/SquareButton/SquareButton';
+import Card2PicsItem from '../../Components/Card2PicsItem/Card2PicsItem';
 import SpecialCardRow from '../../Components/SpecialCardRow/SpecialCardRow';
 import { LLSIFService } from '../../Services/LLSIFService';
 import SplashScreen from '../SplashScreen/SplashScreen';
@@ -75,6 +76,8 @@ class CardsScreen extends React.PureComponent {
     };
     this.state = {
       isLoading: true,
+      column: 2,
+      isActionButtonVisible: true,
       data: [],
       isFilter: false,
       stopSearch: false,
@@ -96,6 +99,8 @@ class CardsScreen extends React.PureComponent {
       idol_year: ''
     };
     this._onEndReached = _.debounce(this._onEndReached, 1000);
+    this._listViewOffset = 0;
+    UIManager.setLayoutAnimationEnabledExperimental && UIManager.setLayoutAnimationEnabledExperimental(true);
   }
 
   static navigationOptions = {
@@ -126,7 +131,32 @@ class CardsScreen extends React.PureComponent {
    *
    * @memberof CardsScreen
    */
-  _renderItem = ({ item }) => <CardItem item={item} onPress={this._navigateToCardDetail(item)} />;
+  _renderItem = ({ item }) => this.state.column === 1
+    ? <Card2PicsItem item={item} onPress={this._navigateToCardDetail(item)} />
+    : <CardItem item={item} onPress={this._navigateToCardDetail(item)} />;
+
+  _onScroll = (event) => {
+    // Simple fade-in / fade-out animation
+    const CustomLayoutLinear = {
+      duration: 100,
+      create: { type: LayoutAnimation.Types.linear, property: LayoutAnimation.Properties.opacity },
+      update: { type: LayoutAnimation.Types.linear, property: LayoutAnimation.Properties.opacity },
+      delete: { type: LayoutAnimation.Types.linear, property: LayoutAnimation.Properties.opacity }
+    }
+    // Check if the user is scrolling up or down by confronting the new scroll position with your own one
+    const currentOffset = event.nativeEvent.contentOffset.y
+    const direction = (currentOffset > 0 && currentOffset > this._listViewOffset)
+      ? 'down'
+      : 'up'
+    // If the user is scrolling down (and the action-button is still visible) hide it
+    const isActionButtonVisible = direction === 'up'
+    if (isActionButtonVisible !== this.state.isActionButtonVisible) {
+      LayoutAnimation.configureNext(CustomLayoutLinear)
+      this.setState({ isActionButtonVisible })
+    }
+    // Update your scroll position
+    this._listViewOffset = currentOffset
+  }
 
   /**
    * Navigate to Card Detail Screen
@@ -219,6 +249,13 @@ class CardsScreen extends React.PureComponent {
    * @memberof CardsScreen
    */
   _toggleFilter = () => this.setState({ isFilter: !this.state.isFilter });
+
+  /**
+   * Switch 1 column and 2 columns
+   *
+   * @memberof CardsScreen
+   */
+  _switchColumn = () => this.setState({ column: this.state.column === 1 ? 2 : 1 });
 
   /**
    * Save is_promo
@@ -352,6 +389,10 @@ class CardsScreen extends React.PureComponent {
     <Image source={Images.alpaca} />
   </View>
 
+  renderEmpty = <View style={{ margin: 10 }}>
+    <Text style={styles.resetText}>No result</Text>
+  </View>
+
   render() {
     if (this.state.isLoading) return <SplashScreen bgColor={Colors.green} />;
     return (
@@ -359,12 +400,15 @@ class CardsScreen extends React.PureComponent {
         {/* HEADER */}
         <View style={[ApplicationStyles.header, styles.header]}>
           <SquareButton name={'ios-menu'} onPress={this._openDrawer} />
-          <TextInput value={this.state.search}
-            onChangeText={text => this.setState({ search: text })}
-            onSubmitEditing={this._onSearch}
-            placeholder={'Search card...'}
-            style={ApplicationStyles.searchInput} />
-          <SquareButton name={'ios-search'} onPress={this._onSearch} />
+          <View style={ApplicationStyles.searchHeader}>
+            <TextInput value={this.state.search}
+              onChangeText={text => this.setState({ search: text })}
+              onSubmitEditing={this._onSearch}
+              placeholder={'Search card...'}
+              style={ApplicationStyles.searchInput} />
+            <SquareButton name={'ios-search'} onPress={this._onSearch}
+              style={ApplicationStyles.searchButton} />
+          </View>
           <SquareButton name={'ios-more'} onPress={this._toggleFilter} />
         </View>
 
@@ -395,19 +439,23 @@ class CardsScreen extends React.PureComponent {
             </ScrollView>
           </View>}
 
-        {this.state.data.length === 0 && <View style={{ margin: 10 }}>
-          <Text style={styles.resetText}>No result</Text>
-        </View>}
-
         {/* LIST */}
         <FlatList data={this.state.data}
-          numColumns={2}
+          key={`${this.state.column}c`}
+          numColumns={this.state.column}
           initialNumToRender={8}
           keyExtractor={this._keyExtractor}
           onEndReached={this._onEndReached}
           style={styles.list}
+          onScroll={this._onScroll}
+          ListEmptyComponent={this.renderEmpty}
           ListFooterComponent={this.renderFooter}
           renderItem={this._renderItem} />
+        {this.state.isActionButtonVisible &&
+          <TouchableOpacity onPress={this._switchColumn}
+            style={[styles.floatButton, ApplicationStyles.center]}>
+            <Image source={Images.column[this.state.column - 1]} style={styles.floatButtonSize} />
+          </TouchableOpacity>}
       </View>
     )
   }

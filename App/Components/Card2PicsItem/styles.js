@@ -3,7 +3,7 @@ import { Metrics } from '../../Theme';
 
 export default StyleSheet.create({
   container: {
-    width: Metrics.images.itemWidth,
+    width: Metrics.screenWidth - Metrics.smallMargin * 4,
     margin: Metrics.smallMargin,
     borderRadius: 4,
     elevation: 5
@@ -11,8 +11,6 @@ export default StyleSheet.create({
   info: {
     flexDirection: 'row',
     padding: Metrics.smallMargin,
-    borderBottomLeftRadius: 4,
-    borderBottomRightRadius: 4,
     justifyContent: 'space-around'
   }
 });

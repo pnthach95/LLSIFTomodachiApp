@@ -46,6 +46,8 @@ export default class SongItem extends Component {
             this.setState({ imgWidth: width, imgHeight: height })
           }}
           style={{
+            borderTopLeftRadius: 5,
+            borderTopRightRadius: 5,
             width: Metrics.images.itemWidth,
             height: Metrics.images.itemWidth * this.state.imgHeight / this.state.imgWidth
           }} />

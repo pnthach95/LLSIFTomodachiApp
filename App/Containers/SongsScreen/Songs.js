@@ -237,6 +237,10 @@ class SongsScreen extends React.Component {
     <Image source={Images.alpaca} />
   </View>
 
+  renderEmpty = <View style={{ margin: 10 }}>
+    <Text style={{ textAlign: 'center' }}>No result</Text>
+  </View>
+
   render() {
     if (this.state.isLoading) return <SplashScreen />
     return (
@@ -244,12 +248,15 @@ class SongsScreen extends React.Component {
         {/* HEADER */}
         <View style={[ApplicationStyles.header, styles.header]}>
           <SquareButton name={'ios-menu'} onPress={this._openDrawer} />
-          <TextInput style={ApplicationStyles.searchInput}
-            onChangeText={text => this.setState({ search: text })}
-            onSubmitEditing={this._onSearch}
-            placeholder={'Search song...'}
-            value={this.state.search} />
-          <SquareButton name={'ios-search'} onPress={this._onSearch} />
+          <View style={ApplicationStyles.searchHeader}>
+            <TextInput style={ApplicationStyles.searchInput}
+              onChangeText={text => this.setState({ search: text })}
+              onSubmitEditing={this._onSearch}
+              placeholder={'Search song...'}
+              value={this.state.search} />
+            <SquareButton name={'ios-search'} onPress={this._onSearch}
+              style={ApplicationStyles.searchButton} />
+          </View>
           <SquareButton name={'ios-more'} onPress={this._toggleFilter} />
         </View>
         {/* FILTER */}
@@ -267,10 +274,6 @@ class SongsScreen extends React.Component {
             </View>
           </View>}
 
-        {this.state.list.length === 0 && <View style={{ margin: 10 }}>
-          <Text style={{ textAlign: 'center' }}>No result</Text>
-        </View>}
-
         {/* LIST */}
         <FlatList data={this.state.list}
           initialNumToRender={6}
@@ -278,6 +281,7 @@ class SongsScreen extends React.Component {
           keyExtractor={this._keyExtractor}
           style={styles.list}
           onEndReached={this._onEndReached}
+          ListEmptyComponent={this.renderEmpty}
           ListFooterComponent={this.renderFooter}
           renderItem={this._renderItem} />
       </View>

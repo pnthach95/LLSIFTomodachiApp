@@ -7,6 +7,7 @@ export default StyleSheet.create({
     backgroundColor: Colors.violet
   },
   header: {
+    elevation: 5,
     backgroundColor: 'white'
   },
   list: {
@@ -17,6 +18,7 @@ export default StyleSheet.create({
   },
   filterContainer: {
     backgroundColor: 'white',
+    elevation: 5,
     padding: 10
   },
   resetButton: {

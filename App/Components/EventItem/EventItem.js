@@ -44,7 +44,7 @@ export default class EventItem extends Component {
     let isAnnounced = japan_status === EventStatus.ANNOUNCED || english_status === EventStatus.ANNOUNCED;
     let isOngoing = japan_status === EventStatus.ONGOING || english_status === EventStatus.ONGOING;
     let label = (isAnnounced) ? EventStatus.ANNOUNCED : ((isOngoing) ? EventStatus.ONGOING : '');
-    let color = (isAnnounced) ? '#ee0a' : ((isOngoing) ? '#0a0a' : '#fff5');
+    let color = (isAnnounced) ? '#D1D100' : ((isOngoing) ? '#00C200' : '#EBA3FF');
     return (
       <TouchableOpacity onPress={this.props.onPress}
         style={[styles.container, { backgroundColor: color }]}>

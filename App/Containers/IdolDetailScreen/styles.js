@@ -6,6 +6,7 @@ export default StyleSheet.create({
     flex: 1
   },
   header: {
+    elevation: 5,
     justifyContent: 'space-between',
     backgroundColor: 'white',
     paddingRight: Metrics.baseMargin

@@ -10,6 +10,7 @@ export default StyleSheet.create({
     paddingBottom: Metrics.doubleBaseMargin
   },
   header: {
+    elevation: 5,
     justifyContent: 'space-between',
     backgroundColor: Colors.lightViolet,
     paddingRight: Metrics.baseMargin

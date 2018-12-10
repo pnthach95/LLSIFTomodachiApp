@@ -6,6 +6,7 @@ export default StyleSheet.create({
     flex: 1
   },
   header: {
+    elevation: 5,
     backgroundColor: 'white'
   },
   list: {
@@ -13,6 +14,7 @@ export default StyleSheet.create({
   },
   filterContainer: {
     backgroundColor: 'white',
+    elevation: 5,
     padding: 10
   },
   resetButton: {

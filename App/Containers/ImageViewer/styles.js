@@ -4,14 +4,7 @@ import { Metrics } from '../../Theme';
 export default StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#000',
-  },
-  slide: {
-    flex: 1,
-  },
-  photo: {
-    width: Metrics.screenWidth,
-    height: Metrics.screenHeight,
+    backgroundColor: '#000'
   },
   close: {
     paddingLeft: 20
@@ -24,7 +17,7 @@ export default StyleSheet.create({
     top: '50%',
     bottom: '50%',
     left: '50%',
-    right: '50%',
+    right: '50%'
   },
   headerAbsolutePosition: {
     position: 'absolute',
@@ -37,11 +30,7 @@ export default StyleSheet.create({
     backgroundColor: '#0005',
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
-  },
-  text: {
-    color: 'white',
-    paddingRight: 20
+    justifyContent: 'space-between'
   },
   textCenter: {
     color: 'white',

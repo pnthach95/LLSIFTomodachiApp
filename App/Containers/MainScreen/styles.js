@@ -6,9 +6,6 @@ export default StyleSheet.create({
     flex: 1,
     backgroundColor: Colors.pink
   },
-  leftHeader: {
-    flex: 1
-  },
   centerHeader: {
     flex: 5,
     justifyContent: 'center',

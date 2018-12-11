@@ -99,8 +99,8 @@ export default class Card2PicsItem extends Component {
         {/* FOOTER */}
         <Seperator style={{ backgroundColor: this.state.colors[0], marginVertical: 0 }} />
         <View style={{ backgroundColor: this.state.colors[1], flexDirection: 'row', borderBottomLeftRadius: 4, borderBottomRightRadius: 4 }}>
-          <View style={{ flex: 1 }} />
-          <View style={[styles.info, { flex: 1 }]}>
+          <View style={ApplicationStyles.screen} />
+          <View style={[styles.info, ApplicationStyles.screen]}>
             {(this.props.item.skill !== null && this.props.item.skill.length !== 0) &&
               <Image source={this.findSkill(this.props.item.skill)}
                 style={[

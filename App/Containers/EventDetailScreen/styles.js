@@ -15,9 +15,6 @@ export default StyleSheet.create({
     backgroundColor: Colors.lightViolet,
     paddingRight: Metrics.baseMargin
   },
-  leftHeader: {
-    flex: 1
-  },
   centerHeader: {
     flex: 3
   },

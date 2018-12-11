@@ -6,12 +6,12 @@ import LinearGradient from 'react-native-linear-gradient';
 import Icon from 'react-native-vector-icons/Ionicons';
 import moment from 'moment';
 
-import { getMaxStats } from '../../Stores/CachedData/Selectors';
+import TextRow from '../../Components/TextRow/TextRow';
 import Seperator from '../../Components/Seperator/Seperator';
 import ProgressBar from '../../Components/ProgressBar/ProgressBar';
 import SquareButton from '../../Components/SquareButton/SquareButton';
-import TextRow from '../../Components/TextRow/TextRow';
 import SplashScreen from '../SplashScreen/SplashScreen';
+import { getMaxStats } from '../../Stores/CachedData/Selectors';
 import { findColorByAttribute, AddHTTPS, findMainUnit, findSubUnit } from '../../Utils';
 import { Metrics, Fonts, ApplicationStyles, Colors, Images } from '../../Theme';
 import styles from './styles';
@@ -171,23 +171,24 @@ class CardDetailScreen extends React.Component {
 
   render() {
     if (this.state.isLoading) return <SplashScreen />;
-    let images = []
-    if (this.state.item.card_image !== null) images.push({ url: AddHTTPS(this.state.item.card_image) })
-    images.push({ url: AddHTTPS(this.state.item.card_idolized_image) })
+    let images = [];
+    if (this.state.item.card_image !== null)
+      images.push({ url: AddHTTPS(this.state.item.card_image) });
+    images.push({ url: AddHTTPS(this.state.item.card_idolized_image) });
     var tmp = [];
     var propertyLine = '';
     if (this.state.item.is_promo) tmp.push('Promo card');
     if (this.state.item.japan_only) tmp.push('Japan only');
     propertyLine = tmp.join(' - ');
     return (
-      <View style={styles.container}>
+      <View style={ApplicationStyles.screen}>
         {/* HEADER */}
         <View style={[
           ApplicationStyles.header,
           styles.header,
           { backgroundColor: this.state.colors[1] }
         ]}>
-          <View style={styles.leftHeader}>
+          <View style={ApplicationStyles.screen}>
             <SquareButton name={'ios-arrow-back'} onPress={() => this.props.navigation.goBack()} />
           </View>
           <View style={styles.centerHeader}>
@@ -204,7 +205,7 @@ class CardDetailScreen extends React.Component {
         </View>
 
         {/* MAIN VIEW */}
-        <LinearGradient style={{ flex: 1 }}
+        <LinearGradient style={ApplicationStyles.screen}
           colors={[this.state.colors[1], this.state.colors[0], 'white']}>
           <ScrollView showsVerticalScrollIndicator={false}
             style={styles.scrollView}>

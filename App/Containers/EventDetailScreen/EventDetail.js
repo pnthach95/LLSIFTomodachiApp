@@ -136,7 +136,7 @@ class EventDetailScreen extends React.Component {
     return (
       <View style={styles.container}>
         <View style={[ApplicationStyles.header, styles.header]}>
-          <View style={styles.leftHeader}>
+          <View style={ApplicationStyles.screen}>
             <SquareButton name={'ios-arrow-back'} color={'white'}
               onPress={() => this.props.navigation.goBack()} />
           </View>

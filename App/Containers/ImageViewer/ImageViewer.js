@@ -12,15 +12,13 @@ export default class ImageViewerScreen extends React.Component {
       loading: true,
       index: index,
       images: images.map(image => ({ source: { uri: image.url } })),
-      hideHeader: false,
+      hideHeader: false
     };
   }
 
-  _handleOnPressImage = () => {
-    this.setState(prevState => ({ hideHeader: !prevState.hideHeader }));
-  };
+  _handleOnPressImage = () => this.setState(prevState => ({ hideHeader: !prevState.hideHeader }));
 
-  _onChangeImage = (index) => this.setState({ index })
+  _onChangeImage = (index) => this.setState({ index });
 
   header() {
     return (

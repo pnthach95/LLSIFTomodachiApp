@@ -2,16 +2,10 @@ import { StyleSheet } from 'react-native';
 import { Metrics } from '../../Theme';
 
 export default StyleSheet.create({
-  container: {
-    flex: 1
-  },
   header: {
     justifyContent: 'space-between',
     backgroundColor: 'white',
     paddingRight: Metrics.baseMargin
-  },
-  leftHeader: {
-    flex: 1
   },
   centerHeader: {
     flex: 5

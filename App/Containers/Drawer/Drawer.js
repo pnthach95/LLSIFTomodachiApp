@@ -129,12 +129,12 @@ class Drawer extends Component {
       <SafeAreaView>
         <ImageBackground source={{ uri: AddHTTPS(this.props.bgImage) }}
           style={styles.fullscreen}>
-          <View style={{ flex: 1 }}>
+          <View style={ApplicationStyles.screen}>
             <Fade visible={this.state.visible} style={styles.container}>
               <View style={[ApplicationStyles.center, styles.header]}>
                 <Image source={Images.logo} style={styles.logo} resizeMode={'contain'} />
               </View>
-              <View style={{ flex: 1 }}>
+              <View style={ApplicationStyles.screen}>
                 <TouchableOpacity onPress={this._groupToggle}>
                   <View style={styles.group}>
                     <Text>OPTIONS</Text>
@@ -166,7 +166,7 @@ class Drawer extends Component {
                     <Icon name={!this.state.isCollapsed ? 'ios-arrow-up' : 'ios-arrow-down'} size={20} />
                   </View>
                 </TouchableOpacity>
-                {!this.state.isCollapsed && <View style={{ flex: 1 }}>
+                {!this.state.isCollapsed && <View style={ApplicationStyles.screen}>
                   <ScrollView bounces={false}
                     style={styles.textBlock}>
                     <Text>{RELEASE_NOTE}</Text>

@@ -244,7 +244,7 @@ class SongsScreen extends React.Component {
   render() {
     if (this.state.isLoading) return <SplashScreen />
     return (
-      <View style={styles.container}>
+      <View style={ApplicationStyles.screen}>
         {/* HEADER */}
         <View style={[ApplicationStyles.header, styles.header]}>
           <SquareButton name={'ios-menu'} onPress={this._openDrawer} />

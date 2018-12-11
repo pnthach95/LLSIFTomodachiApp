@@ -1,17 +1,7 @@
 import { StyleSheet, Platform } from 'react-native';
-import { Metrics, Colors } from './index';
+import { Colors } from './index';
 
 export default StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: Colors.green
-  },
-  header: {
-    backgroundColor: 'white'
-  },
-  list: {
-    padding: Metrics.smallMargin
-  },
   buttonText: {
     color: 'black',
     fontSize: 16
@@ -57,16 +47,6 @@ export default StyleSheet.create({
   },
   selectedValue1: {
     backgroundColor: Colors.lightGreen,
-  },
-  resetButton: {
-    backgroundColor: 'red',
-    justifyContent: 'center',
-    margin: 5,
-    padding: 10
-  },
-  resetText: {
-    color: 'white',
-    textAlign: 'center'
   },
   picker: {
     borderBottomWidth: 1

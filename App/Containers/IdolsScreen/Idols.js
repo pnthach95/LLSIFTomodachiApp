@@ -109,7 +109,7 @@ class IdolsScreen extends React.Component {
       <View style={styles.container}>
         {/* HEADER */}
         <View style={ApplicationStyles.header}>
-          <View style={styles.leftHeader} >
+          <View style={ApplicationStyles.screen} >
             <SquareButton name={'ios-menu'} onPress={this._openDrawer} color={'white'} />
           </View>
           <View style={styles.centerHeader}>

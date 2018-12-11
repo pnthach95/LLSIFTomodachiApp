@@ -5,9 +5,9 @@ import FastImage from 'react-native-fast-image';
 import LinearGradient from 'react-native-linear-gradient';
 import moment from 'moment';
 
+import TextRow from '../../Components/TextRow/TextRow';
 import Seperator from '../../Components/Seperator/Seperator';
 import SquareButton from '../../Components/SquareButton/SquareButton';
-import TextRow from '../../Components/TextRow/TextRow';
 import SplashScreen from '../SplashScreen/SplashScreen';
 import { LLSIFService } from '../../Services/LLSIFService';
 import { findColorByAttribute, AddHTTPS, findMainUnit, findSubUnit, openLink } from '../../Utils';
@@ -81,14 +81,14 @@ class IdolDetailScreen extends React.Component {
   render() {
     if (this.state.isLoading) return <SplashScreen bgColor={Colors.blue} />;
     return (
-      <View style={styles.container}>
+      <View style={ApplicationStyles.screen}>
         {/* HEADER */}
         <View style={[
           ApplicationStyles.header,
           styles.header,
           { backgroundColor: this.state.colors[1] }
         ]}>
-          <View style={styles.leftHeader}>
+          <View style={ApplicationStyles.screen}>
             <SquareButton name={'ios-arrow-back'} onPress={() => this.props.navigation.goBack()} />
           </View>
           <View style={styles.centerHeader}>
@@ -104,7 +104,7 @@ class IdolDetailScreen extends React.Component {
         </View>
 
         {/* INFORMATION */}
-        <LinearGradient style={{ flex: 1 }}
+        <LinearGradient style={ApplicationStyles.screen}
           colors={[this.state.colors[1], this.state.colors[0]]}>
           <ScrollView showsVerticalScrollIndicator={false}>
             <View style={styles.imageRow}>
@@ -256,8 +256,8 @@ class IdolDetailScreen extends React.Component {
             </View>
             <View style={{ height: Metrics.doubleBaseMargin }} />
           </ScrollView>
-        </LinearGradient >
-      </View >
+        </LinearGradient>
+      </View>
     )
   }
 }

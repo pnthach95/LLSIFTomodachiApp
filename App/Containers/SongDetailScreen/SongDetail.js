@@ -181,14 +181,14 @@ class SongDetailScreen extends React.Component {
   render() {
     if (this.state.isLoading) return <SplashScreen />
     return (
-      <View style={styles.container}>
+      <View style={ApplicationStyles.screen}>
         {/* HEADER */}
         <View style={[
           ApplicationStyles.header,
           styles.header,
           { backgroundColor: this.state.colors[1] }
         ]}>
-          <View style={styles.leftHeader}>
+          <View style={ApplicationStyles.screen}>
             <SquareButton name={'ios-arrow-back'}
               onPress={() => this.props.navigation.goBack()} />
           </View>
@@ -206,7 +206,7 @@ class SongDetailScreen extends React.Component {
           style={styles.content}>
           <ScrollView showsVerticalScrollIndicator={false}
             contentContainerStyle={{ alignItems: 'center' }}
-            style={{ flex: 1 }}>
+            style={ApplicationStyles.screen}>
             <FastImage source={{ uri: AddHTTPS(this.state.item.image) }}
               onLoad={e => this.onLoadFastImage(e)}
               style={{

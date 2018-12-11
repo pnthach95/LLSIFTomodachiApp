@@ -14,6 +14,7 @@ import SchoolRow from '../../Components/SchoolRow/SchoolRow';
 import SubUnitRow from '../../Components/SubUnitRow/SubUnitRow';
 import IdolNameRow from '../../Components/IdolNameRow/IdolNameRow';
 import MainUnitRow from '../../Components/MainUnitRow/MainUnitRow';
+import OrderingRow from '../../Components/OrderingRow/OrderingRow';
 import AttributeRow from '../../Components/AttributeRow/AttributeRow';
 import PromoCardRow from '../../Components/PromoCardRow/PromoCardRow';
 import SquareButton from '../../Components/SquareButton/SquareButton';
@@ -34,7 +35,8 @@ import { loadSettings } from '../../Utils';
  * - `isFilter`: Filter on/off
  * - `stopSearch`: Prevent calling API
  * - `search`: Keyword for search
- * - `ordering`: Ordering by any field (See link above)
+ * - `selectedOrdering`: Selected ordering option {label: string, value: string}
+ * - `isReverse`: Is reverse (boolean)
  * - `page_size`: Number of object per API call
  * - `page`: Page number
  * - `name`: Idol name
@@ -56,9 +58,15 @@ import { loadSettings } from '../../Utils';
 class CardsScreen extends React.PureComponent {
   constructor(props) {
     super(props);
+    this.orderingItem = [
+      { label: 'Release date', value: 'release_date' },
+      { label: 'Game ID', value: 'game_id' }
+    ];
+
     this.defaultFilter = {
       search: '',
-      ordering: '-release_date',
+      selectedOrdering: this.orderingItem[0].value,
+      isReverse: true,
       page_size: 30,
       page: 1,
       name: 'All',
@@ -74,6 +82,7 @@ class CardsScreen extends React.PureComponent {
       idol_school: 'All',
       idol_year: ''
     };
+
     this.state = {
       isLoading: true,
       column: 2,
@@ -82,7 +91,8 @@ class CardsScreen extends React.PureComponent {
       isFilter: false,
       stopSearch: false,
       search: '',
-      ordering: '-game_id',
+      selectedOrdering: this.orderingItem[0].value,
+      isReverse: true,
       page_size: 30,
       page: 1,
       name: 'All',
@@ -114,9 +124,8 @@ class CardsScreen extends React.PureComponent {
   }
 
   componentDidMount() {
-    loadSettings().then(res => {
-      this.setState({ japan_only: res.worldwide_only ? 'False' : '' }, () => this._getCards())
-    });
+    loadSettings().then(res =>
+      this.setState({ japan_only: res.worldwide_only ? 'False' : '' }, () => this._getCards()));
   }
 
   /**
@@ -177,8 +186,9 @@ class CardsScreen extends React.PureComponent {
     let _name = this.state.name;
     let _sub_unit = this.state.idol_sub_unit;
     let _school = this.state.idol_school;
+    let _ordering = (this.state.isReverse ? '-' : '') + this.state.selectedOrdering;
     let _filter = {
-      ordering: this.state.ordering,
+      ordering: _ordering,
       page_size: this.state.page_size,
       page: page,
       name: _name === 'All' ? '' : _name,
@@ -249,6 +259,13 @@ class CardsScreen extends React.PureComponent {
    * @memberof CardsScreen
    */
   _toggleFilter = () => this.setState({ isFilter: !this.state.isFilter });
+
+  /**
+   * Reverse search on/off
+   *
+   * @memberof CardsScreen
+   */
+  _toggleReverse = () => this.setState({ isReverse: !this.state.isReverse });
 
   /**
    * Switch 1 column and 2 columns
@@ -358,6 +375,15 @@ class CardsScreen extends React.PureComponent {
   _selectSkill = (itemValue, itemIndex) => this.setState({ skill: itemValue });
 
   /**
+   * Save ordering
+   *
+   * @param {String} itemValue
+   * @param {String} itemIndex unused
+   * @memberof CardsScreen
+   */
+  _selectOrdering = (itemValue, itemIndex) => this.setState({ selectedOrdering: itemValue });
+
+  /**
    * Reset filter variables
    *
    * @memberof CardsScreen
@@ -376,6 +402,8 @@ class CardsScreen extends React.PureComponent {
       idol_sub_unit: this.defaultFilter.idol_sub_unit,
       idol_school: this.defaultFilter.idol_school,
       idol_year: this.defaultFilter.idol_year,
+      selectedOrdering: this.defaultFilter.selectedOrdering,
+      isReverse: this.defaultFilter.isReverse,
       search: ''
     });
   }
@@ -428,6 +456,9 @@ class CardsScreen extends React.PureComponent {
               <SubUnitRow idol_sub_unit={this.state.idol_sub_unit} selectSubUnit={this._selectSubUnit} />
               <SchoolRow idol_school={this.state.idol_school} selectSchool={this._selectSchool} />
               <YearRow idol_year={this.state.idol_year} selectYear={this._selectYear} />
+              <OrderingRow orderingItem={this.orderingItem}
+                selectedOrdering={this.state.selectedOrdering} selectOrdering={this._selectOrdering}
+                isReverse={this.state.isReverse} toggleReverse={this._toggleReverse} />
 
               {/* RESET BUTTON */}
               <View style={styles.resetView}>

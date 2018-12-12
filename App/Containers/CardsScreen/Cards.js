@@ -1,6 +1,7 @@
 import React from 'react';
-import { Text, View, FlatList, TextInput, TouchableOpacity, Alert, ScrollView, Image, LayoutAnimation, UIManager } from 'react-native';
+import { Text, View, FlatList, TextInput, TouchableNativeFeedback, Alert, ScrollView, Image, LayoutAnimation, UIManager } from 'react-native';
 import { connect } from 'react-redux';
+import ElevatedView from 'react-native-elevated-view';
 import Icon from 'react-native-vector-icons/Ionicons';
 import _ from 'lodash';
 
@@ -11,6 +12,7 @@ import SkillRow from '../../Components/SkillRow/SkillRow';
 import RarityRow from '../../Components/RarityRow/RarityRow';
 import RegionRow from '../../Components/RegionRow/RegionRow';
 import SchoolRow from '../../Components/SchoolRow/SchoolRow';
+import Touchable from '../../Components/Touchable/Touchable';
 import SubUnitRow from '../../Components/SubUnitRow/SubUnitRow';
 import IdolNameRow from '../../Components/IdolNameRow/IdolNameRow';
 import MainUnitRow from '../../Components/MainUnitRow/MainUnitRow';
@@ -429,7 +431,7 @@ class CardsScreen extends React.PureComponent {
     return (
       <View style={styles.container}>
         {/* HEADER */}
-        <View style={[ApplicationStyles.header, styles.header]}>
+        <ElevatedView elevation={5} style={[ApplicationStyles.header, styles.header]}>
           <SquareButton name={'ios-menu'} onPress={this._openDrawer} />
           <View style={ApplicationStyles.searchHeader}>
             <TextInput value={this.state.search}
@@ -441,7 +443,7 @@ class CardsScreen extends React.PureComponent {
               style={ApplicationStyles.searchButton} />
           </View>
           <SquareButton name={'ios-more'} onPress={this._toggleFilter} />
-        </View>
+        </ElevatedView>
 
         {/* FILTER */}
         {this.state.isFilter &&
@@ -464,12 +466,10 @@ class CardsScreen extends React.PureComponent {
                 isReverse={this.state.isReverse} toggleReverse={this._toggleReverse} />
 
               {/* RESET BUTTON */}
-              <View style={styles.resetView}>
-                <TouchableOpacity onPress={this._resetFilter}
-                  style={styles.resetButton}>
-                  <Text style={styles.resetText}>RESET</Text>
-                </TouchableOpacity>
-              </View>
+              <Touchable onPress={this._resetFilter} useForeground
+                style={styles.resetView}>
+                <Text style={styles.resetText}>RESET</Text>
+              </Touchable>
             </ScrollView>
           </View>}
 
@@ -486,10 +486,12 @@ class CardsScreen extends React.PureComponent {
           ListFooterComponent={this.renderFooter}
           renderItem={this._renderItem} />
         {this.state.isActionButtonVisible &&
-          <TouchableOpacity onPress={this._switchColumn}
-            style={[styles.floatButton, ApplicationStyles.center]}>
-            <Image source={Images.column[this.state.column - 1]} style={styles.floatButtonSize} />
-          </TouchableOpacity>}
+          <View style={[styles.floatButton, ApplicationStyles.center]}>
+            <Touchable onPress={this._switchColumn}
+              background={TouchableNativeFeedback.Ripple(Colors.green, true)}>
+              <Image source={Images.column[this.state.column - 1]} style={styles.floatButtonSize} />
+            </Touchable>
+          </View>}
       </View>
     )
   }

@@ -19,7 +19,7 @@ import { loadSettings } from '../../Utils';
 
 /**
  * [Event List Screen](https://github.com/MagiCircles/SchoolIdolAPI/wiki/API-Events#get-the-list-of-events)
- * 
+ *
  * State:
  * - `isLoading`: Loading state
  * - `list`: Data for FlatList
@@ -135,14 +135,14 @@ class EventsScreen extends React.Component {
     if (this.state.idol !== 'All') _filter.idol = this.state.idol;
     if (this.state.skill !== 'All') _filter.skill = this.state.skill;
     var _is_english = this.state.is_english;
-    if (_is_english.length !== 0) {
+    if (_is_english !== '') {
       if (_is_english === 'True') _is_english = 'False';
       else _is_english = 'True';
       _filter.is_english = _is_english;
     }
-    if (this.state.main_unit.length !== 0) _filter.main_unit = this.state.main_unit;
-    if (this.state.attribute.length !== 0) _filter.attribute = this.state.attribute;
-    if (this.state.search.length !== 0) _filter.search = this.state.search;
+    if (this.state.main_unit !== '') _filter.main_unit = this.state.main_unit;
+    if (this.state.attribute !== '') _filter.attribute = this.state.attribute;
+    if (this.state.search !== '') _filter.search = this.state.search;
     // console.log(`========== Events.getEvents`, _filter);
     LLSIFService.fetchEventList(_filter).then((result) => {
       if (result === 404) {
@@ -226,7 +226,7 @@ class EventsScreen extends React.Component {
 
   /**
    * Save `is_english`
-   * 
+   *
    * @param {String} value
    * @memberof EventsScreen
    */
@@ -234,7 +234,7 @@ class EventsScreen extends React.Component {
 
   /**
    * Save `skill`
-   * 
+   *
    * @param {String} itemValue
    * @param {String} itemIndex unused
    * @memberof EventsScreen

@@ -7,7 +7,6 @@ export default StyleSheet.create({
     backgroundColor: Colors.green
   },
   header: {
-    elevation: 5,
     backgroundColor: 'white'
   },
   list: {
@@ -15,14 +14,7 @@ export default StyleSheet.create({
   },
   filterContainer: {
     height: '40%',
-    elevation: 5,
     backgroundColor: 'white'
-  },
-  resetButton: {
-    backgroundColor: 'red',
-    justifyContent: 'center',
-    margin: 5,
-    padding: 10
   },
   resetText: {
     color: 'white',
@@ -30,6 +22,9 @@ export default StyleSheet.create({
   },
   resetView: {
     alignItems: 'stretch',
+    backgroundColor: 'red',
+    justifyContent: 'center',
+    padding: 10,
     marginTop: 10
   },
   floatButtonSize: {

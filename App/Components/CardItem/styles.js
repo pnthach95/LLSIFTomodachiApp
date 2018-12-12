@@ -5,8 +5,7 @@ export default StyleSheet.create({
   container: {
     width: Metrics.images.itemWidth,
     margin: Metrics.smallMargin,
-    borderRadius: 4,
-    elevation: 5
+    borderRadius: 4
   },
   info: {
     flexDirection: 'row',

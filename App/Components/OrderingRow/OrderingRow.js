@@ -20,8 +20,8 @@ import { Colors } from '../../Theme';
  */
 export default class OrderingRow extends React.Component {
   render() {
-    console.log('orderingItem', this.props.orderingItem);
-    console.log('selectedOrdering', this.props.selectedOrdering);
+    // console.log('orderingItem', this.props.orderingItem);
+    // console.log('selectedOrdering', this.props.selectedOrdering);
     return (
       <View>
         <View style={styles.pickerRow}>

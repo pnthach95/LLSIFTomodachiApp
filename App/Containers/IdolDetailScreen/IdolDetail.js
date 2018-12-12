@@ -1,6 +1,7 @@
 import React from 'react';
 import { Text, View, ScrollView, Image } from 'react-native';
 import { connect } from 'react-redux';
+import ElevatedView from 'react-native-elevated-view';
 import FastImage from 'react-native-fast-image';
 import LinearGradient from 'react-native-linear-gradient';
 import moment from 'moment';
@@ -19,9 +20,9 @@ const column2 = 4;
 
 /**
  * Idol Detail Screen
- * 
+ *
  * From parent screen, pass `name` to get Idol object
- * 
+ *
  * State:
  * - `item`: [Idol object](https://github.com/MagiCircles/SchoolIdolAPI/wiki/API-Idols#objects)
  * - `imgWidth`: Image width
@@ -29,7 +30,7 @@ const column2 = 4;
  * - `colors`: Color array
  * - `images`: Image array
  * - `isLoading`: Loading state
- * 
+ *
  * @class IdolDetailScreen
  * @extends {React.Component}
  */
@@ -83,7 +84,7 @@ class IdolDetailScreen extends React.Component {
     return (
       <View style={ApplicationStyles.screen}>
         {/* HEADER */}
-        <View style={[
+        <ElevatedView elevation={5} style={[
           ApplicationStyles.header,
           styles.header,
           { backgroundColor: this.state.colors[1] }
@@ -101,7 +102,7 @@ class IdolDetailScreen extends React.Component {
             <Image source={findSubUnit(this.state.item.sub_unit)}
               style={styles.rightHeaderImage} />
           </View>
-        </View>
+        </ElevatedView>
 
         {/* INFORMATION */}
         <LinearGradient style={ApplicationStyles.screen}

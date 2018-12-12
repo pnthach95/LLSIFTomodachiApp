@@ -3,7 +3,6 @@ import { Metrics, Colors } from '../../Theme';
 
 export default StyleSheet.create({
   container: {
-    elevation: 5,
     borderRadius: 5,
     backgroundColor: Colors.itemColor,
     width: Metrics.images.itemWidth,

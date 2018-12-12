@@ -3,7 +3,6 @@ import { Metrics } from '../../Theme';
 
 export default StyleSheet.create({
   header: {
-    elevation: 5,
     justifyContent: 'space-between',
     backgroundColor: 'white',
     paddingRight: Metrics.baseMargin

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Text, View, ScrollView, TouchableOpacity, Image } from 'react-native';
 import { connect } from 'react-redux';
+import ElevatedView from 'react-native-elevated-view';
 import FastImage from 'react-native-fast-image';
 import LinearGradient from 'react-native-linear-gradient';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -18,7 +19,7 @@ import styles from './styles';
 
 /**
  * Card detail screen
- * 
+ *
  * State:
  * - `item`: Card object
  * - `imgWidth`: Image width
@@ -151,7 +152,7 @@ class CardDetailScreen extends React.Component {
 
   /**
    * Navigate to Event Detail Screen
-   * 
+   *
    * @param {String} name Event name
    * @memberof CardDetailScreen
    */
@@ -159,7 +160,7 @@ class CardDetailScreen extends React.Component {
 
   /**
    * Navigate to Idol Detail Screen
-   * 
+   *
    * @param {String} name Idol name
    * @memberof CardDetailScreen
    */
@@ -180,10 +181,11 @@ class CardDetailScreen extends React.Component {
     if (this.state.item.is_promo) tmp.push('Promo card');
     if (this.state.item.japan_only) tmp.push('Japan only');
     propertyLine = tmp.join(' - ');
+
     return (
       <View style={ApplicationStyles.screen}>
         {/* HEADER */}
-        <View style={[
+        <ElevatedView elevation={5} style={[
           ApplicationStyles.header,
           styles.header,
           { backgroundColor: this.state.colors[1] }
@@ -202,7 +204,7 @@ class CardDetailScreen extends React.Component {
             <Image source={findSubUnit(this.state.item.idol.sub_unit)}
               style={styles.rightHeaderImage} />
           </View>
-        </View>
+        </ElevatedView>
 
         {/* MAIN VIEW */}
         <LinearGradient style={ApplicationStyles.screen}

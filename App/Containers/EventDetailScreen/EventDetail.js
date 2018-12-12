@@ -1,6 +1,7 @@
 import React from 'react';
 import { Text, View, ScrollView, TouchableOpacity, Image } from 'react-native';
 import { connect } from 'react-redux';
+import ElevatedView from 'react-native-elevated-view';
 import FastImage from 'react-native-fast-image';
 import moment from 'moment';
 
@@ -16,9 +17,9 @@ import styles from './styles';
 
 /**
  * Event Detail Screen
- * 
+ *
  * From parent screen, pass `item` (event object) or `eventName` (Japanese only) to show event detail
- * 
+ *
  * State:
  * - `isLoading`: Loading state
  * - `item`: Event object
@@ -28,7 +29,7 @@ import styles from './styles';
  * - `songs`: Song list
  *
  * Event object: https://github.com/MagiCircles/SchoolIdolAPI/wiki/API-Events#objects
- * 
+ *
  * @class EventDetailScreen
  * @extends {React.Component}
  */
@@ -135,14 +136,14 @@ class EventDetailScreen extends React.Component {
     let JPEventEnd = moment(this.state.item.end, Config.DATETIME_FORMAT_INPUT);
     return (
       <View style={styles.container}>
-        <View style={[ApplicationStyles.header, styles.header]}>
+        <ElevatedView elevation={5} style={[ApplicationStyles.header, styles.header]}>
           <View style={ApplicationStyles.screen}>
             <SquareButton name={'ios-arrow-back'} color={'white'}
               onPress={() => this.props.navigation.goBack()} />
           </View>
           <View style={styles.centerHeader} />
           <View style={styles.rightHeader} />
-        </View>
+        </ElevatedView>
 
         <ScrollView showsVerticalScrollIndicator={false}
           contentContainerStyle={styles.content}

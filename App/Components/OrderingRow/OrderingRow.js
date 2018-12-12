@@ -37,13 +37,13 @@ export default class OrderingRow extends React.Component {
               value={this.props.selectedOrdering} />
           </View>
         </View>
-        <View style={styles.pickerRow}>
+        <View style={[styles.pickerRow, { marginTop: 10 }]}>
           <View style={styles.leftView} />
           <View style={{ flex: 2 }}>
             <TouchableWithoutFeedback onPress={this.props.toggleReverse}>
               <View style={styles.pickerRow}>
                 <Icon name={'check-box' + (this.props.isReverse ? '' : '-outline-blank')}
-                  size={20} color={Colors.green} />
+                  size={20} color={Colors.green} style={{ marginRight: 10 }} />
                 <Text>Reverse order</Text>
               </View>
             </TouchableWithoutFeedback>

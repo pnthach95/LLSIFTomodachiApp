@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
-import { TouchableOpacity, View, Text } from 'react-native';
+import { TouchableNativeFeedback, View, Text } from 'react-native';
+import ElevatedView from 'react-native-elevated-view';
 import FastImage from 'react-native-fast-image';
 import styles from './styles';
-import { Metrics } from '../../Theme';
+import Touchable from '../Touchable/Touchable';
+import { Metrics, Colors } from '../../Theme';
 import { AddHTTPS } from '../../Utils';
 import { EventStatus } from '../../Config';
 
@@ -16,7 +18,7 @@ import { EventStatus } from '../../Config';
  * State:
  * - `imgWidth`: Image width
  * - `imgHeight`: Image height
- * 
+ *
  * @export
  * @class EventItem
  * @extends {Component}
@@ -44,31 +46,33 @@ export default class EventItem extends Component {
     let isAnnounced = japan_status === EventStatus.ANNOUNCED || english_status === EventStatus.ANNOUNCED;
     let isOngoing = japan_status === EventStatus.ONGOING || english_status === EventStatus.ONGOING;
     let label = (isAnnounced) ? EventStatus.ANNOUNCED : ((isOngoing) ? EventStatus.ONGOING : '');
-    let color = (isAnnounced) ? '#D1D100' : ((isOngoing) ? '#00C200' : '#EBA3FF');
+    let color = (isAnnounced) ? Colors.announced : ((isOngoing) ? Colors.ongoing : Colors.finished);
     return (
-      <TouchableOpacity onPress={this.props.onPress}
-        style={[styles.container, { backgroundColor: color }]}>
-        <FastImage
-          source={{
-            uri: this.getImage,
-            priority: FastImage.priority.normal
-          }}
-          resizeMode={FastImage.resizeMode.contain}
-          onLoad={(e) => {
-            const { width, height } = e.nativeEvent
-            this.setState({ imgWidth: width, imgHeight: height })
-          }}
-          style={{
-            alignSelf: 'center',
-            width: Metrics.widthBanner,
-            height: Metrics.widthBanner * this.state.imgHeight / this.state.imgWidth
-          }} />
-        <View style={styles.textBox}>
-          <Text style={styles.text}>
-            {(label.length > 0 ? ('[' + label.toUpperCase() + ']\n') : '') + this.eventName}
-          </Text>
-        </View>
-      </TouchableOpacity>
+      <ElevatedView elevation={5} style={[styles.container, { backgroundColor: color }]}>
+        <Touchable onPress={this.props.onPress} useForeground
+          background={TouchableNativeFeedback.Ripple(color, false)}>
+          <FastImage
+            source={{
+              uri: this.getImage,
+              priority: FastImage.priority.normal
+            }}
+            resizeMode={FastImage.resizeMode.contain}
+            onLoad={(e) => {
+              const { width, height } = e.nativeEvent
+              this.setState({ imgWidth: width, imgHeight: height })
+            }}
+            style={{
+              alignSelf: 'center',
+              width: Metrics.widthBanner,
+              height: Metrics.widthBanner * this.state.imgHeight / this.state.imgWidth
+            }} />
+          <View style={styles.textBox}>
+            <Text style={styles.text}>
+              {(label.length > 0 ? ('[' + label.toUpperCase() + ']\n') : '') + this.eventName}
+            </Text>
+          </View>
+        </Touchable>
+      </ElevatedView>
     );
   }
 }

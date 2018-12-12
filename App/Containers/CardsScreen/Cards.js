@@ -27,6 +27,7 @@ import SplashScreen from '../SplashScreen/SplashScreen';
 import { Colors, ApplicationStyles, Images } from '../../Theme';
 import styles from './styles';
 import { loadSettings } from '../../Utils';
+import { OrderingGroup } from '../../Config';
 
 /**
  * [Card List Screen](https://github.com/MagiCircles/SchoolIdolAPI/wiki/API-Cards#get-the-list-of-cards)
@@ -60,21 +61,9 @@ import { loadSettings } from '../../Utils';
 class CardsScreen extends React.PureComponent {
   constructor(props) {
     super(props);
-    this.orderingItem = [
-      { label: 'Game ID', value: 'game_id' },
-      { label: 'Release date', value: 'release_date' },
-      { label: 'Idol', value: 'name' },
-      { label: `Smile's statistics`, value: 'idolized_maximum_statistics_smile' },
-      { label: `Pure's statistics`, value: 'idolized_maximum_statistics_pure' },
-      { label: `Cool's statistics`, value: 'idolized_maximum_statistics_cool' },
-      { label: 'Rarity', value: 'rarity' },
-      { label: 'Attribute', value: 'attribute' },
-      { label: 'HP', value: 'hp' },
-    ];
-
     this.defaultFilter = {
       search: '',
-      selectedOrdering: this.orderingItem[0].value,
+      selectedOrdering: OrderingGroup.CARD[0].value,
       isReverse: true,
       page_size: 30,
       page: 1,
@@ -100,7 +89,7 @@ class CardsScreen extends React.PureComponent {
       isFilter: false,
       stopSearch: false,
       search: '',
-      selectedOrdering: this.orderingItem[0].value,
+      selectedOrdering: OrderingGroup.CARD[0].value,
       isReverse: true,
       page_size: 30,
       page: 1,
@@ -461,7 +450,7 @@ class CardsScreen extends React.PureComponent {
               <SubUnitRow idol_sub_unit={this.state.idol_sub_unit} selectSubUnit={this._selectSubUnit} />
               <SchoolRow idol_school={this.state.idol_school} selectSchool={this._selectSchool} />
               <YearRow idol_year={this.state.idol_year} selectYear={this._selectYear} />
-              <OrderingRow orderingItem={this.orderingItem}
+              <OrderingRow orderingItem={OrderingGroup.CARD}
                 selectedOrdering={this.state.selectedOrdering} selectOrdering={this._selectOrdering}
                 isReverse={this.state.isReverse} toggleReverse={this._toggleReverse} />
 

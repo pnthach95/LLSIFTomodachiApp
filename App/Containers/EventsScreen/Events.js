@@ -1,12 +1,14 @@
 import React from 'react';
-import { View, FlatList, Text, TextInput, Alert, TouchableOpacity, Image } from 'react-native';
+import { View, FlatList, Text, TextInput, Alert, Image } from 'react-native';
 import { connect } from 'react-redux';
+import ElevatedView from 'react-native-elevated-view';
 import Icon from 'react-native-vector-icons/Ionicons';
 import _ from 'lodash';
 
 import SkillRow from '../../Components/SkillRow/SkillRow';
 import EventItem from '../../Components/EventItem/EventItem';
 import RegionRow from '../../Components/RegionRow/RegionRow';
+import Touchable from '../../Components/Touchable/Touchable';
 import IdolNameRow from '../../Components/IdolNameRow/IdolNameRow';
 import MainUnitRow from '../../Components/MainUnitRow/MainUnitRow';
 import AttributeRow from '../../Components/AttributeRow/AttributeRow';
@@ -268,7 +270,7 @@ class EventsScreen extends React.Component {
     return (
       <View style={styles.container}>
         {/* HEADER */}
-        <View style={[ApplicationStyles.header, styles.header]}>
+        <ElevatedView elevation={5} style={[ApplicationStyles.header, styles.header]}>
           <SquareButton name={'ios-menu'} onPress={this._openDrawer} />
           <View style={ApplicationStyles.searchHeader}>
             <TextInput value={this.state.search}
@@ -280,7 +282,7 @@ class EventsScreen extends React.Component {
               style={ApplicationStyles.searchButton} />
           </View>
           <SquareButton name={'ios-more'} onPress={this._toggleFilter} />
-        </View>
+        </ElevatedView>
 
         {/* FILTER */}
         {this.state.isFilter &&
@@ -290,12 +292,10 @@ class EventsScreen extends React.Component {
             <SkillRow skill={this.state.skill} selectSkill={this._selectSkill} />
             <AttributeRow attribute={this.state.attribute} selectAttribute={this._selectAttribute} />
             <RegionRow japan_only={this.state.is_english} selectRegion={this._selectRegion} />
-            <View style={styles.resetView}>
-              <TouchableOpacity onPress={this._resetFilter}
-                style={styles.resetButton}>
-                <Text style={styles.resetText}>RESET</Text>
-              </TouchableOpacity>
-            </View>
+            <Touchable onPress={this._resetFilter} useForeground
+              style={styles.resetView}>
+              <Text style={styles.resetText}>RESET</Text>
+            </Touchable>
           </View>}
 
         {/* LIST */}

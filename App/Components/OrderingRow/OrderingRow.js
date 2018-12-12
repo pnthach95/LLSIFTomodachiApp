@@ -7,13 +7,13 @@ import { Colors } from '../../Theme';
 
 /**
  * Idol Name Row.
- * 
+ *
  * Idol list in `this.props.idols`.
  *
  * Prop:
  * - `selectIdol`: Save `name` state
  * - `name`: state from parent
- * 
+ *
  * @export
  * @class IdolNameRow
  * @extends {React.Component}
@@ -34,7 +34,7 @@ export default class OrderingRow extends React.Component {
               hideIcon={true}
               style={{ inputIOS: styles.picker, inputAndroid: styles.picker }}
               placeholderTextColor={'black'}
-              value={this.props.selectedOrdering.value} />
+              value={this.props.selectedOrdering} />
           </View>
         </View>
         <View style={styles.pickerRow}>
@@ -44,7 +44,7 @@ export default class OrderingRow extends React.Component {
               <View style={styles.pickerRow}>
                 <Icon name={'check-box' + (this.props.isReverse ? '' : '-outline-blank')}
                   size={20} color={Colors.green} />
-                <Text>Reverse</Text>
+                <Text>Reverse order</Text>
               </View>
             </TouchableWithoutFeedback>
           </View>

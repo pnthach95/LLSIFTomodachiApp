@@ -11,7 +11,7 @@ LLSIFApiClient.addMonitor(Reactotron.apisauce);
 
 /**
  * [Fetch cached data](https://github.com/MagiCircles/SchoolIdolAPI/wiki/API-Cached-data)
- * 
+ *
  * @returns
  */
 async function fetchCachedData() {
@@ -31,6 +31,7 @@ async function fetchCachedData() {
 async function fetchCardList(filter) {
   const response = await LLSIFApiClient.get(Config.CARDS, filter);
   if (response.ok) {
+    console.log('fetchCardList', response);
     return response.data.results;
   }
   if (response.status === 404) {

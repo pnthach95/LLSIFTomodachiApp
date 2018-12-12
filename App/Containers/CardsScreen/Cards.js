@@ -28,7 +28,7 @@ import { loadSettings } from '../../Utils';
 
 /**
  * [Card List Screen](https://github.com/MagiCircles/SchoolIdolAPI/wiki/API-Cards#get-the-list-of-cards)
- * 
+ *
  * State:
  * - `isLoading`: Loading state
  * - `data`: Data for FlatList
@@ -59,8 +59,15 @@ class CardsScreen extends React.PureComponent {
   constructor(props) {
     super(props);
     this.orderingItem = [
+      { label: 'Game ID', value: 'game_id' },
       { label: 'Release date', value: 'release_date' },
-      { label: 'Game ID', value: 'game_id' }
+      { label: 'Idol', value: 'name' },
+      { label: `Smile's statistics`, value: 'idolized_maximum_statistics_smile' },
+      { label: `Pure's statistics`, value: 'idolized_maximum_statistics_pure' },
+      { label: `Cool's statistics`, value: 'idolized_maximum_statistics_cool' },
+      { label: 'Rarity', value: 'rarity' },
+      { label: 'Attribute', value: 'attribute' },
+      { label: 'HP', value: 'hp' },
     ];
 
     this.defaultFilter = {
@@ -182,30 +189,26 @@ class CardsScreen extends React.PureComponent {
    * @memberof CardsScreen
    */
   _getCards(page = this.state.page) {
-    let _skill = this.state.skill;
-    let _name = this.state.name;
-    let _sub_unit = this.state.idol_sub_unit;
-    let _school = this.state.idol_school;
     let _ordering = (this.state.isReverse ? '-' : '') + this.state.selectedOrdering;
-    let _filter = {
+    var _filter = {
       ordering: _ordering,
       page_size: this.state.page_size,
-      page: page,
-      name: _name === 'All' ? '' : _name,
-      rarity: this.state.rarity,
-      attribute: this.state.attribute,
-      japan_only: this.state.japan_only,
-      is_promo: this.state.is_promo,
-      is_special: this.state.is_special,
-      is_event: this.state.is_event,
-      skill: _skill === 'All' ? '' : _skill,
-      idol_main_unit: this.state.idol_main_unit,
-      idol_sub_unit: _sub_unit === 'All' ? '' : _sub_unit,
-      idol_school: _school === 'All' ? '' : _school,
-      idol_year: this.state.idol_year
+      page: page
     };
-    if (this.state.search !== '') { _filter.search = this.state.search }
-    // console.log(`========== Cards.getCards`, _filter);
+    if (this.state.attribute !== '') _filter.attribute = this.state.attribute;
+    if (this.state.idol_main_unit !== '') _filter.idol_main_unit = this.state.idol_main_unit;
+    if (this.state.idol_sub_unit !== 'All') _filter.idol_sub_unit = this.state.idol_sub_unit;
+    if (this.state.idol_school !== 'All') _filter.idol_school = this.state.idol_school;
+    if (this.state.name !== 'All') _filter.name = this.state.name;
+    if (this.state.skill !== 'All') _filter.skill = this.state.skill;
+    if (this.state.is_event !== '') _filter.is_event = this.state.is_event;
+    if (this.state.is_promo !== '') _filter.is_promo = this.state.is_promo;
+    if (this.state.japan_only !== '') _filter.japan_only = this.state.japan_only;
+    if (this.state.idol_year !== '') _filter.idol_year = this.state.idol_year;
+    if (this.state.is_special !== '') _filter.is_special = this.state.is_special;
+    if (this.state.rarity !== '') _filter.rarity = this.state.rarity;
+    if (this.state.search !== '') _filter.search = this.state.search;
+    console.log(`========== Cards.getCards`, _filter);
     LLSIFService.fetchCardList(_filter).then(result => {
       if (result === 404) {
         // console.log('LLSIFService.fetchCardList 404');

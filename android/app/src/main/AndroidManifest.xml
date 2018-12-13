@@ -23,7 +23,7 @@
         android:screenOrientation="portrait"
         android:exported="true"
         android:theme="@style/SplashTheme"
-        android:windowSoftInputMode="adjustResize">
+        android:windowSoftInputMode="stateAlwaysHidden|adjustPan">
         <intent-filter>
           <action android:name="android.intent.action.MAIN" />
           <category android:name="android.intent.category.LAUNCHER" />
@@ -48,5 +48,4 @@
         android:name="com.google.firebase.messaging.default_notification_color"
         android:resource="@color/purple" />
     </application>
-
 </manifest>

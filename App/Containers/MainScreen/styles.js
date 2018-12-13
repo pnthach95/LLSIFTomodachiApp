@@ -25,7 +25,8 @@ export default StyleSheet.create({
   },
   content: {
     alignItems: 'center',
-    padding: Metrics.baseMargin
+    paddingHorizontal: Metrics.baseMargin,
+    paddingBottom: Metrics.baseMargin
   },
   text: {
     color: 'white',
@@ -44,5 +45,12 @@ export default StyleSheet.create({
   block: {
     width: '100%',
     alignItems: 'center'
+  },
+  update: {
+    width: '90%',
+    backgroundColor: Colors.lightGreen,
+    alignSelf: 'center',
+    alignItems: 'center',
+    padding: 5
   }
 });

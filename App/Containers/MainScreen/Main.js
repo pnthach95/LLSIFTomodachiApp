@@ -59,12 +59,13 @@ class MainScreen extends React.Component {
         console.log('github', result);
         let appVersionArr = VersionNumber.appVersion.split(/\D|[a-zA-Z]/);
         let gitVersionArr = result.tag_name.split(/\./);
-        let appVersion = Number.parseInt(appVersionArr[0] + (appVersionArr[1].length === 1 ? '0' : '') + appVersionArr[1] + (appVersionArr[2].length === 1 ? '0' : '') + appVersionArr[2]);
+        let appVersion = Number.parseInt(appVersionArr[0] + (appVersionArr[1].length === 1 ? '0' : '') + appVersionArr[1] + (appVersionArr[2].length === 1 ? '0' : '') + (appVersionArr[2] + 1));
         let gitVersion = Number.parseInt(gitVersionArr[0] + (gitVersionArr[1].length === 1 ? '0' : '') + gitVersionArr[1] + (gitVersionArr[2].length === 1 ? '0' : '') + gitVersionArr[2]);
         if (gitVersion > appVersion) {
           this.setState({
             version: {
               tag: result.tag_name,
+              filename: result.assets[0].name,
               link: result.assets[0].browser_download_url
             }
           });
@@ -142,11 +143,11 @@ class MainScreen extends React.Component {
           <View style={styles.rightHeader} />
         </View>
         {this.state.version !== null &&
-          <Touchable useForeground style={{ width: '90%', backgroundColor: Colors.lightGreen, alignSelf: 'center', alignItems: 'center', padding: 5 }}
+          <Touchable useForeground style={styles.update}
             background={TouchableNativeFeedback.Ripple('white', false)}
             onLongPress={() => { }}
             onPress={() => openLink(this.state.version.link)}>
-            <Text>{`Download new version (${this.state.version.tag}) on Github!`}</Text>
+            <Text>{`Download new version ${this.state.version.tag} on Github!`}</Text>
           </Touchable>}
 
         {/* BODY */}
@@ -239,7 +240,6 @@ class MainScreen extends React.Component {
                 }} />
             </View>
           ))} */}
-          <View style={{ height: 14 }} />
         </ScrollView>
       </View>
     )

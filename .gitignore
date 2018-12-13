@@ -61,8 +61,7 @@ buck-out/
 !.vscode/tasks.json
 !.vscode/extensions.json
 android/app/.settings/
-android/app/bin/.settings/
-android/app/bin/.project
+android/app/bin/
 android/app/.project
 android/.project
 android/.settings/

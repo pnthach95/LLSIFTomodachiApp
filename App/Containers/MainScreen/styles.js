@@ -40,5 +40,9 @@ export default StyleSheet.create({
     color: 'white',
     fontSize: 24,
     textAlign: 'center'
+  },
+  block: {
+    width: '100%',
+    alignItems: 'center'
   }
 });

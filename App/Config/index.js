@@ -9,6 +9,8 @@ export const Config = {
   SONGS: 'songs/',
   EVENTS: 'events/',
   CARDIDS: 'cardids/',
+  GITHUB_API: 'https://api.github.com/repos/',
+  REPO: 'pnthach95/LLSIFTomodachiApp/releases',
   GITHUB_PROJECT: 'https://github.com/pnthach95/LLSIFTomodachiApp',
   DEFAULT_BACKGROUND: '//i.schoolido.lu/c/1722idolizedRuby.png'
 }

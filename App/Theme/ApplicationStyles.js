@@ -12,7 +12,7 @@ export default {
   header: {
     flexDirection: 'row',
     height: Metrics.navBarHeight,
-    justifyContent: 'center',
+    justifyContent: 'space-between',
     alignItems: 'center'
   },
   imageHeader: {

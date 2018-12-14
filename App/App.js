@@ -7,7 +7,7 @@ import RootScreen from './Containers/Root/RootScreen';
 import SplashScreen from './Containers/SplashScreen/SplashScreen';
 import { Colors } from './Theme';
 
-// Sentry.config('https://ac9aa894ab9341fba115b29731378b6b@sentry.io/1330276').install();
+Sentry.config('https://ac9aa894ab9341fba115b29731378b6b@sentry.io/1330276').install();
 const { store, persistor } = createStore();
 
 export default class App extends Component {

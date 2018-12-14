@@ -39,5 +39,8 @@ export default StyleSheet.create({
     backgroundColor: 'white',
     width: 50,
     height: 50
+  },
+  flatListElement: {
+    margin: 10
   }
 });

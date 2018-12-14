@@ -8,6 +8,7 @@ target 'LLSIFTomodachi' do
   # Pods for LLSIFTomodachi
   pod 'Firebase/Core', '~> 5.11.0'
   pod 'Firebase/Messaging', '~> 5.11.0'
+  pod 'GoogleAppMeasurement', '~> 5.3.0'
 
   target 'LLSIFTomodachi-tvOSTests' do
     inherit! :search_paths

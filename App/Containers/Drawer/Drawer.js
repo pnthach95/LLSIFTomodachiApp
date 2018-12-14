@@ -194,15 +194,14 @@ class Drawer extends Component {
               </View>
             </Fade>
 
-            {!this.state.visible &&
-              <Fade visible={!this.state.visible}
-                style={[styles.container, { backgroundColor: '#0000' }]}>
-                <TouchableHighlight onPress={this._navigateToCardDetail(this.props.randomCard)}
-                  underlayColor={'#fffa'}
-                  style={[ApplicationStyles.center, styles.viewMore]}>
-                  <Text style={styles.versionText}>View card info</Text>
-                </TouchableHighlight>
-              </Fade>}
+            <Fade visible={!this.state.visible}
+              style={[styles.container, { backgroundColor: '#0000' }]}>
+              <TouchableHighlight onPress={this._navigateToCardDetail(this.props.randomCard)}
+                underlayColor={'#fffa'}
+                style={[ApplicationStyles.center, styles.viewMore]}>
+                <Text style={styles.versionText}>View card info</Text>
+              </TouchableHighlight>
+            </Fade>
 
             <TouchableHighlight onPress={this._visibleToggle}
               underlayColor={'#fff'}

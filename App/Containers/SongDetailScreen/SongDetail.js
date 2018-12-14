@@ -16,7 +16,7 @@ import styles from './styles';
 
 /**
  * Song Detail Screen
- * 
+ *
  * From parent screen, pass `item` (Song object) to show detail
  *
  * State:
@@ -33,7 +33,7 @@ import styles from './styles';
  * - `random`: [note number, stars]
  * - `master`: [note number, stars]
  * - `isLoading`: Loading state
- * 
+ *
  * @class SongDetailScreen
  * @extends {React.Component}
  */
@@ -99,7 +99,6 @@ class SongDetailScreen extends React.Component {
       master: [this.state.item.master_notes, masterArray],
       colors: findColorByAttribute(this.state.item.attribute)
     });
-    // console.log('SongDetails', this.state.item)
   }
 
   /**
@@ -132,7 +131,7 @@ class SongDetailScreen extends React.Component {
 
   /**
    * Convert seconds to m:ss
-   * 
+   *
    * @param {Number} time
    * @memberof SongDetailScreen
    */
@@ -155,7 +154,7 @@ class SongDetailScreen extends React.Component {
 
   /**
    * Render choosing stat button
-   * 
+   *
    * @param {Number} id
    * @param {String} text
    * @param {Array} stat
@@ -179,7 +178,8 @@ class SongDetailScreen extends React.Component {
   }
 
   render() {
-    if (this.state.isLoading) return <SplashScreen />
+    if (this.state.isLoading) return <SplashScreen />;
+    console.log(`SongDetail ${this.state.name}`);
     return (
       <View style={ApplicationStyles.screen}>
         {/* HEADER */}

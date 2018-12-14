@@ -150,7 +150,7 @@ class SongsScreen extends React.Component {
     if (this.state.is_event !== '') _filter.is_event = this.state.is_event;
     if (this.state.main_unit !== '') _filter.main_unit = this.state.main_unit;
     if (this.state.search !== '') _filter.search = this.state.search;
-    console.log(`========== Songs.getSongs`, _filter);
+    console.log(`Songs.getSongs ${JSON.stringify(_filter)}`);
     LLSIFService.fetchSongList(_filter).then(result => {
       if (result === 404) {
         // console.log('LLSIFService.fetchSongList 404')
@@ -168,7 +168,7 @@ class SongsScreen extends React.Component {
       }
     }).catch(err => {
       Alert.alert('Error', 'Error when get songs',
-        [{ text: 'OK', onPress: () => console.log('OK Pressed', err) }]);
+        [{ text: 'OK', onPress: () => console.log(`OK Pressed ${err}`) }]);
     })
   }
 

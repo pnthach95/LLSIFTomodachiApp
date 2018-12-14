@@ -56,7 +56,7 @@ class MainScreen extends React.Component {
   componentDidMount() {
     if (Platform.OS === 'android') {
       GithubService.fetchLatestVersion().then(result => {
-        console.log('github', result);
+        // console.log('github', result);
         let appVersionArr = VersionNumber.appVersion.split(/\D|[a-zA-Z]/);
         let gitVersionArr = result.tag_name.split(/\./);
         let appVersion = Number.parseInt(appVersionArr[0] + (appVersionArr[1].length === 1 ? '0' : '') + appVersionArr[1] + (appVersionArr[2].length === 1 ? '0' : '') + (appVersionArr[2] + 1));

@@ -145,7 +145,7 @@ class EventsScreen extends React.Component {
     if (this.state.main_unit !== '') _filter.main_unit = this.state.main_unit;
     if (this.state.attribute !== '') _filter.attribute = this.state.attribute;
     if (this.state.search !== '') _filter.search = this.state.search;
-    // console.log(`========== Events.getEvents`, _filter);
+    console.log(`Events.getEvents ${JSON.stringify(_filter)}`);
     LLSIFService.fetchEventList(_filter).then((result) => {
       if (result === 404) {
         // console.log('LLSIFService.fetchEventList 404');

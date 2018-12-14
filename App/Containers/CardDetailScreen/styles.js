@@ -2,22 +2,20 @@ import { StyleSheet } from 'react-native';
 import { Metrics } from '../../Theme';
 
 export default StyleSheet.create({
-  header: {
-    justifyContent: 'space-between',
-    backgroundColor: 'white',
-    paddingRight: Metrics.baseMargin
-  },
-  centerHeader: {
-    flex: 3
-  },
-  rightHeader: {
-    flex: 3,
+  leftRow: {
     flexDirection: 'row',
+    alignItems: 'center'
+  },
+  rightRow: {
+    flexDirection: 'row',
+    marginRight: Metrics.baseMargin,
+    alignItems: 'center',
     justifyContent: 'flex-end'
   },
   rightHeaderImage: {
     resizeMode: 'contain',
-    width: '33%'
+    height: Metrics.navBarHeight,
+    width: Metrics.screenWidth * 0.17
   },
   headerButton: {
     height: Metrics.navBarHeight,

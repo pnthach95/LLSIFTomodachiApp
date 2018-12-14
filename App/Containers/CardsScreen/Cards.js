@@ -5,6 +5,7 @@ import ElevatedView from 'react-native-elevated-view';
 import Icon from 'react-native-vector-icons/Ionicons';
 import _ from 'lodash';
 
+import Fade from '../../Components/Fade/Fade';
 import YearRow from '../../Components/YearRow/YearRow';
 import CardItem from '../../Components/CardItem/CardItem';
 import EventRow from '../../Components/EventRow/EventRow';
@@ -199,7 +200,7 @@ class CardsScreen extends React.PureComponent {
     if (this.state.is_special !== '') _filter.is_special = this.state.is_special;
     if (this.state.rarity !== '') _filter.rarity = this.state.rarity;
     if (this.state.search !== '') _filter.search = this.state.search;
-    console.log(`========== Cards.getCards`, _filter);
+    console.log(`Cards.getCards: ${JSON.stringify(_filter)}`);
     LLSIFService.fetchCardList(_filter).then(result => {
       if (result === 404) {
         // console.log('LLSIFService.fetchCardList 404');
@@ -215,7 +216,7 @@ class CardsScreen extends React.PureComponent {
       }
     }).catch(err => {
       Alert.alert('Error', 'Error when get cards',
-        [{ text: 'OK', onPress: () => console.log('OK Pressed', err) }]);
+        [{ text: 'OK', onPress: () => console.log(`OK Pressed, ${err}`) }]);
     })
   }
 
@@ -407,80 +408,84 @@ class CardsScreen extends React.PureComponent {
    *
    * @memberof CardsScreen
    */
-  renderFooter = <View style={[ApplicationStyles.center, { margin: 10 }]}>
+  renderFooter = <View style={[ApplicationStyles.center, styles.flatListElement]}>
     <Image source={Images.alpaca} />
   </View>
 
-  renderEmpty = <View style={{ margin: 10 }}>
+  renderEmpty = <View style={styles.flatListElement}>
     <Text style={styles.resetText}>No result</Text>
   </View>
 
   render() {
-    if (this.state.isLoading) return <SplashScreen bgColor={Colors.green} />;
     return (
       <View style={styles.container}>
-        {/* HEADER */}
-        <ElevatedView elevation={5} style={[ApplicationStyles.header, styles.header]}>
-          <SquareButton name={'ios-menu'} onPress={this._openDrawer} />
-          <View style={ApplicationStyles.searchHeader}>
-            <TextInput value={this.state.search}
-              onChangeText={text => this.setState({ search: text })}
-              onSubmitEditing={this._onSearch}
-              placeholder={'Search card...'}
-              style={ApplicationStyles.searchInput} />
-            <SquareButton name={'ios-search'} onPress={this._onSearch}
-              style={ApplicationStyles.searchButton} />
-          </View>
-          <SquareButton name={'ios-more'} onPress={this._toggleFilter} />
-        </ElevatedView>
+        <Fade visible={this.state.isLoading} style={ApplicationStyles.screen}>
+          <SplashScreen bgColor={Colors.green} />
+        </Fade>
+        <Fade visible={!this.state.isLoading} style={ApplicationStyles.screen}>
+          {/* HEADER */}
+          <ElevatedView elevation={5} style={[ApplicationStyles.header, styles.header]}>
+            <SquareButton name={'ios-menu'} onPress={this._openDrawer} />
+            <View style={ApplicationStyles.searchHeader}>
+              <TextInput value={this.state.search}
+                onChangeText={text => this.setState({ search: text })}
+                onSubmitEditing={this._onSearch}
+                placeholder={'Search card...'}
+                style={ApplicationStyles.searchInput} />
+              <SquareButton name={'ios-search'} onPress={this._onSearch}
+                style={ApplicationStyles.searchButton} />
+            </View>
+            <SquareButton name={'ios-more'} onPress={this._toggleFilter} />
+          </ElevatedView>
 
-        {/* FILTER */}
-        {this.state.isFilter &&
-          <View style={styles.filterContainer}>
-            <ScrollView contentContainerStyle={{ padding: 10 }}>
-              <IdolNameRow name={this.state.name} selectIdol={this._selectIdol} />
-              <RarityRow rarity={this.state.rarity} selectRarity={this._selectRarity} />
-              <AttributeRow attribute={this.state.attribute} selectAttribute={this._selectAttribute} />
-              <RegionRow japan_only={this.state.japan_only} selectRegion={this._selectRegion} />
-              <PromoCardRow is_promo={this.state.is_promo} selectPromo={this._selectPromo} />
-              <SpecialCardRow is_special={this.state.is_special} selectSpecial={this._selectSpecial} />
-              <EventRow is_event={this.state.is_event} selectEvent={this._selectEvent} />
-              <SkillRow skill={this.state.skill} selectSkill={this._selectSkill} />
-              <MainUnitRow main_unit={this.state.idol_main_unit} selectMainUnit={this._selectMainUnit} />
-              <SubUnitRow idol_sub_unit={this.state.idol_sub_unit} selectSubUnit={this._selectSubUnit} />
-              <SchoolRow idol_school={this.state.idol_school} selectSchool={this._selectSchool} />
-              <YearRow idol_year={this.state.idol_year} selectYear={this._selectYear} />
-              <OrderingRow orderingItem={OrderingGroup.CARD}
-                selectedOrdering={this.state.selectedOrdering} selectOrdering={this._selectOrdering}
-                isReverse={this.state.isReverse} toggleReverse={this._toggleReverse} />
+          {/* FILTER */}
+          {this.state.isFilter &&
+            <View style={styles.filterContainer}>
+              <ScrollView contentContainerStyle={{ padding: 10 }}>
+                <IdolNameRow name={this.state.name} selectIdol={this._selectIdol} />
+                <RarityRow rarity={this.state.rarity} selectRarity={this._selectRarity} />
+                <AttributeRow attribute={this.state.attribute} selectAttribute={this._selectAttribute} />
+                <RegionRow japan_only={this.state.japan_only} selectRegion={this._selectRegion} />
+                <PromoCardRow is_promo={this.state.is_promo} selectPromo={this._selectPromo} />
+                <SpecialCardRow is_special={this.state.is_special} selectSpecial={this._selectSpecial} />
+                <EventRow is_event={this.state.is_event} selectEvent={this._selectEvent} />
+                <SkillRow skill={this.state.skill} selectSkill={this._selectSkill} />
+                <MainUnitRow main_unit={this.state.idol_main_unit} selectMainUnit={this._selectMainUnit} />
+                <SubUnitRow idol_sub_unit={this.state.idol_sub_unit} selectSubUnit={this._selectSubUnit} />
+                <SchoolRow idol_school={this.state.idol_school} selectSchool={this._selectSchool} />
+                <YearRow idol_year={this.state.idol_year} selectYear={this._selectYear} />
+                <OrderingRow orderingItem={OrderingGroup.CARD}
+                  selectedOrdering={this.state.selectedOrdering} selectOrdering={this._selectOrdering}
+                  isReverse={this.state.isReverse} toggleReverse={this._toggleReverse} />
 
-              {/* RESET BUTTON */}
-              <Touchable onPress={this._resetFilter} useForeground
-                style={styles.resetView}>
-                <Text style={styles.resetText}>RESET</Text>
+                {/* RESET BUTTON */}
+                <Touchable onPress={this._resetFilter} useForeground
+                  style={styles.resetView}>
+                  <Text style={styles.resetText}>RESET</Text>
+                </Touchable>
+              </ScrollView>
+            </View>}
+
+          {/* LIST */}
+          <FlatList data={this.state.data}
+            key={`${this.state.column}c`}
+            numColumns={this.state.column}
+            initialNumToRender={8}
+            keyExtractor={this._keyExtractor}
+            onEndReached={this._onEndReached}
+            style={styles.list}
+            onScroll={this._onScroll}
+            ListEmptyComponent={this.renderEmpty}
+            ListFooterComponent={this.renderFooter}
+            renderItem={this._renderItem} />
+          {this.state.isActionButtonVisible &&
+            <View style={[styles.floatButton, ApplicationStyles.center]}>
+              <Touchable onPress={this._switchColumn}
+                background={TouchableNativeFeedback.Ripple(Colors.green, true)}>
+                <Image source={Images.column[this.state.column - 1]} style={styles.floatButtonSize} />
               </Touchable>
-            </ScrollView>
-          </View>}
-
-        {/* LIST */}
-        <FlatList data={this.state.data}
-          key={`${this.state.column}c`}
-          numColumns={this.state.column}
-          initialNumToRender={8}
-          keyExtractor={this._keyExtractor}
-          onEndReached={this._onEndReached}
-          style={styles.list}
-          onScroll={this._onScroll}
-          ListEmptyComponent={this.renderEmpty}
-          ListFooterComponent={this.renderFooter}
-          renderItem={this._renderItem} />
-        {this.state.isActionButtonVisible &&
-          <View style={[styles.floatButton, ApplicationStyles.center]}>
-            <Touchable onPress={this._switchColumn}
-              background={TouchableNativeFeedback.Ripple(Colors.green, true)}>
-              <Image source={Images.column[this.state.column - 1]} style={styles.floatButtonSize} />
-            </Touchable>
-          </View>}
+            </View>}
+        </Fade>
       </View>
     )
   }

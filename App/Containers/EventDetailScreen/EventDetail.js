@@ -72,11 +72,7 @@ class EventDetailScreen extends React.Component {
               cards: resCard,
               songs: resSong
             });
-            // console.log('+-----------------------------------')
-            // console.log('| EventDetails', this.state.item)
-            // console.log('| Cards', this.state.cards)
-            // console.log('| Songs', this.state.songs)
-            // console.log('+-----------------------------------')
+            console.log(`EventDetail ${this.state.item.japanese_name}`);
           });
       });
   }

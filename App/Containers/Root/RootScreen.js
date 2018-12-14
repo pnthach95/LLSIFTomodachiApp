@@ -144,10 +144,7 @@ class RootScreen extends Component {
       <SafeAreaView style={ApplicationStyles.screen}>
         <View style={ApplicationStyles.screen}>
           <StatusBarBackground />
-          <AppNav
-            // Initialize the NavigationService
-            // (see https://reactnavigation.org/docs/en/navigating-without-navigation-prop.html)
-            ref={(navigatorRef) => { NavigationService.setTopLevelNavigator(navigatorRef) }} />
+          <AppNav ref={navigatorRef => NavigationService.setTopLevelNavigator(navigatorRef)} />
         </View>
       </SafeAreaView>
     )

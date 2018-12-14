@@ -69,4 +69,3 @@ android/app/.classpath
 
 # Security
 android/gradle.properties
-ios/sentry.properties

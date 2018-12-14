@@ -5,6 +5,7 @@ import ElevatedView from 'react-native-elevated-view';
 import Icon from 'react-native-vector-icons/Ionicons';
 import _ from 'lodash';
 
+import Fade from '../../Components/Fade/Fade';
 import EventRow from '../../Components/EventRow/EventRow';
 import SongItem from '../../Components/SongItem/SongItem';
 import Touchable from '../../Components/Touchable/Touchable';
@@ -260,57 +261,61 @@ class SongsScreen extends React.Component {
   /**
    * Render footer in FlatList
    */
-  renderFooter = <View style={[ApplicationStyles.center, { margin: 10 }]}>
+  renderFooter = <View style={[ApplicationStyles.center, styles.flatListElement]}>
     <Image source={Images.alpaca} />
   </View>
 
-  renderEmpty = <View style={{ margin: 10 }}>
+  renderEmpty = <View style={styles.flatListElement}>
     <Text style={{ textAlign: 'center' }}>No result</Text>
   </View>
 
   render() {
-    if (this.state.isLoading) return <SplashScreen />
     return (
       <View style={ApplicationStyles.screen}>
-        {/* HEADER */}
-        <ElevatedView elevation={5} style={[ApplicationStyles.header, styles.header]}>
-          <SquareButton name={'ios-menu'} onPress={this._openDrawer} />
-          <View style={ApplicationStyles.searchHeader}>
-            <TextInput style={ApplicationStyles.searchInput}
-              onChangeText={text => this.setState({ search: text })}
-              onSubmitEditing={this._onSearch}
-              placeholder={'Search song...'}
-              value={this.state.search} />
-            <SquareButton name={'ios-search'} onPress={this._onSearch}
-              style={ApplicationStyles.searchButton} />
-          </View>
-          <SquareButton name={'ios-more'} onPress={this._toggleFilter} />
-        </ElevatedView>
-        {/* FILTER */}
-        {this.state.isFilter &&
-          <View style={styles.filterContainer}>
-            <AttributeRow attribute={this.state.attribute} selectAttribute={this._selectAttribute} />
-            <EventRow is_event={this.state.is_event} selectEvent={this._selectEvent} />
-            <MainUnitRow main_unit={this.state.main_unit} selectMainUnit={this._selectMainUnit} />
-            <OrderingRow orderingItem={OrderingGroup.SONG}
-              selectedOrdering={this.state.selectedOrdering} selectOrdering={this._selectOrdering}
-              isReverse={this.state.isReverse} toggleReverse={this._toggleReverse} />
-            <Touchable onPress={this._resetFilter} useForeground
-              style={styles.resetView}>
-              <Text style={styles.resetText}>RESET</Text>
-            </Touchable>
-          </View>}
+        <Fade visible={this.state.isLoading} style={ApplicationStyles.screen}>
+          <SplashScreen />
+        </Fade>
+        <Fade visible={!this.state.isLoading} style={ApplicationStyles.screen}>
+          {/* HEADER */}
+          <ElevatedView elevation={5} style={[ApplicationStyles.header, styles.header]}>
+            <SquareButton name={'ios-menu'} onPress={this._openDrawer} />
+            <View style={ApplicationStyles.searchHeader}>
+              <TextInput style={ApplicationStyles.searchInput}
+                onChangeText={text => this.setState({ search: text })}
+                onSubmitEditing={this._onSearch}
+                placeholder={'Search song...'}
+                value={this.state.search} />
+              <SquareButton name={'ios-search'} onPress={this._onSearch}
+                style={ApplicationStyles.searchButton} />
+            </View>
+            <SquareButton name={'ios-more'} onPress={this._toggleFilter} />
+          </ElevatedView>
+          {/* FILTER */}
+          {this.state.isFilter &&
+            <View style={styles.filterContainer}>
+              <AttributeRow attribute={this.state.attribute} selectAttribute={this._selectAttribute} />
+              <EventRow is_event={this.state.is_event} selectEvent={this._selectEvent} />
+              <MainUnitRow main_unit={this.state.main_unit} selectMainUnit={this._selectMainUnit} />
+              <OrderingRow orderingItem={OrderingGroup.SONG}
+                selectedOrdering={this.state.selectedOrdering} selectOrdering={this._selectOrdering}
+                isReverse={this.state.isReverse} toggleReverse={this._toggleReverse} />
+              <Touchable onPress={this._resetFilter} useForeground
+                style={styles.resetView}>
+                <Text style={styles.resetText}>RESET</Text>
+              </Touchable>
+            </View>}
 
-        {/* LIST */}
-        <FlatList data={this.state.list}
-          initialNumToRender={6}
-          numColumns={2}
-          keyExtractor={this._keyExtractor}
-          style={styles.list}
-          onEndReached={this._onEndReached}
-          ListEmptyComponent={this.renderEmpty}
-          ListFooterComponent={this.renderFooter}
-          renderItem={this._renderItem} />
+          {/* LIST */}
+          <FlatList data={this.state.list}
+            initialNumToRender={6}
+            numColumns={2}
+            keyExtractor={this._keyExtractor}
+            style={styles.list}
+            onEndReached={this._onEndReached}
+            ListEmptyComponent={this.renderEmpty}
+            ListFooterComponent={this.renderFooter}
+            renderItem={this._renderItem} />
+        </Fade>
       </View>
     )
   }

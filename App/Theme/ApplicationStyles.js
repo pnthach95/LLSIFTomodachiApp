@@ -10,6 +10,7 @@ export default {
     flex: 1
   },
   header: {
+    zIndex: 1,
     flexDirection: 'row',
     height: Metrics.navBarHeight,
     justifyContent: 'space-between',
@@ -17,7 +18,7 @@ export default {
   },
   imageHeader: {
     width: '60%',
-    height: '100%',
+    height: Metrics.navBarHeight,
     resizeMode: 'contain'
   },
   mediumIcon: {

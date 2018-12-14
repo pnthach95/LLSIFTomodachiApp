@@ -6,7 +6,7 @@ import styles from './styles';
 import Seperator from '../Seperator/Seperator';
 import Touchable from '../Touchable/Touchable';
 import { Metrics, ApplicationStyles, Images } from '../../Theme';
-import { AddHTTPS, findColorByAttribute } from '../../Utils';
+import { AddHTTPS, findColorByAttribute, findSkill } from '../../Utils';
 
 /**
  * Card item for Card List Screen, idolized and unidolized
@@ -32,36 +32,6 @@ export default class Card2PicsItem extends Component {
       imgHeight: 0,
       colors: findColorByAttribute(props.item.attribute)
     };
-  }
-
-  /**
-   * Find image for skill
-   *
-   * @param {String} key
-   * @returns Image
-   * @memberof CardItem
-   */
-  findSkill(key) {
-    switch (key) {
-      case 'Score Up':
-      case 'Perfect Charm':
-      case 'Rhythmical Charm':
-      case 'Total Charm':
-      case 'Timer Charm':
-        return Images.skill[0];
-      case 'Perfect Lock':
-      case 'Total Trick':
-      case 'Timer Trick':
-        return Images.skill[1];
-      case 'Healer':
-      case 'Timer Yell':
-      case 'Total Yell':
-      case 'Rhythmical Yell':
-      case 'Perfect Yell':
-        return Images.skill[2];
-      default:
-        return Images.skill[3];
-    }
   }
 
   render() {
@@ -106,7 +76,7 @@ export default class Card2PicsItem extends Component {
             <View style={ApplicationStyles.screen} />
             <View style={[styles.infoRight, ApplicationStyles.screen]}>
               {(this.props.item.skill !== null && this.props.item.skill.length !== 0) &&
-                <Image source={this.findSkill(this.props.item.skill)}
+                <Image source={findSkill(this.props.item.skill)}
                   style={[
                     ApplicationStyles.mediumIcon,
                     { tintColor: this.state.colors[0] }

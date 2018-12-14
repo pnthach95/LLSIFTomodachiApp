@@ -2,22 +2,20 @@ import { StyleSheet } from 'react-native';
 import { Metrics } from '../../Theme';
 
 export default StyleSheet.create({
-  header: {
-    justifyContent: 'space-between',
-    backgroundColor: 'white',
-    paddingRight: Metrics.baseMargin
-  },
-  centerHeader: {
-    flex: 5
-  },
-  rightHeader: {
-    flex: 1,
+  leftRow: {
     flexDirection: 'row',
+    alignItems: 'center'
+  },
+  rightRow: {
+    flexDirection: 'row',
+    marginRight: Metrics.baseMargin,
+    alignItems: 'center',
     justifyContent: 'flex-end'
   },
   rightHeaderImage: {
     resizeMode: 'contain',
-    width: '100%'
+    height: Metrics.navBarHeight,
+    width: Metrics.screenWidth * 0.17
   },
   headerButton: {
     height: Metrics.navBarHeight,
@@ -26,8 +24,12 @@ export default StyleSheet.create({
   scrollView: {
     marginVertical: Metrics.doubleBaseMargin
   },
+  scrollViewContainer: {
+    alignItems: 'center',
+    marginVertical: Metrics.baseMargin
+  },
   content: {
-    padding: 10,
+    paddingHorizontal: Metrics.baseMargin,
     flex: 1
   },
   event: {
@@ -35,10 +37,11 @@ export default StyleSheet.create({
   },
   eventButton: {
     alignSelf: 'flex-end',
-    paddingRight: 10
+    paddingRight: Metrics.baseMargin
   },
   eventImage: {
-    width: (Metrics.screenWidth / 2) - 20,
+    marginVertical: 10,
+    width: 2 * Metrics.screenWidth / 3,
     height: Metrics.screenWidth / 5
   },
   buttonRow: {
@@ -47,12 +50,12 @@ export default StyleSheet.create({
     paddingVertical: Metrics.baseMargin
   },
   leftRadius: {
-    borderTopLeftRadius: 10,
-    borderBottomLeftRadius: 10
+    borderTopLeftRadius: Metrics.baseMargin,
+    borderBottomLeftRadius: Metrics.baseMargin
   },
   rightRadius: {
-    borderTopRightRadius: 10,
-    borderBottomRightRadius: 10
+    borderTopRightRadius: Metrics.baseMargin,
+    borderBottomRightRadius: Metrics.baseMargin
   },
   button: {
     flex: 1,

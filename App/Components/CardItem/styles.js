@@ -13,5 +13,9 @@ export default StyleSheet.create({
     borderBottomLeftRadius: 4,
     borderBottomRightRadius: 4,
     justifyContent: 'space-around'
+  },
+  topRadius: {
+    borderTopLeftRadius: 4,
+    borderTopRightRadius: 4
   }
 });

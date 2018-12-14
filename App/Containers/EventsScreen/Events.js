@@ -5,6 +5,7 @@ import ElevatedView from 'react-native-elevated-view';
 import Icon from 'react-native-vector-icons/Ionicons';
 import _ from 'lodash';
 
+import Fade from '../../Components/Fade/Fade';
 import SkillRow from '../../Components/SkillRow/SkillRow';
 import EventItem from '../../Components/EventItem/EventItem';
 import RegionRow from '../../Components/RegionRow/RegionRow';
@@ -266,48 +267,52 @@ class EventsScreen extends React.Component {
   </View>
 
   render() {
-    if (this.state.isLoading) return <SplashScreen bgColor={Colors.violet} />;
     return (
       <View style={styles.container}>
-        {/* HEADER */}
-        <ElevatedView elevation={5} style={[ApplicationStyles.header, styles.header]}>
-          <SquareButton name={'ios-menu'} onPress={this._openDrawer} />
-          <View style={ApplicationStyles.searchHeader}>
-            <TextInput value={this.state.search}
-              onChangeText={text => this.setState({ search: text })}
-              onSubmitEditing={this._onSearch}
-              placeholder={'Search event...'}
-              style={ApplicationStyles.searchInput} />
-            <SquareButton name={'ios-search'} onPress={this._onSearch}
-              style={ApplicationStyles.searchButton} />
-          </View>
-          <SquareButton name={'ios-more'} onPress={this._toggleFilter} />
-        </ElevatedView>
+        <Fade visible={this.state.isLoading} style={ApplicationStyles.screen}>
+          <SplashScreen bgColor={Colors.violet} />
+        </Fade>
+        <Fade visible={!this.state.isLoading} style={ApplicationStyles.screen}>
+          {/* HEADER */}
+          <ElevatedView elevation={5} style={[ApplicationStyles.header, styles.header]}>
+            <SquareButton name={'ios-menu'} onPress={this._openDrawer} />
+            <View style={ApplicationStyles.searchHeader}>
+              <TextInput value={this.state.search}
+                onChangeText={text => this.setState({ search: text })}
+                onSubmitEditing={this._onSearch}
+                placeholder={'Search event...'}
+                style={ApplicationStyles.searchInput} />
+              <SquareButton name={'ios-search'} onPress={this._onSearch}
+                style={ApplicationStyles.searchButton} />
+            </View>
+            <SquareButton name={'ios-more'} onPress={this._toggleFilter} />
+          </ElevatedView>
 
-        {/* FILTER */}
-        {this.state.isFilter &&
-          <View style={styles.filterContainer}>
-            <IdolNameRow name={this.state.idol} selectIdol={this._selectIdol} />
-            <MainUnitRow main_unit={this.state.main_unit} selectMainUnit={this._selectMainUnit} />
-            <SkillRow skill={this.state.skill} selectSkill={this._selectSkill} />
-            <AttributeRow attribute={this.state.attribute} selectAttribute={this._selectAttribute} />
-            <RegionRow japan_only={this.state.is_english} selectRegion={this._selectRegion} />
-            <Touchable onPress={this._resetFilter} useForeground
-              style={styles.resetView}>
-              <Text style={styles.resetText}>RESET</Text>
-            </Touchable>
-          </View>}
+          {/* FILTER */}
+          {this.state.isFilter &&
+            <View style={styles.filterContainer}>
+              <IdolNameRow name={this.state.idol} selectIdol={this._selectIdol} />
+              <MainUnitRow main_unit={this.state.main_unit} selectMainUnit={this._selectMainUnit} />
+              <SkillRow skill={this.state.skill} selectSkill={this._selectSkill} />
+              <AttributeRow attribute={this.state.attribute} selectAttribute={this._selectAttribute} />
+              <RegionRow japan_only={this.state.is_english} selectRegion={this._selectRegion} />
+              <Touchable onPress={this._resetFilter} useForeground
+                style={styles.resetView}>
+                <Text style={styles.resetText}>RESET</Text>
+              </Touchable>
+            </View>}
 
-        {/* LIST */}
-        <FlatList data={this.state.list}
-          contentContainerStyle={styles.content}
-          initialNumToRender={6}
-          keyExtractor={this._keyExtractor}
-          style={styles.list}
-          ListEmptyComponent={this.renderEmpty}
-          ListFooterComponent={this.renderFooter}
-          onEndReached={this._onEndReached}
-          renderItem={this._renderItem} />
+          {/* LIST */}
+          <FlatList data={this.state.list}
+            contentContainerStyle={styles.content}
+            initialNumToRender={6}
+            keyExtractor={this._keyExtractor}
+            style={styles.list}
+            ListEmptyComponent={this.renderEmpty}
+            ListFooterComponent={this.renderFooter}
+            onEndReached={this._onEndReached}
+            renderItem={this._renderItem} />
+        </Fade>
       </View>
     )
   }

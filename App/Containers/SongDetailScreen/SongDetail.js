@@ -1,6 +1,7 @@
 import React from 'react';
 import { Text, View, ScrollView, TouchableOpacity, Image } from 'react-native';
 import { connect } from 'react-redux';
+import ElevatedView from 'react-native-elevated-view';
 import FastImage from 'react-native-fast-image';
 import LinearGradient from 'react-native-linear-gradient';
 
@@ -183,29 +184,26 @@ class SongDetailScreen extends React.Component {
     return (
       <View style={ApplicationStyles.screen}>
         {/* HEADER */}
-        <View style={[
+        <ElevatedView elevation={5} style={[
           ApplicationStyles.header,
-          styles.header,
-          { backgroundColor: this.state.colors[1] }
+          { backgroundColor: this.state.colors[1], zIndex: 1 }
         ]}>
-          <View style={ApplicationStyles.screen}>
+          <View style={styles.leftRow}>
             <SquareButton name={'ios-arrow-back'}
               onPress={() => this.props.navigation.goBack()} />
-          </View>
-          <View style={styles.centerHeader}>
             <Text>{this.state.name}</Text>
           </View>
-          <View style={styles.rightHeader}>
+          <View style={styles.rightRow}>
             <Image source={findMainUnit(this.state.item.main_unit)}
               style={styles.rightHeaderImage} />
           </View>
-        </View>
+        </ElevatedView>
 
         {/* BODY */}
         <LinearGradient colors={[this.state.colors[1], this.state.colors[1]]}
           style={styles.content}>
           <ScrollView showsVerticalScrollIndicator={false}
-            contentContainerStyle={{ alignItems: 'center' }}
+            contentContainerStyle={styles.scrollViewContainer}
             style={ApplicationStyles.screen}>
             <FastImage source={{ uri: AddHTTPS(this.state.item.image) }}
               onLoad={e => this.onLoadFastImage(e)}

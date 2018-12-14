@@ -22,5 +22,8 @@ export default StyleSheet.create({
     justifyContent: 'center',
     padding: 10,
     marginTop: 10
+  },
+  flatListElement: {
+    margin: 10
   }
 });

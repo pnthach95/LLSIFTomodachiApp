@@ -67,8 +67,8 @@ class CardDetailScreen extends React.Component {
     if (this.state.item.is_promo) tmp.push('Promo card');
     if (this.state.item.japan_only) tmp.push('Japan only');
     propertyLine = tmp.join(' - ');
+
     this.setState({
-      isLoading: false,
       images: images,
       propertyLine: propertyLine,
       colors: findColorByAttribute(this.state.item.attribute),
@@ -96,7 +96,8 @@ class CardDetailScreen extends React.Component {
         this.state.item.minimum_statistics_smile,
         this.state.item.minimum_statistics_pure,
         this.state.item.minimum_statistics_cool
-      ]
+      ],
+      isLoading: false
     });
     console.log(`CardDetail ${this.state.item.game_id}, ${this.state.item.idol.name}`);
   }
@@ -192,7 +193,7 @@ class CardDetailScreen extends React.Component {
           {/* HEADER */}
           <ElevatedView elevation={5} style={[
             ApplicationStyles.header,
-            { backgroundColor: this.state.colors[1] }
+            { backgroundColor: this.state.colors[1], zIndex: 1 }
           ]}>
             <View style={styles.leftRow}>
               <SquareButton name={'ios-arrow-back'} onPress={() => this.props.navigation.goBack()} />
@@ -289,7 +290,7 @@ class CardDetailScreen extends React.Component {
                     {this.state.item.idolized_max_level !== 0 &&
                       this.statButton(2, `Level ${this.state.item.idolized_max_level}`, this.state.idolMaxStats, styles.rightRadius)}
                   </View>
-                  {this.progressView(this.state.currentStats)}
+                  {!this.state.isLoading && this.progressView(this.state.currentStats)}
                 </View>}
               <View style={{ height: Metrics.doubleBaseMargin }} />
             </ScrollView>

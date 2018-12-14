@@ -149,6 +149,8 @@ android {
 }
 
 dependencies {
+    compile project(':appcenter-analytics')
+    compile project(':appcenter')
     compile project(':react-native-firebase')
     implementation project(':react-native-firebase')
     implementation project(':react-native-sentry')

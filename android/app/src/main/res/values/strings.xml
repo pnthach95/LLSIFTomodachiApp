@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">LLSIF Tomodachi</string>
+    <string name="appCenterAnalytics_whenToEnableAnalytics" moduleConfig="true">ALWAYS_SEND</string>
 </resources>

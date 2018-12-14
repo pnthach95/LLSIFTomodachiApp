@@ -6,6 +6,7 @@
  */
 
 #import "AppDelegate.h"
+#import <AppCenterReactNative/AppCenterReactNative.h>
 #import <Firebase.h>
 #import "RNFirebaseNotifications.h"
 #import "RNFirebaseMessaging.h"
@@ -24,6 +25,8 @@
   [FIRApp configure];
   [RNFirebaseNotifications configure];
   NSURL *jsCodeLocation;
+
+  [AppCenterReactNative register];  // Initialize AppCenter 
 
   jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index" fallbackResource:nil];
 RCTRootView *rootView = [[RCTRootView alloc] initWithBundleURL:jsCodeLocation

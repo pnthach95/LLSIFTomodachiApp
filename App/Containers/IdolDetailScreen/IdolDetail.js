@@ -7,6 +7,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import moment from 'moment';
 
 import SplashScreen from '../SplashScreen/SplashScreen';
+import Fade from '../../Components/Fade/Fade';
 import InfoLine from '../../Components/InfoLine/InfoLine';
 import { LLSIFService } from '../../Services/LLSIFService';
 import SquareButton from '../../Components/SquareButton/SquareButton';
@@ -76,100 +77,106 @@ class IdolDetailScreen extends React.Component {
   }
 
   render() {
-    if (this.state.isLoading) return <SplashScreen bgColor={Colors.blue} />;
     return (
       <View style={ApplicationStyles.screen}>
-        {/* HEADER */}
-        <ElevatedView elevation={5} style={[
-          ApplicationStyles.header,
-          styles.header,
-          { backgroundColor: this.state.colors[1], zIndex: 1 }
-        ]}>
-          <View style={styles.leftHeader}>
-            <SquareButton name={'ios-arrow-back'} onPress={() => this.props.navigation.goBack()} />
-            <View>
-              <Text>{this.state.item.name}</Text>
-              {this.state.item.japanese_name !== null && <Text>{this.state.item.japanese_name}</Text>}
-            </View>
-          </View>
-          <View style={styles.rightHeader}>
-            <Image source={findMainUnit(this.state.item.main_unit)}
-              style={styles.rightHeaderImage} />
-            <Image source={findSubUnit(this.state.item.sub_unit)}
-              style={styles.rightHeaderImage} />
-          </View>
-        </ElevatedView>
+        <Fade visible={this.state.isLoading} style={[ApplicationStyles.screen, ApplicationStyles.absolute]}>
+          <SplashScreen bgColor={Colors.blue} />
+        </Fade>
+        <Fade visible={!this.state.isLoading} style={[ApplicationStyles.screen, ApplicationStyles.absolute]}>
+          {!this.state.isLoading && <View style={ApplicationStyles.screen}>
+            {/* HEADER */}
+            <ElevatedView elevation={5} style={[
+              ApplicationStyles.header,
+              styles.header,
+              { backgroundColor: this.state.colors[1], zIndex: 1 }
+            ]}>
+              <View style={styles.leftHeader}>
+                <SquareButton name={'ios-arrow-back'} onPress={() => this.props.navigation.goBack()} />
+                <View>
+                  <Text>{this.state.item.name}</Text>
+                  {this.state.item.japanese_name !== null && <Text>{this.state.item.japanese_name}</Text>}
+                </View>
+              </View>
+              <View style={styles.rightHeader}>
+                <Image source={findMainUnit(this.state.item.main_unit)}
+                  style={styles.rightHeaderImage} />
+                <Image source={findSubUnit(this.state.item.sub_unit)}
+                  style={styles.rightHeaderImage} />
+              </View>
+            </ElevatedView>
 
-        {/* INFORMATION */}
-        <LinearGradient style={ApplicationStyles.screen}
-          colors={[this.state.colors[1], this.state.colors[0]]}>
-          <ScrollView showsVerticalScrollIndicator={false}>
-            <View style={styles.imageRow}>
-              {(this.state.images[0] && this.state.images[0].includes('.png')) &&
-                <FastImage
-                  source={{
-                    uri: AddHTTPS(this.state.images[0]),
-                    priority: FastImage.priority.high
-                  }}
-                  resizeMode={FastImage.resizeMode.contain}
-                  style={{
-                    width: Metrics.images.itemWidth * 1.5,
-                    height: Metrics.images.itemWidth * 1.5
-                  }} />}
-              <FastImage
-                source={{
-                  uri: AddHTTPS(this.state.images[1]),
-                  priority: FastImage.priority.high
-                }}
-                resizeMode={FastImage.resizeMode.contain}
-                style={{
-                  width: Metrics.images.itemWidth * 1.5,
-                  height: Metrics.images.itemWidth * 1.5
-                }} />
-            </View>
-            <View style={styles.scrollView}>
-              {this.state.item.school !== null &&
-                <InfoLine title={'School'}
-                  content={this.state.item.school} />}
-              <InfoLine title={'Attribute'}
-                content={this.state.item.attribute} />
-              {this.state.item.birthday !== null &&
-                <InfoLine title={'Birthday'}
-                  content={moment(this.state.item.birthday, 'MM-DD').format('MMM Do')} />}
-              {this.state.item.astrological_sign !== null &&
-                <InfoLine title={'Astrological Sign'}
-                  content={this.state.item.astrological_sign} />}
-              {this.state.item.blood !== null &&
-                <InfoLine title={'Blood Type'}
-                  content={this.state.item.blood} />}
-              {this.state.item.height !== null &&
-                <InfoLine title={'Height'}
-                  content={`${this.state.item.height} cm`} />}
-              {this.state.item.measurements !== null &&
-                <InfoLine title={'Measurements'}
-                  content={this.state.item.measurements} />}
-              {this.state.item.favorite_food !== null &&
-                <InfoLine title={'Favorite Food'}
-                  content={this.state.item.favorite_food} />}
-              {this.state.item.least_favorite_food !== null &&
-                <InfoLine title={'Least Favorite Food'}
-                  content={this.state.item.least_favorite_food} />}
-              {this.state.item.hobbies !== null &&
-                <InfoLine title={'Hobbies'}
-                  content={this.state.item.hobbies} />}
-              {this.state.item.year &&
-                <InfoLine title={'Year'}
-                  content={this.state.item.year} />}
-              {this.state.item.cv !== null &&
-                <InfoLine title={'CV'}
-                  content={`${this.state.item.cv.name} (${this.state.item.cv.nickname})`}
-                  twitter={this.state.item.cv.twitter} instagram={this.state.item.cv.instagram}
-                  myanimelist={this.state.item.cv.url} />}
-              {this.state.item.summary !== null &&
-                <InfoLine title={'Summary'} content={this.state.item.summary} />}
-            </View>
-          </ScrollView>
-        </LinearGradient>
+            {/* INFORMATION */}
+            <LinearGradient style={ApplicationStyles.screen}
+              colors={[this.state.colors[1], this.state.colors[0]]}>
+              <ScrollView showsVerticalScrollIndicator={false}>
+                <View style={styles.imageRow}>
+                  {(this.state.images[0] && this.state.images[0].includes('.png')) &&
+                    <FastImage
+                      source={{
+                        uri: AddHTTPS(this.state.images[0]),
+                        priority: FastImage.priority.high
+                      }}
+                      resizeMode={FastImage.resizeMode.contain}
+                      style={{
+                        width: Metrics.images.itemWidth * 1.5,
+                        height: Metrics.images.itemWidth * 1.5
+                      }} />}
+                  <FastImage
+                    source={{
+                      uri: AddHTTPS(this.state.images[1]),
+                      priority: FastImage.priority.high
+                    }}
+                    resizeMode={FastImage.resizeMode.contain}
+                    style={{
+                      width: Metrics.images.itemWidth * 1.5,
+                      height: Metrics.images.itemWidth * 1.5
+                    }} />
+                </View>
+                <View style={styles.scrollView}>
+                  {this.state.item.school !== null &&
+                    <InfoLine title={'School'}
+                      content={this.state.item.school} />}
+                  <InfoLine title={'Attribute'}
+                    content={this.state.item.attribute} />
+                  {this.state.item.birthday !== null &&
+                    <InfoLine title={'Birthday'}
+                      content={moment(this.state.item.birthday, 'MM-DD').format('MMM Do')} />}
+                  {this.state.item.astrological_sign !== null &&
+                    <InfoLine title={'Astrological Sign'}
+                      content={this.state.item.astrological_sign} />}
+                  {this.state.item.blood !== null &&
+                    <InfoLine title={'Blood Type'}
+                      content={this.state.item.blood} />}
+                  {this.state.item.height !== null &&
+                    <InfoLine title={'Height'}
+                      content={`${this.state.item.height} cm`} />}
+                  {this.state.item.measurements !== null &&
+                    <InfoLine title={'Measurements'}
+                      content={this.state.item.measurements} />}
+                  {this.state.item.favorite_food !== null &&
+                    <InfoLine title={'Favorite Food'}
+                      content={this.state.item.favorite_food} />}
+                  {this.state.item.least_favorite_food !== null &&
+                    <InfoLine title={'Least Favorite Food'}
+                      content={this.state.item.least_favorite_food} />}
+                  {this.state.item.hobbies !== null &&
+                    <InfoLine title={'Hobbies'}
+                      content={this.state.item.hobbies} />}
+                  {this.state.item.year &&
+                    <InfoLine title={'Year'}
+                      content={this.state.item.year} />}
+                  {this.state.item.cv !== null &&
+                    <InfoLine title={'CV'}
+                      content={`${this.state.item.cv.name} (${this.state.item.cv.nickname})`}
+                      twitter={this.state.item.cv.twitter} instagram={this.state.item.cv.instagram}
+                      myanimelist={this.state.item.cv.url} />}
+                  {this.state.item.summary !== null &&
+                    <InfoLine title={'Summary'} content={this.state.item.summary} />}
+                </View>
+              </ScrollView>
+            </LinearGradient>
+          </View>}
+        </Fade>
       </View>
     )
   }

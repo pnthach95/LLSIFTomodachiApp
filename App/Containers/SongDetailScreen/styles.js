@@ -6,12 +6,6 @@ export default StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center'
   },
-  rightRow: {
-    flexDirection: 'row',
-    marginRight: Metrics.baseMargin,
-    alignItems: 'center',
-    justifyContent: 'flex-end'
-  },
   rightHeaderImage: {
     resizeMode: 'contain',
     height: Metrics.navBarHeight,

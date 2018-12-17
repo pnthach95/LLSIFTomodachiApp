@@ -269,10 +269,10 @@ class EventsScreen extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <Fade visible={this.state.isLoading} style={ApplicationStyles.screen}>
+        <Fade visible={this.state.isLoading} style={[ApplicationStyles.screen, ApplicationStyles.absolute]}>
           <SplashScreen bgColor={Colors.violet} />
         </Fade>
-        <Fade visible={!this.state.isLoading} style={ApplicationStyles.screen}>
+        <Fade visible={!this.state.isLoading} style={[ApplicationStyles.screen, ApplicationStyles.absolute]}>
           {/* HEADER */}
           <ElevatedView elevation={5} style={[ApplicationStyles.header, styles.header]}>
             <SquareButton name={'ios-menu'} onPress={this._openDrawer} />
@@ -290,7 +290,7 @@ class EventsScreen extends React.Component {
 
           {/* FILTER */}
           {this.state.isFilter &&
-            <View style={styles.filterContainer}>
+            <ElevatedView elevation={5} style={styles.filterContainer}>
               <IdolNameRow name={this.state.idol} selectIdol={this._selectIdol} />
               <MainUnitRow main_unit={this.state.main_unit} selectMainUnit={this._selectMainUnit} />
               <SkillRow skill={this.state.skill} selectSkill={this._selectSkill} />
@@ -300,7 +300,7 @@ class EventsScreen extends React.Component {
                 style={styles.resetView}>
                 <Text style={styles.resetText}>RESET</Text>
               </Touchable>
-            </View>}
+            </ElevatedView>}
 
           {/* LIST */}
           <FlatList data={this.state.list}

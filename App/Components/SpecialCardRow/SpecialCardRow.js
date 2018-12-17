@@ -5,11 +5,11 @@ import styles from '../../Theme/RowStyles';
 
 /**
  * Special Card Row (None, True, False)
- * 
+ *
  * Prop:
  * - `selectSpecial`: Save `is_special` state
  * - `is_special`: state from parent
- * 
+ *
  * @export
  * @class SpecialCardRow
  * @extends {React.Component}
@@ -24,21 +24,24 @@ class SpecialCardRow extends React.Component {
         <View style={styles.rightView}>
           <TouchableOpacity onPress={this.props.selectSpecial('')}
             style={[
-              styles.button,
+              styles.textButton,
+              styles.standardButton,
               this.props.is_special === '' && styles.selectedValue
             ]}>
             <Text style={styles.buttonText}>All</Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={this.props.selectSpecial('True')}
             style={[
-              styles.button,
+              styles.textButton,
+              styles.standardButton,
               this.props.is_special === 'True' && styles.selectedValue
             ]}>
             <Text style={styles.buttonText}>Only</Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={this.props.selectSpecial('False')}
             style={[
-              styles.button,
+              styles.textButton,
+              styles.standardButton,
               this.props.is_special === 'False' && styles.selectedValue
             ]}>
             <Text style={styles.buttonText}>None</Text>

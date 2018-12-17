@@ -6,9 +6,6 @@ export default StyleSheet.create({
     flex: 1,
     backgroundColor: Colors.violet
   },
-  scrollView: {
-    paddingBottom: Metrics.doubleBaseMargin
-  },
   header: {
     justifyContent: 'space-between',
     backgroundColor: Colors.lightViolet,
@@ -23,6 +20,7 @@ export default StyleSheet.create({
     justifyContent: 'flex-end'
   },
   content: {
+    padding: Metrics.baseMargin,
     alignItems: 'center'
   },
   text: {
@@ -31,9 +29,14 @@ export default StyleSheet.create({
     padding: Metrics.baseMargin,
     textAlign: 'center'
   },
+  whiteCenter: {
+    color: 'white',
+    textAlign: 'center'
+  },
   title: {
     color: 'white',
     fontSize: 24,
+    fontWeight: 'bold',
     padding: Metrics.baseMargin,
     textAlign: 'center'
   },
@@ -51,6 +54,7 @@ export default StyleSheet.create({
     height: Metrics.screenWidth / 6
   },
   cardList: {
+    marginTop: Metrics.baseMargin,
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'center'

@@ -6,6 +6,7 @@ import FastImage from 'react-native-fast-image';
 import LinearGradient from 'react-native-linear-gradient';
 
 import { getSongMaxStat } from '../../Stores/CachedData/Selectors';
+import Fade from '../../Components/Fade/Fade';
 import StarBar from '../../Components/StarBar/StarBar';
 import ProgressBar from '../../Components/ProgressBar/ProgressBar';
 import SquareButton from '../../Components/SquareButton/SquareButton';
@@ -36,9 +37,9 @@ import styles from './styles';
  * - `isLoading`: Loading state
  *
  * @class SongDetailScreen
- * @extends {React.Component}
+ * @extends {React.PureComponent}
  */
-class SongDetailScreen extends React.Component {
+class SongDetailScreen extends React.PureComponent {
   constructor(props) {
     super(props);
     this.state = {
@@ -179,89 +180,92 @@ class SongDetailScreen extends React.Component {
   }
 
   render() {
-    if (this.state.isLoading) return <SplashScreen />;
-    console.log(`SongDetail ${this.state.name}`);
     return (
       <View style={ApplicationStyles.screen}>
-        {/* HEADER */}
-        <ElevatedView elevation={5} style={[
-          ApplicationStyles.header,
-          { backgroundColor: this.state.colors[1], zIndex: 1 }
-        ]}>
-          <View style={styles.leftRow}>
-            <SquareButton name={'ios-arrow-back'}
-              onPress={() => this.props.navigation.goBack()} />
-            <Text>{this.state.name}</Text>
-          </View>
-          <View style={styles.rightRow}>
-            <Image source={findMainUnit(this.state.item.main_unit)}
-              style={styles.rightHeaderImage} />
-          </View>
-        </ElevatedView>
+        <Fade visible={this.state.isLoading} style={[ApplicationStyles.screen, ApplicationStyles.absolute]}>
+          <SplashScreen />
+        </Fade>
+        <Fade visible={!this.state.isLoading} style={[ApplicationStyles.screen, ApplicationStyles.absolute]}>
+          {!this.state.isLoading && <View style={ApplicationStyles.screen}>
+            {/* HEADER */}
+            <ElevatedView elevation={5} style={[
+              ApplicationStyles.header,
+              { backgroundColor: this.state.colors[1], zIndex: 1 }
+            ]}>
+              <View style={styles.leftRow}>
+                <SquareButton name={'ios-arrow-back'}
+                  onPress={() => this.props.navigation.goBack()} />
+                <Text>{this.state.name}</Text>
+              </View>
+              <Image source={findMainUnit(this.state.item.main_unit)}
+                style={styles.rightHeaderImage} />
+            </ElevatedView>
 
-        {/* BODY */}
-        <LinearGradient colors={[this.state.colors[1], this.state.colors[1]]}
-          style={styles.content}>
-          <ScrollView showsVerticalScrollIndicator={false}
-            contentContainerStyle={styles.scrollViewContainer}
-            style={ApplicationStyles.screen}>
-            <FastImage source={{ uri: AddHTTPS(this.state.item.image) }}
-              onLoad={e => this.onLoadFastImage(e)}
-              style={{
-                width: Metrics.screenWidth / 2,
-                height: (Metrics.screenWidth / 2) * this.state.imgHeight / this.state.imgWidth
-              }} />
-            <View style={{ height: 10 }} />
+            {/* BODY */}
+            <LinearGradient colors={[this.state.colors[1], this.state.colors[1]]}
+              style={styles.content}>
+              <ScrollView showsVerticalScrollIndicator={false}
+                contentContainerStyle={styles.scrollViewContainer}
+                style={ApplicationStyles.screen}>
+                <FastImage source={{ uri: AddHTTPS(this.state.item.image) }}
+                  onLoad={e => this.onLoadFastImage(e)}
+                  style={{
+                    width: Metrics.screenWidth / 2,
+                    height: (Metrics.screenWidth / 2) * this.state.imgHeight / this.state.imgWidth
+                  }} />
+                <View style={{ height: 10 }} />
 
-            <TextRow item1={{ text: 'Attribute', flex: 1 }}
-              item2={{ text: this.state.item.attribute, flex: 1 }} />
-            {this.state.item.rank &&
-              <View style={styles.event}>
-                <TextRow item1={{ text: 'Unlock', flex: 1 }}
-                  item2={{ text: this.state.item.rank, flex: 1 }} />
-              </View>}
-            <TextRow item1={{ text: 'Beats per minute', flex: 1 }}
-              item2={{ text: this.state.item.BPM, flex: 1 }} />
-            <TextRow item1={{ text: 'Length', flex: 1 }}
-              item2={{ text: this.formatTime(this.state.item.time), flex: 1 }} />
-            {this.state.item.event &&
-              <View style={styles.event}>
-                <TextRow item1={{ text: 'Event', flex: 1 }}
-                  item2={{ text: this.state.item.event.japanese_name, flex: 1 }} />
-                <TextRow item1={{ text: '', flex: 1 }}
-                  item2={{ text: this.state.item.event.english_name, flex: 1 }} />
-                <TouchableOpacity onPress={() => this.navigateToEventDetail(this.state.item.event)}
-                  style={styles.eventButton}>
-                  <FastImage source={{ uri: AddHTTPS(this.state.item.event.image) }}
-                    resizeMode={FastImage.resizeMode.contain}
-                    style={styles.eventImage} />
-                </TouchableOpacity>
-              </View>}
-            {(this.state.item.daily_rotation !== null && this.state.item.daily_rotation.length !== 0) &&
-              <View style={styles.event}>
-                <TextRow item1={{ text: 'Daily rotation', flex: 1 }}
-                  item2={{ text: this.state.item.daily_rotation + ' - ' + this.state.item.daily_rotation_position, flex: 1 }} />
-              </View>}
-            <TextRow item1={{ text: 'Currently available', flex: 1 }}
-              item2={{ text: this.state.item.available ? 'Yes' : 'No', flex: 1 }} />
-            <View style={styles.buttonRow}>
-              {this.statButton(0, 'Easy', this.state.easy, styles.leftRadius)}
-              {this.statButton(1, 'Normal', this.state.normal)}
-              {this.statButton(2, 'Hard', this.state.hard)}
-              {this.statButton(3, 'Expert', this.state.expert,
-                (this.state.random[1].length === 0 && !this.state.master[0]) && styles.rightRadius)}
-              {this.state.random[1].length !== 0 &&
-                this.statButton(4, 'Random', this.state.random,
-                  !this.state.master[0] && styles.rightRadius)}
-              {this.state.master[0] &&
-                this.statButton(5, 'Master', this.state.master, styles.rightRadius)}
-            </View>
-            <ProgressBar number={this.state.currentStats[0]}
-              progress={this.progressStat(this.state.currentStats[0])}
-              fillStyle={{ backgroundColor: this.state.colors[0] }} />
-            <StarBar array={this.state.currentStats[1]} />
-          </ScrollView>
-        </LinearGradient>
+                <TextRow item1={{ text: 'Attribute', flex: 1 }}
+                  item2={{ text: this.state.item.attribute, flex: 1 }} />
+                {this.state.item.rank &&
+                  <View style={styles.event}>
+                    <TextRow item1={{ text: 'Unlock', flex: 1 }}
+                      item2={{ text: this.state.item.rank, flex: 1 }} />
+                  </View>}
+                <TextRow item1={{ text: 'Beats per minute', flex: 1 }}
+                  item2={{ text: this.state.item.BPM, flex: 1 }} />
+                <TextRow item1={{ text: 'Length', flex: 1 }}
+                  item2={{ text: this.formatTime(this.state.item.time), flex: 1 }} />
+                {this.state.item.event &&
+                  <View style={styles.event}>
+                    <TextRow item1={{ text: 'Event', flex: 1 }}
+                      item2={{ text: this.state.item.event.japanese_name, flex: 1 }} />
+                    <TextRow item1={{ text: '', flex: 1 }}
+                      item2={{ text: this.state.item.event.english_name, flex: 1 }} />
+                    <TouchableOpacity onPress={() => this.navigateToEventDetail(this.state.item.event)}
+                      style={styles.eventButton}>
+                      <FastImage source={{ uri: AddHTTPS(this.state.item.event.image) }}
+                        resizeMode={FastImage.resizeMode.contain}
+                        style={styles.eventImage} />
+                    </TouchableOpacity>
+                  </View>}
+                {(this.state.item.daily_rotation !== null && this.state.item.daily_rotation.length !== 0) &&
+                  <View style={styles.event}>
+                    <TextRow item1={{ text: 'Daily rotation', flex: 1 }}
+                      item2={{ text: this.state.item.daily_rotation + ' - ' + this.state.item.daily_rotation_position, flex: 1 }} />
+                  </View>}
+                <TextRow item1={{ text: 'Currently available', flex: 1 }}
+                  item2={{ text: this.state.item.available ? 'Yes' : 'No', flex: 1 }} />
+                <View style={styles.buttonRow}>
+                  {this.statButton(0, 'Easy', this.state.easy, styles.leftRadius)}
+                  {this.statButton(1, 'Normal', this.state.normal)}
+                  {this.statButton(2, 'Hard', this.state.hard)}
+                  {this.statButton(3, 'Expert', this.state.expert,
+                    (this.state.random[1].length === 0 && !this.state.master[0]) && styles.rightRadius)}
+                  {this.state.random[1].length !== 0 &&
+                    this.statButton(4, 'Random', this.state.random,
+                      !this.state.master[0] && styles.rightRadius)}
+                  {this.state.master[0] &&
+                    this.statButton(5, 'Master', this.state.master, styles.rightRadius)}
+                </View>
+                <ProgressBar number={this.state.currentStats[0]}
+                  progress={this.progressStat(this.state.currentStats[0])}
+                  fillStyle={{ backgroundColor: this.state.colors[0] }} />
+                <StarBar array={this.state.currentStats[1]} />
+              </ScrollView>
+            </LinearGradient>
+          </View>}
+        </Fade>
       </View>
     )
   }

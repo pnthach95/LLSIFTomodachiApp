@@ -419,10 +419,10 @@ class CardsScreen extends React.PureComponent {
   render() {
     return (
       <View style={styles.container}>
-        <Fade visible={this.state.isLoading} style={ApplicationStyles.screen}>
+        <Fade visible={this.state.isLoading} style={[ApplicationStyles.screen, ApplicationStyles.absolute]}>
           <SplashScreen bgColor={Colors.green} />
         </Fade>
-        <Fade visible={!this.state.isLoading} style={ApplicationStyles.screen}>
+        <Fade visible={!this.state.isLoading} style={[ApplicationStyles.screen, ApplicationStyles.absolute]}>
           {/* HEADER */}
           <ElevatedView elevation={5} style={[ApplicationStyles.header, styles.header]}>
             <SquareButton name={'ios-menu'} onPress={this._openDrawer} />
@@ -440,8 +440,8 @@ class CardsScreen extends React.PureComponent {
 
           {/* FILTER */}
           {this.state.isFilter &&
-            <View style={styles.filterContainer}>
-              <ScrollView contentContainerStyle={{ padding: 10 }}>
+            <ElevatedView elevation={5} style={styles.filterContainer}>
+              <ScrollView contentContainerStyle={styles.contentContainer}>
                 <IdolNameRow name={this.state.name} selectIdol={this._selectIdol} />
                 <RarityRow rarity={this.state.rarity} selectRarity={this._selectRarity} />
                 <AttributeRow attribute={this.state.attribute} selectAttribute={this._selectAttribute} />
@@ -464,11 +464,12 @@ class CardsScreen extends React.PureComponent {
                   <Text style={styles.resetText}>RESET</Text>
                 </Touchable>
               </ScrollView>
-            </View>}
+            </ElevatedView>}
 
           {/* LIST */}
           <FlatList data={this.state.data}
             key={`${this.state.column}c`}
+            showsVerticalScrollIndicator={false}
             numColumns={this.state.column}
             initialNumToRender={8}
             keyExtractor={this._keyExtractor}

@@ -108,10 +108,10 @@ class IdolsScreen extends React.Component {
   render() {
     return (
       <View style={[ApplicationStyles.screen, styles.container]}>
-        <Fade visible={this.state.isLoading} style={ApplicationStyles.screen}>
+        <Fade visible={this.state.isLoading} style={[ApplicationStyles.screen, ApplicationStyles.absolute]}>
           <SplashScreen bgColor={Colors.blue} />
         </Fade>
-        <Fade visible={!this.state.isLoading} style={ApplicationStyles.screen}>
+        <Fade visible={!this.state.isLoading} style={[ApplicationStyles.screen, ApplicationStyles.absolute]}>
           {/* HEADER */}
           <ElevatedView elevation={5}
             style={[ApplicationStyles.header, styles.container]}>

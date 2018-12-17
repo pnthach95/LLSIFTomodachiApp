@@ -6,6 +6,9 @@ export default StyleSheet.create({
     flex: 1,
     backgroundColor: Colors.green
   },
+  contentContainer: {
+    padding: Metrics.baseMargin
+  },
   header: {
     backgroundColor: 'white'
   },
@@ -13,7 +16,7 @@ export default StyleSheet.create({
     padding: Metrics.smallMargin
   },
   filterContainer: {
-    height: '40%',
+    height: Metrics.screenHeight * 0.35,
     backgroundColor: 'white'
   },
   resetText: {
@@ -24,8 +27,8 @@ export default StyleSheet.create({
     alignItems: 'stretch',
     backgroundColor: 'red',
     justifyContent: 'center',
-    padding: 10,
-    marginTop: 10
+    padding: Metrics.baseMargin,
+    marginTop: Metrics.baseMargin
   },
   floatButtonSize: {
     width: 35,
@@ -41,6 +44,6 @@ export default StyleSheet.create({
     height: 50
   },
   flatListElement: {
-    margin: 10
+    margin: Metrics.baseMargin
   }
 });

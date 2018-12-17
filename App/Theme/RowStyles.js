@@ -1,25 +1,21 @@
 import { StyleSheet, Platform } from 'react-native';
-import { Colors } from './index';
+import { Metrics, Colors } from './index';
 
 export default StyleSheet.create({
   buttonText: {
     color: 'black',
     fontSize: 16
   },
-  button: {
+  textButton: {
     alignItems: 'center',
     justifyContent: 'center',
-    paddingHorizontal: 7,
-    paddingVertical: 3,
-    marginVertical: 3,
-    borderRadius: 10,
-    marginRight: 10
+    marginRight: Metrics.baseMargin
   },
-  button1: {
+  standardButton: {
     paddingHorizontal: 7,
     paddingVertical: 3,
     marginVertical: 3,
-    borderRadius: 10
+    borderRadius: 5
   },
   buttonImage: {
     width: 30,
@@ -40,10 +36,9 @@ export default StyleSheet.create({
     flexDirection: 'row'
   },
   selectedValue: {
-    borderColor: Colors.green,
-    paddingHorizontal: 5,
-    paddingVertical: 1,
-    borderWidth: 2,
+    backgroundColor: Colors.lightGreen,
+    paddingHorizontal: Metrics.baseMargin,
+    paddingVertical: 5
   },
   selectedValue1: {
     backgroundColor: Colors.lightGreen,

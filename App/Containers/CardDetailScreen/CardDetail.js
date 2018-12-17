@@ -186,10 +186,10 @@ class CardDetailScreen extends React.Component {
   render() {
     return (
       <View style={ApplicationStyles.screen}>
-        <Fade visible={this.state.isLoading} style={ApplicationStyles.screen}>
+        <Fade visible={this.state.isLoading} style={[ApplicationStyles.screen, ApplicationStyles.absolute]}>
           <SplashScreen bgColor={Colors.green} />
         </Fade>
-        <Fade visible={!this.state.isLoading} style={ApplicationStyles.screen}>
+        <Fade visible={!this.state.isLoading} style={[ApplicationStyles.screen, ApplicationStyles.absolute]}>
           {/* HEADER */}
           <ElevatedView elevation={5} style={[
             ApplicationStyles.header,

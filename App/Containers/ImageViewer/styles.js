@@ -1,5 +1,5 @@
-import { StyleSheet, Platform } from 'react-native';
-import { Metrics } from '../../Theme';
+import { StyleSheet } from 'react-native';
+import { ApplicationStyles, Metrics } from '../../Theme';
 
 export default StyleSheet.create({
   container: {
@@ -20,12 +20,8 @@ export default StyleSheet.create({
     right: '50%'
   },
   headerAbsolutePosition: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    height: Platform.OS === 'ios' ? 44 : 56,
+    ...ApplicationStyles.absolute,
+    height: Metrics.navBarHeight,
     zIndex: 100,
     backgroundColor: '#0005',
     flexDirection: 'row',

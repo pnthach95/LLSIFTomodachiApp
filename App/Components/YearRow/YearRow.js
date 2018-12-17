@@ -9,7 +9,7 @@ import styles from '../../Theme/RowStyles';
  * Prop:
  * - `selectYear`: Save `idol_year` state
  * - `idol_year`: state from parent
- * 
+ *
  * @export
  * @class YearRow
  * @extends {React.Component}
@@ -24,28 +24,32 @@ class YearRow extends React.Component {
         <View style={styles.rightView}>
           <TouchableOpacity onPress={this.props.selectYear('')}
             style={[
-              styles.button,
+              styles.textButton,
+              styles.standardButton,
               this.props.idol_year === '' && styles.selectedValue
             ]}>
             <Text style={styles.buttonText}>All</Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={this.props.selectYear('First')}
             style={[
-              styles.button,
+              styles.textButton,
+              styles.standardButton,
               this.props.idol_year === 'First' && styles.selectedValue
             ]}>
             <Text style={styles.buttonText}>1st</Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={this.props.selectYear('Second')}
             style={[
-              styles.button,
+              styles.textButton,
+              styles.standardButton,
               this.props.idol_year === 'Second' && styles.selectedValue
             ]}>
             <Text style={styles.buttonText}>2nd</Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={this.props.selectYear('Third')}
             style={[
-              styles.button,
+              styles.textButton,
+              styles.standardButton,
               this.props.idol_year === 'Third' && styles.selectedValue
             ]}>
             <Text style={styles.buttonText}>3rd</Text>

@@ -9,6 +9,13 @@ export default {
   screen: {
     flex: 1
   },
+  absolute: {
+    position: 'absolute',
+    top: 0,
+    bottom: 0,
+    left: 0,
+    right: 0
+  },
   header: {
     zIndex: 1,
     flexDirection: 'row',

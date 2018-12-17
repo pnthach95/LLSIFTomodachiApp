@@ -272,10 +272,10 @@ class SongsScreen extends React.Component {
   render() {
     return (
       <View style={ApplicationStyles.screen}>
-        <Fade visible={this.state.isLoading} style={ApplicationStyles.screen}>
+        <Fade visible={this.state.isLoading} style={[ApplicationStyles.screen, ApplicationStyles.absolute]}>
           <SplashScreen />
         </Fade>
-        <Fade visible={!this.state.isLoading} style={ApplicationStyles.screen}>
+        <Fade visible={!this.state.isLoading} style={[ApplicationStyles.screen, ApplicationStyles.absolute]}>
           {/* HEADER */}
           <ElevatedView elevation={5} style={[ApplicationStyles.header, styles.header]}>
             <SquareButton name={'ios-menu'} onPress={this._openDrawer} />
@@ -292,7 +292,7 @@ class SongsScreen extends React.Component {
           </ElevatedView>
           {/* FILTER */}
           {this.state.isFilter &&
-            <View style={styles.filterContainer}>
+            <ElevatedView elevation={5} style={styles.filterContainer}>
               <AttributeRow attribute={this.state.attribute} selectAttribute={this._selectAttribute} />
               <EventRow is_event={this.state.is_event} selectEvent={this._selectEvent} />
               <MainUnitRow main_unit={this.state.main_unit} selectMainUnit={this._selectMainUnit} />
@@ -303,7 +303,7 @@ class SongsScreen extends React.Component {
                 style={styles.resetView}>
                 <Text style={styles.resetText}>RESET</Text>
               </Touchable>
-            </View>}
+            </ElevatedView>}
 
           {/* LIST */}
           <FlatList data={this.state.list}

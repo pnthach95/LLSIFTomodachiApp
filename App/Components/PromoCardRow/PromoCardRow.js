@@ -9,7 +9,7 @@ import styles from '../../Theme/RowStyles';
  * Prop:
  * - `selectPromo`: Save `is_promo` state
  * - `is_promo`: state from parent
- * 
+ *
  * @export
  * @class PromoCardRow
  * @extends {React.Component}
@@ -24,21 +24,24 @@ class PromoCardRow extends React.Component {
         <View style={styles.rightView}>
           <TouchableOpacity onPress={this.props.selectPromo('')}
             style={[
-              styles.button,
+              styles.textButton,
+              styles.standardButton,
               this.props.is_promo === '' && styles.selectedValue
             ]}>
             <Text style={styles.buttonText}>All</Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={this.props.selectPromo('True')}
             style={[
-              styles.button,
+              styles.textButton,
+              styles.standardButton,
               this.props.is_promo === 'True' && styles.selectedValue
             ]}>
             <Text style={styles.buttonText}>Only</Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={this.props.selectPromo('False')}
             style={[
-              styles.button,
+              styles.textButton,
+              styles.standardButton,
               this.props.is_promo === 'False' && styles.selectedValue
             ]}>
             <Text style={styles.buttonText}>None</Text>

@@ -27,7 +27,7 @@ export default class Fade extends Component {
     }
     Animated.timing(this._visibility, {
       toValue: nextProps.visible ? 1 : 0,
-      duration: 3000
+      duration: 500
     }).start(() => {
       this.setState({ visible: nextProps.visible });
     });

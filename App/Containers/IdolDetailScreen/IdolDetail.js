@@ -144,7 +144,7 @@ class IdolDetailScreen extends React.Component {
                   content={this.state.item.blood} />}
               {this.state.item.height !== null &&
                 <InfoLine title={'Height'}
-                  content={this.state.item.height} />}
+                  content={`${this.state.item.height} cm`} />}
               {this.state.item.measurements !== null &&
                 <InfoLine title={'Measurements'}
                   content={this.state.item.measurements} />}

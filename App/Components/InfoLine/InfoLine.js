@@ -18,7 +18,7 @@ import styles from './styles';
 export default class InfoLine extends React.Component {
   static propTypes = {
     title: PropTypes.string.isRequired,
-    content: PropTypes.string.isRequired,
+    content: PropTypes.any.isRequired,
     twitter: PropTypes.string,
     instagram: PropTypes.string,
     myanimelist: PropTypes.string

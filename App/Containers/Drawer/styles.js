@@ -1,4 +1,5 @@
 import { StyleSheet } from 'react-native';
+import { Fonts, Metrics } from '../../Theme';
 
 export default StyleSheet.create({
   fullscreen: {
@@ -6,17 +7,22 @@ export default StyleSheet.create({
     height: '100%'
   },
   container: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 50,
     flex: 0,
     flexGrow: 1,
     backgroundColor: '#ddda'
   },
   header: {
-    width: '100%',
-    height: 80,
+    alignSelf: 'stretch',
+    height: 70,
     backgroundColor: '#fffb'
   },
   logo: {
-    height: 80,
+    height: 70,
     width: '75%'
   },
   body: {
@@ -25,14 +31,14 @@ export default StyleSheet.create({
     alignItems: 'stretch'
   },
   textBlock: {
-    paddingHorizontal: 10
+    paddingHorizontal: Metrics.baseMargin
   },
   settingRow: {
     flexDirection: 'row',
     backgroundColor: '#fff6',
-    padding: 10,
-    marginBottom: 5,
-    marginLeft: 10,
+    padding: Metrics.baseMargin,
+    marginBottom: Metrics.smallMargin,
+    marginLeft: Metrics.baseMargin,
     alignItems: 'center',
     justifyContent: 'space-between'
   },
@@ -40,7 +46,7 @@ export default StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    padding: 10,
+    padding: Metrics.baseMargin,
     marginTop: 5,
     borderBottomWidth: 1,
     borderBottomColor: '#0005',
@@ -54,20 +60,23 @@ export default StyleSheet.create({
   },
   footerBlock: {
     flexDirection: 'row',
-    marginVertical: 10
+    marginVertical: Metrics.baseMargin
   },
   versionContainer: {
-    alignSelf: 'flex-end',
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    bottom: 0,
     backgroundColor: 'white',
-    width: '100%',
     height: 50
   },
   versionText: {
+    ...Fonts.style.black,
     textAlign: 'center'
   },
   viewMore: {
     backgroundColor: '#fff9',
-    width: '100%',
+    alignSelf: 'stretch',
     height: 50
   }
 });

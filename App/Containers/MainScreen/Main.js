@@ -134,13 +134,9 @@ class MainScreen extends React.Component {
       <View style={styles.container}>
         {/* HEADER */}
         <View style={ApplicationStyles.header}>
-          <View style={ApplicationStyles.screen}>
-            <SquareButton name={'ios-menu'} onPress={this._openDrawer} color={'white'} />
-          </View>
-          <View style={styles.centerHeader}>
-            <Image source={Images.logo} style={ApplicationStyles.imageHeader} />
-          </View>
-          <View style={styles.rightHeader} />
+          <SquareButton name={'ios-menu'} onPress={this._openDrawer} color={'white'} />
+          <Image source={Images.logo} style={ApplicationStyles.imageHeader} />
+          <SquareButton name={'ios-menu'} color={Colors.pink} />
         </View>
         {this.state.version !== null &&
           <Touchable useForeground style={styles.update}
@@ -151,8 +147,7 @@ class MainScreen extends React.Component {
           </Touchable>}
 
         {/* BODY */}
-        <ScrollView style={styles.body}
-          showsVerticalScrollIndicator={false}
+        <ScrollView showsVerticalScrollIndicator={false}
           contentContainerStyle={styles.content}>
           {/* ENGLISH BLOCK */}
           <Touchable useForeground style={styles.block}

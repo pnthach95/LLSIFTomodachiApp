@@ -8,7 +8,7 @@ import VersionNumber from 'react-native-version-number';
 
 import Fade from '../../Components/Fade/Fade';
 import styles from './styles';
-import { Images, ApplicationStyles } from '../../Theme';
+import { Images, ApplicationStyles, Fonts } from '../../Theme';
 import { Config, RELEASE_NOTE } from '../../Config';
 import { AddHTTPS, loadSettings, saveSettings, openLink } from '../../Utils';
 import { getRandomCard, getBGImage } from '../../Stores/CachedData/Selectors';
@@ -137,24 +137,24 @@ class Drawer extends Component {
               <View style={ApplicationStyles.screen}>
                 <TouchableOpacity onPress={this._groupToggle}>
                   <View style={styles.group}>
-                    <Text>OPTIONS</Text>
+                    <Text style={Fonts.style.black}>OPTIONS</Text>
                     <Icon name={this.state.isCollapsed ? 'ios-arrow-up' : 'ios-arrow-down'} size={20} />
                   </View>
                 </TouchableOpacity>
                 {this.state.isCollapsed && <View style={styles.body}>
                   <ScrollView bounces={false}>
                     <View style={styles.settingRow}>
-                      <Text>Search Worldwide only</Text>
+                      <Text style={Fonts.style.black}>Search Worldwide only</Text>
                       <Switch value={this.state.worldwide_only}
                         onValueChange={this._worldwideToggle} />
                     </View>
                     <View style={styles.settingRow}>
-                      <Text>Notify WW event</Text>
+                      <Text style={Fonts.style.black}>Notify WW event</Text>
                       <Switch value={this.state.ww_event}
                         onValueChange={this._wwEventToggle} />
                     </View>
                     <View style={styles.settingRow}>
-                      <Text>Notify JP event</Text>
+                      <Text style={Fonts.style.black}>Notify JP event</Text>
                       <Switch value={this.state.jp_event}
                         onValueChange={this._jpEventToggle} />
                     </View>
@@ -162,14 +162,14 @@ class Drawer extends Component {
                 </View>}
                 <TouchableOpacity onPress={this._groupToggle}>
                   <View style={styles.group}>
-                    <Text>ABOUT ME</Text>
+                    <Text style={Fonts.style.black}>ABOUT ME</Text>
                     <Icon name={!this.state.isCollapsed ? 'ios-arrow-up' : 'ios-arrow-down'} size={20} />
                   </View>
                 </TouchableOpacity>
                 {!this.state.isCollapsed && <View style={ApplicationStyles.screen}>
                   <ScrollView bounces={false}
                     style={styles.textBlock}>
-                    <Text>{RELEASE_NOTE}</Text>
+                    <Text style={Fonts.style.black}>{RELEASE_NOTE}</Text>
                   </ScrollView>
                 </View>}
               </View>
@@ -187,7 +187,7 @@ class Drawer extends Component {
                     style={ApplicationStyles.center}>
                     <View style={ApplicationStyles.center}>
                       <Icon name={'logo-github'} size={50} />
-                      <Text>Project</Text>
+                      <Text style={Fonts.style.black}>Project</Text>
                     </View>
                   </TouchableHighlight>
                 </View>

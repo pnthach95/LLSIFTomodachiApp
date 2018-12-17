@@ -17,16 +17,12 @@ export default StyleSheet.create({
     justifyContent: 'flex-end'
   },
   logo: {
-    width: '70%',
+    width: Metrics.screenWidth * 0.3,
     resizeMode: 'contain'
-  },
-  body: {
-    paddingVertical: Metrics.baseMargin,
   },
   content: {
     alignItems: 'center',
-    paddingHorizontal: Metrics.baseMargin,
-    paddingBottom: Metrics.baseMargin
+    padding: Metrics.baseMargin
   },
   text: {
     color: 'white',
@@ -40,14 +36,15 @@ export default StyleSheet.create({
   title: {
     color: 'white',
     fontSize: 24,
+    fontWeight: 'bold',
     textAlign: 'center'
   },
   block: {
-    width: '100%',
+    width: Metrics.screenWidth,
     alignItems: 'center'
   },
   update: {
-    width: '90%',
+    width: Metrics.screenWidth * 0.9,
     backgroundColor: Colors.lightGreen,
     alignSelf: 'center',
     alignItems: 'center',

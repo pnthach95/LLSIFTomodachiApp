@@ -126,7 +126,7 @@ class CardDetailScreen extends React.Component {
       }
     };
     return (
-      <View style={{ width: '100%' }}>
+      <View style={{ width: Metrics.screenWidth }}>
         <Text style={[Fonts.style.normal, styles.progressText]}>{text}</Text>
         <View style={styles.progressRow}>
           <Image source={Images.attribute[icon(text)]}

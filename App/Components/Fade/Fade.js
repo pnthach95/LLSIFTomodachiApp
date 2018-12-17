@@ -6,7 +6,7 @@ import { Animated } from 'react-native';
  *
  * Prop
  * - visible:
- * 
+ *
  * @export
  * @class Fade
  * @extends {Component}

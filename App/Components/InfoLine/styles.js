@@ -1,18 +1,18 @@
 import { StyleSheet } from 'react-native';
-import { Metrics, Colors, Fonts } from '../../Theme';
+import { Metrics, Fonts } from '../../Theme';
 
 export default StyleSheet.create({
   container: {
     marginVertical: Metrics.smallMargin
   },
   title: {
+    ...Fonts.style.black,
     fontSize: Fonts.size.small,
-    color: 'black',
     fontWeight: 'bold'
   },
   content: {
-    fontSize: Fonts.size.regular,
-    color: 'black',
+    ...Fonts.style.normal,
+    ...Fonts.style.black,
     textAlign: 'justify'
   },
   link: {

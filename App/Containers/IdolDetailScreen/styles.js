@@ -17,54 +17,11 @@ export default StyleSheet.create({
     width: Metrics.screenWidth * 0.17,
     height: Metrics.navBarHeight
   },
-  headerButton: {
-    height: Metrics.navBarHeight,
-    width: Metrics.navBarHeight
-  },
   scrollView: {
-    marginBottom: Metrics.doubleBaseMargin
-  },
-  buttonRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    padding: Metrics.baseMargin
+    margin: Metrics.doubleBaseMargin
   },
   imageRow: {
     flexDirection: 'row',
-    justifyContent: 'space-around',
-    paddingBottom: Metrics.doubleBaseMargin
-  },
-  progressRow: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    paddingHorizontal: '5%',
-    alignItems: 'center'
-  },
-  button: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingVertical: Metrics.baseMargin,
-    marginHorizontal: 1
-  },
-  leftRadius: {
-    borderTopLeftRadius: 10,
-    borderBottomLeftRadius: 10
-  },
-  rightRadius: {
-    borderTopRightRadius: 10,
-    borderBottomRightRadius: 10
-  },
-  progressText: {
-    paddingLeft: '10%',
-    paddingVertical: Metrics.baseMargin,
-    color: '#333'
-  },
-  banner: {
-    width: '80%',
-    height: 100
-  },
-  subtitleText: {
-    fontSize: 14
+    justifyContent: 'space-around'
   }
 });

@@ -7,38 +7,23 @@ export default StyleSheet.create({
     backgroundColor: Colors.violet
   },
   header: {
-    justifyContent: 'space-between',
-    backgroundColor: Colors.lightViolet,
-    paddingRight: Metrics.baseMargin
-  },
-  centerHeader: {
-    flex: 3
-  },
-  rightHeader: {
-    flex: 3,
-    flexDirection: 'row',
-    justifyContent: 'flex-end'
+    backgroundColor: Colors.lightViolet
   },
   content: {
     padding: Metrics.baseMargin,
     alignItems: 'center'
   },
   text: {
-    color: 'white',
     fontSize: 16,
-    padding: Metrics.baseMargin,
-    textAlign: 'center'
+    paddingVertical: Metrics.baseMargin
   },
   whiteCenter: {
     color: 'white',
     textAlign: 'center'
   },
   title: {
-    color: 'white',
     fontSize: 24,
-    fontWeight: 'bold',
-    padding: Metrics.baseMargin,
-    textAlign: 'center'
+    fontWeight: 'bold'
   },
   song: {
     width: Metrics.screenWidth / 3,
@@ -61,18 +46,17 @@ export default StyleSheet.create({
   },
   card: {
     alignItems: 'center',
-    paddingVertical: Metrics.baseMargin
+    marginVertical: Metrics.baseMargin
   },
   cardImage: {
     flexDirection: 'row',
-    paddingHorizontal: Metrics.baseMargin
+    marginHorizontal: Metrics.baseMargin
   },
   attributeIcon: {
     width: 25,
     height: 25
   },
-  songName: {
-    color: 'white',
-    paddingLeft: 10
+  whiteLine: {
+    backgroundColor: 'white'
   }
 });

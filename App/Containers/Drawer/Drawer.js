@@ -168,7 +168,7 @@ class Drawer extends Component {
                 </TouchableOpacity>
                 {!this.state.isCollapsed && <View style={ApplicationStyles.screen}>
                   <ScrollView bounces={false}
-                    style={styles.textBlock}>
+                    contentContainerStyle={styles.textBlock}>
                     <Text style={Fonts.style.black}>{RELEASE_NOTE}</Text>
                   </ScrollView>
                 </View>}

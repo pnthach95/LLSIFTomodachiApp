@@ -31,7 +31,7 @@ export default StyleSheet.create({
     alignItems: 'stretch'
   },
   textBlock: {
-    paddingHorizontal: Metrics.baseMargin
+    padding: Metrics.baseMargin
   },
   settingRow: {
     flexDirection: 'row',

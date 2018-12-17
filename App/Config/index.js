@@ -46,6 +46,10 @@ Press Version to view background.
 
 Change log:
 
+- Version 0.3.0:
+  • New view mode in Card screen.
+  • Update UI.
+
 - Version 0.2.2:
   • This version should fix memory leaking issue on some devices.
 

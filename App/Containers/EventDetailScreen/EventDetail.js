@@ -126,123 +126,120 @@ class EventDetailScreen extends React.Component {
    */
   timer(time) {
     return <TimerCountdown initialSecondsRemaining={time}
-      allowFontScaling={true} style={styles.text} />
+      allowFontScaling={true} />
   }
 
   render() {
     return (
       <View style={styles.container}>
-        <Fade visible={this.state.isLoading} style={[ApplicationStyles.screen, ApplicationStyles.absolute]}>
-          <SplashScreen bgColor={Colors.violet} />
-        </Fade>
-        <Fade visible={!this.state.isLoading} style={[ApplicationStyles.screen, ApplicationStyles.absolute]}>
-          {!this.state.isLoading && <View style={ApplicationStyles.screen}>
-            <ElevatedView elevation={5} style={[ApplicationStyles.header, styles.header]}>
-              <View style={ApplicationStyles.screen}>
-                <SquareButton name={'ios-arrow-back'} color={'white'}
-                  onPress={() => this.props.navigation.goBack()} />
-              </View>
-              <View style={styles.centerHeader} />
-              <View style={styles.rightHeader} />
-            </ElevatedView>
+        <ElevatedView elevation={5} style={[ApplicationStyles.header, styles.header]}>
+          <SquareButton name={'ios-arrow-back'} color={'white'}
+            onPress={() => this.props.navigation.goBack()} />
+        </ElevatedView>
+        <View style={ApplicationStyles.screen}>
+          <Fade visible={this.state.isLoading} style={[ApplicationStyles.screen, ApplicationStyles.absolute]}>
+            <SplashScreen bgColor={Colors.violet} />
+          </Fade>
+          <Fade visible={!this.state.isLoading} style={[ApplicationStyles.screen, ApplicationStyles.absolute]}>
+            {!this.state.isLoading &&
+              <ScrollView showsVerticalScrollIndicator={false}
+                style={ApplicationStyles.screen}
+                contentContainerStyle={styles.content}>
+                {/* ENGLISH BLOCK */}
+                {this.state.item.english_name !== null &&
+                  <View>
+                    <Text style={styles.whiteCenter}>English</Text>
+                    <Text style={[styles.text, styles.title, styles.whiteCenter]}>
+                      {this.state.item.english_name.length === 0 ?
+                        this.state.item.romaji_name : this.state.item.english_name}
+                    </Text>
+                    <FastImage source={{ uri: AddHTTPS(this.state.item.english_image) }}
+                      resizeMode={FastImage.resizeMode.contain}
+                      onLoad={e => this.onLoadFastImage(e)}
+                      style={{
+                        alignSelf: 'center',
+                        width: Metrics.widthBanner,
+                        height: Metrics.widthBanner * this.state.imgHeight / this.state.imgWidth
+                      }} />
+                    <Text style={[styles.text, styles.whiteCenter]}>
+                      {`Start: ${this.state.ENEventStart.format(Config.DATETIME_FORMAT_OUTPUT)}\nEnd: ${this.state.ENEventEnd.format(Config.DATETIME_FORMAT_OUTPUT)}`}
+                    </Text>
+                    {this.state.item.world_current &&
+                      <Text style={[styles.text, styles.whiteCenter]}>
+                        {this.timer(this.state.ENEventEnd.diff(moment()))}{` left`}
+                      </Text>}
+                    {this.state.item.english_status === EventStatus.ANNOUNCED &&
+                      <Text style={[styles.text, styles.whiteCenter]}>
+                        {`Starts in `}{this.timer(this.state.ENEventStart.diff(moment()))}
+                      </Text>}
+                  </View>}
+                {this.state.item.english_name !== null &&
+                  <Seperator style={styles.whiteLine} />}
 
-            <ScrollView showsVerticalScrollIndicator={false}
-              contentContainerStyle={styles.content}>
-              {/* ENGLISH BLOCK */}
-              {this.state.item.english_name !== null &&
-                <View>
-                  <Text style={styles.whiteCenter}>English</Text>
-                  <Text style={styles.title}>
-                    {this.state.item.english_name.length === 0 ?
-                      this.state.item.romaji_name : this.state.item.english_name}
-                  </Text>
-                  <FastImage source={{ uri: AddHTTPS(this.state.item.english_image) }}
-                    resizeMode={FastImage.resizeMode.contain}
-                    onLoad={e => this.onLoadFastImage(e)}
-                    style={{
-                      alignSelf: 'center',
-                      width: Metrics.widthBanner,
-                      height: Metrics.widthBanner * this.state.imgHeight / this.state.imgWidth
-                    }} />
-                  <Text style={styles.text}>
-                    {`Start: ${this.state.ENEventStart.format(Config.DATETIME_FORMAT_OUTPUT)}\nEnd: ${this.state.ENEventEnd.format(Config.DATETIME_FORMAT_OUTPUT)}`}
-                  </Text>
-                  {this.state.item.world_current &&
-                    <Text style={styles.text}>
-                      {this.timer(this.state.ENEventEnd.diff(moment()))}{` left`}
-                    </Text>}
-                  {this.state.item.english_status === EventStatus.ANNOUNCED &&
-                    <Text style={styles.text}>
-                      {`Starts in `}{this.timer(this.state.ENEventStart.diff(moment()))}
-                    </Text>}
-                </View>}
-              {this.state.item.english_name !== null &&
-                <Seperator style={{ backgroundColor: 'white' }} />}
-
-              {/* JAPANESE BLOCK */}
-              <Text style={styles.whiteCenter}>Japanese</Text>
-              <Text style={styles.title}>{this.state.item.romaji_name}</Text>
-              <FastImage source={{ uri: AddHTTPS(this.state.item.image) }}
-                resizeMode={FastImage.resizeMode.contain}
-                onLoad={e => this.onLoadFastImage(e)}
-                style={{
-                  alignSelf: 'center',
-                  width: Metrics.widthBanner,
-                  height: Metrics.widthBanner * this.state.imgHeight / this.state.imgWidth
-                }} />
-              <Text style={styles.text}>
-                {`Start: ${this.state.JPEventStart.format(Config.DATETIME_FORMAT_OUTPUT)}\nEnd: ${this.state.JPEventEnd.format(Config.DATETIME_FORMAT_OUTPUT)}`}
-              </Text>
-              {this.state.item.japan_current &&
-                <Text style={styles.text}>
-                  {this.timer(this.state.JPEventEnd.diff(moment()))}{` left`}
-                </Text>}
-              {this.state.item.japan_status === EventStatus.ANNOUNCED &&
-                <Text style={styles.text}>
-                  {`Starts in `}{this.timer(this.state.JPEventStart.diff(moment()))}
-                </Text>}
-              {this.state.songs.length !== 0 &&
-                <Seperator style={{ backgroundColor: 'white' }} />}
-              {/* SONGS */}
-              {this.state.songs.length !== 0
-                && <View>
-                  <Text style={styles.whiteCenter}>Song</Text>
-                  <View style={styles.cardList}>
-                    {this.state.songs.map((item, index) =>
-                      <TouchableOpacity key={'song' + index}
-                        onPress={() => this.navigateToSongDetail(item)}
-                        style={styles.card}>
-                        <FastImage source={{ uri: AddHTTPS(item.image) }} style={styles.song} />
-                        <View style={styles.songInfo}>
-                          <Image source={findAttribute(item.attribute)} style={styles.attributeIcon} />
-                          <Text style={styles.songName}>{item.name}</Text>
-                        </View>
-                      </TouchableOpacity>)}
-                  </View>
-                </View>}
-              <Seperator style={{ backgroundColor: 'white' }} />
-              <Text style={styles.whiteCenter}>Rewards</Text>
-              {/* CARDS */}
-              <View style={styles.cardList}>
-                {this.state.cards.map((item, index) =>
-                  <TouchableOpacity key={'card' + index}
-                    onPress={() => this.navigateToCardDetail(item)}
-                    style={styles.card}>
-                    <View style={styles.cardImage}>
-                      <FastImage source={{ uri: AddHTTPS(item.round_card_image) }}
-                        style={styles.roundImage} />
-                      <View style={{ width: 5 }} />
-                      <FastImage source={{ uri: AddHTTPS(item.round_card_idolized_image) }}
-                        style={styles.roundImage} />
+                {/* JAPANESE BLOCK */}
+                <Text style={styles.whiteCenter}>Japanese</Text>
+                <Text style={[styles.text, styles.title, styles.whiteCenter]}>{this.state.item.romaji_name}</Text>
+                <FastImage source={{ uri: AddHTTPS(this.state.item.image) }}
+                  resizeMode={FastImage.resizeMode.contain}
+                  onLoad={e => this.onLoadFastImage(e)}
+                  style={{
+                    alignSelf: 'center',
+                    width: Metrics.widthBanner,
+                    height: Metrics.widthBanner * this.state.imgHeight / this.state.imgWidth
+                  }} />
+                <Text style={[styles.text, styles.whiteCenter]}>
+                  {`Start: ${this.state.JPEventStart.format(Config.DATETIME_FORMAT_OUTPUT)}\nEnd: ${this.state.JPEventEnd.format(Config.DATETIME_FORMAT_OUTPUT)}`}
+                </Text>
+                {this.state.item.japan_current &&
+                  <Text style={[styles.text, styles.whiteCenter]}>
+                    {this.timer(this.state.JPEventEnd.diff(moment()))}{` left`}
+                  </Text>}
+                {this.state.item.japan_status === EventStatus.ANNOUNCED &&
+                  <Text style={[styles.text, styles.whiteCenter]}>
+                    {`Starts in `}{this.timer(this.state.JPEventStart.diff(moment()))}
+                  </Text>}
+                {this.state.songs.length !== 0 &&
+                  <Seperator style={styles.whiteLine} />}
+                {/* SONGS */}
+                {this.state.songs.length !== 0
+                  && <View>
+                    <Text style={styles.whiteCenter}>Song</Text>
+                    <View style={styles.cardList}>
+                      {this.state.songs.map((item, index) =>
+                        <TouchableOpacity key={'song' + index}
+                          onPress={() => this.navigateToSongDetail(item)}
+                          style={styles.card}>
+                          <FastImage source={{ uri: AddHTTPS(item.image) }} style={styles.song} />
+                          <View style={styles.songInfo}>
+                            <Image source={findAttribute(item.attribute)} style={styles.attributeIcon} />
+                            <Text style={styles.whiteCenter}>{item.name}</Text>
+                          </View>
+                        </TouchableOpacity>)}
                     </View>
-                    <Text style={{ color: 'white' }}>{item.idol.name}</Text>
-                  </TouchableOpacity>
-                )}
-              </View>
-              <View style={{ height: 10 }} />
-            </ScrollView>
-          </View>}
-        </Fade>
+                  </View>}
+                <Seperator style={styles.whiteLine} />
+                <Text style={styles.whiteCenter}>Rewards</Text>
+                {/* CARDS */}
+                <View style={styles.cardList}>
+                  {this.state.cards.map((item, index) =>
+                    <TouchableOpacity key={'card' + index}
+                      onPress={() => this.navigateToCardDetail(item)}
+                      style={styles.card}>
+                      <View style={styles.cardImage}>
+                        <FastImage source={{ uri: AddHTTPS(item.round_card_image) }}
+                          style={styles.roundImage} />
+                        <View style={{ width: 5 }} />
+                        <FastImage source={{ uri: AddHTTPS(item.round_card_idolized_image) }}
+                          style={styles.roundImage} />
+                      </View>
+                      <Text style={{ color: 'white' }}>{item.idol.name}</Text>
+                    </TouchableOpacity>
+                  )}
+                </View>
+                <View style={{ height: 10 }} />
+              </ScrollView>}
+          </Fade>
+        </View>
       </View>)
   }
 }

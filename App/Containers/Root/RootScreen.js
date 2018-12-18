@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, SafeAreaView } from 'react-native';
+import { View, SafeAreaView, Alert } from 'react-native';
 import { createStackNavigator, createBottomTabNavigator, createDrawerNavigator } from 'react-navigation';
 import { connect } from 'react-redux';
 import firebase from 'react-native-firebase';
@@ -112,6 +112,9 @@ class RootScreen extends Component {
           // console.log('firebase.notifications().getInitialNotification()', action, notification);
           if (notification.data.event !== undefined) {
             NavigationService.navigate('EventDetailScreen', { eventName: notification.data.event });
+          }
+          if (notification.data.message !== undefined) {
+            Alert.alert('Message', notification.data.message);
           }
         }
       });

@@ -117,7 +117,7 @@ class IdolsScreen extends React.Component {
             style={[ApplicationStyles.header, styles.container]}>
             <SquareButton name={'ios-menu'} onPress={this._openDrawer} color={'white'} />
             <Image source={Images.logo} style={ApplicationStyles.imageHeader} />
-            <SquareButton name={'ios-menu'} color={'transparent'} />
+            <View style={styles.hole} />
           </ElevatedView>
           {/* BODY */}
           <SectionList sections={this.state.list}

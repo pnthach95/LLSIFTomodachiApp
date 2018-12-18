@@ -46,7 +46,8 @@ Press Version to view background.
 
 Change log:
 
-- Version 0.3.0:
+- Version 0.2.3:
+  • Show notification when new update is available.
   • New view mode in Card screen.
   • Update UI.
 

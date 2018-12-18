@@ -83,7 +83,7 @@ class IdolDetailScreen extends React.Component {
         <ElevatedView elevation={5} style={[
           ApplicationStyles.header,
           styles.header,
-          { backgroundColor: this.state.isLoading ? Colors.blue : this.state.colors[1], zIndex: 1 }
+          { backgroundColor: this.state.isLoading ? Colors.blue : this.state.colors[1] }
         ]}>
           <View style={styles.leftHeader}>
             <SquareButton name={'ios-arrow-back'} onPress={() => this.props.navigation.goBack()} />

@@ -17,7 +17,7 @@ export default {
     right: 0
   },
   header: {
-    zIndex: 1,
+    zIndex: 2,
     flexDirection: 'row',
     height: Metrics.navBarHeight,
     justifyContent: 'space-between',

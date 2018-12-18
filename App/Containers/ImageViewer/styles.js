@@ -22,7 +22,7 @@ export default StyleSheet.create({
   headerAbsolutePosition: {
     ...ApplicationStyles.absolute,
     height: Metrics.navBarHeight,
-    zIndex: 100,
+    zIndex: 5,
     backgroundColor: '#0005',
     flexDirection: 'row',
     alignItems: 'center',

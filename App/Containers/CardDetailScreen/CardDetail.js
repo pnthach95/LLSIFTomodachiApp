@@ -186,116 +186,117 @@ class CardDetailScreen extends React.Component {
   render() {
     return (
       <View style={ApplicationStyles.screen}>
-        <Fade visible={this.state.isLoading} style={[ApplicationStyles.screen, ApplicationStyles.absolute]}>
-          <SplashScreen bgColor={Colors.green} />
-        </Fade>
-        <Fade visible={!this.state.isLoading} style={[ApplicationStyles.screen, ApplicationStyles.absolute]}>
-          {/* HEADER */}
-          <ElevatedView elevation={5} style={[
-            ApplicationStyles.header,
-            { backgroundColor: this.state.colors[1], zIndex: 1 }
-          ]}>
-            <View style={styles.leftRow}>
-              <SquareButton name={'ios-arrow-back'} onPress={() => this.props.navigation.goBack()} />
-              <TouchableOpacity onPress={this._navigateToIdolDetail(this.state.item.idol.name)}>
-                <Text style={Fonts.style.normal}>{this.state.item.idol.name}</Text>
-              </TouchableOpacity>
-            </View>
-            <View style={styles.rightRow}>
-              <Image source={findMainUnit(this.state.item.idol.main_unit)}
-                style={styles.rightHeaderImage} />
-              <Image source={findSubUnit(this.state.item.idol.sub_unit)}
-                style={styles.rightHeaderImage} />
-            </View>
-          </ElevatedView>
-
-          {/* MAIN VIEW */}
-          <LinearGradient style={ApplicationStyles.screen}
-            colors={[this.state.colors[1], this.state.colors[0]]}>
-            <ScrollView showsVerticalScrollIndicator={false}
-              style={styles.scrollView}>
-              {/* CARD IMAGES */}
-              <View style={styles.imageRow}>
-                {this.state.images.map((value, index) => {
-                  return <TouchableOpacity key={index}
-                    onPress={this._navigateToImageViewerScreen(index)}>
-                    <FastImage source={{ uri: value.url }}
-                      style={{
-                        width: Metrics.images.itemWidth,
-                        height: Metrics.images.itemWidth * this.state.imgHeight / this.state.imgWidth
-                      }}
-                      onLoad={e => this._onLoadFastImage(e)} />
-                  </TouchableOpacity>
-                })}
-              </View>
-
-              {/* INFORMATION */}
-              <View style={{ paddingHorizontal: Metrics.doubleBaseMargin }}>
-                <TextRow item1={{ flex: 1, text: 'Card ID' }}
-                  item2={{ flex: 2, text: this.state.item.game_id }} />
-                <TextRow item1={{ flex: 1, text: 'Release date' }}
-                  item2={{ flex: 2, text: moment(this.state.item.release_date).format('MMM Do YYYY') }} />
-                {this.state.propertyLine.length > 0 && <Text>{this.state.propertyLine}</Text>}
-
-                {(this.state.item.skill !== null && this.state.item.skill.length !== 0) &&
-                  <View>
-                    <Seperator />
-                    <TextRow item1={{ flex: 1, text: 'Skill' }}
-                      item2={{ flex: 2, text: this.state.item.skill }} />
-                    <TextRow item1={{ flex: 1, text: '' }}
-                      item2={{ flex: 2, text: this.state.item.skill_details, textStyle: styles.subtitleText }} />
-                  </View>}
-
-                {(this.state.item.center_skill !== null && this.state.item.center_skill.length !== 0) &&
-                  <View>
-                    <Seperator />
-                    <TextRow item1={{ flex: 1, text: 'Center skill' }}
-                      item2={{ flex: 2, text: this.state.item.center_skill }} />
-                    <TextRow item1={{ flex: 1, text: '' }}
-                      item2={{ flex: 2, text: this.state.item.center_skill_details, textStyle: styles.subtitleText }} />
-                  </View>}
-
-                {this.state.item.event !== null &&
-                  <View>
-                    <Seperator />
-                    <TextRow item1={{ text: 'Event', flex: 1, textStyle: Fonts.style.normal }}
-                      item2={{ text: this.state.item.event.japanese_name, flex: 4, textStyle: Fonts.style.normal }} />
-                    <TextRow item1={{ text: '', flex: 1, textStyle: Fonts.style.normal }}
-                      item2={{ text: this.state.item.event.english_name, flex: 4, textStyle: Fonts.style.normal }} />
-                    <TouchableOpacity style={ApplicationStyles.center}
-                      onPress={this._navigateToEventDetail(this.state.item.event.japanese_name)}>
-                      <FastImage source={{ uri: AddHTTPS(this.state.item.event.image) }}
-                        style={styles.banner}
-                        resizeMode={FastImage.resizeMode.contain} />
+        {/* HEADER */}
+        <ElevatedView elevation={5} style={[
+          ApplicationStyles.header,
+          { backgroundColor: this.state.isLoading ? Colors.green : this.state.colors[1] }
+        ]}>
+          <View style={styles.leftRow}>
+            <SquareButton name={'ios-arrow-back'} onPress={() => this.props.navigation.goBack()} />
+            <TouchableOpacity onPress={this._navigateToIdolDetail(this.state.item.idol.name)}>
+              <Text style={Fonts.style.normal}>{this.state.item.idol.name}</Text>
+            </TouchableOpacity>
+          </View>
+          <View style={styles.rightRow}>
+            <Image source={findMainUnit(this.state.item.idol.main_unit)}
+              style={styles.rightHeaderImage} />
+            <Image source={findSubUnit(this.state.item.idol.sub_unit)}
+              style={styles.rightHeaderImage} />
+          </View>
+        </ElevatedView>
+        <View style={ApplicationStyles.screen}>
+          <Fade visible={this.state.isLoading} style={[ApplicationStyles.screen, ApplicationStyles.absolute]}>
+            <SplashScreen bgColor={Colors.green} />
+          </Fade>
+          <Fade visible={!this.state.isLoading} style={[ApplicationStyles.screen, ApplicationStyles.absolute]}>
+            {/* MAIN VIEW */}
+            <LinearGradient style={ApplicationStyles.screen}
+              colors={[this.state.colors[1], this.state.colors[0]]}>
+              <ScrollView showsVerticalScrollIndicator={false}
+                style={styles.scrollView}>
+                {/* CARD IMAGES */}
+                <View style={styles.imageRow}>
+                  {this.state.images.map((value, index) => {
+                    return <TouchableOpacity key={index}
+                      onPress={this._navigateToImageViewerScreen(index)}>
+                      <FastImage source={{ uri: value.url }}
+                        style={{
+                          width: Metrics.images.itemWidth,
+                          height: Metrics.images.itemWidth * this.state.imgHeight / this.state.imgWidth
+                        }}
+                        onLoad={e => this._onLoadFastImage(e)} />
                     </TouchableOpacity>
-                  </View>}
+                  })}
+                </View>
 
+                {/* INFORMATION */}
+                <View style={{ paddingHorizontal: Metrics.doubleBaseMargin }}>
+                  <TextRow item1={{ flex: 1, text: 'Card ID' }}
+                    item2={{ flex: 2, text: this.state.item.game_id }} />
+                  <TextRow item1={{ flex: 1, text: 'Release date' }}
+                    item2={{ flex: 2, text: moment(this.state.item.release_date).format('MMM Do YYYY') }} />
+                  {this.state.propertyLine.length > 0 && <Text>{this.state.propertyLine}</Text>}
+
+                  {(this.state.item.skill !== null && this.state.item.skill.length !== 0) &&
+                    <View>
+                      <Seperator />
+                      <TextRow item1={{ flex: 1, text: 'Skill' }}
+                        item2={{ flex: 2, text: this.state.item.skill }} />
+                      <TextRow item1={{ flex: 1, text: '' }}
+                        item2={{ flex: 2, text: this.state.item.skill_details, textStyle: styles.subtitleText }} />
+                    </View>}
+
+                  {(this.state.item.center_skill !== null && this.state.item.center_skill.length !== 0) &&
+                    <View>
+                      <Seperator />
+                      <TextRow item1={{ flex: 1, text: 'Center skill' }}
+                        item2={{ flex: 2, text: this.state.item.center_skill }} />
+                      <TextRow item1={{ flex: 1, text: '' }}
+                        item2={{ flex: 2, text: this.state.item.center_skill_details, textStyle: styles.subtitleText }} />
+                    </View>}
+
+                  {this.state.item.event !== null &&
+                    <View>
+                      <Seperator />
+                      <TextRow item1={{ text: 'Event', flex: 1, textStyle: Fonts.style.normal }}
+                        item2={{ text: this.state.item.event.japanese_name, flex: 4, textStyle: Fonts.style.normal }} />
+                      <TextRow item1={{ text: '', flex: 1, textStyle: Fonts.style.normal }}
+                        item2={{ text: this.state.item.event.english_name, flex: 4, textStyle: Fonts.style.normal }} />
+                      <TouchableOpacity style={ApplicationStyles.center}
+                        onPress={this._navigateToEventDetail(this.state.item.event.japanese_name)}>
+                        <FastImage source={{ uri: AddHTTPS(this.state.item.event.image) }}
+                          style={styles.banner}
+                          resizeMode={FastImage.resizeMode.contain} />
+                      </TouchableOpacity>
+                    </View>}
+
+                  {this.state.item.hp !== 0 &&
+                    <View>
+                      <Seperator />
+                      <View style={{ flexDirection: 'row' }}>
+                        <Icon name='ios-heart' size={Metrics.icons.medium} color={'red'} />
+                        <Text style={Fonts.style.normal}> : {this.state.item.hp}</Text>
+                      </View>
+                    </View>}
+                </View>
+
+                {/* STATS */}
                 {this.state.item.hp !== 0 &&
                   <View>
-                    <Seperator />
-                    <View style={{ flexDirection: 'row' }}>
-                      <Icon name='ios-heart' size={Metrics.icons.medium} color={'red'} />
-                      <Text style={Fonts.style.normal}> : {this.state.item.hp}</Text>
+                    <View style={styles.buttonRow}>
+                      {this.statButton(0, 'Level 1', this.state.minStats, styles.leftRadius)}
+                      {this.state.item.non_idolized_maximum_statistics_smile !== 0 &&
+                        this.statButton(1, `Level ${this.state.item.non_idolized_max_level}`, this.state.nonIdolMaxStats)}
+                      {this.state.item.idolized_max_level !== 0 &&
+                        this.statButton(2, `Level ${this.state.item.idolized_max_level}`, this.state.idolMaxStats, styles.rightRadius)}
                     </View>
+                    {!this.state.isLoading && this.progressView(this.state.currentStats)}
                   </View>}
-              </View>
-
-              {/* STATS */}
-              {this.state.item.hp !== 0 &&
-                <View>
-                  <View style={styles.buttonRow}>
-                    {this.statButton(0, 'Level 1', this.state.minStats, styles.leftRadius)}
-                    {this.state.item.non_idolized_maximum_statistics_smile !== 0 &&
-                      this.statButton(1, `Level ${this.state.item.non_idolized_max_level}`, this.state.nonIdolMaxStats)}
-                    {this.state.item.idolized_max_level !== 0 &&
-                      this.statButton(2, `Level ${this.state.item.idolized_max_level}`, this.state.idolMaxStats, styles.rightRadius)}
-                  </View>
-                  {!this.state.isLoading && this.progressView(this.state.currentStats)}
-                </View>}
-              <View style={{ height: Metrics.doubleBaseMargin }} />
-            </ScrollView>
-          </LinearGradient>
-        </Fade>
+                <View style={{ height: Metrics.doubleBaseMargin }} />
+              </ScrollView>
+            </LinearGradient>
+          </Fade>
+        </View>
       </View>
     )
   }

@@ -5,6 +5,10 @@ export default StyleSheet.create({
   container: {
     backgroundColor: Colors.blue
   },
+  hole: {
+    width: Metrics.navBarHeight,
+    height: Metrics.navBarHeight
+  },
   list: {
     padding: Metrics.smallMargin
   },

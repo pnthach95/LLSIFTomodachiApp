@@ -10,10 +10,10 @@ export default StyleSheet.create({
     backgroundColor: 'white'
   },
   list: {
-    padding: Metrics.smallMargin,
+    padding: Metrics.smallMargin
   },
   content: {
-    alignItems: 'center',
+    alignItems: 'center'
   },
   filterContainer: {
     backgroundColor: 'white',

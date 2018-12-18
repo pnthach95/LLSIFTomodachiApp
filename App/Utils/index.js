@@ -3,17 +3,17 @@ import { Colors, Images } from '../Theme';
 
 /**
  * Add `https:` for image link
- * 
- * @param {String} link 
+ *
+ * @param {String} link
  */
-export const AddHTTPS = (link) => { return 'https:' + link }
+export const AddHTTPS = link => { return 'https:' + link }
 
 /**
  * Find color by attribute
- * 
+ *
  * @param {String} key Smile || Pure || Cool || null
  */
-export const findColorByAttribute = (key) => {
+export const findColorByAttribute = key => {
   switch (key) {
     case 'Smile':
       return [Colors.pink, Colors.lightPink];
@@ -30,7 +30,7 @@ export const findColorByAttribute = (key) => {
  * Find icon by attribute
  * @param {String} key Smile || Pure || Cool || null
  */
-export const findAttribute = (key) => {
+export const findAttribute = key => {
   switch (key) {
     case 'Smile':
       return Images.attribute[0];
@@ -47,7 +47,7 @@ export const findAttribute = (key) => {
  * Find icon by main unit
  * @param {String} key μ's || Aqours || null
  */
-export const findMainUnit = (key) => {
+export const findMainUnit = key => {
   switch (key) {
     case 'Aqours':
       return Images.mainUnit[1];
@@ -62,7 +62,7 @@ export const findMainUnit = (key) => {
  * Find icon by sub unit
  * @param {String} key Printemps, Lily White, Bibi, CYaRon!, AZALEA, Guilty Kiss, Saint Snow, A-RISE
  */
-export const findSubUnit = (key) => {
+export const findSubUnit = key => {
   switch (key) {
     case 'Printemps':
       return Images.subUnit[0];
@@ -85,6 +85,35 @@ export const findSubUnit = (key) => {
   }
 }
 
+/**
+ * Find image for skill
+ *
+ * @param {String} key
+ * @returns Image
+ */
+export const findSkill = key => {
+  switch (key) {
+    case 'Score Up':
+    case 'Perfect Charm':
+    case 'Rhythmical Charm':
+    case 'Total Charm':
+    case 'Timer Charm':
+      return Images.skill[0];
+    case 'Perfect Lock':
+    case 'Total Trick':
+    case 'Timer Trick':
+      return Images.skill[1];
+    case 'Healer':
+    case 'Timer Yell':
+    case 'Total Yell':
+    case 'Rhythmical Yell':
+    case 'Perfect Yell':
+      return Images.skill[2];
+    default:
+      return Images.skill[3];
+  }
+}
+
 export const loadSettings = async () => {
   return new Promise((resolve, reject) => {
     AsyncStorage.getItem('settings')
@@ -104,16 +133,16 @@ export const loadSettings = async () => {
   })
 }
 
-export const saveSettings = (settings) => {
+export const saveSettings = settings => {
   AsyncStorage.setItem('settings', JSON.stringify(settings));
 }
 
-export const darkenColor = (color) => {
+export const darkenColor = color => {
   var Color = require('color');
   return Color(color).darken(0.5);
 }
 
-export const openLink = (link) => {
+export const openLink = link => {
   Alert.alert('Open link', link, [
     { text: 'Cancel', onPress: () => { }, style: 'cancel' },
     { text: 'OK', onPress: () => Linking.openURL(link) }

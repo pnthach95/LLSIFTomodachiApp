@@ -1,15 +1,21 @@
 import { StyleSheet } from 'react-native';
-import { Metrics, Colors } from '../../Theme';
+import { Metrics } from '../../Theme';
 
 export default StyleSheet.create({
   container: {
-    backgroundColor: Colors.itemColor,
     width: Metrics.images.itemWidth,
     margin: Metrics.smallMargin,
+    borderRadius: 4
   },
   info: {
     flexDirection: 'row',
     padding: Metrics.smallMargin,
+    borderBottomLeftRadius: 4,
+    borderBottomRightRadius: 4,
     justifyContent: 'space-around'
+  },
+  topRadius: {
+    borderTopLeftRadius: 4,
+    borderTopRightRadius: 4
   }
 });

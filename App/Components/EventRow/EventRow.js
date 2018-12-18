@@ -9,7 +9,7 @@ import styles from '../../Theme/RowStyles';
  * Prop:
  * - `selectEvent`: Save `is_event` state
  * - `is_event`: state from parent
- * 
+ *
  * @export
  * @class EventRow
  * @extends {React.Component}
@@ -24,21 +24,24 @@ class EventRow extends React.Component {
         <View style={styles.rightView}>
           <TouchableOpacity onPress={this.props.selectEvent('')}
             style={[
-              styles.button,
+              styles.textButton,
+              styles.standardButton,
               this.props.is_event === '' && styles.selectedValue
             ]}>
             <Text style={styles.buttonText}>All</Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={this.props.selectEvent('True')}
             style={[
-              styles.button,
+              styles.textButton,
+              styles.standardButton,
               this.props.is_event === 'True' && styles.selectedValue
             ]}>
             <Text style={styles.buttonText}>Only</Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={this.props.selectEvent('False')}
             style={[
-              styles.button,
+              styles.textButton,
+              styles.standardButton,
               this.props.is_event === 'False' && styles.selectedValue
             ]}>
             <Text style={styles.buttonText}>None</Text>

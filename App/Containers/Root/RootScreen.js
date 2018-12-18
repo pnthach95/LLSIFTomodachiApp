@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, SafeAreaView } from 'react-native';
+import { View, SafeAreaView, Alert } from 'react-native';
 import { createStackNavigator, createBottomTabNavigator, createDrawerNavigator } from 'react-navigation';
 import { connect } from 'react-redux';
 import firebase from 'react-native-firebase';
@@ -113,6 +113,9 @@ class RootScreen extends Component {
           if (notification.data.event !== undefined) {
             NavigationService.navigate('EventDetailScreen', { eventName: notification.data.event });
           }
+          if (notification.data.message !== undefined) {
+            Alert.alert('Message', notification.data.message);
+          }
         }
       });
 
@@ -144,10 +147,7 @@ class RootScreen extends Component {
       <SafeAreaView style={ApplicationStyles.screen}>
         <View style={ApplicationStyles.screen}>
           <StatusBarBackground />
-          <AppNav
-            // Initialize the NavigationService
-            // (see https://reactnavigation.org/docs/en/navigating-without-navigation-prop.html)
-            ref={(navigatorRef) => { NavigationService.setTopLevelNavigator(navigatorRef) }} />
+          <AppNav ref={navigatorRef => NavigationService.setTopLevelNavigator(navigatorRef)} />
         </View>
       </SafeAreaView>
     )

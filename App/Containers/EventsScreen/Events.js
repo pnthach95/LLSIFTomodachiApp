@@ -1,12 +1,15 @@
 import React from 'react';
-import { View, FlatList, Text, TextInput, Alert, TouchableOpacity, Image } from 'react-native';
+import { View, FlatList, Text, TextInput, Alert, Image } from 'react-native';
 import { connect } from 'react-redux';
+import ElevatedView from 'react-native-elevated-view';
 import Icon from 'react-native-vector-icons/Ionicons';
 import _ from 'lodash';
 
+import Fade from '../../Components/Fade/Fade';
 import SkillRow from '../../Components/SkillRow/SkillRow';
 import EventItem from '../../Components/EventItem/EventItem';
 import RegionRow from '../../Components/RegionRow/RegionRow';
+import Touchable from '../../Components/Touchable/Touchable';
 import IdolNameRow from '../../Components/IdolNameRow/IdolNameRow';
 import MainUnitRow from '../../Components/MainUnitRow/MainUnitRow';
 import AttributeRow from '../../Components/AttributeRow/AttributeRow';
@@ -19,7 +22,7 @@ import { loadSettings } from '../../Utils';
 
 /**
  * [Event List Screen](https://github.com/MagiCircles/SchoolIdolAPI/wiki/API-Events#get-the-list-of-events)
- * 
+ *
  * State:
  * - `isLoading`: Loading state
  * - `list`: Data for FlatList
@@ -135,15 +138,15 @@ class EventsScreen extends React.Component {
     if (this.state.idol !== 'All') _filter.idol = this.state.idol;
     if (this.state.skill !== 'All') _filter.skill = this.state.skill;
     var _is_english = this.state.is_english;
-    if (_is_english.length !== 0) {
+    if (_is_english !== '') {
       if (_is_english === 'True') _is_english = 'False';
       else _is_english = 'True';
       _filter.is_english = _is_english;
     }
-    if (this.state.main_unit.length !== 0) _filter.main_unit = this.state.main_unit;
-    if (this.state.attribute.length !== 0) _filter.attribute = this.state.attribute;
-    if (this.state.search.length !== 0) _filter.search = this.state.search;
-    // console.log(`========== Events.getEvents`, _filter);
+    if (this.state.main_unit !== '') _filter.main_unit = this.state.main_unit;
+    if (this.state.attribute !== '') _filter.attribute = this.state.attribute;
+    if (this.state.search !== '') _filter.search = this.state.search;
+    console.log(`Events.getEvents ${JSON.stringify(_filter)}`);
     LLSIFService.fetchEventList(_filter).then((result) => {
       if (result === 404) {
         // console.log('LLSIFService.fetchEventList 404');
@@ -226,7 +229,7 @@ class EventsScreen extends React.Component {
 
   /**
    * Save `is_english`
-   * 
+   *
    * @param {String} value
    * @memberof EventsScreen
    */
@@ -234,7 +237,7 @@ class EventsScreen extends React.Component {
 
   /**
    * Save `skill`
-   * 
+   *
    * @param {String} itemValue
    * @param {String} itemIndex unused
    * @memberof EventsScreen
@@ -259,50 +262,57 @@ class EventsScreen extends React.Component {
     <Image source={Images.alpaca} />
   </View>
 
+  renderEmpty = <View style={{ margin: 10 }}>
+    <Text style={styles.resetText}>No result</Text>
+  </View>
+
   render() {
-    if (this.state.isLoading) return <SplashScreen bgColor={Colors.violet} />;
     return (
       <View style={styles.container}>
-        {/* HEADER */}
-        <View style={[ApplicationStyles.header, styles.header]}>
-          <SquareButton name={'ios-menu'} onPress={this._openDrawer} />
-          <TextInput value={this.state.search}
-            onChangeText={text => this.setState({ search: text })}
-            onSubmitEditing={this._onSearch}
-            placeholder={'Search event...'}
-            style={ApplicationStyles.searchInput} />
-          <SquareButton name={'ios-search'} onPress={this._onSearch} />
-          <SquareButton name={'ios-more'} onPress={this._toggleFilter} />
-        </View>
-
-        {/* FILTER */}
-        {this.state.isFilter &&
-          <View style={styles.filterContainer}>
-            <IdolNameRow name={this.state.idol} selectIdol={this._selectIdol} />
-            <MainUnitRow main_unit={this.state.main_unit} selectMainUnit={this._selectMainUnit} />
-            <SkillRow skill={this.state.skill} selectSkill={this._selectSkill} />
-            <AttributeRow attribute={this.state.attribute} selectAttribute={this._selectAttribute} />
-            <RegionRow japan_only={this.state.is_english} selectRegion={this._selectRegion} />
-            <View style={styles.resetView}>
-              <TouchableOpacity onPress={this._resetFilter}
-                style={styles.resetButton}>
-                <Text style={styles.resetText}>RESET</Text>
-              </TouchableOpacity>
+        <Fade visible={this.state.isLoading} style={[ApplicationStyles.screen, ApplicationStyles.absolute]}>
+          <SplashScreen bgColor={Colors.violet} />
+        </Fade>
+        <Fade visible={!this.state.isLoading} style={[ApplicationStyles.screen, ApplicationStyles.absolute]}>
+          {/* HEADER */}
+          <ElevatedView elevation={5} style={[ApplicationStyles.header, styles.header]}>
+            <SquareButton name={'ios-menu'} onPress={this._openDrawer} />
+            <View style={ApplicationStyles.searchHeader}>
+              <TextInput value={this.state.search}
+                onChangeText={text => this.setState({ search: text })}
+                onSubmitEditing={this._onSearch}
+                placeholder={'Search event...'}
+                style={ApplicationStyles.searchInput} />
+              <SquareButton name={'ios-search'} onPress={this._onSearch}
+                style={ApplicationStyles.searchButton} />
             </View>
-          </View>}
+            <SquareButton name={'ios-more'} onPress={this._toggleFilter} />
+          </ElevatedView>
 
-        {/* LIST */}
-        {this.state.list.length === 0 && <View style={{ margin: 10 }}>
-          <Text style={styles.resetText}>No result</Text>
-        </View>}
-        <FlatList data={this.state.list}
-          contentContainerStyle={styles.content}
-          initialNumToRender={6}
-          keyExtractor={this._keyExtractor}
-          style={styles.list}
-          ListFooterComponent={this.renderFooter}
-          onEndReached={this._onEndReached}
-          renderItem={this._renderItem} />
+          {/* FILTER */}
+          {this.state.isFilter &&
+            <ElevatedView elevation={5} style={styles.filterContainer}>
+              <IdolNameRow name={this.state.idol} selectIdol={this._selectIdol} />
+              <MainUnitRow main_unit={this.state.main_unit} selectMainUnit={this._selectMainUnit} />
+              <SkillRow skill={this.state.skill} selectSkill={this._selectSkill} />
+              <AttributeRow attribute={this.state.attribute} selectAttribute={this._selectAttribute} />
+              <RegionRow japan_only={this.state.is_english} selectRegion={this._selectRegion} />
+              <Touchable onPress={this._resetFilter} useForeground
+                style={styles.resetView}>
+                <Text style={styles.resetText}>RESET</Text>
+              </Touchable>
+            </ElevatedView>}
+
+          {/* LIST */}
+          <FlatList data={this.state.list}
+            contentContainerStyle={styles.content}
+            initialNumToRender={6}
+            keyExtractor={this._keyExtractor}
+            style={styles.list}
+            ListEmptyComponent={this.renderEmpty}
+            ListFooterComponent={this.renderFooter}
+            onEndReached={this._onEndReached}
+            renderItem={this._renderItem} />
+        </Fade>
       </View>
     )
   }

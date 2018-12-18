@@ -1,4 +1,11 @@
 PODS:
+  - AppCenter/Analytics (1.11.0):
+    - AppCenter/Core
+  - AppCenter/Core (1.11.0)
+  - AppCenter/Crashes (1.11.0):
+    - AppCenter/Core
+  - AppCenterReactNativeShared (1.10.0):
+    - AppCenter/Core (= 1.11.0)
   - Firebase/Core (5.11.0):
     - Firebase/CoreOnly
     - FirebaseAnalytics (= 5.3.0)
@@ -62,11 +69,17 @@ PODS:
   - Protobuf (3.6.1)
 
 DEPENDENCIES:
+  - AppCenter/Analytics (~> 1.11.0)
+  - AppCenter/Crashes (~> 1.11.0)
+  - AppCenterReactNativeShared (~> 1.10.0)
   - Firebase/Core (~> 5.11.0)
   - Firebase/Messaging (~> 5.11.0)
+  - GoogleAppMeasurement (~> 5.3.0)
 
 SPEC REPOS:
   https://github.com/CocoaPods/Specs.git:
+    - AppCenter
+    - AppCenterReactNativeShared
     - Firebase
     - FirebaseAnalytics
     - FirebaseAnalyticsInterop
@@ -79,6 +92,8 @@ SPEC REPOS:
     - Protobuf
 
 SPEC CHECKSUMS:
+  AppCenter: 3bccf8d733e337d0db574dd4cb0e33ab9637b7f2
+  AppCenterReactNativeShared: a77b000c2ac6dc2e44472621d7d0770f196e5822
   Firebase: b48f9e653da971ecce5b8c749684bc8bb2d26bd3
   FirebaseAnalytics: 63202d2665de4e6adcbdce189135255d8b5962ba
   FirebaseAnalyticsInterop: e5f21be9af6548372e2f0815834ff909bff395a2
@@ -90,6 +105,6 @@ SPEC CHECKSUMS:
   nanopb: 2901f78ea1b7b4015c860c2fdd1ea2fee1a18d48
   Protobuf: 1eb9700044745f00181c136ef21b8ff3ad5a0fd5
 
-PODFILE CHECKSUM: 13977b2fc0ab5331bc5d68b71f935440710271ce
+PODFILE CHECKSUM: 92fc525fbd702ea348f3b8149ba702eaa378806c
 
 COCOAPODS: 1.5.0

@@ -6,7 +6,7 @@ import { Animated } from 'react-native';
  *
  * Prop
  * - visible:
- * 
+ *
  * @export
  * @class Fade
  * @extends {Component}
@@ -27,7 +27,7 @@ export default class Fade extends Component {
     }
     Animated.timing(this._visibility, {
       toValue: nextProps.visible ? 1 : 0,
-      duration: 300
+      duration: 500
     }).start(() => {
       this.setState({ visible: nextProps.visible });
     });

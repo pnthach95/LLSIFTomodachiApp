@@ -10,19 +10,13 @@ export default StyleSheet.create({
     backgroundColor: 'white'
   },
   list: {
-    padding: Metrics.smallMargin,
+    padding: Metrics.smallMargin
   },
   content: {
-    alignItems: 'center',
+    alignItems: 'center'
   },
   filterContainer: {
     backgroundColor: 'white',
-    padding: 10
-  },
-  resetButton: {
-    backgroundColor: 'red',
-    justifyContent: 'center',
-    margin: 5,
     padding: 10
   },
   resetText: {
@@ -31,6 +25,9 @@ export default StyleSheet.create({
   },
   resetView: {
     alignItems: 'stretch',
+    backgroundColor: 'red',
+    justifyContent: 'center',
+    padding: 10,
     marginTop: 10
   }
 });

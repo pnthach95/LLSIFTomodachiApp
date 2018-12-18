@@ -11,7 +11,7 @@ LLSIFApiClient.addMonitor(Reactotron.apisauce);
 
 /**
  * [Fetch cached data](https://github.com/MagiCircles/SchoolIdolAPI/wiki/API-Cached-data)
- * 
+ *
  * @returns
  */
 async function fetchCachedData() {

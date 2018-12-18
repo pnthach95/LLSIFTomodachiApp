@@ -10,7 +10,7 @@ import styles from '../../Theme/RowStyles';
  * Prop:
  * - `selectAttribute`: Save `attribute` state
  * - `attribute`: state from parent
- * 
+ *
  * @export
  * @class AttributeRow
  * @extends {React.Component}
@@ -27,7 +27,7 @@ class AttributeRow extends React.Component {
             showsHorizontalScrollIndicator={false}>
             <TouchableOpacity onPress={this.props.selectAttribute('')}
               style={[
-                styles.button1,
+                styles.standardButton,
                 { paddingLeft: 0 },
                 this.props.attribute === '' && styles.selectedValue1
               ]}>
@@ -35,28 +35,28 @@ class AttributeRow extends React.Component {
             </TouchableOpacity>
             <TouchableOpacity onPress={this.props.selectAttribute('Smile')}
               style={[
-                styles.button1,
+                styles.standardButton,
                 this.props.attribute === 'Smile' && styles.selectedValue1
               ]}>
               <Image source={Images.attribute[0]} style={styles.buttonImage} />
             </TouchableOpacity>
             <TouchableOpacity onPress={this.props.selectAttribute('Pure')}
               style={[
-                styles.button1,
+                styles.standardButton,
                 this.props.attribute === 'Pure' && styles.selectedValue1
               ]}>
               <Image source={Images.attribute[1]} style={styles.buttonImage} />
             </TouchableOpacity>
             <TouchableOpacity onPress={this.props.selectAttribute('Cool')}
               style={[
-                styles.button1,
+                styles.standardButton,
                 this.props.attribute === 'Cool' && styles.selectedValue1
               ]}>
               <Image source={Images.attribute[2]} style={styles.buttonImage} />
             </TouchableOpacity>
             <TouchableOpacity onPress={this.props.selectAttribute('All')}
               style={[
-                styles.button1,
+                styles.standardButton,
                 this.props.attribute === 'All' && styles.selectedValue1
               ]}>
               <Image source={Images.attribute[3]} style={styles.buttonImage} />

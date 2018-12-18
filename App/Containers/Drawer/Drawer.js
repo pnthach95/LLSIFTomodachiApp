@@ -8,7 +8,7 @@ import VersionNumber from 'react-native-version-number';
 
 import Fade from '../../Components/Fade/Fade';
 import styles from './styles';
-import { Images, ApplicationStyles } from '../../Theme';
+import { Images, ApplicationStyles, Fonts } from '../../Theme';
 import { Config, RELEASE_NOTE } from '../../Config';
 import { AddHTTPS, loadSettings, saveSettings, openLink } from '../../Utils';
 import { getRandomCard, getBGImage } from '../../Stores/CachedData/Selectors';
@@ -129,32 +129,32 @@ class Drawer extends Component {
       <SafeAreaView>
         <ImageBackground source={{ uri: AddHTTPS(this.props.bgImage) }}
           style={styles.fullscreen}>
-          <View style={{ flex: 1 }}>
+          <View style={ApplicationStyles.screen}>
             <Fade visible={this.state.visible} style={styles.container}>
               <View style={[ApplicationStyles.center, styles.header]}>
                 <Image source={Images.logo} style={styles.logo} resizeMode={'contain'} />
               </View>
-              <View style={{ flex: 1 }}>
+              <View style={ApplicationStyles.screen}>
                 <TouchableOpacity onPress={this._groupToggle}>
                   <View style={styles.group}>
-                    <Text>OPTIONS</Text>
+                    <Text style={Fonts.style.black}>OPTIONS</Text>
                     <Icon name={this.state.isCollapsed ? 'ios-arrow-up' : 'ios-arrow-down'} size={20} />
                   </View>
                 </TouchableOpacity>
                 {this.state.isCollapsed && <View style={styles.body}>
                   <ScrollView bounces={false}>
                     <View style={styles.settingRow}>
-                      <Text>Search Worldwide only</Text>
+                      <Text style={Fonts.style.black}>Search Worldwide only</Text>
                       <Switch value={this.state.worldwide_only}
                         onValueChange={this._worldwideToggle} />
                     </View>
                     <View style={styles.settingRow}>
-                      <Text>Notify WW event</Text>
+                      <Text style={Fonts.style.black}>Notify WW event</Text>
                       <Switch value={this.state.ww_event}
                         onValueChange={this._wwEventToggle} />
                     </View>
                     <View style={styles.settingRow}>
-                      <Text>Notify JP event</Text>
+                      <Text style={Fonts.style.black}>Notify JP event</Text>
                       <Switch value={this.state.jp_event}
                         onValueChange={this._jpEventToggle} />
                     </View>
@@ -162,14 +162,14 @@ class Drawer extends Component {
                 </View>}
                 <TouchableOpacity onPress={this._groupToggle}>
                   <View style={styles.group}>
-                    <Text>ABOUT ME</Text>
+                    <Text style={Fonts.style.black}>ABOUT ME</Text>
                     <Icon name={!this.state.isCollapsed ? 'ios-arrow-up' : 'ios-arrow-down'} size={20} />
                   </View>
                 </TouchableOpacity>
-                {!this.state.isCollapsed && <View style={{ flex: 1 }}>
+                {!this.state.isCollapsed && <View style={ApplicationStyles.screen}>
                   <ScrollView bounces={false}
-                    style={styles.textBlock}>
-                    <Text>{RELEASE_NOTE}</Text>
+                    contentContainerStyle={styles.textBlock}>
+                    <Text style={Fonts.style.black}>{RELEASE_NOTE}</Text>
                   </ScrollView>
                 </View>}
               </View>
@@ -187,22 +187,21 @@ class Drawer extends Component {
                     style={ApplicationStyles.center}>
                     <View style={ApplicationStyles.center}>
                       <Icon name={'logo-github'} size={50} />
-                      <Text>Project</Text>
+                      <Text style={Fonts.style.black}>Project</Text>
                     </View>
                   </TouchableHighlight>
                 </View>
               </View>
             </Fade>
 
-            {!this.state.visible &&
-              <Fade visible={!this.state.visible}
-                style={[styles.container, { backgroundColor: '#0000' }]}>
-                <TouchableHighlight onPress={this._navigateToCardDetail(this.props.randomCard)}
-                  underlayColor={'#fffa'}
-                  style={[ApplicationStyles.center, styles.viewMore]}>
-                  <Text style={styles.versionText}>View card info</Text>
-                </TouchableHighlight>
-              </Fade>}
+            <Fade visible={!this.state.visible}
+              style={[styles.container, { backgroundColor: '#0000' }]}>
+              <TouchableHighlight onPress={this._navigateToCardDetail(this.props.randomCard)}
+                underlayColor={'#fffa'}
+                style={[ApplicationStyles.center, styles.viewMore]}>
+                <Text style={styles.versionText}>View card info</Text>
+              </TouchableHighlight>
+            </Fade>
 
             <TouchableHighlight onPress={this._visibleToggle}
               underlayColor={'#fff'}

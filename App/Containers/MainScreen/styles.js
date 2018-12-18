@@ -6,9 +6,6 @@ export default StyleSheet.create({
     flex: 1,
     backgroundColor: Colors.pink
   },
-  leftHeader: {
-    flex: 1
-  },
   centerHeader: {
     flex: 5,
     justifyContent: 'center',
@@ -20,11 +17,8 @@ export default StyleSheet.create({
     justifyContent: 'flex-end'
   },
   logo: {
-    width: '70%',
+    width: Metrics.screenWidth * 0.3,
     resizeMode: 'contain'
-  },
-  body: {
-    paddingVertical: Metrics.baseMargin,
   },
   content: {
     alignItems: 'center',
@@ -42,6 +36,18 @@ export default StyleSheet.create({
   title: {
     color: 'white',
     fontSize: 24,
+    fontWeight: 'bold',
     textAlign: 'center'
+  },
+  block: {
+    width: Metrics.screenWidth,
+    alignItems: 'center'
+  },
+  update: {
+    width: Metrics.screenWidth * 0.9,
+    backgroundColor: Colors.lightGreen,
+    alignSelf: 'center',
+    alignItems: 'center',
+    padding: 5
   }
 });

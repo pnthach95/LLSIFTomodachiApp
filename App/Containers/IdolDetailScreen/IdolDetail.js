@@ -1,27 +1,25 @@
 import React from 'react';
 import { Text, View, ScrollView, Image } from 'react-native';
 import { connect } from 'react-redux';
+import ElevatedView from 'react-native-elevated-view';
 import FastImage from 'react-native-fast-image';
 import LinearGradient from 'react-native-linear-gradient';
 import moment from 'moment';
 
-import Seperator from '../../Components/Seperator/Seperator';
-import SquareButton from '../../Components/SquareButton/SquareButton';
-import TextRow from '../../Components/TextRow/TextRow';
 import SplashScreen from '../SplashScreen/SplashScreen';
+import Fade from '../../Components/Fade/Fade';
+import InfoLine from '../../Components/InfoLine/InfoLine';
 import { LLSIFService } from '../../Services/LLSIFService';
-import { findColorByAttribute, AddHTTPS, findMainUnit, findSubUnit, openLink } from '../../Utils';
+import SquareButton from '../../Components/SquareButton/SquareButton';
+import { findColorByAttribute, AddHTTPS, findMainUnit, findSubUnit } from '../../Utils';
 import { Metrics, ApplicationStyles, Colors } from '../../Theme';
 import styles from './styles';
 
-const column1 = 3;
-const column2 = 4;
-
 /**
  * Idol Detail Screen
- * 
+ *
  * From parent screen, pass `name` to get Idol object
- * 
+ *
  * State:
  * - `item`: [Idol object](https://github.com/MagiCircles/SchoolIdolAPI/wiki/API-Idols#objects)
  * - `imgWidth`: Image width
@@ -29,7 +27,7 @@ const column2 = 4;
  * - `colors`: Color array
  * - `images`: Image array
  * - `isLoading`: Loading state
- * 
+ *
  * @class IdolDetailScreen
  * @extends {React.Component}
  */
@@ -79,185 +77,110 @@ class IdolDetailScreen extends React.Component {
   }
 
   render() {
-    if (this.state.isLoading) return <SplashScreen bgColor={Colors.blue} />;
     return (
-      <View style={styles.container}>
+      <View style={ApplicationStyles.screen}>
         {/* HEADER */}
-        <View style={[
+        <ElevatedView elevation={5} style={[
           ApplicationStyles.header,
           styles.header,
-          { backgroundColor: this.state.colors[1] }
+          { backgroundColor: this.state.isLoading ? Colors.blue : this.state.colors[1] }
         ]}>
           <View style={styles.leftHeader}>
             <SquareButton name={'ios-arrow-back'} onPress={() => this.props.navigation.goBack()} />
+            <Fade visible={!this.state.isLoading}>
+              {!this.state.isLoading && <View>
+                <Text>{this.state.item.name}</Text>
+                {this.state.item.japanese_name !== null && <Text>{this.state.item.japanese_name}</Text>}
+              </View>}
+            </Fade>
           </View>
-          <View style={styles.centerHeader}>
-            <Text>{this.state.item.name}</Text>
-            {this.state.item.japanese_name !== null && <Text>{this.state.item.japanese_name}</Text>}
-          </View>
-          <View style={styles.rightHeader}>
-            <Image source={findMainUnit(this.state.item.main_unit)}
-              style={styles.rightHeaderImage} />
-            <Image source={findSubUnit(this.state.item.sub_unit)}
-              style={styles.rightHeaderImage} />
-          </View>
+          <Fade visible={!this.state.isLoading} style={styles.rightHeader}>
+            {!this.state.isLoading && <View style={{ flexDirection: 'row' }}>
+              <Image source={findMainUnit(this.state.item.main_unit)}
+                style={styles.rightHeaderImage} />
+              <Image source={findSubUnit(this.state.item.sub_unit)}
+                style={styles.rightHeaderImage} />
+            </View>}
+          </Fade>
+        </ElevatedView>
+        <View style={ApplicationStyles.screen}>
+          <Fade visible={this.state.isLoading} style={[ApplicationStyles.screen, ApplicationStyles.absolute]}>
+            <SplashScreen bgColor={Colors.blue} />
+          </Fade>
+          <Fade visible={!this.state.isLoading} style={[ApplicationStyles.screen, ApplicationStyles.absolute]}>
+            {!this.state.isLoading &&
+              <LinearGradient style={ApplicationStyles.screen}
+                colors={[this.state.colors[1], this.state.colors[0]]}>
+                <ScrollView showsVerticalScrollIndicator={false}>
+                  <View style={styles.imageRow}>
+                    {(this.state.images[0] && this.state.images[0].includes('.png')) &&
+                      <FastImage
+                        source={{
+                          uri: AddHTTPS(this.state.images[0]),
+                          priority: FastImage.priority.high
+                        }}
+                        resizeMode={FastImage.resizeMode.contain}
+                        style={{
+                          width: Metrics.images.itemWidth * 1.5,
+                          height: Metrics.images.itemWidth * 1.5
+                        }} />}
+                    <FastImage
+                      source={{
+                        uri: AddHTTPS(this.state.images[1]),
+                        priority: FastImage.priority.high
+                      }}
+                      resizeMode={FastImage.resizeMode.contain}
+                      style={{
+                        width: Metrics.images.itemWidth * 1.5,
+                        height: Metrics.images.itemWidth * 1.5
+                      }} />
+                  </View>
+                  <View style={styles.scrollView}>
+                    {this.state.item.school !== null &&
+                      <InfoLine title={'School'}
+                        content={this.state.item.school} />}
+                    <InfoLine title={'Attribute'}
+                      content={this.state.item.attribute} />
+                    {this.state.item.birthday !== null &&
+                      <InfoLine title={'Birthday'}
+                        content={moment(this.state.item.birthday, 'MM-DD').format('MMM Do')} />}
+                    {this.state.item.astrological_sign !== null &&
+                      <InfoLine title={'Astrological Sign'}
+                        content={this.state.item.astrological_sign} />}
+                    {this.state.item.blood !== null &&
+                      <InfoLine title={'Blood Type'}
+                        content={this.state.item.blood} />}
+                    {this.state.item.height !== null &&
+                      <InfoLine title={'Height'}
+                        content={`${this.state.item.height} cm`} />}
+                    {this.state.item.measurements !== null &&
+                      <InfoLine title={'Measurements'}
+                        content={this.state.item.measurements} />}
+                    {this.state.item.favorite_food !== null &&
+                      <InfoLine title={'Favorite Food'}
+                        content={this.state.item.favorite_food} />}
+                    {this.state.item.least_favorite_food !== null &&
+                      <InfoLine title={'Least Favorite Food'}
+                        content={this.state.item.least_favorite_food} />}
+                    {this.state.item.hobbies !== null &&
+                      <InfoLine title={'Hobbies'}
+                        content={this.state.item.hobbies} />}
+                    {this.state.item.year &&
+                      <InfoLine title={'Year'}
+                        content={this.state.item.year} />}
+                    {this.state.item.cv !== null &&
+                      <InfoLine title={'CV'}
+                        content={`${this.state.item.cv.name} (${this.state.item.cv.nickname})`}
+                        twitter={this.state.item.cv.twitter} instagram={this.state.item.cv.instagram}
+                        myanimelist={this.state.item.cv.url} />}
+                    {this.state.item.summary !== null &&
+                      <InfoLine title={'Summary'} content={this.state.item.summary} />}
+                  </View>
+                </ScrollView>
+              </LinearGradient>}
+          </Fade>
         </View>
-
-        {/* INFORMATION */}
-        <LinearGradient style={{ flex: 1 }}
-          colors={[this.state.colors[1], this.state.colors[0]]}>
-          <ScrollView showsVerticalScrollIndicator={false}>
-            <View style={styles.imageRow}>
-              {(this.state.images[0] && this.state.images[0].includes('.png')) &&
-                <FastImage
-                  source={{
-                    uri: AddHTTPS(this.state.images[0]),
-                    priority: FastImage.priority.high
-                  }}
-                  resizeMode={FastImage.resizeMode.contain}
-                  style={{
-                    width: Metrics.images.itemWidth * 1.5,
-                    height: Metrics.images.itemWidth * 1.5
-                  }} />}
-              <FastImage
-                source={{
-                  uri: AddHTTPS(this.state.images[1]),
-                  priority: FastImage.priority.high
-                }}
-                resizeMode={FastImage.resizeMode.contain}
-                style={{
-                  width: Metrics.images.itemWidth * 1.5,
-                  height: Metrics.images.itemWidth * 1.5
-                }} />
-            </View>
-            <View style={{ paddingHorizontal: Metrics.doubleBaseMargin }}>
-              {this.state.item.school !== null &&
-                <View>
-                  <TextRow item1={{ flex: column1, text: 'School' }}
-                    item2={{ flex: column2, text: this.state.item.school }} />
-                  <Seperator />
-                </View>}
-
-              <TextRow item1={{ flex: column1, text: 'Attribute' }}
-                item2={{ flex: column2, text: this.state.item.attribute }} />
-
-              {this.state.item.birthday !== null &&
-                <View>
-                  <Seperator />
-                  <TextRow item1={{ flex: column1, text: 'Birthday' }}
-                    item2={{ flex: column2, text: moment(this.state.item.birthday, 'MM-DD').format('MMM Do') }} />
-                </View>}
-
-              {this.state.item.main_unit !== null &&
-                <View>
-                  <Seperator />
-                  <TextRow item1={{ flex: column1, text: 'Main Unit' }}
-                    item2={{ flex: column2, text: this.state.item.main_unit }} />
-                </View>}
-
-              {this.state.item.sub_unit !== null &&
-                <View>
-                  <Seperator />
-                  <TextRow item1={{ flex: column1, text: 'Sub Unit' }}
-                    item2={{ flex: column2, text: this.state.item.sub_unit }} />
-                </View>}
-
-              {this.state.item.astrological_sign !== null &&
-                <View>
-                  <Seperator />
-                  <TextRow item1={{ flex: column1, text: 'Astrological Sign' }}
-                    item2={{ flex: column2, text: this.state.item.astrological_sign }} />
-                </View>}
-
-              {this.state.item.blood !== null &&
-                <View>
-                  <Seperator />
-                  <TextRow item1={{ flex: column1, text: 'Blood Type' }}
-                    item2={{ flex: column2, text: this.state.item.blood }} />
-                </View>}
-
-              {this.state.item.height !== null &&
-                <View>
-                  <Seperator />
-                  <TextRow item1={{ flex: column1, text: 'Height' }}
-                    item2={{ flex: column2, text: this.state.item.height }} />
-                </View>}
-
-              {this.state.item.measurements !== null &&
-                <View>
-                  <Seperator />
-                  <TextRow item1={{ flex: column1, text: 'Measurements' }}
-                    item2={{ flex: column2, text: this.state.item.measurements }} />
-                </View>}
-
-              {this.state.item.favorite_food !== null &&
-                <View>
-                  <Seperator />
-                  <TextRow item1={{ flex: column1, text: 'Favorite Food' }}
-                    item2={{ flex: column2, text: this.state.item.favorite_food }} />
-                </View>}
-
-              {this.state.item.least_favorite_food !== null &&
-                <View>
-                  <Seperator />
-                  <TextRow item1={{ flex: column1, text: 'Least Favorite Food' }}
-                    item2={{ flex: column2, text: this.state.item.least_favorite_food }} />
-                </View>}
-
-              {this.state.item.hobbies !== null &&
-                <View>
-                  <Seperator />
-                  <TextRow item1={{ flex: column1, text: 'Hobbies' }}
-                    item2={{ flex: column2, text: this.state.item.hobbies }} />
-                </View>}
-
-              {this.state.item.year &&
-                <View>
-                  <Seperator />
-                  <TextRow item1={{ flex: column1, text: 'Year' }}
-                    item2={{ flex: column2, text: this.state.item.year }} />
-                </View>}
-
-              {this.state.item.cv !== null &&
-                <View>
-                  <Seperator />
-                  <TextRow item1={{ flex: column1, text: 'CV' }}
-                    item2={{ flex: column2, text: this.state.item.cv.name + ' (' + this.state.item.cv.nickname + ')' }} />
-                  {this.state.item.cv.twitter &&
-                    <TextRow item1={{ flex: column1, text: '' }}
-                      item2={{
-                        flex: column2,
-                        text: 'Twitter: ' + this.state.item.cv.twitter,
-                        onPress: () => openLink('https://twitter.com/' + this.state.item.cv.twitter),
-                        textStyle: { textDecorationLine: 'underline' }
-                      }} />}
-                  {this.state.item.cv.instagram &&
-                    <TextRow item1={{ flex: column1, text: '' }}
-                      item2={{
-                        flex: column2,
-                        text: 'Instagram: ' + this.state.item.cv.instagram,
-                        onPress: () => openLink('https://www.instagram.com/' + this.state.item.cv.instagram),
-                        textStyle: { textDecorationLine: 'underline' }
-                      }} />}
-                  <TextRow item1={{ flex: column1, text: '' }}
-                    item2={{
-                      flex: column2, text: this.state.item.cv.url,
-                      onPress: () => openLink(this.state.item.cv.url),
-                      textStyle: { textDecorationLine: 'underline' }
-                    }} />
-                </View>}
-
-              {this.state.item.summary !== null &&
-                <View>
-                  <Seperator />
-                  <TextRow item1={{ flex: column1, text: 'Summary' }}
-                    item2={{ flex: column2, text: this.state.item.summary }} />
-                </View>}
-            </View>
-            <View style={{ height: Metrics.doubleBaseMargin }} />
-          </ScrollView>
-        </LinearGradient >
-      </View >
+      </View>
     )
   }
 }

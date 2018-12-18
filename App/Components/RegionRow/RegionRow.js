@@ -8,7 +8,7 @@ import styles from '../../Theme/RowStyles';
  *
  * - `selectRegion`: Save `japan_only` state
  * - `japan_only` state from parent
- * 
+ *
  * @export
  * @class RegionRow
  * @extends {React.Component}
@@ -23,21 +23,24 @@ class RegionRow extends React.Component {
         <View style={styles.rightView}>
           <TouchableOpacity onPress={this.props.selectRegion('')}
             style={[
-              styles.button,
+              styles.textButton,
+              styles.standardButton,
               this.props.japan_only === '' && styles.selectedValue
             ]}>
             <Text style={styles.buttonText}>All</Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={this.props.selectRegion('False')}
             style={[
-              styles.button,
+              styles.textButton,
+              styles.standardButton,
               this.props.japan_only === 'False' && styles.selectedValue
             ]}>
             <Text style={styles.buttonText}>EN Only</Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={this.props.selectRegion('True')}
             style={[
-              styles.button,
+              styles.textButton,
+              styles.standardButton,
               this.props.japan_only === 'True' && styles.selectedValue
             ]}>
             <Text style={styles.buttonText}>JP Only</Text>

@@ -10,7 +10,7 @@ import styles from '../../Theme/RowStyles';
  * Prop:
  * - `selectRarity`: Save `rarity` state
  * - `rarity`: state from parent
- * 
+ *
  * @export
  * @class RarityRow
  * @extends {React.Component}
@@ -27,7 +27,7 @@ class RarityRow extends React.Component {
             showsHorizontalScrollIndicator={false}>
             <TouchableOpacity onPress={this.props.selectRarity('')}
               style={[
-                styles.button1,
+                styles.standardButton,
                 { paddingLeft: 0 },
                 this.props.rarity === '' && styles.selectedValue1
               ]}>
@@ -35,35 +35,35 @@ class RarityRow extends React.Component {
             </TouchableOpacity>
             <TouchableOpacity onPress={this.props.selectRarity('N')}
               style={[
-                styles.button1,
+                styles.standardButton,
                 this.props.rarity === 'N' && styles.selectedValue1
               ]}>
               <Image source={Images.rarity[0]} style={styles.buttonImage} />
             </TouchableOpacity>
             <TouchableOpacity onPress={this.props.selectRarity('R')}
               style={[
-                styles.button1,
+                styles.standardButton,
                 this.props.rarity === 'R' && styles.selectedValue1
               ]}>
               <Image source={Images.rarity[1]} style={styles.buttonImage} />
             </TouchableOpacity>
             <TouchableOpacity onPress={this.props.selectRarity('SR')}
               style={[
-                styles.button1,
+                styles.standardButton,
                 this.props.rarity === 'SR' && styles.selectedValue1
               ]}>
               <Image source={Images.rarity[2]} style={styles.buttonImage} />
             </TouchableOpacity>
             <TouchableOpacity onPress={this.props.selectRarity('SSR')}
               style={[
-                styles.button1,
+                styles.standardButton,
                 this.props.rarity === 'SSR' && styles.selectedValue1
               ]}>
               <Image source={Images.rarity[3]} style={styles.buttonImage} />
             </TouchableOpacity>
             <TouchableOpacity onPress={this.props.selectRarity('UR')}
               style={[
-                styles.button1,
+                styles.standardButton,
                 this.props.rarity === 'UR' && styles.selectedValue1
               ]}>
               <Image source={Images.rarity[4]} style={styles.buttonImage} />

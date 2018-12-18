@@ -3,6 +3,7 @@ import { Metrics, Colors } from '../../Theme';
 
 export default StyleSheet.create({
   container: {
+    borderRadius: 5,
     backgroundColor: Colors.itemColor,
     width: Metrics.images.itemWidth,
     margin: Metrics.smallMargin

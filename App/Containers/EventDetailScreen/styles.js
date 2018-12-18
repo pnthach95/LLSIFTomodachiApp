@@ -6,39 +6,24 @@ export default StyleSheet.create({
     flex: 1,
     backgroundColor: Colors.violet
   },
-  scrollView: {
-    paddingBottom: Metrics.doubleBaseMargin
-  },
   header: {
-    justifyContent: 'space-between',
-    backgroundColor: Colors.lightViolet,
-    paddingRight: Metrics.baseMargin
-  },
-  leftHeader: {
-    flex: 1
-  },
-  centerHeader: {
-    flex: 3
-  },
-  rightHeader: {
-    flex: 3,
-    flexDirection: 'row',
-    justifyContent: 'flex-end'
+    backgroundColor: Colors.lightViolet
   },
   content: {
+    padding: Metrics.baseMargin,
     alignItems: 'center'
   },
   text: {
-    color: 'white',
     fontSize: 16,
-    padding: Metrics.baseMargin,
+    paddingVertical: Metrics.baseMargin
+  },
+  whiteCenter: {
+    color: 'white',
     textAlign: 'center'
   },
   title: {
-    color: 'white',
     fontSize: 24,
-    padding: Metrics.baseMargin,
-    textAlign: 'center'
+    fontWeight: 'bold'
   },
   song: {
     width: Metrics.screenWidth / 3,
@@ -54,24 +39,24 @@ export default StyleSheet.create({
     height: Metrics.screenWidth / 6
   },
   cardList: {
+    marginTop: Metrics.baseMargin,
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'center'
   },
   card: {
     alignItems: 'center',
-    paddingVertical: Metrics.baseMargin
+    marginVertical: Metrics.baseMargin
   },
   cardImage: {
     flexDirection: 'row',
-    paddingHorizontal: Metrics.baseMargin
+    marginHorizontal: Metrics.baseMargin
   },
   attributeIcon: {
     width: 25,
     height: 25
   },
-  songName: {
-    color: 'white',
-    paddingLeft: 10
+  whiteLine: {
+    backgroundColor: 'white'
   }
 });

@@ -6,6 +6,9 @@ export default StyleSheet.create({
     flex: 1,
     backgroundColor: Colors.green
   },
+  contentContainer: {
+    padding: Metrics.baseMargin
+  },
   header: {
     backgroundColor: 'white'
   },
@@ -13,14 +16,8 @@ export default StyleSheet.create({
     padding: Metrics.smallMargin
   },
   filterContainer: {
-    height: '40%',
+    height: Metrics.screenHeight * 0.35,
     backgroundColor: 'white'
-  },
-  resetButton: {
-    backgroundColor: 'red',
-    justifyContent: 'center',
-    margin: 5,
-    padding: 10
   },
   resetText: {
     color: 'white',
@@ -28,6 +25,25 @@ export default StyleSheet.create({
   },
   resetView: {
     alignItems: 'stretch',
-    marginTop: 10
+    backgroundColor: 'red',
+    justifyContent: 'center',
+    padding: Metrics.baseMargin,
+    marginTop: Metrics.baseMargin
+  },
+  floatButtonSize: {
+    width: 35,
+    height: 35
+  },
+  floatButton: {
+    borderRadius: 50,
+    position: 'absolute',
+    bottom: 10,
+    left: 20,
+    backgroundColor: 'white',
+    width: 50,
+    height: 50
+  },
+  flatListElement: {
+    margin: Metrics.baseMargin
   }
 });

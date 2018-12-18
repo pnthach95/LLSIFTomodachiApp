@@ -2,9 +2,6 @@ import { StyleSheet } from 'react-native';
 import { Metrics } from '../../Theme';
 
 export default StyleSheet.create({
-  container: {
-    flex: 1
-  },
   header: {
     backgroundColor: 'white'
   },
@@ -15,18 +12,18 @@ export default StyleSheet.create({
     backgroundColor: 'white',
     padding: 10
   },
-  resetButton: {
-    backgroundColor: 'red',
-    justifyContent: 'center',
-    margin: 5,
-    padding: 10
-  },
   resetText: {
     color: 'white',
     textAlign: 'center'
   },
   resetView: {
     alignItems: 'stretch',
+    backgroundColor: 'red',
+    justifyContent: 'center',
+    padding: 10,
     marginTop: 10
+  },
+  flatListElement: {
+    margin: 10
   }
 });

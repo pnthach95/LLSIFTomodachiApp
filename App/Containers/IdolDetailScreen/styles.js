@@ -2,77 +2,26 @@ import { StyleSheet } from 'react-native';
 import { Metrics } from '../../Theme';
 
 export default StyleSheet.create({
-  container: {
-    flex: 1
-  },
-  header: {
-    justifyContent: 'space-between',
-    backgroundColor: 'white',
-    paddingRight: Metrics.baseMargin
-  },
   leftHeader: {
-    flex: 1
-  },
-  centerHeader: {
-    flex: 3
+    flexDirection: 'row',
+    alignItems: 'center'
   },
   rightHeader: {
-    flex: 3,
     flexDirection: 'row',
+    marginRight: Metrics.baseMargin,
+    alignItems: 'center',
     justifyContent: 'flex-end'
   },
   rightHeaderImage: {
     resizeMode: 'contain',
-    width: '33%'
-  },
-  headerButton: {
-    height: Metrics.navBarHeight,
-    width: Metrics.navBarHeight
+    width: Metrics.screenWidth * 0.17,
+    height: Metrics.navBarHeight
   },
   scrollView: {
-    marginBottom: Metrics.doubleBaseMargin
-  },
-  buttonRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    padding: Metrics.baseMargin
+    margin: Metrics.doubleBaseMargin
   },
   imageRow: {
     flexDirection: 'row',
-    justifyContent: 'space-around',
-    paddingBottom: Metrics.doubleBaseMargin
-  },
-  progressRow: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    paddingHorizontal: '5%',
-    alignItems: 'center'
-  },
-  button: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingVertical: Metrics.baseMargin,
-    marginHorizontal: 1
-  },
-  leftRadius: {
-    borderTopLeftRadius: 10,
-    borderBottomLeftRadius: 10
-  },
-  rightRadius: {
-    borderTopRightRadius: 10,
-    borderBottomRightRadius: 10
-  },
-  progressText: {
-    paddingLeft: '10%',
-    paddingVertical: Metrics.baseMargin,
-    color: '#333'
-  },
-  banner: {
-    width: '80%',
-    height: 100
-  },
-  subtitleText: {
-    fontSize: 14
+    justifyContent: 'space-around'
   }
 });

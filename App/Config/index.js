@@ -9,8 +9,35 @@ export const Config = {
   SONGS: 'songs/',
   EVENTS: 'events/',
   CARDIDS: 'cardids/',
+  GITHUB_API: 'https://api.github.com/repos/',
+  REPO: 'pnthach95/LLSIFTomodachiApp/releases',
   GITHUB_PROJECT: 'https://github.com/pnthach95/LLSIFTomodachiApp',
   DEFAULT_BACKGROUND: '//i.schoolido.lu/c/1722idolizedRuby.png'
+}
+
+export const OrderingGroup = {
+  CARD: [
+    { label: 'Game ID', value: 'game_id' },
+    { label: 'Release date', value: 'release_date' },
+    { label: 'Idol', value: 'name' },
+    { label: `Smile's statistics`, value: 'idolized_maximum_statistics_smile' },
+    { label: `Pure's statistics`, value: 'idolized_maximum_statistics_pure' },
+    { label: `Cool's statistics`, value: 'idolized_maximum_statistics_cool' },
+    { label: 'Rarity', value: 'rarity' },
+    { label: 'Attribute', value: 'attribute' },
+    { label: 'HP', value: 'hp' }
+  ],
+  SONG: [
+    { label: 'Date added', value: 'id' },
+    { label: 'Latest unlocked songs', value: 'latest' },
+    { label: 'Song name', value: 'name' },
+    { label: 'Beats per minute', value: 'BPM' },
+    { label: 'Song length', value: 'time' },
+    { label: 'Rank to unlock song', value: 'rank' },
+    { label: 'Notes in Hard song', value: 'hard_notes' },
+    { label: 'Notes in Expert song', value: 'expert_notes' },
+    { label: 'Notes in Master song', value: 'master_notes' }
+  ]
 }
 
 export const RELEASE_NOTE = `This app is free and open-source.
@@ -18,6 +45,11 @@ export const RELEASE_NOTE = `This app is free and open-source.
 Press Version to view background.
 
 Change log:
+
+- Version 0.2.3:
+  • Show notification when new update is available.
+  • New view mode in Card screen.
+  • Update UI.
 
 - Version 0.2.2:
   • This version should fix memory leaking issue on some devices.
@@ -43,7 +75,7 @@ Change log:
   • Fix chibi images in Idol tab.
   • Fix 404 error.
   • Change some UIs.
-  
+
 - Version 0.0.1:
   Initial release.`
 

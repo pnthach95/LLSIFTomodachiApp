@@ -1,8 +1,10 @@
 import React from 'react';
 import { View, Text, SectionList, FlatList, Image } from 'react-native';
 import { connect } from 'react-redux';
+import ElevatedView from 'react-native-elevated-view';
 import Icon from 'react-native-vector-icons/Ionicons';
 
+import Fade from '../../Components/Fade/Fade';
 import IdolItem from '../../Components/IdolItem/IdolItem';
 import Seperator from '../../Components/Seperator/Seperator';
 import SquareButton from '../../Components/SquareButton/SquareButton';
@@ -13,7 +15,7 @@ import styles from './styles';
 
 /**
  * Idol List Screen
- * 
+ *
  * State:
  * - isLoading: Loading state
  * - list: Data for FlatList
@@ -75,7 +77,7 @@ class IdolsScreen extends React.Component {
 
   /**
    * Navigate to Idol Detail Screen
-   * 
+   *
    * @param {String} name
    * @memberof IdolsScreen
    */
@@ -104,42 +106,43 @@ class IdolsScreen extends React.Component {
   _openDrawer = () => this.props.navigation.openDrawer();
 
   render() {
-    if (this.state.isLoading) return <SplashScreen bgColor={Colors.blue} />;
     return (
-      <View style={styles.container}>
-        {/* HEADER */}
-        <View style={ApplicationStyles.header}>
-          <View style={styles.leftHeader} >
+      <View style={[ApplicationStyles.screen, styles.container]}>
+        <Fade visible={this.state.isLoading} style={[ApplicationStyles.screen, ApplicationStyles.absolute]}>
+          <SplashScreen bgColor={Colors.blue} />
+        </Fade>
+        <Fade visible={!this.state.isLoading} style={[ApplicationStyles.screen, ApplicationStyles.absolute]}>
+          {/* HEADER */}
+          <ElevatedView elevation={5}
+            style={[ApplicationStyles.header, styles.container]}>
             <SquareButton name={'ios-menu'} onPress={this._openDrawer} color={'white'} />
-          </View>
-          <View style={styles.centerHeader}>
             <Image source={Images.logo} style={ApplicationStyles.imageHeader} />
-          </View>
-          <View style={styles.rightHeader} />
-        </View>
-        {/* BODY */}
-        <SectionList sections={this.state.list}
-          initialNumToRender={9}
-          keyExtractor={(item, index) => 'School' + index}
-          style={styles.list}
-          renderSectionHeader={({ section: { title } }) => (
-            <Text style={{ fontWeight: 'bold', color: 'white', fontSize: 20 }}>{title}</Text>
-          )}
-          stickySectionHeadersEnabled={false}
-          ListHeaderComponent={<View style={{ height: 10 }} />}
-          ListFooterComponent={<View style={{ height: 10 }} />}
-          SectionSeparatorComponent={data => {
-            if (data.leadingItem && data.leadingItem.key === 'Other') return null;
-            return <Seperator style={{ backgroundColor: 'white', marginBottom: data.leadingItem ? 20 : 0 }} />;
-          }}
-          renderItem={({ item, index, section }) => <FlatList
-            numColumns={3}
-            data={item.list}
+            <View style={styles.hole} />
+          </ElevatedView>
+          {/* BODY */}
+          <SectionList sections={this.state.list}
             initialNumToRender={9}
-            renderItem={this._renderItem}
-            keyExtractor={this._keyExtractor}
-          />}
-        />
+            keyExtractor={(item, index) => 'School' + index}
+            style={styles.list}
+            renderSectionHeader={({ section: { title } }) => (
+              <Text style={styles.sectionText}>{title}</Text>
+            )}
+            stickySectionHeadersEnabled={false}
+            ListHeaderComponent={<View style={{ height: 10 }} />}
+            ListFooterComponent={<View style={{ height: 10 }} />}
+            SectionSeparatorComponent={data => {
+              if (data.leadingItem && data.leadingItem.key === 'Other') return null;
+              return <Seperator style={{ backgroundColor: 'white', marginBottom: data.leadingItem ? 20 : 0 }} />;
+            }}
+            renderItem={({ item, index, section }) => <FlatList
+              numColumns={3}
+              data={item.list}
+              initialNumToRender={9}
+              renderItem={this._renderItem}
+              keyExtractor={this._keyExtractor}
+            />}
+          />
+        </Fade>
       </View>
     )
   }

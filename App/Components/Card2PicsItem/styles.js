@@ -7,6 +7,10 @@ export default StyleSheet.create({
     margin: Metrics.smallMargin,
     borderRadius: 4
   },
+  row: {
+    flexDirection: 'row',
+    justifyContent: 'space-around'
+  },
   info: {
     flexDirection: 'row',
     borderBottomLeftRadius: 4,

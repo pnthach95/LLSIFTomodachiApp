@@ -24,6 +24,9 @@ export default StyleSheet.create({
   scrollView: {
     paddingBottom: Metrics.doubleBaseMargin
   },
+  informationBlock: {
+    paddingHorizontal: Metrics.doubleBaseMargin
+  },
   buttonRow: {
     flexDirection: 'row',
     justifyContent: 'space-around',

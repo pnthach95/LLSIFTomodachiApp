@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text, View, TouchableOpacity, Image, ScrollView } from 'react-native';
 import PropTypes from 'prop-types';
-import { Images } from '../../Theme';
+import { Images, ApplicationStyles } from '../../Theme';
 import styles from '../../Theme/RowStyles';
 
 /**
@@ -18,7 +18,7 @@ import styles from '../../Theme/RowStyles';
 class RarityRow extends React.Component {
   render() {
     return (
-      <View style={{ flexDirection: 'row' }}>
+      <View style={ApplicationStyles.row}>
         <View style={styles.leftView}>
           <Text>Rarity</Text>
         </View>

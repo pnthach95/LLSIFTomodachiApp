@@ -14,6 +14,7 @@ import SquareButton from '../../Components/SquareButton/SquareButton';
 import { getMaxStats } from '../../Stores/CachedData/Selectors';
 import { findColorByAttribute, AddHTTPS, findMainUnit, findSubUnit } from '../../Utils';
 import { Metrics, Fonts, ApplicationStyles, Colors, Images } from '../../Theme';
+import { Config } from '../../Config';
 import styles from './styles';
 
 /**
@@ -24,7 +25,6 @@ import styles from './styles';
  * - `imgWidth`: Image width
  * - `imgHeight`: Image height
  * - `colors`: Colors for background
- * - `isLoading`: Check loading
  * - `maxStats`: Maximum stats
  * - `minStats`: Minimal stats
  * - `nonIdolMaxStats`: Non-idolized maximum stats
@@ -141,9 +141,11 @@ class CardDetailScreen extends React.Component {
     </View>
   }
 
+  _saveStat = (stats, id) => () => this.setState({ currentStats: stats, buttonID: id });
+
   statButton(id, text, stats, style) {
     return (
-      <TouchableOpacity onPress={() => this.setState({ currentStats: stats, buttonID: id })}
+      <TouchableOpacity onPress={this._saveStat(stats, id)}
         style={[
           styles.button, style,
           { backgroundColor: this.state.buttonID === id ? Colors.violet : Colors.inactive }
@@ -182,7 +184,7 @@ class CardDetailScreen extends React.Component {
         {/* HEADER */}
         <ElevatedView elevation={5} style={[
           ApplicationStyles.header,
-          { backgroundColor: this.state.isLoading ? Colors.green : this.state.colors[1] }
+          { backgroundColor: this.state.colors[1] }
         ]}>
           <View style={styles.leftRow}>
             <SquareButton name={'ios-arrow-back'} onPress={() => this.props.navigation.goBack()} />
@@ -219,11 +221,11 @@ class CardDetailScreen extends React.Component {
               </View>
 
               {/* INFORMATION */}
-              <View style={{ paddingHorizontal: Metrics.doubleBaseMargin }}>
+              <View style={styles.informationBlock}>
                 <TextRow item1={{ flex: 1, text: 'Card ID' }}
                   item2={{ flex: 2, text: this.state.item.game_id }} />
                 <TextRow item1={{ flex: 1, text: 'Release date' }}
-                  item2={{ flex: 2, text: moment(this.state.item.release_date).format('MMM Do YYYY') }} />
+                  item2={{ flex: 2, text: moment(this.state.item.release_date).format(Config.DATE_FORMAT_OUTPUT) }} />
                 {this.state.propertyLine.length > 0 && <Text>{this.state.propertyLine}</Text>}
 
                 {(this.state.item.skill !== null && this.state.item.skill.length !== 0) &&
@@ -262,7 +264,7 @@ class CardDetailScreen extends React.Component {
                 {this.state.item.hp !== 0 &&
                   <View>
                     <Seperator />
-                    <View style={{ flexDirection: 'row' }}>
+                    <View style={ApplicationStyles.row}>
                       <Icon name='ios-heart' size={Metrics.icons.medium} color={'red'} />
                       <Text style={Fonts.style.normal}> : {this.state.item.hp}</Text>
                     </View>
@@ -279,7 +281,7 @@ class CardDetailScreen extends React.Component {
                     {this.state.item.idolized_max_level !== 0 &&
                       this.statButton(2, `Level ${this.state.item.idolized_max_level}`, this.state.idolMaxStats, styles.rightRadius)}
                   </View>
-                  {!this.state.isLoading && this.progressView(this.state.currentStats)}
+                  {this.progressView(this.state.currentStats)}
                 </View>}
               <View style={{ height: Metrics.doubleBaseMargin }} />
             </ScrollView>

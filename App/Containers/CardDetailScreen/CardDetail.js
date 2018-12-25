@@ -1,7 +1,6 @@
 import React from 'react';
 import { Text, View, ScrollView, TouchableOpacity, Image } from 'react-native';
 import { connect } from 'react-redux';
-import { Transition } from 'react-navigation-fluid-transitions';
 import ElevatedView from 'react-native-elevated-view';
 import FastImage from 'react-native-fast-image';
 import LinearGradient from 'react-native-linear-gradient';
@@ -205,23 +204,19 @@ class CardDetailScreen extends React.Component {
             <ScrollView showsVerticalScrollIndicator={false}
               style={styles.scrollView}>
               {/* CARD IMAGES */}
-              <Transition shared={`cardimage2${this.state.item.game_id}`}>
-                <View style={styles.imageRow}>
-                  {this.state.images.map((value, index) => {
-                    return <TouchableOpacity key={index}
-                      onPress={this._navigateToImageViewerScreen(index)}>
-                      <Transition shared={index === 0 ? `cardimageleft${this.state.item.game_id}` : `cardimageright${this.state.item.game_id}`}>
-                        <FastImage source={{ uri: value.url }}
-                          style={{
-                            width: Metrics.images.itemWidth,
-                            height: Metrics.images.itemWidth * this.state.imgHeight / this.state.imgWidth
-                          }}
-                          onLoad={e => this._onLoadFastImage(e)} />
-                      </Transition>
-                    </TouchableOpacity>
-                  })}
-                </View>
-              </Transition>
+              <View style={styles.imageRow}>
+                {this.state.images.map((value, index) => {
+                  return <TouchableOpacity key={index}
+                    onPress={this._navigateToImageViewerScreen(index)}>
+                    <FastImage source={{ uri: value.url }}
+                      style={{
+                        width: Metrics.images.itemWidth,
+                        height: Metrics.images.itemWidth * this.state.imgHeight / this.state.imgWidth
+                      }}
+                      onLoad={e => this._onLoadFastImage(e)} />
+                  </TouchableOpacity>
+                })}
+              </View>
 
               {/* INFORMATION */}
               <View style={{ paddingHorizontal: Metrics.doubleBaseMargin }}>

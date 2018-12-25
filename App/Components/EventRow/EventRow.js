@@ -2,6 +2,7 @@ import React from 'react';
 import { Text, View, TouchableOpacity } from 'react-native';
 import PropTypes from 'prop-types';
 import styles from '../../Theme/RowStyles';
+import { ApplicationStyles } from '../../Theme';
 
 /**
  * Event Card Row (None, True, False)
@@ -17,7 +18,7 @@ import styles from '../../Theme/RowStyles';
 class EventRow extends React.Component {
   render() {
     return (
-      <View style={{ flexDirection: 'row' }}>
+      <View style={ApplicationStyles.row}>
         <View style={styles.leftView}>
           <Text>Event</Text>
         </View>

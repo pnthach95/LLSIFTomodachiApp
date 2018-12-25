@@ -18,6 +18,7 @@ import { AddHTTPS, findColorByAttribute, findSkill } from '../../Utils';
  * State:
  * - `imgWidth`: Image width
  * - `imgHeight`: Image height
+ * - `images`: Images (card_image, card_idolized_image)
  * - `colors`: Color array
  *
  * @export
@@ -27,9 +28,13 @@ import { AddHTTPS, findColorByAttribute, findSkill } from '../../Utils';
 export default class Card2PicsItem extends Component {
   constructor(props) {
     super(props);
+    var tmp = [];
+    if (props.item.card_image !== null) tmp.push(AddHTTPS(props.item.card_image));
+    if (props.item.card_idolized_image !== null) tmp.push(AddHTTPS(props.item.card_idolized_image));
     this.state = {
       imgWidth: 0,
       imgHeight: 0,
+      images: tmp,
       colors: findColorByAttribute(props.item.attribute)
     };
   }
@@ -40,35 +45,18 @@ export default class Card2PicsItem extends Component {
         style={[styles.container, { backgroundColor: this.state.colors[1] }]}>
         <Touchable onPress={this.props.onPress} useForeground
           background={TouchableNativeFeedback.Ripple(this.state.colors[0], false)}>
-          <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
-            {this.props.item.card_image
-              && <FastImage
-                source={{
-                  uri: AddHTTPS(this.props.item.card_image),
-                  priority: FastImage.priority.normal,
-                }}
-                onLoad={(e) => {
-                  const { width, height } = e.nativeEvent
-                  this.setState({ imgWidth: width, imgHeight: height })
-                }}
-                style={{
-                  width: Metrics.images.itemWidth,
-                  height: Metrics.images.itemWidth * this.state.imgHeight / this.state.imgWidth
-                }} />}
-            {this.props.item.card_idolized_image
-              && <FastImage
-                source={{
-                  uri: AddHTTPS(this.props.item.card_idolized_image),
-                  priority: FastImage.priority.normal,
-                }}
-                onLoad={(e) => {
-                  const { width, height } = e.nativeEvent
-                  this.setState({ imgWidth: width, imgHeight: height })
-                }}
-                style={{
-                  width: Metrics.images.itemWidth,
-                  height: Metrics.images.itemWidth * this.state.imgHeight / this.state.imgWidth
-                }} />}
+          <View style={styles.row}>
+            {this.state.images.map((value, index) => <FastImage
+              key={index}
+              source={{ uri: value }}
+              onLoad={e => {
+                const { width, height } = e.nativeEvent
+                this.setState({ imgWidth: width, imgHeight: height })
+              }}
+              style={{
+                width: Metrics.images.itemWidth,
+                height: Metrics.images.itemWidth * this.state.imgHeight / this.state.imgWidth
+              }} />)}
           </View>
           {/* FOOTER */}
           <Seperator style={{ backgroundColor: this.state.colors[0], marginVertical: 0 }} />

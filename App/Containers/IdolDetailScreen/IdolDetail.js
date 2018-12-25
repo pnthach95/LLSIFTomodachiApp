@@ -95,7 +95,7 @@ class IdolDetailScreen extends React.Component {
             </Fade>
           </View>
           <Fade visible={!this.state.isLoading} style={styles.rightHeader}>
-            {!this.state.isLoading && <View style={{ flexDirection: 'row' }}>
+            {!this.state.isLoading && <View style={ApplicationStyles.row}>
               <Image source={findMainUnit(this.state.item.main_unit)}
                 style={styles.rightHeaderImage} />
               <Image source={findSubUnit(this.state.item.sub_unit)}

@@ -1,5 +1,6 @@
 export const Config = {
   DATETIME_FORMAT_OUTPUT: 'HH:mm MMM Do YYYY',
+  DATE_FORMAT_OUTPUT: 'MMM Do YYYY',
   DATETIME_FORMAT_INPUT: 'YYYY-MM-DDTHH:mm:ssZ',
   API_URL: 'https://schoolido.lu/api/',
   SCHOOLIDO: 'https://schoolido.lu',

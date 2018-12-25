@@ -9,6 +9,9 @@ export default {
   screen: {
     flex: 1
   },
+  row: {
+    flexDirection: 'row'
+  },
   absolute: {
     position: 'absolute',
     top: 0,

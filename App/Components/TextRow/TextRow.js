@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text } from 'react-native';
-import { Fonts } from '../../Theme';
+import { Fonts, ApplicationStyles } from '../../Theme';
 
 /**
  * TextRow
@@ -16,7 +16,7 @@ import { Fonts } from '../../Theme';
 export default class TextRow extends React.Component {
   render() {
     return (
-      <View style={{ flexDirection: 'row' }}>
+      <View style={ApplicationStyles.row}>
         <View style={{ flex: this.props.item1.flex }}>
           <Text style={[Fonts.style.normal, this.props.item1.textStyle]}>{this.props.item1.text}</Text>
         </View>

@@ -57,3 +57,19 @@ export const getBGImage = (state) => {
     return null;
   }
 }
+
+export const getWWEventInfo = (state) => {
+  try {
+    return state.cachedData.get('cachedData').get('eventInfo').get('ww').toArray();
+  } catch (error) {
+    return null;
+  }
+}
+
+export const getJPEventInfo = (state) => {
+  try {
+    return state.cachedData.get('cachedData').get('eventInfo').get('jp').toArray();
+  } catch (error) {
+    return null;
+  }
+}

@@ -20,7 +20,7 @@ export default StyleSheet.create({
   },
   scrollViewContainer: {
     alignItems: 'center',
-    marginVertical: Metrics.baseMargin
+    paddingVertical: Metrics.baseMargin
   },
   content: {
     paddingHorizontal: Metrics.baseMargin,

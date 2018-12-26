@@ -1,6 +1,7 @@
 import { put, call } from 'redux-saga/effects';
 import CachedDataActions from '../Stores/CachedData/Actions';
 import { LLSIFService } from '../Services/LLSIFService';
+import { LLSIFdotnetService } from '../Services/LLSIFdotnetService';
 
 /**
  * [Fetch cached data](https://github.com/MagiCircles/SchoolIdolAPI/wiki/API-Cached-data)
@@ -26,6 +27,8 @@ export function* fetchCachedData() {
   }
   data.randomCard = randomCard;
   data.bgImage = bgImage;
+  let eventInfo = yield call(LLSIFdotnetService.fetchEventInfo);
+  data.eventInfo = eventInfo;
   if (data) {
     yield put(CachedDataActions.fetchCachedDataSuccess(data));
   } else {

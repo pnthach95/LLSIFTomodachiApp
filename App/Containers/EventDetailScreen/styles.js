@@ -11,6 +11,7 @@ export default StyleSheet.create({
   },
   content: {
     padding: Metrics.baseMargin,
+    paddingBottom: Metrics.doubleBaseMargin,
     alignItems: 'center'
   },
   text: {
@@ -58,5 +59,22 @@ export default StyleSheet.create({
   },
   whiteLine: {
     backgroundColor: 'white'
+  },
+  trackerRegion: {
+    height: Metrics.navBarHeight,
+    marginHorizontal: Metrics.doubleBaseMargin,
+  },
+  trackerContainer: {
+    flex: 1,
+    padding: 16,
+    paddingTop: 30,
+    backgroundColor: '#fff'
+  },
+  trackerHead: {
+    height: 40,
+    backgroundColor: '#f1f8ff'
+  },
+  trackerText: {
+    margin: 6
   }
 });

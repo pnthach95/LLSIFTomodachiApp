@@ -76,7 +76,7 @@ class EventDetailScreen extends React.PureComponent {
       if (row.indexOf('#') !== 0 && row.length > 0) {
         var rowArr = row.split(',');
         rowArr.splice(1, 1);
-        // rowArr.splice(7, 6);
+        rowArr.splice(7, 6);
         result.push(rowArr);
       }
     });

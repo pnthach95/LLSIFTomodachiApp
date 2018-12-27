@@ -64,15 +64,12 @@ export default StyleSheet.create({
     height: Metrics.navBarHeight,
     marginHorizontal: Metrics.doubleBaseMargin,
   },
-  trackerContainer: {
-    flex: 1,
-    padding: 16,
-    paddingTop: 30,
-    backgroundColor: '#fff'
-  },
   trackerHead: {
     height: 40,
     backgroundColor: '#f1f8ff'
+  },
+  trackerCell: {
+    backgroundColor: Colors.lightViolet
   },
   trackerText: {
     margin: 6

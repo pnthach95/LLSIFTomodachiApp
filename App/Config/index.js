@@ -49,7 +49,7 @@ Press Version to view background.
 Change log:
 
 - Version 0.3.0:
-  • Add Cutoffs (llsif.net) to Event detail screen.
+  • Add LLSIF Cutoffs (llsif.net) to Event detail screen.
 
 - Version 0.2.3:
   • Show notification when new update is available.

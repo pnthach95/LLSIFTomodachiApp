@@ -89,12 +89,11 @@ export default class Tracker extends React.PureComponent {
 	_renderGroup = (data) => data.table !== null
 		? <View style={ApplicationStyles.screen}>
 			{data.chart !== undefined &&
-				<PureChart data={data.chart}
-					type='line'
+				<PureChart data={data.chart} type='line'
 					height={Metrics.screenHeight / 4} />}
+			<Text style={[styles.whiteCenter, styles.trackerText]}>Data from llsif.net</Text>
 			<ScrollView horizontal={true}
-				showsHorizontalScrollIndicator={false}
-				style={{ marginTop: Metrics.baseMargin }}>
+				showsHorizontalScrollIndicator={false}>
 				<View>
 					<Row data={this.state.tableHead}
 						widthArr={this.state.widCell}
@@ -104,7 +103,6 @@ export default class Tracker extends React.PureComponent {
 						showsVerticalScrollIndicator={false}
 						keyExtractor={this._keyExtractor}
 						renderItem={this._renderItem} />
-					<Text style={styles.textCenter}>Data from llsif.net</Text>
 				</View>
 			</ScrollView>
 		</View>

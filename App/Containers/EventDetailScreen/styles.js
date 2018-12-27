@@ -73,8 +73,5 @@ export default StyleSheet.create({
   },
   trackerText: {
     margin: 6
-  },
-  textCenter: {
-    textAlign: 'center'
   }
 });

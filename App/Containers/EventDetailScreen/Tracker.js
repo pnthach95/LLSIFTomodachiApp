@@ -104,6 +104,7 @@ export default class Tracker extends React.PureComponent {
 						showsVerticalScrollIndicator={false}
 						keyExtractor={this._keyExtractor}
 						renderItem={this._renderItem} />
+					<Text style={styles.textCenter}>Data from llsif.net</Text>
 				</View>
 			</ScrollView>
 		</View>

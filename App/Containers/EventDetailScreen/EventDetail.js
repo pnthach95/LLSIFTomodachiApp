@@ -135,7 +135,7 @@ class EventDetailScreen extends React.PureComponent {
           <SquareButton name={'ios-arrow-back'} color={'white'}
             onPress={() => this.props.navigation.goBack()} />
           <View style={{ flex: 2 }}>
-            <SegmentedControlTab values={['Information', 'Tracker']}
+            <SegmentedControlTab values={['Information', 'Cutoffs']}
               selectedIndex={this.state.selectedTab}
               onTabPress={this._onTabPress} />
           </View>

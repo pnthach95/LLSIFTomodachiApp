@@ -178,12 +178,16 @@ class Drawer extends Component {
                   <Text style={styles.versionText}>Powered by </Text>
                   <Text onPress={() => openLink(Config.SCHOOLIDO)}
                     style={[styles.versionText, { textDecorationLine: 'underline' }]}>
-                    {`School Idol Tomodachi`}
+                    {`School Idol Tomodachi,`}
+                  </Text>
+                  <Text onPress={() => openLink(Config.LLSIFNET)}
+                    style={[styles.versionText, { textDecorationLine: 'underline' }]}>
+                    {`llsif.net`}
                   </Text>
                 </View>
                 <View style={styles.footerBlock}>
                   <TouchableHighlight onPress={() => openLink(Config.GITHUB_PROJECT)}
-                    underlayColor={'#fff0'}
+                    underlayColor={'#0000'}
                     style={ApplicationStyles.center}>
                     <View style={ApplicationStyles.center}>
                       <Icon name={'logo-github'} size={50} />

@@ -4,6 +4,7 @@ export const Config = {
   DATETIME_FORMAT_INPUT: 'YYYY-MM-DDTHH:mm:ssZ',
   API_URL: 'https://schoolido.lu/api/',
   SCHOOLIDO: 'https://schoolido.lu',
+  LLSIFNET: 'https://llsif.net',
   CACHED_DATA: 'cacheddata/',
   CARDS: 'cards/',
   IDOLS: 'idols/',
@@ -46,6 +47,9 @@ export const RELEASE_NOTE = `This app is free and open-source.
 Press Version to view background.
 
 Change log:
+
+- Version 0.3.0:
+  • Add Cutoffs (llsif.net) to Event detail screen.
 
 - Version 0.2.3:
   • Show notification when new update is available.

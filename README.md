@@ -71,6 +71,7 @@ Assuming you have all the requirements installed, you can setup and run the proj
 ![09](docs/images/0.2.3/09.png)
 ![10](docs/images/0.2.3/10.png)
 ![11](docs/images/0.2.3/11.png)
+![12](docs/images/0.2.3/12.png)
 
 ## Author
 

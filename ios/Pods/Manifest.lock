@@ -67,6 +67,11 @@ PODS:
   - nanopb/decode (0.3.901)
   - nanopb/encode (0.3.901)
   - Protobuf (3.6.1)
+  - React (0.11.0):
+    - React/Core (= 0.11.0)
+  - React/Core (0.11.0)
+  - RNSVG (8.0.10):
+    - React
 
 DEPENDENCIES:
   - AppCenter/Analytics (~> 1.11.0)
@@ -75,6 +80,7 @@ DEPENDENCIES:
   - Firebase/Core (~> 5.11.0)
   - Firebase/Messaging (~> 5.11.0)
   - GoogleAppMeasurement (~> 5.3.0)
+  - RNSVG (from `../node_modules/react-native-svg`)
 
 SPEC REPOS:
   https://github.com/CocoaPods/Specs.git:
@@ -90,6 +96,11 @@ SPEC REPOS:
     - GoogleUtilities
     - nanopb
     - Protobuf
+    - React
+
+EXTERNAL SOURCES:
+  RNSVG:
+    :path: "../node_modules/react-native-svg"
 
 SPEC CHECKSUMS:
   AppCenter: 3bccf8d733e337d0db574dd4cb0e33ab9637b7f2
@@ -104,7 +115,9 @@ SPEC CHECKSUMS:
   GoogleUtilities: 95996bea7c7d9b8fb811b7507669a4a8762f80c7
   nanopb: 2901f78ea1b7b4015c860c2fdd1ea2fee1a18d48
   Protobuf: 1eb9700044745f00181c136ef21b8ff3ad5a0fd5
+  React: ab1a2e21deb34965c38328d5ec40cc7d12c6050a
+  RNSVG: 6252323c0312735f0af5f58b5adf2965b6a9ffbf
 
-PODFILE CHECKSUM: 92fc525fbd702ea348f3b8149ba702eaa378806c
+PODFILE CHECKSUM: f83be64126308c0d025a2331282eb4b3c5f241c8
 
 COCOAPODS: 1.5.0

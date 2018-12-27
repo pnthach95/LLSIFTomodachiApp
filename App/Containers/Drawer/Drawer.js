@@ -175,14 +175,17 @@ class Drawer extends Component {
               </View>
               <View style={[ApplicationStyles.center, styles.footer]}>
                 <View style={styles.footerBlock}>
-                  <Text style={styles.versionText}>Powered by </Text>
-                  <Text onPress={() => openLink(Config.SCHOOLIDO)}
-                    style={[styles.versionText, { textDecorationLine: 'underline' }]}>
-                    {`School Idol Tomodachi,`}
-                  </Text>
-                  <Text onPress={() => openLink(Config.LLSIFNET)}
-                    style={[styles.versionText, { textDecorationLine: 'underline' }]}>
-                    {`llsif.net`}
+                  <Text style={styles.versionText}>
+                    {'Powered by '}
+                    {<Text onPress={() => openLink(Config.SCHOOLIDO)}
+                      style={[styles.versionText, { textDecorationLine: 'underline' }]}>
+                      {`School Idol Tomodachi`}
+                    </Text>}
+                    {', '}
+                    {<Text onPress={() => openLink(Config.LLSIFNET)}
+                      style={[styles.versionText, { textDecorationLine: 'underline' }]}>
+                      {`llsif.net`}
+                    </Text>}
                   </Text>
                 </View>
                 <View style={styles.footerBlock}>

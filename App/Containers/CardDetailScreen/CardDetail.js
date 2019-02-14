@@ -251,14 +251,26 @@ class CardDetailScreen extends React.Component {
                     <Seperator />
                     <TextRow item1={{ text: 'Event', flex: 1, textStyle: Fonts.style.normal }}
                       item2={{ text: this.state.item.event.japanese_name, flex: 4, textStyle: Fonts.style.normal }} />
-                    <TextRow item1={{ text: '', flex: 1, textStyle: Fonts.style.normal }}
-                      item2={{ text: this.state.item.event.english_name, flex: 4, textStyle: Fonts.style.normal }} />
+                    {this.state.item.event.english_name !== null &&
+                      <TextRow item1={{ text: '', flex: 1, textStyle: Fonts.style.normal }}
+                        item2={{ text: this.state.item.event.english_name, flex: 4, textStyle: Fonts.style.normal }} />}
                     <TouchableOpacity style={ApplicationStyles.center}
                       onPress={this._navigateToEventDetail(this.state.item.event.japanese_name)}>
                       <FastImage source={{ uri: AddHTTPS(this.state.item.event.image) }}
                         style={styles.banner}
                         resizeMode={FastImage.resizeMode.contain} />
                     </TouchableOpacity>
+                    {this.state.item.other_event !== null &&
+                      <View>
+                        <TextRow item1={{ text: '', flex: 1, textStyle: Fonts.style.normal }}
+                          item2={{ text: this.state.item.other_event.english_name, flex: 4, textStyle: Fonts.style.normal }} />
+                        <TouchableOpacity style={ApplicationStyles.center}
+                          onPress={this._navigateToEventDetail(this.state.item.other_event.japanese_name)}>
+                          <FastImage source={{ uri: AddHTTPS(this.state.item.other_event.image) }}
+                            style={styles.banner}
+                            resizeMode={FastImage.resizeMode.contain} />
+                        </TouchableOpacity>
+                      </View>}
                   </View>}
 
                 {this.state.item.hp !== 0 &&

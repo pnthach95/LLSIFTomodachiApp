@@ -162,6 +162,8 @@ export default class Information extends React.PureComponent {
 										style={styles.roundImage} />
 								</View>
 								<Text style={{ color: 'white' }}>{item.idol.name}</Text>
+								{item.idol.other_event !== null &&
+									<Text style={{ color: 'white' }}>{`(English only)`}</Text>}
 							</TouchableOpacity>
 						)}
 					</View>

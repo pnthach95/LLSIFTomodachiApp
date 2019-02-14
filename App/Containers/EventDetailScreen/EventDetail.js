@@ -15,6 +15,7 @@ import { LLSIFdotnetService } from '../../Services/LLSIFdotnetService';
 import { Config } from '../../Config';
 import { ApplicationStyles, Colors } from '../../Theme';
 import { getWWEventInfo, getJPEventInfo } from '../../Stores/CachedData/Selectors';
+import { ReplaceQuestionMark } from '../../Utils';
 import styles from './styles';
 
 /**
@@ -105,9 +106,9 @@ class EventDetailScreen extends React.PureComponent {
           let data = this.parseEventTracker(res);
           this.setState({ jpTracker: data });
         });
-    LLSIFService.fetchCardList({ event_japanese_name: this.state.item.japanese_name })
+    LLSIFService.fetchCardList({ event_japanese_name: ReplaceQuestionMark(this.state.item.japanese_name) })
       .then(resCard => {
-        LLSIFService.fetchSongList({ event: this.state.item.japanese_name })
+        LLSIFService.fetchSongList({ event: ReplaceQuestionMark(this.state.item.japanese_name) })
           .then(resSong => {
             this.setState({
               WWEventStart: _WWEventStart,

@@ -63,7 +63,7 @@ class EventDetailScreen extends React.PureComponent {
     if (this.state.item) {
       this.loadData();
     } else {
-      let name = this.props.navigation.getParam('eventName');
+      let name = ReplaceQuestionMark(this.props.navigation.getParam('eventName'));
       LLSIFService.fetchEventData(name).then(res => {
         this.setState({ item: res }, () => this.loadData())
       });
@@ -106,9 +106,9 @@ class EventDetailScreen extends React.PureComponent {
           let data = this.parseEventTracker(res);
           this.setState({ jpTracker: data });
         });
-    LLSIFService.fetchCardList({ event_japanese_name: ReplaceQuestionMark(this.state.item.japanese_name) })
+    LLSIFService.fetchCardList({ event_japanese_name: this.state.item.japanese_name })
       .then(resCard => {
-        LLSIFService.fetchSongList({ event: ReplaceQuestionMark(this.state.item.japanese_name) })
+        LLSIFService.fetchSongList({ event: this.state.item.japanese_name })
           .then(resSong => {
             this.setState({
               WWEventStart: _WWEventStart,

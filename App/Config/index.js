@@ -50,6 +50,8 @@ Change log:
 
 - Version 0.3.0:
   • Add LLSIF Cutoffs (llsif.net) to Event detail screen.
+  • Fix open event has '?' in name.
+  • Update UI.
 
 - Version 0.2.3:
   • Show notification when new update is available.

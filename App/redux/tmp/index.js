@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux';
 import { reducer as network } from 'react-native-offline';
 import configureStore from './CreateStore';
-import rootSaga from '../Sagas';
+import rootSaga from '../sagas';
 import { reducer as CachedDataReducer } from './CachedData/Reducers';
 import { reducer as CardListReducer } from './CardList/Reducers';
 import { reducer as SettingReducer } from './Settings/Reducers';

@@ -1,5 +1,5 @@
-import { takeLatest, fork } from 'redux-saga/effects';
-import { networkEventsListenerSaga } from 'react-native-offline';
+import { takeLatest, fork } from '~/redux/sagas/node_modules/redux-saga/effects';
+import { networkEventsListenerSaga } from '~/redux/sagas/node_modules/react-native-offline';
 import { CachedDataTypes } from '../Stores/CachedData/Actions';
 import { CardListTypes } from '../Stores/CardList/Actions';
 import { SettingTypes } from '../Stores/Settings/Actions';

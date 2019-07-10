@@ -1,8 +1,8 @@
 import React from 'react';
 import { View, Image } from 'react-native';
 import { BarIndicator } from 'react-native-indicators';
-import styles from './SplashScreenStyle';
-import { Images, ApplicationStyles } from '../../Theme';
+import styles from './styles';
+import { Images, ApplicationStyles } from '~/Theme';
 
 /**
  * Splash Screen

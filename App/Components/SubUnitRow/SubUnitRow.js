@@ -3,7 +3,7 @@ import { Text, View } from 'react-native';
 import RNPickerSelect from 'react-native-picker-select';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { getSubunits } from '../../Stores/CachedData/Selectors';
+import { getSubunits } from '../../redux/Stores/CachedData/Selectors';
 import styles from '../../Theme/RowStyles';
 
 /**

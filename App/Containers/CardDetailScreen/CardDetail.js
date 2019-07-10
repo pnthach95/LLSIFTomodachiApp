@@ -13,7 +13,7 @@ import TextRow from '../../Components/TextRow/TextRow';
 import Seperator from '../../Components/Seperator/Seperator';
 import ProgressBar from '../../Components/ProgressBar/ProgressBar';
 import SquareButton from '../../Components/SquareButton/SquareButton';
-import { getMaxStats } from '../../Stores/CachedData/Selectors';
+import { getMaxStats } from '../../redux/Stores/CachedData/Selectors';
 import {
   findColorByAttribute, AddHTTPS, findMainUnit, findSubUnit,
 } from '../../Utils';
@@ -213,14 +213,14 @@ class CardDetailScreen extends React.Component {
               {/* CARD IMAGES */}
               <View style={styles.imageRow}>
                 {this.state.images.map((value, index) => <TouchableOpacity key={index}
-                    onPress={this._navigateToImageViewerScreen(index)}>
-                    <FastImage source={{ uri: value.url }}
-                      style={{
-                        width: Metrics.images.itemWidth,
-                        height: Metrics.images.itemWidth * this.state.imgHeight / this.state.imgWidth,
-                      }}
-                      onLoad={e => this._onLoadFastImage(e)} />
-                  </TouchableOpacity>)}
+                  onPress={this._navigateToImageViewerScreen(index)}>
+                  <FastImage source={{ uri: value.url }}
+                    style={{
+                      width: Metrics.images.itemWidth,
+                      height: Metrics.images.itemWidth * this.state.imgHeight / this.state.imgWidth,
+                    }}
+                    onLoad={e => this._onLoadFastImage(e)} />
+                </TouchableOpacity>)}
               </View>
 
               {/* INFORMATION */}

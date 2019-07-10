@@ -1,6 +1,6 @@
-import { put, call } from 'redux-saga/effects';
+import { put, call } from '~/redux/sagas/node_modules/redux-saga/effects';
 import CardListActions from '../Stores/CardList/Actions';
-import { LLSIFService } from '../Services/LLSIFService';
+import { LLSIFService } from '../../Services/LLSIFService';
 
 export function* fetchCardList(action) {
   yield put(CardListActions.fetchCardListLoading());

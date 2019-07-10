@@ -32,6 +32,12 @@
         ]
       }
     ],
+    "import/no-extraneous-dependencies": [
+      "error",
+      {
+        "packageDir": "./"
+      }
+    ],
     "class-methods-use-this": "off",
     "no-use-before-define": "off"
   },

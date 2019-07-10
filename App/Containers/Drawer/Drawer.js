@@ -15,7 +15,7 @@ import { Config, RELEASE_NOTE } from '../../Config';
 import {
   AddHTTPS, loadSettings, saveSettings, openLink,
 } from '../../Utils';
-import { getRandomCard, getBGImage } from '../../Stores/CachedData/Selectors';
+import { getRandomCard, getBGImage } from '../../redux/Stores/CachedData/Selectors';
 
 /**
  * Left Drawer show some information

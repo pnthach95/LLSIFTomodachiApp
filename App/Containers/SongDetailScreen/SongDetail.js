@@ -7,7 +7,7 @@ import ElevatedView from 'react-native-elevated-view';
 import FastImage from 'react-native-fast-image';
 import LinearGradient from 'react-native-linear-gradient';
 
-import { getSongMaxStat } from '../../Stores/CachedData/Selectors';
+import { getSongMaxStat } from '../../redux/Stores/CachedData/Selectors';
 import Fade from '../../Components/Fade/Fade';
 import StarBar from '../../Components/StarBar/StarBar';
 import ProgressBar from '../../Components/ProgressBar/ProgressBar';

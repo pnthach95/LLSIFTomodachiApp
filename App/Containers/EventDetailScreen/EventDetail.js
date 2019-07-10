@@ -14,7 +14,7 @@ import { LLSIFService } from '../../Services/LLSIFService';
 import { LLSIFdotnetService } from '../../Services/LLSIFdotnetService';
 import { Config } from '../../Config';
 import { ApplicationStyles, Colors } from '../../Theme';
-import { getWWEventInfo, getJPEventInfo } from '../../Stores/CachedData/Selectors';
+import { getWWEventInfo, getJPEventInfo } from '../../redux/Stores/CachedData/Selectors';
 import { ReplaceQuestionMark } from '../../Utils';
 import styles from './styles';
 

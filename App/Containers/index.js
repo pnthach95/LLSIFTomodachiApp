@@ -10,25 +10,25 @@ import {
 import { connect } from 'react-redux';
 import firebase from 'react-native-firebase';
 
-import StatusBarBackground from '../../Components/StatusBarBackground/StatusBar';
-import CachedDataActions from '../../Stores/CachedData/Actions';
-import { ApplicationStyles } from '../../Theme';
-import { loadSettings } from '../../Utils';
-import NavigationService from '../../Services/NavigationService';
-import { FirebaseTopic } from '../../Config';
+import StatusBarBackground from '~/Components/StatusBarBackground/StatusBar';
+import CachedDataActions from '~/redux/Stores/CachedData/Actions';
+import { ApplicationStyles } from '~/Theme';
+import { loadSettings } from '~/Utils';
+import NavigationService from '~/Services/NavigationService';
+import { FirebaseTopic } from '~/Config';
 
-import MainScreen from '../MainScreen/Main';
-import CardsScreen from '../CardsScreen/Cards';
-import IdolsScreen from '../IdolsScreen/Idols';
-import EventsScreen from '../EventsScreen/Events';
-import SongsScreen from '../SongsScreen/Songs';
-import Drawer from '../Drawer/Drawer';
+import MainScreen from './MainScreen/Main';
+import CardsScreen from './CardsScreen/Cards';
+import IdolsScreen from './IdolsScreen/Idols';
+import EventsScreen from './EventsScreen/Events';
+import SongsScreen from './SongsScreen/Songs';
+import Drawer from './Drawer/Drawer';
 
-import CardDetailScreen from '../CardDetailScreen/CardDetail';
-import EventDetailScreen from '../EventDetailScreen/EventDetail';
-import IdolDetailScreen from '../IdolDetailScreen/IdolDetail';
-import SongDetailScreen from '../SongDetailScreen/SongDetail';
-import ImageViewer from '../ImageViewer/ImageViewer';
+import CardDetailScreen from './CardDetailScreen/CardDetail';
+import EventDetailScreen from './EventDetailScreen/EventDetail';
+import IdolDetailScreen from './IdolDetailScreen/IdolDetail';
+import SongDetailScreen from './SongDetailScreen/SongDetail';
+import ImageViewer from './ImageViewer/ImageViewer';
 
 const LLSIFTab = createBottomTabNavigator(
   {
@@ -87,10 +87,10 @@ class RootScreen extends Component {
 
     this.notificationDisplayedListener = firebase.notifications()
       .onNotificationDisplayed((notification) => {
-      // Process your notification as required
-      // ANDROID: Remote notifications do not contain the channel ID.
-      // You will have to specify this manually if you'd like to re-display the notification.
-      // console.log('notificationDisplayedListener', notification);
+        // Process your notification as required
+        // ANDROID: Remote notifications do not contain the channel ID.
+        // You will have to specify this manually if you'd like to re-display the notification.
+        // console.log('notificationDisplayedListener', notification);
       });
 
     this.notificationListener = firebase.notifications().onNotification((notification) => {
@@ -105,11 +105,11 @@ class RootScreen extends Component {
 
     this.notificationOpenedListener = firebase.notifications()
       .onNotificationOpened((notificationOpen) => {
-      // Get the action triggered by the notification being opened
-      // Get information about the notification that was opened
-      // eslint-disable-next-line no-unused-vars
+        // Get the action triggered by the notification being opened
+        // Get information about the notification that was opened
+        // eslint-disable-next-line no-unused-vars
         const { action, notification } = notificationOpen;
-      // console.log('notificationOpenedListener', action, notification);
+        // console.log('notificationOpenedListener', action, notification);
       });
 
     firebase.notifications().getInitialNotification()

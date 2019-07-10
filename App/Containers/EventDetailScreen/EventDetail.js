@@ -55,7 +55,7 @@ class EventDetailScreen extends React.PureComponent {
       jpTracker: null,
       selectedTab: 0,
       cards: [],
-      songs: []
+      songs: [],
     };
   }
 
@@ -63,19 +63,19 @@ class EventDetailScreen extends React.PureComponent {
     if (this.state.item) {
       this.loadData();
     } else {
-      let name = ReplaceQuestionMark(this.props.navigation.getParam('eventName'));
-      LLSIFService.fetchEventData(name).then(res => {
-        this.setState({ item: res }, () => this.loadData())
+      const name = ReplaceQuestionMark(this.props.navigation.getParam('eventName'));
+      LLSIFService.fetchEventData(name).then((res) => {
+        this.setState({ item: res }, () => this.loadData());
       });
     }
   }
 
   parseEventTracker(data) {
-    var result = [];
-    let rows = data.split('\n');
-    rows.forEach(row => {
+    const result = [];
+    const rows = data.split('\n');
+    rows.forEach((row) => {
       if (row.indexOf('#') !== 0 && row.length > 0) {
-        var rowArr = row.split(',');
+        const rowArr = row.split(',');
         rowArr.splice(1, 1);
         rowArr.splice(7, 6);
         result.push(rowArr);
@@ -90,26 +90,28 @@ class EventDetailScreen extends React.PureComponent {
    * @memberof EventDetailScreen
    */
   loadData() {
-    let _WWEventStart = moment(this.state.item.english_beginning);
-    let _JPEventStart = moment(this.state.item.beginning, Config.DATETIME_FORMAT_INPUT);
-    let wwEvent = this.props.wwEventInfo.filter(value => value.get('start_date') === _WWEventStart.unix());
-    let jpEvent = this.props.jpEventInfo.filter(value => value.get('start_date') === _JPEventStart.unix());
-    if (wwEvent.length > 0)
+    const _WWEventStart = moment(this.state.item.english_beginning);
+    const _JPEventStart = moment(this.state.item.beginning, Config.DATETIME_FORMAT_INPUT);
+    const wwEvent = this.props.wwEventInfo.filter(value => value.get('start_date') === _WWEventStart.unix());
+    const jpEvent = this.props.jpEventInfo.filter(value => value.get('start_date') === _JPEventStart.unix());
+    if (wwEvent.length > 0) {
       LLSIFdotnetService.fetchEventData({ svr: 'EN', eid: wwEvent[0].get('event_id'), cname: 'en' })
-        .then(res => {
-          let data = this.parseEventTracker(res);
+        .then((res) => {
+          const data = this.parseEventTracker(res);
           this.setState({ wwTracker: data });
         });
-    if (jpEvent.length > 0)
+    }
+    if (jpEvent.length > 0) {
       LLSIFdotnetService.fetchEventData({ svr: 'JP', eid: jpEvent[0].get('event_id'), cname: 'jp' })
-        .then(res => {
-          let data = this.parseEventTracker(res);
+        .then((res) => {
+          const data = this.parseEventTracker(res);
           this.setState({ jpTracker: data });
         });
+    }
     LLSIFService.fetchCardList({ event_japanese_name: this.state.item.japanese_name })
-      .then(resCard => {
+      .then((resCard) => {
         LLSIFService.fetchSongList({ event: this.state.item.japanese_name })
-          .then(resSong => {
+          .then((resSong) => {
             this.setState({
               WWEventStart: _WWEventStart,
               WWEventEnd: moment(this.state.item.english_end),
@@ -117,7 +119,7 @@ class EventDetailScreen extends React.PureComponent {
               JPEventEnd: moment(this.state.item.end, Config.DATETIME_FORMAT_INPUT),
               isLoading: false,
               cards: resCard,
-              songs: resSong
+              songs: resSong,
             });
             console.log(`EventDetail ${this.state.item.japanese_name}`);
           });
@@ -125,8 +127,7 @@ class EventDetailScreen extends React.PureComponent {
   }
 
   _onTabPress = (index) => {
-    if (!this.state.isLoading)
-      this.setState({ selectedTab: index });
+    if (!this.state.isLoading) this.setState({ selectedTab: index });
   }
 
   render() {
@@ -147,8 +148,8 @@ class EventDetailScreen extends React.PureComponent {
             <SplashScreen bgColor={Colors.violet} />
           </Fade>
           <Fade visible={!this.state.isLoading} style={[ApplicationStyles.screen, ApplicationStyles.absolute]}>
-            {!this.state.isLoading &&
-              <View style={ApplicationStyles.screen}>
+            {!this.state.isLoading
+              && <View style={ApplicationStyles.screen}>
                 {this.state.selectedTab === 0
                   ? <Information item={this.state.item}
                     cards={this.state.cards}
@@ -163,14 +164,14 @@ class EventDetailScreen extends React.PureComponent {
           </Fade>
         </View>
       </View>
-    )
+    );
   }
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
   wwEventInfo: getWWEventInfo(state),
-  jpEventInfo: getJPEventInfo(state)
+  jpEventInfo: getJPEventInfo(state),
 });
 
-const mapDispatchToProps = (dispatch) => ({});
+const mapDispatchToProps = dispatch => ({});
 export default connect(mapStateToProps, mapDispatchToProps)(EventDetailScreen);

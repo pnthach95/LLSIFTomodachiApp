@@ -10,16 +10,16 @@ import { LLSIFdotnetService } from '../Services/LLSIFdotnetService';
  */
 export function* fetchCachedData() {
   yield put(CachedDataActions.fetchCachedDataLoading());
-  var data = yield call(LLSIFService.fetchCachedData);
-  let eventEN = yield call(LLSIFService.fetchEventList,
-    { ordering: '-english_beginning', 'page_size': 1 });
-  let eventJP = yield call(LLSIFService.fetchEventList,
-    { ordering: '-beginning', 'page_size': 1 });
+  const data = yield call(LLSIFService.fetchCachedData);
+  const eventEN = yield call(LLSIFService.fetchEventList,
+    { ordering: '-english_beginning', page_size: 1 });
+  const eventJP = yield call(LLSIFService.fetchEventList,
+    { ordering: '-beginning', page_size: 1 });
   data.eventEN = eventEN[0];
   data.eventJP = eventJP[0];
-  let randomCard = yield call(LLSIFService.fetchRandomCard);
-  let r = Math.floor(Math.random() * 10);
-  var bgImage = '';
+  const randomCard = yield call(LLSIFService.fetchRandomCard);
+  const r = Math.floor(Math.random() * 10);
+  let bgImage = '';
   if (randomCard.clean_ur !== null && r < 6) {
     bgImage = randomCard.clean_ur;
   } else {
@@ -27,7 +27,7 @@ export function* fetchCachedData() {
   }
   data.randomCard = randomCard;
   data.bgImage = bgImage;
-  let eventInfo = yield call(LLSIFdotnetService.fetchEventInfo);
+  const eventInfo = yield call(LLSIFdotnetService.fetchEventInfo);
   data.eventInfo = eventInfo;
   if (data) {
     yield put(CachedDataActions.fetchCachedDataSuccess(data));

@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
-import { View, Text, ImageBackground, TouchableHighlight, TouchableOpacity, Image, Switch, ScrollView } from 'react-native';
+import {
+  View, Text, ImageBackground, TouchableHighlight, TouchableOpacity, Image, Switch, ScrollView,
+} from 'react-native';
 import { SafeAreaView } from 'react-navigation';
 import { connect } from 'react-redux';
 import firebase from 'react-native-firebase';
@@ -10,7 +12,9 @@ import Fade from '../../Components/Fade/Fade';
 import styles from './styles';
 import { Images, ApplicationStyles, Fonts } from '../../Theme';
 import { Config, RELEASE_NOTE } from '../../Config';
-import { AddHTTPS, loadSettings, saveSettings, openLink } from '../../Utils';
+import {
+  AddHTTPS, loadSettings, saveSettings, openLink,
+} from '../../Utils';
 import { getRandomCard, getBGImage } from '../../Stores/CachedData/Selectors';
 
 /**
@@ -28,16 +32,16 @@ class Drawer extends Component {
       visible: true,
       ww_event: true,
       jp_event: true,
-      worldwide_only: true
+      worldwide_only: true,
     };
   }
 
   componentDidMount() {
-    loadSettings().then(res => {
+    loadSettings().then((res) => {
       this.setState({
         ww_event: res.ww_event,
         jp_event: res.jp_event,
-        worldwide_only: res.worldwide_only
+        worldwide_only: res.worldwide_only,
       });
     });
   }
@@ -55,10 +59,10 @@ class Drawer extends Component {
    * @memberof Drawer
    */
   _worldwideToggle = () => {
-    let settings = {
+    const settings = {
       ww_event: this.state.ww_event,
       jp_event: this.state.jp_event,
-      worldwide_only: !this.state.worldwide_only
+      worldwide_only: !this.state.worldwide_only,
     };
     this.setState({ worldwide_only: !this.state.worldwide_only });
     saveSettings(settings);
@@ -70,10 +74,10 @@ class Drawer extends Component {
    * @memberof Drawer
    */
   _wwEventToggle = () => {
-    let settings = {
+    const settings = {
       ww_event: !this.state.ww_event,
       jp_event: this.state.jp_event,
-      worldwide_only: this.state.worldwide_only
+      worldwide_only: this.state.worldwide_only,
     };
     if (!this.state.ww_event) {
       firebase.messaging().subscribeToTopic('ww_event');
@@ -97,10 +101,10 @@ class Drawer extends Component {
    * @memberof Drawer
    */
   _jpEventToggle = () => {
-    let settings = {
+    const settings = {
       ww_event: this.state.ww_event,
       jp_event: !this.state.jp_event,
-      worldwide_only: this.state.worldwide_only
+      worldwide_only: this.state.worldwide_only,
     };
     if (!this.state.jp_event) {
       firebase.messaging().subscribeToTopic('jp_event');
@@ -117,9 +121,9 @@ class Drawer extends Component {
    * @param {Object} item Card's information
    * @memberof Drawer
    */
-  _navigateToCardDetail = (item) => () => {
+  _navigateToCardDetail = item => () => {
     this.setState({ visible: true });
-    this.props.navigation.navigate('CardDetailScreen', { item: item });
+    this.props.navigation.navigate('CardDetailScreen', { item });
   }
 
   toggleExpanded = () => this.setState({ collapsed: !this.state.collapsed });
@@ -179,12 +183,12 @@ class Drawer extends Component {
                     {'Powered by '}
                     {<Text onPress={() => openLink(Config.SCHOOLIDO)}
                       style={[styles.versionText, { textDecorationLine: 'underline' }]}>
-                      {`School Idol Tomodachi`}
+                      {'School Idol Tomodachi'}
                     </Text>}
                     {', '}
                     {<Text onPress={() => openLink(Config.LLSIFNET)}
                       style={[styles.versionText, { textDecorationLine: 'underline' }]}>
-                      {`llsif.net`}
+                      {'llsif.net'}
                     </Text>}
                   </Text>
                 </View>
@@ -222,10 +226,10 @@ class Drawer extends Component {
   }
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
   randomCard: getRandomCard(state),
-  bgImage: getBGImage(state)
+  bgImage: getBGImage(state),
 });
 
-const mapDispatchToProps = (dispatch) => ({});
+const mapDispatchToProps = dispatch => ({});
 export default connect(mapStateToProps, mapDispatchToProps)(Drawer);

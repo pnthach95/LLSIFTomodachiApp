@@ -1,5 +1,7 @@
 import React from 'react';
-import { View, Text, SectionList, FlatList, Image } from 'react-native';
+import {
+  View, Text, SectionList, FlatList, Image,
+} from 'react-native';
 import { connect } from 'react-redux';
 import ElevatedView from 'react-native-elevated-view';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -28,7 +30,7 @@ class IdolsScreen extends React.Component {
     super(props);
     this.state = {
       isLoading: true,
-      list: []
+      list: [],
     };
   }
 
@@ -41,38 +43,38 @@ class IdolsScreen extends React.Component {
     tabBarLabel: 'Idols',
     tabBarOptions: {
       activeTintColor: Colors.pink,
-      inactiveTintColor: Colors.inactive
-    }
+      inactiveTintColor: Colors.inactive,
+    },
   }
 
   componentDidMount() {
-    LLSIFService.fetchIdolList().then(res => {
-      let schools = this.props.schools;
-      var array = [];
-      for (let school of schools) {
-        let item = {
+    LLSIFService.fetchIdolList().then((res) => {
+      const { schools } = this.props;
+      const array = [];
+      for (const school of schools) {
+        const item = {
           title: school,
           data: [
             {
               key: school,
-              list: res.filter(value => value.school === school)
-            }
-          ]
+              list: res.filter(value => value.school === school),
+            },
+          ],
         };
         array.push(item);
       }
-      let item = {
+      const item = {
         title: 'Other',
         data: [
           {
             key: 'Other',
-            list: res.filter(value => value.school === null)
-          }
-        ]
+            list: res.filter(value => value.school === null),
+          },
+        ],
       };
       array.push(item);
       this.setState({ isLoading: false, list: array });
-    })
+    });
   }
 
   /**
@@ -81,7 +83,7 @@ class IdolsScreen extends React.Component {
    * @param {String} name
    * @memberof IdolsScreen
    */
-  navigateToIdolDetail = (name) => () => this.props.navigation.navigate('IdolDetailScreen', { name: name });
+  navigateToIdolDetail = name => () => this.props.navigation.navigate('IdolDetailScreen', { name });
 
   /**
    * Key extractor for FlatList
@@ -122,7 +124,7 @@ class IdolsScreen extends React.Component {
           {/* BODY */}
           <SectionList sections={this.state.list}
             initialNumToRender={9}
-            keyExtractor={(item, index) => 'School' + index}
+            keyExtractor={(item, index) => `School${index}`}
             style={styles.list}
             renderSectionHeader={({ section: { title } }) => (
               <Text style={styles.sectionText}>{title}</Text>
@@ -130,7 +132,7 @@ class IdolsScreen extends React.Component {
             stickySectionHeadersEnabled={false}
             ListHeaderComponent={<View style={{ height: 10 }} />}
             ListFooterComponent={<View style={{ height: 10 }} />}
-            SectionSeparatorComponent={data => {
+            SectionSeparatorComponent={(data) => {
               if (data.leadingItem && data.leadingItem.key === 'Other') return null;
               return <Seperator style={{ backgroundColor: 'white', marginBottom: data.leadingItem ? 20 : 0 }} />;
             }}
@@ -144,12 +146,12 @@ class IdolsScreen extends React.Component {
           />
         </Fade>
       </View>
-    )
+    );
   }
 }
 
-const mapStateToProps = (state) => ({
-  schools: state.cachedData.get('cachedData').get('cards_info').get('schools')
+const mapStateToProps = state => ({
+  schools: state.cachedData.get('cachedData').get('cards_info').get('schools'),
 });
-const mapDispatchToProps = (dispatch) => ({});
+const mapDispatchToProps = dispatch => ({});
 export default connect(mapStateToProps, mapDispatchToProps)(IdolsScreen);

@@ -8,13 +8,13 @@ import styles from '../../Theme/RowStyles';
 
 /**
  * Idol Name Row.
- * 
+ *
  * Idol list in `this.props.idols`.
  *
  * Prop:
  * - `selectIdol`: Save `name` state
  * - `name`: state from parent
- * 
+ *
  * @export
  * @class IdolNameRow
  * @extends {React.Component}
@@ -42,9 +42,9 @@ class IdolNameRow extends React.Component {
 
 IdolNameRow.propTypes = {
   name: PropTypes.string.isRequired,
-  selectIdol: PropTypes.func.isRequired
+  selectIdol: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = (state) => ({ idols: getIdols(state) });
-const mapDispatchToProps = (dispatch) => ({});
+const mapStateToProps = state => ({ idols: getIdols(state) });
+const mapDispatchToProps = dispatch => ({});
 export default connect(mapStateToProps, mapDispatchToProps)(IdolNameRow);

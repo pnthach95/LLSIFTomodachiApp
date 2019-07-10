@@ -16,6 +16,6 @@ export default function* root() {
     takeLatest(CardListTypes.FETCH_CARD_LIST, fetchCardList),
     takeLatest(SettingTypes.SET_SETTINGS, setSettings),
     takeLatest(SettingTypes.GET_SETTINGS, getSettings),
-    fork(networkEventsListenerSaga, { timeout: 2000, checkConnectionInterval: 20000 })
-  ]
+    fork(networkEventsListenerSaga, { timeout: 2000, checkConnectionInterval: 20000 }),
+  ];
 }

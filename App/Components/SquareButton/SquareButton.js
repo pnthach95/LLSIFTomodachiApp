@@ -12,7 +12,7 @@ import { ApplicationStyles } from '../../Theme';
  * - color: Icon color
  * - style: style
  * - onPress: onPress function
- * 
+ *
  * @export
  * @class SquareButton
  * @extends {React.Component}

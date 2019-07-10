@@ -2,35 +2,35 @@ import { StyleSheet } from 'react-native';
 import { ApplicationStyles, Metrics } from '../../Theme';
 
 export default StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#000'
-  },
   close: {
-    paddingLeft: 20
+    paddingLeft: 20,
   },
-  loaderContainer: {
+  container: {
+    backgroundColor: '#000',
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    position: 'absolute',
-    top: '50%',
-    bottom: '50%',
-    left: '50%',
-    right: '50%'
   },
   headerAbsolutePosition: {
     ...ApplicationStyles.absolute,
-    height: Metrics.navBarHeight,
-    zIndex: 5,
+    alignItems: 'center',
     backgroundColor: '#0005',
     flexDirection: 'row',
+    height: Metrics.navBarHeight,
+    justifyContent: 'space-between',
+    zIndex: 5,
+  },
+  loaderContainer: {
     alignItems: 'center',
-    justifyContent: 'space-between'
+    bottom: '50%',
+    flex: 1,
+    justifyContent: 'center',
+    left: '50%',
+    position: 'absolute',
+    right: '50%',
+    top: '50%',
   },
   textCenter: {
     color: 'white',
+    fontSize: 26,
     textAlign: 'center',
-    fontSize: 26
-  }
+  },
 });

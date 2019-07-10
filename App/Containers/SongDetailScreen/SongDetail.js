@@ -1,5 +1,7 @@
 import React from 'react';
-import { Text, View, ScrollView, TouchableOpacity, Image } from 'react-native';
+import {
+  Text, View, ScrollView, TouchableOpacity, Image,
+} from 'react-native';
 import { connect } from 'react-redux';
 import ElevatedView from 'react-native-elevated-view';
 import FastImage from 'react-native-fast-image';
@@ -56,28 +58,28 @@ class SongDetailScreen extends React.PureComponent {
       expert: [],
       random: [],
       master: [],
-      isLoading: true
-    }
+      isLoading: true,
+    };
   }
 
   componentDidMount() {
-    var easyArray = [];
+    const easyArray = [];
     for (i = 0; i < this.state.item.easy_difficulty; i++) {
       easyArray.push(this.setColor(i));
     }
-    var normalArray = [];
+    const normalArray = [];
     for (i = 0; i < this.state.item.normal_difficulty; i++) {
       normalArray.push(this.setColor(i));
     }
-    var hardArray = [];
+    const hardArray = [];
     for (i = 0; i < this.state.item.hard_difficulty; i++) {
       hardArray.push(this.setColor(i));
     }
-    var expertArray = [];
+    const expertArray = [];
     for (i = 0; i < this.state.item.expert_difficulty; i++) {
       expertArray.push(this.setColor(i));
     }
-    var expertRandomArray = [];
+    const expertRandomArray = [];
     if (this.state.item.expert_random_difficulty) {
       for (i = 0; i < this.state.item.expert_random_difficulty; i++) {
         expertRandomArray.push(this.setColor(i));
@@ -99,7 +101,7 @@ class SongDetailScreen extends React.PureComponent {
       expert: [this.state.item.expert_notes, expertArray],
       random: [this.state.item.expert_notes, expertRandomArray],
       master: [this.state.item.master_notes, masterArray],
-      colors: findColorByAttribute(this.state.item.attribute)
+      colors: findColorByAttribute(this.state.item.attribute),
     });
   }
 
@@ -122,12 +124,9 @@ class SongDetailScreen extends React.PureComponent {
    * @memberof SongDetailScreen
    */
   setColor(index) {
-    if (index < 3)
-      return 0;
-    if (index < 6)
-      return 1;
-    if (index < 9)
-      return 2;
+    if (index < 3) return 0;
+    if (index < 6) return 1;
+    if (index < 9) return 2;
     return 3;
   }
 
@@ -138,10 +137,10 @@ class SongDetailScreen extends React.PureComponent {
    * @memberof SongDetailScreen
    */
   formatTime(time) {
-    let minutes = parseInt(((time / 60) % 60).toString(), 10);
-    var seconds = time % 60;
-    if (seconds < 10) seconds = '0' + seconds;
-    return minutes + ':' + seconds;
+    const minutes = parseInt(((time / 60) % 60).toString(), 10);
+    let seconds = time % 60;
+    if (seconds < 10) seconds = `0${seconds}`;
+    return `${minutes}:${seconds}`;
   }
 
   /**
@@ -151,7 +150,7 @@ class SongDetailScreen extends React.PureComponent {
    * @memberof SongDetailScreen
    */
   navigateToEventDetail(event) {
-    this.props.navigation.navigate('EventDetailScreen', { event: event });
+    this.props.navigation.navigate('EventDetailScreen', { event });
   }
 
   /**
@@ -168,11 +167,11 @@ class SongDetailScreen extends React.PureComponent {
       <TouchableOpacity onPress={() => this.setState({ currentStats: stat, buttonID: id })}
         style={[
           styles.button, style,
-          { backgroundColor: this.state.buttonID === id ? Colors.violet : Colors.inactive }
+          { backgroundColor: this.state.buttonID === id ? Colors.violet : Colors.inactive },
         ]}>
         <Text style={{ color: 'white' }}>{text}</Text>
       </TouchableOpacity>
-    )
+    );
   }
 
   progressStat(stat) {
@@ -185,7 +184,7 @@ class SongDetailScreen extends React.PureComponent {
         {/* HEADER */}
         <ElevatedView elevation={5} style={[
           ApplicationStyles.header,
-          { backgroundColor: this.state.colors[1] }
+          { backgroundColor: this.state.colors[1] },
         ]}>
           <View style={styles.leftRow}>
             <SquareButton name={'ios-arrow-back'}
@@ -211,14 +210,14 @@ class SongDetailScreen extends React.PureComponent {
                     onLoad={e => this.onLoadFastImage(e)}
                     style={{
                       width: Metrics.screenWidth / 2,
-                      height: (Metrics.screenWidth / 2) * this.state.imgHeight / this.state.imgWidth
+                      height: (Metrics.screenWidth / 2) * this.state.imgHeight / this.state.imgWidth,
                     }} />
                   <View style={{ height: 10 }} />
 
                   <TextRow item1={{ text: 'Attribute', flex: 1 }}
                     item2={{ text: this.state.item.attribute, flex: 1 }} />
-                  {this.state.item.rank &&
-                    <View style={styles.event}>
+                  {this.state.item.rank
+                    && <View style={styles.event}>
                       <TextRow item1={{ text: 'Unlock', flex: 1 }}
                         item2={{ text: this.state.item.rank, flex: 1 }} />
                     </View>}
@@ -226,8 +225,8 @@ class SongDetailScreen extends React.PureComponent {
                     item2={{ text: this.state.item.BPM, flex: 1 }} />
                   <TextRow item1={{ text: 'Length', flex: 1 }}
                     item2={{ text: this.formatTime(this.state.item.time), flex: 1 }} />
-                  {this.state.item.event &&
-                    <View style={styles.event}>
+                  {this.state.item.event
+                    && <View style={styles.event}>
                       <TextRow item1={{ text: 'Event', flex: 1 }}
                         item2={{ text: this.state.item.event.japanese_name, flex: 1 }} />
                       <TextRow item1={{ text: '', flex: 1 }}
@@ -239,10 +238,10 @@ class SongDetailScreen extends React.PureComponent {
                           style={styles.eventImage} />
                       </TouchableOpacity>
                     </View>}
-                  {(this.state.item.daily_rotation !== null && this.state.item.daily_rotation.length !== 0) &&
-                    <View style={styles.event}>
+                  {(this.state.item.daily_rotation !== null && this.state.item.daily_rotation.length !== 0)
+                    && <View style={styles.event}>
                       <TextRow item1={{ text: 'Daily rotation', flex: 1 }}
-                        item2={{ text: this.state.item.daily_rotation + ' - ' + this.state.item.daily_rotation_position, flex: 1 }} />
+                        item2={{ text: `${this.state.item.daily_rotation} - ${this.state.item.daily_rotation_position}`, flex: 1 }} />
                     </View>}
                   <TextRow item1={{ text: 'Currently available', flex: 1 }}
                     item2={{ text: this.state.item.available ? 'Yes' : 'No', flex: 1 }} />
@@ -252,11 +251,11 @@ class SongDetailScreen extends React.PureComponent {
                     {this.statButton(2, 'Hard', this.state.hard)}
                     {this.statButton(3, 'Expert', this.state.expert,
                       (this.state.random[1].length === 0 && !this.state.master[0]) && styles.rightRadius)}
-                    {this.state.random[1].length !== 0 &&
-                      this.statButton(4, 'Random', this.state.random,
+                    {this.state.random[1].length !== 0
+                      && this.statButton(4, 'Random', this.state.random,
                         !this.state.master[0] && styles.rightRadius)}
-                    {this.state.master[0] &&
-                      this.statButton(5, 'Master', this.state.master, styles.rightRadius)}
+                    {this.state.master[0]
+                      && this.statButton(5, 'Master', this.state.master, styles.rightRadius)}
                   </View>
                   <ProgressBar number={this.state.currentStats[0]}
                     progress={this.progressStat(this.state.currentStats[0])}
@@ -268,13 +267,13 @@ class SongDetailScreen extends React.PureComponent {
           </Fade>
         </View>
       </View>
-    )
+    );
   }
 }
 
-const mapStateToProps = (state) => ({
-  songMaxStat: getSongMaxStat(state)
+const mapStateToProps = state => ({
+  songMaxStat: getSongMaxStat(state),
 });
 
-const mapDispatchToProps = (dispatch) => ({});
+const mapDispatchToProps = dispatch => ({});
 export default connect(mapStateToProps, mapDispatchToProps)(SongDetailScreen);

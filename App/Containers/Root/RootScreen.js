@@ -1,6 +1,12 @@
+/* eslint-disable no-unused-vars */
 import React, { Component } from 'react';
 import { View, SafeAreaView, Alert } from 'react-native';
-import { createStackNavigator, createBottomTabNavigator, createDrawerNavigator } from 'react-navigation';
+import {
+  createStackNavigator,
+  createBottomTabNavigator,
+  createDrawerNavigator,
+  createAppContainer,
+} from 'react-navigation';
 import { connect } from 'react-redux';
 import firebase from 'react-native-firebase';
 
@@ -26,13 +32,13 @@ import ImageViewer from '../ImageViewer/ImageViewer';
 
 const LLSIFTab = createBottomTabNavigator(
   {
-    MainScreen: MainScreen,
-    CardsScreen: CardsScreen,
-    IdolsScreen: IdolsScreen,
-    EventsScreen: EventsScreen,
-    SongsScreen: SongsScreen
+    MainScreen,
+    CardsScreen,
+    IdolsScreen,
+    EventsScreen,
+    SongsScreen,
   },
-  { initialRouteName: 'MainScreen' }
+  { initialRouteName: 'MainScreen' },
 );
 
 LLSIFTab.navigationOptions = { header: null };
@@ -40,28 +46,30 @@ LLSIFTab.navigationOptions = { header: null };
 const Stack = createStackNavigator(
   {
     LLSIFScreen: LLSIFTab,
-    CardDetailScreen: CardDetailScreen,
-    EventDetailScreen: EventDetailScreen,
-    IdolDetailScreen: IdolDetailScreen,
-    SongDetailScreen: SongDetailScreen,
-    ImageViewerScreen: ImageViewer
+    CardDetailScreen,
+    EventDetailScreen,
+    IdolDetailScreen,
+    SongDetailScreen,
+    ImageViewerScreen: ImageViewer,
   },
   {
     initialRouteName: 'LLSIFScreen',
-    headerMode: 'none'
-  }
+    headerMode: 'none',
+  },
 );
 
-const AppNav = createDrawerNavigator({ Stack: Stack }, { contentComponent: Drawer });
+const AppNav = createDrawerNavigator({ Stack }, { contentComponent: Drawer });
 
 class RootScreen extends Component {
   componentDidMount() {
+    // eslint-disable-next-line no-undef
     if (__DEV__) {
       // console.clear();
+      // eslint-disable-next-line no-console
       console.log('App is running in DEV mode', FirebaseTopic);
     }
     firebase.messaging().hasPermission()
-      .then(enabled => {
+      .then((enabled) => {
         // console.log('firebase.messaging.hasPermission', enabled);
         if (enabled) {
           // user has permissions
@@ -71,17 +79,19 @@ class RootScreen extends Component {
             .then(() => {
               // console.log('User has authorised');
             })
-            .catch(error => {
+            .catch((error) => {
               // console.log('User has rejected permissions');
             });
         }
       });
 
-    this.notificationDisplayedListener = firebase.notifications().onNotificationDisplayed((notification) => {
+    this.notificationDisplayedListener = firebase.notifications()
+      .onNotificationDisplayed((notification) => {
       // Process your notification as required
-      // ANDROID: Remote notifications do not contain the channel ID. You will have to specify this manually if you'd like to re-display the notification.
+      // ANDROID: Remote notifications do not contain the channel ID.
+      // You will have to specify this manually if you'd like to re-display the notification.
       // console.log('notificationDisplayedListener', notification);
-    });
+      });
 
     this.notificationListener = firebase.notifications().onNotification((notification) => {
       // Process your notification as required
@@ -93,22 +103,22 @@ class RootScreen extends Component {
       // console.log('messageListener', message);
     });
 
-    this.notificationOpenedListener = firebase.notifications().onNotificationOpened((notificationOpen) => {
+    this.notificationOpenedListener = firebase.notifications()
+      .onNotificationOpened((notificationOpen) => {
       // Get the action triggered by the notification being opened
-      const action = notificationOpen.action;
       // Get information about the notification that was opened
-      const notification = notificationOpen.notification;
+      // eslint-disable-next-line no-unused-vars
+        const { action, notification } = notificationOpen;
       // console.log('notificationOpenedListener', action, notification);
-    });
+      });
 
     firebase.notifications().getInitialNotification()
       .then((notificationOpen) => {
         if (notificationOpen) {
           // App was opened by a notification
           // Get the action triggered by the notification being opened
-          const action = notificationOpen.action;
           // Get information about the notification that was opened
-          const notification = notificationOpen.notification;
+          const { action, notification } = notificationOpen;
           // console.log('firebase.notifications().getInitialNotification()', action, notification);
           if (notification.data.event !== undefined) {
             NavigationService.navigate('EventDetailScreen', { eventName: notification.data.event });
@@ -119,7 +129,7 @@ class RootScreen extends Component {
         }
       });
 
-    loadSettings().then(res => {
+    loadSettings().then((res) => {
       if (res.jp_event) {
         firebase.messaging().subscribeToTopic(FirebaseTopic.JP_EVENT);
       } else {
@@ -150,14 +160,14 @@ class RootScreen extends Component {
           <AppNav ref={navigatorRef => NavigationService.setTopLevelNavigator(navigatorRef)} />
         </View>
       </SafeAreaView>
-    )
+    );
   }
 }
 
-const mapStateToProps = (state) => ({});
+const mapStateToProps = state => ({});
 
-const mapDispatchToProps = (dispatch) => ({
-  startup: () => dispatch(CachedDataActions.fetchCachedData())
+const mapDispatchToProps = dispatch => ({
+  startup: () => dispatch(CachedDataActions.fetchCachedData()),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(RootScreen);
+export default connect(mapStateToProps, mapDispatchToProps)(createAppContainer(RootScreen));

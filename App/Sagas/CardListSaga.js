@@ -5,7 +5,7 @@ import { LLSIFService } from '../Services/LLSIFService';
 export function* fetchCardList(action) {
   yield put(CardListActions.fetchCardListLoading());
   // console.log('fetchCardList:', JSON.stringify(action.filter))
-  var data = yield call(LLSIFService.fetchCardList, action.filter);
+  const data = yield call(LLSIFService.fetchCardList, action.filter);
   if (data) {
     yield put(CardListActions.fetchCardListSuccess(data));
   } else {

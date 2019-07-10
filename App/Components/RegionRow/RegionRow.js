@@ -26,7 +26,7 @@ class RegionRow extends React.Component {
             style={[
               styles.textButton,
               styles.standardButton,
-              this.props.japan_only === '' && styles.selectedValue
+              this.props.japan_only === '' && styles.selectedValue,
             ]}>
             <Text style={styles.buttonText}>All</Text>
           </TouchableOpacity>
@@ -34,7 +34,7 @@ class RegionRow extends React.Component {
             style={[
               styles.textButton,
               styles.standardButton,
-              this.props.japan_only === 'False' && styles.selectedValue
+              this.props.japan_only === 'False' && styles.selectedValue,
             ]}>
             <Text style={styles.buttonText}>EN Only</Text>
           </TouchableOpacity>
@@ -42,7 +42,7 @@ class RegionRow extends React.Component {
             style={[
               styles.textButton,
               styles.standardButton,
-              this.props.japan_only === 'True' && styles.selectedValue
+              this.props.japan_only === 'True' && styles.selectedValue,
             ]}>
             <Text style={styles.buttonText}>JP Only</Text>
           </TouchableOpacity>
@@ -54,7 +54,7 @@ class RegionRow extends React.Component {
 
 RegionRow.propTypes = {
   japan_only: PropTypes.string.isRequired,
-  selectRegion: PropTypes.func.isRequired
+  selectRegion: PropTypes.func.isRequired,
 };
 
 export default RegionRow;

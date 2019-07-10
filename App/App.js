@@ -28,6 +28,6 @@ export default class App extends Component {
           <RootScreen />
         </PersistGate>
       </Provider>
-    )
+    );
   }
 }

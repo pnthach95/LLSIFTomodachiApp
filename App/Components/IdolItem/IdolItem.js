@@ -29,7 +29,7 @@ export default class IdolItem extends Component {
     this.state = {
       imgWidth: Metrics.images.smallItemWidth,
       imgHeight: Metrics.images.smallItemWidth,
-      colors: findColorByAttribute(props.item.attribute)
+      colors: findColorByAttribute(props.item.attribute),
     };
   }
 
@@ -37,23 +37,23 @@ export default class IdolItem extends Component {
     return (
       <ElevatedView elevation={5} style={[
         styles.container,
-        { backgroundColor: this.state.colors[1] }
+        { backgroundColor: this.state.colors[1] },
       ]}>
         <Touchable onPress={this.props.onPress}
           background={TouchableNativeFeedback.Ripple(this.state.colors[0], true)}>
           <FastImage
             source={{
               uri: this.props.item.chibi,
-              priority: FastImage.priority.normal
+              priority: FastImage.priority.normal,
             }}
-            onLoad={e => {
+            onLoad={(e) => {
               const { width, height } = e.nativeEvent;
               this.setState({ imgWidth: width, imgHeight: height });
             }}
             style={{
               marginTop: 10,
               width: Metrics.images.smallItemWidth,
-              height: Metrics.images.smallItemWidth * this.state.imgHeight / this.state.imgWidth
+              height: Metrics.images.smallItemWidth * this.state.imgHeight / this.state.imgWidth,
             }} />
 
           <View style={styles.info}>

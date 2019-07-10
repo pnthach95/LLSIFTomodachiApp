@@ -18,6 +18,8 @@ target 'LLSIFTomodachi' do
   target 'LLSIFTomodachi-tvOSTests' do
     inherit! :search_paths
     # Pods for testing
+    pod 'RNGestureHandler', :path => '../node_modules/react-native-gesture-handler'
+
   end
 
   target 'LLSIFTomodachiTests' do

@@ -8,13 +8,13 @@ import styles from '../../Theme/RowStyles';
 
 /**
  * Skill Row.
- * 
+ *
  * Skill list in `this.props.skills`.
- * 
+ *
  * Prop:
  * - `selectSkill`: Save `skill` state
  * - `skill`: state from parent
- * 
+ *
  * @export
  * @class SkillRow
  * @extends {React.Component}
@@ -42,9 +42,9 @@ class SkillRow extends React.Component {
 
 SkillRow.propTypes = {
   skill: PropTypes.string.isRequired,
-  selectSkill: PropTypes.func.isRequired
+  selectSkill: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = (state) => ({ skills: getSkills(state) });
-const mapDispatchToProps = (dispatch) => ({});
+const mapStateToProps = state => ({ skills: getSkills(state) });
+const mapDispatchToProps = dispatch => ({});
 export default connect(mapStateToProps, mapDispatchToProps)(SkillRow);

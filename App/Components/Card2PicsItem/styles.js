@@ -3,22 +3,22 @@ import { Metrics } from '../../Theme';
 
 export default StyleSheet.create({
   container: {
-    width: Metrics.screenWidth - Metrics.smallMargin * 4,
+    borderRadius: 4,
     margin: Metrics.smallMargin,
-    borderRadius: 4
-  },
-  row: {
-    flexDirection: 'row',
-    justifyContent: 'space-around'
+    width: Metrics.screenWidth - Metrics.smallMargin * 4,
   },
   info: {
-    flexDirection: 'row',
     borderBottomLeftRadius: 4,
-    borderBottomRightRadius: 4
+    borderBottomRightRadius: 4,
+    flexDirection: 'row',
   },
   infoRight: {
     flexDirection: 'row',
+    justifyContent: 'space-around',
     padding: Metrics.smallMargin,
-    justifyContent: 'space-around'
-  }
+  },
+  row: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+  },
 });

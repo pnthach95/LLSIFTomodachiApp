@@ -6,7 +6,7 @@ import { Images, ApplicationStyles } from '../../Theme';
 
 /**
  * Splash Screen
- * 
+ *
  * Prop:
  * - `bgColor`: Background color
  *
@@ -16,7 +16,7 @@ import { Images, ApplicationStyles } from '../../Theme';
  */
 export default class SplashScreen extends React.Component {
   static defaultProps = {
-    bgColor: '#D2CAC6'
+    bgColor: '#D2CAC6',
   }
 
   render() {
@@ -25,6 +25,6 @@ export default class SplashScreen extends React.Component {
         <Image source={Images.logo} style={styles.logo} />
         <BarIndicator count={9} color={'white'} />
       </View>
-    )
+    );
   }
 }

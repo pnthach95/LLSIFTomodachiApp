@@ -1,5 +1,7 @@
 import React from 'react';
-import { View, FlatList, TextInput, Alert, Text, Image } from 'react-native';
+import {
+  View, FlatList, TextInput, Alert, Text, Image,
+} from 'react-native';
 import { connect } from 'react-redux';
 import ElevatedView from 'react-native-elevated-view';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -31,8 +33,8 @@ const defaultFilter = {
   is_event: '',
   is_daily_rotation: '',
   available: '',
-  main_unit: ''
-}
+  main_unit: '',
+};
 
 /**
  * [Song List Screen](https://github.com/MagiCircles/SchoolIdolAPI/wiki/API-Songs#get-the-list-of-songs)
@@ -75,8 +77,8 @@ class SongsScreen extends React.Component {
       is_daily_rotation: '',
       available: '',
       main_unit: '',
-      stopSearch: false
-    }
+      stopSearch: false,
+    };
     this._onEndReached = _.debounce(this._onEndReached, 500);
   }
 
@@ -86,8 +88,8 @@ class SongsScreen extends React.Component {
     tabBarLabel: 'Songs',
     tabBarOptions: {
       activeTintColor: Colors.pink,
-      inactiveTintColor: Colors.inactive
-    }
+      inactiveTintColor: Colors.inactive,
+    },
   }
 
   componentDidMount() {
@@ -117,7 +119,7 @@ class SongsScreen extends React.Component {
    * @memberof SongsScreen
    */
   _navigateToSongDetail(item) {
-    this.props.navigation.navigate('SongDetailScreen', { item: item });
+    this.props.navigation.navigate('SongDetailScreen', { item });
   }
 
   /**
@@ -138,11 +140,11 @@ class SongsScreen extends React.Component {
    * @memberof SongsScreen
    */
   _getSongs(page = this.state.page) {
-    let _ordering = (this.state.isReverse ? '-' : '') + this.state.selectedOrdering;
-    var _filter = {
+    const _ordering = (this.state.isReverse ? '-' : '') + this.state.selectedOrdering;
+    const _filter = {
       ordering: _ordering,
       page_size: this.state.page_size,
-      page: page,
+      page,
       expand_event: this.state.expand_event,
       // is_daily_rotation: this.state.is_daily_rotation
     };
@@ -152,25 +154,23 @@ class SongsScreen extends React.Component {
     if (this.state.main_unit !== '') _filter.main_unit = this.state.main_unit;
     if (this.state.search !== '') _filter.search = this.state.search;
     console.log(`Songs.getSongs ${JSON.stringify(_filter)}`);
-    LLSIFService.fetchSongList(_filter).then(result => {
+    LLSIFService.fetchSongList(_filter).then((result) => {
       if (result === 404) {
         // console.log('LLSIFService.fetchSongList 404')
         this.setState({ stopSearch: true });
       } else {
-        var x = [...this.state.list, ...result];
-        x = x.filter((thing, index, self) =>
-          index === self.findIndex(t => t.name === thing.name)
-        );
+        let x = [...this.state.list, ...result];
+        x = x.filter((thing, index, self) => index === self.findIndex(t => t.name === thing.name));
         this.setState({
           list: x,
           isLoading: false,
-          page: page + 1
+          page: page + 1,
         });
       }
-    }).catch(err => {
+    }).catch((err) => {
       Alert.alert('Error', 'Error when get songs',
         [{ text: 'OK', onPress: () => console.log(`OK Pressed ${err}`) }]);
-    })
+    });
   }
 
   /**
@@ -200,7 +200,9 @@ class SongsScreen extends React.Component {
    * @memberof SongsScreen
    */
   _onSearch = () => {
-    this.setState({ list: [], page: 1, isFilter: false, stopSearch: false });
+    this.setState({
+      list: [], page: 1, isFilter: false, stopSearch: false,
+    });
     this._getSongs(1);
   }
 
@@ -223,8 +225,8 @@ class SongsScreen extends React.Component {
       main_unit: defaultFilter.main_unit,
       selectedOrdering: defaultFilter.selectedOrdering,
       isReverse: defaultFilter.isReverse,
-      search: ''
-    })
+      search: '',
+    });
   }
 
   /**
@@ -233,21 +235,21 @@ class SongsScreen extends React.Component {
    * @param {String} value
    * @memberof SongsScreen
    */
-  _selectEvent = (value) => () => this.setState({ is_event: value });
+  _selectEvent = value => () => this.setState({ is_event: value });
 
   /**
    * Save `attribute`
    *
    * @memberof SongsScreen
    */
-  _selectAttribute = (value) => () => this.setState({ attribute: value });
+  _selectAttribute = value => () => this.setState({ attribute: value });
 
   /**
    * Save `main_unit`
    *
    * @memberof SongsScreen
    */
-  _selectMainUnit = (value) => () => this.setState({ main_unit: value });
+  _selectMainUnit = value => () => this.setState({ main_unit: value });
 
   /**
    * Save ordering
@@ -291,8 +293,8 @@ class SongsScreen extends React.Component {
             <SquareButton name={'ios-more'} onPress={this._toggleFilter} />
           </ElevatedView>
           {/* FILTER */}
-          {this.state.isFilter &&
-            <ElevatedView elevation={5} style={styles.filterContainer}>
+          {this.state.isFilter
+            && <ElevatedView elevation={5} style={styles.filterContainer}>
               <AttributeRow attribute={this.state.attribute} selectAttribute={this._selectAttribute} />
               <EventRow is_event={this.state.is_event} selectEvent={this._selectEvent} />
               <MainUnitRow main_unit={this.state.main_unit} selectMainUnit={this._selectMainUnit} />
@@ -317,10 +319,10 @@ class SongsScreen extends React.Component {
             renderItem={this._renderItem} />
         </Fade>
       </View>
-    )
+    );
   }
 }
 
-const mapStateToProps = (state) => ({});
-const mapDispatchToProps = (dispatch) => ({});
+const mapStateToProps = state => ({});
+const mapDispatchToProps = dispatch => ({});
 export default connect(mapStateToProps, mapDispatchToProps)(SongsScreen);

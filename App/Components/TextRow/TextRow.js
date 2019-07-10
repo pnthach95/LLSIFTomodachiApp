@@ -4,7 +4,7 @@ import { Fonts, ApplicationStyles } from '../../Theme';
 
 /**
  * TextRow
- * 
+ *
  * Prop:
  * - item1: {text, flex, textStyle}
  * - item2: {text, flex, textStyle, onPress}

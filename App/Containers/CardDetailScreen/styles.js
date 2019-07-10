@@ -2,73 +2,73 @@ import { StyleSheet } from 'react-native';
 import { Metrics } from '../../Theme';
 
 export default StyleSheet.create({
-  leftRow: {
-    flexDirection: 'row',
-    alignItems: 'center'
+  banner: {
+    height: 100,
+    width: '80%',
   },
-  rightRow: {
-    flexDirection: 'row',
-    marginRight: Metrics.baseMargin,
+  button: {
     alignItems: 'center',
-    justifyContent: 'flex-end'
-  },
-  rightHeaderImage: {
-    resizeMode: 'contain',
-    height: Metrics.navBarHeight,
-    width: Metrics.screenWidth * 0.17
-  },
-  headerButton: {
-    height: Metrics.navBarHeight,
-    width: Metrics.navBarHeight
-  },
-  scrollView: {
-    paddingBottom: Metrics.doubleBaseMargin
-  },
-  informationBlock: {
-    paddingHorizontal: Metrics.doubleBaseMargin
+    flex: 1,
+    justifyContent: 'center',
+    marginHorizontal: 1,
+    paddingVertical: Metrics.baseMargin,
   },
   buttonRow: {
     flexDirection: 'row',
     justifyContent: 'space-around',
-    padding: Metrics.baseMargin
+    padding: Metrics.baseMargin,
+  },
+  headerButton: {
+    height: Metrics.navBarHeight,
+    width: Metrics.navBarHeight,
   },
   imageRow: {
     flexDirection: 'row',
     justifyContent: 'space-around',
+    paddingBottom: Metrics.doubleBaseMargin,
     paddingTop: Metrics.baseMargin,
-    paddingBottom: Metrics.doubleBaseMargin
+  },
+  informationBlock: {
+    paddingHorizontal: Metrics.doubleBaseMargin,
+  },
+  leftRadius: {
+    borderBottomLeftRadius: 10,
+    borderTopLeftRadius: 10,
+  },
+  leftRow: {
+    alignItems: 'center',
+    flexDirection: 'row',
   },
   progressRow: {
+    alignItems: 'center',
     flexDirection: 'row',
     justifyContent: 'center',
     paddingHorizontal: '5%',
-    alignItems: 'center'
-  },
-  button: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingVertical: Metrics.baseMargin,
-    marginHorizontal: 1
-  },
-  leftRadius: {
-    borderTopLeftRadius: 10,
-    borderBottomLeftRadius: 10
-  },
-  rightRadius: {
-    borderTopRightRadius: 10,
-    borderBottomRightRadius: 10
   },
   progressText: {
+    color: '#333',
     paddingLeft: '10%',
     paddingVertical: Metrics.baseMargin,
-    color: '#333'
   },
-  banner: {
-    width: '80%',
-    height: 100
+  rightHeaderImage: {
+    height: Metrics.navBarHeight,
+    resizeMode: 'contain',
+    width: Metrics.screenWidth * 0.17,
+  },
+  rightRadius: {
+    borderBottomRightRadius: 10,
+    borderTopRightRadius: 10,
+  },
+  rightRow: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    marginRight: Metrics.baseMargin,
+  },
+  scrollView: {
+    paddingBottom: Metrics.doubleBaseMargin,
   },
   subtitleText: {
-    fontSize: 14
-  }
+    fontSize: 14,
+  },
 });

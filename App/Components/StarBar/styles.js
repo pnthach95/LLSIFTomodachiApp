@@ -4,9 +4,9 @@ import { Metrics } from '../../Theme';
 export default StyleSheet.create({
   container: {
     flexDirection: 'row',
-    marginVertical: Metrics.baseMargin
+    marginVertical: Metrics.baseMargin,
   },
   star: {
-    paddingHorizontal: 2
-  }
+    paddingHorizontal: 2,
+  },
 });

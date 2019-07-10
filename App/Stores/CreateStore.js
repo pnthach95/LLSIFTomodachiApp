@@ -3,7 +3,7 @@ import createSagaMiddleware from 'redux-saga';
 import { persistReducer, persistStore } from 'redux-persist';
 import immutableTransform from 'redux-persist-transform-immutable';
 import { createNetworkMiddleware } from 'react-native-offline';
-import Reactotron from '../Config/ReactotronConfig';
+import storage from 'redux-persist/lib/storage';
 
 /**
  * This import defaults to localStorage for web and AsyncStorage for react-native.
@@ -14,7 +14,6 @@ import Reactotron from '../Config/ReactotronConfig';
  * If you need to store sensitive information, use redux-persist-sensitive-storage.
  * @see https://github.com/CodingZeal/redux-persist-sensitive-storage
  */
-import storage from 'redux-persist/lib/storage';
 
 const persistConfig = {
   transforms: [
@@ -22,26 +21,24 @@ const persistConfig = {
      * This is necessary to support immutable reducers.
      * @see https://github.com/rt2zz/redux-persist-transform-immutable
      */
-    immutableTransform()
+    immutableTransform(),
   ],
   key: 'root',
-  storage: storage,
+  storage,
   /**
    * Blacklist state that we do not need/want to persist
    */
   blacklist: [
     // 'auth',
-  ]
-}
-
-const sagaMonitor = Reactotron.createSagaMonitor();
+  ],
+};
 
 export default (rootReducer, rootSaga) => {
   const middleware = [];
   const enhancers = [];
 
   // Connect the sagas to the redux store
-  const sagaMiddleware = createSagaMiddleware({ sagaMonitor });
+  const sagaMiddleware = createSagaMiddleware();
   const networkMiddleware = createNetworkMiddleware();
   middleware.push(networkMiddleware);
   middleware.push(sagaMiddleware);
@@ -51,12 +48,11 @@ export default (rootReducer, rootSaga) => {
   // Redux persist
   const persistedReducer = persistReducer(persistConfig, rootReducer);
 
-  // const store = createStore(persistedReducer, compose(...enhancers))
-  const store = Reactotron.createStore(persistedReducer, compose(...enhancers));
+  const store = createStore(persistedReducer, compose(...enhancers));
   const persistor = persistStore(store);
 
   // Kick off the root saga
   sagaMiddleware.run(rootSaga);
 
   return { store, persistor };
-}
+};

@@ -29,7 +29,7 @@ export default class SongItem extends Component {
     this.state = {
       imgWidth: Metrics.images.itemWidth,
       imgHeight: Metrics.images.itemWidth,
-      colors: findColorByAttribute(props.item.attribute)
+      colors: findColorByAttribute(props.item.attribute),
     };
   }
 
@@ -39,20 +39,20 @@ export default class SongItem extends Component {
     return (
       <ElevatedView elevation={5} style={[
         styles.container,
-        { backgroundColor: this.state.colors[0] }
+        { backgroundColor: this.state.colors[0] },
       ]}>
         <Touchable onPress={this.props.onPress}
           background={TouchableNativeFeedback.Ripple(this.state.colors[1], true)}>
           <FastImage source={{ uri: AddHTTPS(this.props.item.image) }}
-            onLoad={e => {
-              const { width, height } = e.nativeEvent
-              this.setState({ imgWidth: width, imgHeight: height })
+            onLoad={(e) => {
+              const { width, height } = e.nativeEvent;
+              this.setState({ imgWidth: width, imgHeight: height });
             }}
             style={{
               borderTopLeftRadius: 5,
               borderTopRightRadius: 5,
               width: Metrics.images.itemWidth,
-              height: Metrics.images.itemWidth * this.state.imgHeight / this.state.imgWidth
+              height: Metrics.images.itemWidth * this.state.imgHeight / this.state.imgWidth,
             }} />
           <View style={styles.info}>
             <Text style={styles.text}>{this.getName}</Text>

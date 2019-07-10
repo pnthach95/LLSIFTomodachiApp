@@ -4,7 +4,7 @@ import { Config } from '../Config';
 
 const LLSIFApiClient = create({
   baseURL: Config.API_URL,
-  timeout: 10000
+  timeout: 10000,
 });
 
 LLSIFApiClient.addMonitor(Reactotron.apisauce);
@@ -47,8 +47,8 @@ async function fetchCardList(filter) {
 async function fetchIdolList() {
   const response1 = await LLSIFApiClient.get(Config.IDOLS, { page_size: 100 });
   const response2 = await LLSIFApiClient.get(Config.IDOLS, { page_size: 100, page: 2 });
-  var data1 = [];
-  var data2 = [];
+  let data1 = [];
+  let data2 = [];
   if (response1.ok) {
     data1 = response1.data.results;
   } else return null;
@@ -122,11 +122,11 @@ async function fetchEventData(name) {
 }
 
 async function fetchRandomCard() {
-  let filter = {
+  const filter = {
     ordering: 'random',
     page_size: 1,
     rarity: 'SSR,UR',
-    idol_main_unit: `μ's,Aqours`
+    idol_main_unit: 'μ\'s,Aqours',
   };
   const response = await LLSIFApiClient.get(Config.CARDS, filter);
   if (response.ok) {
@@ -143,5 +143,5 @@ export const LLSIFService = {
   fetchSongList,
   fetchEventList,
   fetchEventData,
-  fetchRandomCard
-}
+  fetchRandomCard,
+};

@@ -27,7 +27,7 @@ class EventRow extends React.Component {
             style={[
               styles.textButton,
               styles.standardButton,
-              this.props.is_event === '' && styles.selectedValue
+              this.props.is_event === '' && styles.selectedValue,
             ]}>
             <Text style={styles.buttonText}>All</Text>
           </TouchableOpacity>
@@ -35,7 +35,7 @@ class EventRow extends React.Component {
             style={[
               styles.textButton,
               styles.standardButton,
-              this.props.is_event === 'True' && styles.selectedValue
+              this.props.is_event === 'True' && styles.selectedValue,
             ]}>
             <Text style={styles.buttonText}>Only</Text>
           </TouchableOpacity>
@@ -43,7 +43,7 @@ class EventRow extends React.Component {
             style={[
               styles.textButton,
               styles.standardButton,
-              this.props.is_event === 'False' && styles.selectedValue
+              this.props.is_event === 'False' && styles.selectedValue,
             ]}>
             <Text style={styles.buttonText}>None</Text>
           </TouchableOpacity>
@@ -55,7 +55,7 @@ class EventRow extends React.Component {
 
 EventRow.propTypes = {
   is_event: PropTypes.string.isRequired,
-  selectEvent: PropTypes.func.isRequired
+  selectEvent: PropTypes.func.isRequired,
 };
 
 export default EventRow;

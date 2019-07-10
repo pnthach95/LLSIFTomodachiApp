@@ -1,32 +1,29 @@
-import { INITIAL_STATE } from './InitialState';
 import { createReducer } from 'reduxsauce';
+import { INITIAL_STATE } from './InitialState';
 import { CardListTypes } from './Actions';
 
-export const fetchCardListLoading = (state) =>
-  state.merge({
-    cardListIsLoading: true,
-    cardListErrorMessage: ''
-  });
+export const fetchCardListLoading = state => state.merge({
+  cardListIsLoading: true,
+  cardListErrorMessage: '',
+});
 
 const generateNewData = (state, cardList) => {
-  let oldData = state.get('cardList');
-  let newData = [...oldData, ...cardList];
+  const oldData = state.get('cardList');
+  const newData = [...oldData, ...cardList];
   return newData;
-}
+};
 
-export const fetchCardListSuccess = (state, { cardList }) =>
-  state.merge({
-    cardList: generateNewData(state, cardList),
-    cardListIsLoading: false,
-    cardListErrorMessage: null
-  });
+export const fetchCardListSuccess = (state, { cardList }) => state.merge({
+  cardList: generateNewData(state, cardList),
+  cardListIsLoading: false,
+  cardListErrorMessage: null,
+});
 
-export const fetchCardListFailure = (state, { errorMessage }) =>
-  state.merge({
-    cardList: null,
-    cardListIsLoading: false,
-    cardListErrorMessage: errorMessage
-  });
+export const fetchCardListFailure = (state, { errorMessage }) => state.merge({
+  cardList: null,
+  cardListIsLoading: false,
+  cardListErrorMessage: errorMessage,
+});
 
 /**
  * @see https://github.com/infinitered/reduxsauce#createreducer
@@ -34,5 +31,5 @@ export const fetchCardListFailure = (state, { errorMessage }) =>
 export const reducer = createReducer(INITIAL_STATE, {
   [CardListTypes.FETCH_CARD_LIST_LOADING]: fetchCardListLoading,
   [CardListTypes.FETCH_CARD_LIST_SUCCESS]: fetchCardListSuccess,
-  [CardListTypes.FETCH_CARD_LIST_FAILURE]: fetchCardListFailure
+  [CardListTypes.FETCH_CARD_LIST_FAILURE]: fetchCardListFailure,
 });

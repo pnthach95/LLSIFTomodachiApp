@@ -26,7 +26,7 @@ function navigate(routeName, params) {
     NavigationActions.navigate({
       routeName,
       params,
-    })
+    }),
   );
 }
 
@@ -50,7 +50,7 @@ function navigateAndReset(routeName, params) {
           params,
         }),
       ],
-    })
+    }),
   );
 }
 
@@ -58,4 +58,4 @@ export default {
   navigate,
   navigateAndReset,
   setTopLevelNavigator,
-}
+};

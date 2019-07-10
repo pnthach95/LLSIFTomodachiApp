@@ -4,7 +4,7 @@ const { Types, Creators } = createActions({
   fetchCardList: ['filter'],
   fetchCardListLoading: null,
   fetchCardListSuccess: ['cardList'],
-  fetchCardListFailure: ['errorMessage']
+  fetchCardListFailure: ['errorMessage'],
 });
 
 export const CardListTypes = Types;

@@ -1,5 +1,7 @@
 import React from 'react';
-import { Text, View, TouchableOpacity, Image } from 'react-native';
+import {
+  Text, View, TouchableOpacity, Image,
+} from 'react-native';
 import PropTypes from 'prop-types';
 import { Images, ApplicationStyles } from '../../Theme';
 import styles from '../../Theme/RowStyles';
@@ -27,21 +29,21 @@ class MainUnitRow extends React.Component {
             style={[
               styles.textButton,
               styles.standardButton,
-              this.props.main_unit === '' && styles.selectedValue
+              this.props.main_unit === '' && styles.selectedValue,
             ]}>
             <Text style={styles.buttonText}>All</Text>
           </TouchableOpacity>
-          <TouchableOpacity onPress={this.props.selectMainUnit(`μ's`)}
+          <TouchableOpacity onPress={this.props.selectMainUnit('μ\'s')}
             style={[
               styles.standardButton,
-              this.props.main_unit === `μ's` && styles.selectedValue1
+              this.props.main_unit === 'μ\'s' && styles.selectedValue1,
             ]}>
             <Image source={Images.mainUnit[0]} style={styles.buttonImage1} />
           </TouchableOpacity>
           <TouchableOpacity onPress={this.props.selectMainUnit('Aqours')}
             style={[
               styles.standardButton,
-              this.props.main_unit === 'Aqours' && styles.selectedValue1
+              this.props.main_unit === 'Aqours' && styles.selectedValue1,
             ]}>
             <Image source={Images.mainUnit[1]} style={styles.buttonImage1} />
           </TouchableOpacity>
@@ -53,7 +55,7 @@ class MainUnitRow extends React.Component {
 
 MainUnitRow.propTypes = {
   main_unit: PropTypes.string.isRequired,
-  selectMainUnit: PropTypes.func.isRequired
+  selectMainUnit: PropTypes.func.isRequired,
 };
 
 export default MainUnitRow;

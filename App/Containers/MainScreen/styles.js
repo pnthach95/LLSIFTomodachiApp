@@ -2,52 +2,52 @@ import { StyleSheet } from 'react-native';
 import { Colors, Metrics } from '../../Theme';
 
 export default StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: Colors.pink
+  block: {
+    alignItems: 'center',
+    width: Metrics.screenWidth,
   },
   centerHeader: {
+    alignItems: 'center',
     flex: 5,
     justifyContent: 'center',
-    alignItems: 'center'
+  },
+  container: {
+    backgroundColor: Colors.pink,
+    flex: 1,
+  },
+  content: {
+    alignItems: 'center',
+    padding: Metrics.baseMargin,
+  },
+  logo: {
+    resizeMode: 'contain',
+    width: Metrics.screenWidth * 0.3,
   },
   rightHeader: {
     flex: 1,
     flexDirection: 'row',
-    justifyContent: 'flex-end'
-  },
-  logo: {
-    width: Metrics.screenWidth * 0.3,
-    resizeMode: 'contain'
-  },
-  content: {
-    alignItems: 'center',
-    padding: Metrics.baseMargin
+    justifyContent: 'flex-end',
   },
   text: {
     color: 'white',
     fontSize: 16,
-    textAlign: 'center'
+    textAlign: 'center',
   },
   textbox: {
-    paddingVertical: 4,
     paddingHorizontal: Metrics.baseMargin,
+    paddingVertical: 4,
   },
   title: {
     color: 'white',
     fontSize: 24,
     fontWeight: 'bold',
-    textAlign: 'center'
-  },
-  block: {
-    width: Metrics.screenWidth,
-    alignItems: 'center'
+    textAlign: 'center',
   },
   update: {
-    width: Metrics.screenWidth * 0.9,
-    backgroundColor: Colors.lightGreen,
-    alignSelf: 'center',
     alignItems: 'center',
-    padding: 5
-  }
+    alignSelf: 'center',
+    backgroundColor: Colors.lightGreen,
+    padding: 5,
+    width: Metrics.screenWidth * 0.9,
+  },
 });

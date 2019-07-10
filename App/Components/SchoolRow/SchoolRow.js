@@ -8,13 +8,13 @@ import styles from '../../Theme/RowStyles';
 
 /**
  * School Row.
- * 
+ *
  * School list in `this.props.schools`.
- * 
+ *
  * Prop:
  * - `selectSchool`: Save `idol_school` state
  * - `idol_school`: state from parent
- * 
+ *
  * @export
  * @class SchoolRow
  * @extends {React.Component}
@@ -42,9 +42,9 @@ class SchoolRow extends React.Component {
 
 SchoolRow.propTypes = {
   idol_school: PropTypes.string.isRequired,
-  selectSchool: PropTypes.func.isRequired
+  selectSchool: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = (state) => ({ schools: getSchools(state) });
-const mapDispatchToProps = (dispatch) => ({});
+const mapStateToProps = state => ({ schools: getSchools(state) });
+const mapDispatchToProps = dispatch => ({});
 export default connect(mapStateToProps, mapDispatchToProps)(SchoolRow);

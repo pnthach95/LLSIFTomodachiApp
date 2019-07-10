@@ -21,13 +21,13 @@ export default class InfoLine extends React.Component {
     content: PropTypes.any.isRequired,
     twitter: PropTypes.string,
     instagram: PropTypes.string,
-    myanimelist: PropTypes.string
+    myanimelist: PropTypes.string,
   }
 
   static defaultProps = {
     twitter: null,
     instagram: null,
-    myanimelist: null
+    myanimelist: null,
   }
 
   render() {
@@ -38,22 +38,22 @@ export default class InfoLine extends React.Component {
         </View>
         <View>
           <Text selectable style={styles.content}>{this.props.content}</Text>
-          {this.props.twitter !== null &&
-            <Text style={styles.content}>
-              Twitter: <Text onPress={() => openLink('https://twitter.com/' + this.props.twitter)}
+          {this.props.twitter !== null
+            && <Text style={styles.content}>
+              Twitter: <Text onPress={() => openLink(`https://twitter.com/${this.props.twitter}`)}
                 style={[styles.content, styles.link]}>
                 {this.props.twitter}
               </Text>
             </Text>}
-          {this.props.instagram !== null &&
-            <Text style={styles.content}>
-              Instagram: <Text onPress={() => openLink('https://www.instagram.com/' + this.props.instagram)}
+          {this.props.instagram !== null
+            && <Text style={styles.content}>
+              Instagram: <Text onPress={() => openLink(`https://www.instagram.com/${this.props.instagram}`)}
                 style={[styles.content, styles.link]}>
                 {this.props.instagram}
               </Text>
             </Text>}
-          {this.props.myanimelist !== null &&
-            <Text style={styles.content}>
+          {this.props.myanimelist !== null
+            && <Text style={styles.content}>
               MyAnimeList: <Text onPress={() => openLink(this.props.myanimelist)}
                 style={[styles.content, styles.link]}>
                 {this.props.myanimelist}

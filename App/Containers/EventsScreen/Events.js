@@ -1,5 +1,7 @@
 import React from 'react';
-import { View, FlatList, Text, TextInput, Alert, Image } from 'react-native';
+import {
+  View, FlatList, Text, TextInput, Alert, Image,
+} from 'react-native';
 import { connect } from 'react-redux';
 import ElevatedView from 'react-native-elevated-view';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -74,20 +76,19 @@ class EventsScreen extends React.Component {
   }
 
   static navigationOptions = {
-    tabBarIcon: ({ focused }) =>
-      <Icon name='md-calendar' size={30}
+    tabBarIcon: ({ focused }) => <Icon name='md-calendar' size={30}
         color={focused ? Colors.pink : Colors.inactive} />,
     tabBarLabel: 'Events',
     tabBarOptions: {
       activeTintColor: Colors.pink,
-      inactiveTintColor: Colors.inactive
-    }
+      inactiveTintColor: Colors.inactive,
+    },
   }
 
   componentDidMount() {
-    loadSettings().then(res => {
+    loadSettings().then((res) => {
       this.setState({ is_english: res.worldwide_only ? 'False' : '' }, () => this._getEvents());
-    })
+    });
   }
 
   /**
@@ -110,7 +111,7 @@ class EventsScreen extends React.Component {
    * @param {Object} item
    * @memberof EventsScreen
    */
-  _navigateToEventDetail = (item) => () => this.props.navigation.navigate('EventDetailScreen', { eventName: item.japanese_name });
+  _navigateToEventDetail = item => () => this.props.navigation.navigate('EventDetailScreen', { eventName: item.japanese_name });
 
   /**
    * Call when scrolling to the end of list.
@@ -130,14 +131,14 @@ class EventsScreen extends React.Component {
    * @memberof EventsScreen
    */
   _getEvents(page = this.state.page) {
-    var _filter = {
+    const _filter = {
       ordering: this.state.ordering,
       page_size: this.state.page_size,
-      page: page
+      page,
     };
     if (this.state.idol !== 'All') _filter.idol = this.state.idol;
     if (this.state.skill !== 'All') _filter.skill = this.state.skill;
-    var _is_english = this.state.is_english;
+    let _is_english = this.state.is_english;
     if (_is_english !== '') {
       if (_is_english === 'True') _is_english = 'False';
       else _is_english = 'True';
@@ -152,17 +153,15 @@ class EventsScreen extends React.Component {
         // console.log('LLSIFService.fetchEventList 404');
         this.setState({ stopSearch: true });
       } else {
-        var x = [...this.state.list, ...result];
-        x = x.filter((thing, index, self) =>
-          index === self.findIndex(t => t.japanese_name === thing.japanese_name)
-        );
+        let x = [...this.state.list, ...result];
+        x = x.filter((thing, index, self) => index === self.findIndex(t => t.japanese_name === thing.japanese_name));
         this.setState({
           list: x,
           isLoading: false,
-          page: page + 1
+          page: page + 1,
         });
       }
-    }).catch(err => {
+    }).catch((err) => {
       Alert.alert('Error', 'Error when get songs',
         [{ text: 'OK', onPress: () => console.log('OK Pressed', err) }]);
     });
@@ -181,7 +180,9 @@ class EventsScreen extends React.Component {
    * @memberof EventsScreen
    */
   _onSearch = () => {
-    this.setState({ list: [], page: 1, isFilter: false, stopSearch: false });
+    this.setState({
+      list: [], page: 1, isFilter: false, stopSearch: false,
+    });
     this._getEvents(1);
   }
 
@@ -200,7 +201,7 @@ class EventsScreen extends React.Component {
       main_unit: this.defaultFilter.main_unit,
       skill: this.defaultFilter.skill,
       attribute: this.defaultFilter.attribute,
-      is_english: this.defaultFilter.is_english
+      is_english: this.defaultFilter.is_english,
     });
   }
 
@@ -217,7 +218,7 @@ class EventsScreen extends React.Component {
    * @param {String} value
    * @memberof EventsScreen
    */
-  _selectAttribute = (value) => () => this.setState({ attribute: value });
+  _selectAttribute = value => () => this.setState({ attribute: value });
 
   /**
    * Save `main_unit`
@@ -225,7 +226,7 @@ class EventsScreen extends React.Component {
    * @param {String} value
    * @memberof EventsScreen
    */
-  _selectMainUnit = (value) => () => this.setState({ main_unit: value });
+  _selectMainUnit = value => () => this.setState({ main_unit: value });
 
   /**
    * Save `is_english`
@@ -233,7 +234,7 @@ class EventsScreen extends React.Component {
    * @param {String} value
    * @memberof EventsScreen
    */
-  _selectRegion = (value) => () => this.setState({ is_english: value });
+  _selectRegion = value => () => this.setState({ is_english: value });
 
   /**
    * Save `skill`
@@ -289,8 +290,8 @@ class EventsScreen extends React.Component {
           </ElevatedView>
 
           {/* FILTER */}
-          {this.state.isFilter &&
-            <ElevatedView elevation={5} style={styles.filterContainer}>
+          {this.state.isFilter
+            && <ElevatedView elevation={5} style={styles.filterContainer}>
               <IdolNameRow name={this.state.idol} selectIdol={this._selectIdol} />
               <MainUnitRow main_unit={this.state.main_unit} selectMainUnit={this._selectMainUnit} />
               <SkillRow skill={this.state.skill} selectSkill={this._selectSkill} />
@@ -314,10 +315,10 @@ class EventsScreen extends React.Component {
             renderItem={this._renderItem} />
         </Fade>
       </View>
-    )
+    );
   }
 }
 
-const mapStateToProps = (state) => ({});
-const mapDispatchToProps = (dispatch) => ({});
+const mapStateToProps = state => ({});
+const mapDispatchToProps = dispatch => ({});
 export default connect(mapStateToProps, mapDispatchToProps)(EventsScreen);

@@ -30,7 +30,7 @@ export default class CardItem extends Component {
     this.state = {
       imgWidth: 0,
       imgHeight: 0,
-      colors: findColorByAttribute(props.item.attribute)
+      colors: findColorByAttribute(props.item.attribute),
     };
   }
 
@@ -42,9 +42,9 @@ export default class CardItem extends Component {
           <FastImage
             source={{
               uri: AddHTTPS(this.props.item.card_image || this.props.item.card_idolized_image),
-              priority: FastImage.priority.normal
+              priority: FastImage.priority.normal,
             }}
-            onLoad={e => {
+            onLoad={(e) => {
               const { width, height } = e.nativeEvent;
               this.setState({ imgWidth: width, imgHeight: height });
             }}
@@ -52,30 +52,30 @@ export default class CardItem extends Component {
               styles.topRadius,
               {
                 width: Metrics.images.itemWidth,
-                height: Metrics.images.itemWidth * this.state.imgHeight / this.state.imgWidth
-              }
+                height: Metrics.images.itemWidth * this.state.imgHeight / this.state.imgWidth,
+              },
             ]} />
 
           {/* FOOTER */}
           <Seperator style={{ backgroundColor: this.state.colors[0], marginVertical: 0 }} />
           <View style={[styles.info, { backgroundColor: this.state.colors[1] }]}>
-            {(this.props.item.skill !== null && this.props.item.skill.length !== 0) &&
-              <Image source={findSkill(this.props.item.skill)}
+            {(this.props.item.skill !== null && this.props.item.skill.length !== 0)
+              && <Image source={findSkill(this.props.item.skill)}
                 style={[ApplicationStyles.mediumIcon, { tintColor: this.state.colors[0] }]} />}
 
             <Image source={this.props.item.japan_only ? Images.region[0] : Images.region[1]}
               style={[ApplicationStyles.mediumIcon, { tintColor: this.state.colors[0] }]} />
 
-            {this.props.item.is_promo &&
-              <Image source={Images.promo}
+            {this.props.item.is_promo
+              && <Image source={Images.promo}
                 style={[ApplicationStyles.mediumIcon, { tintColor: this.state.colors[0] }]} />}
 
-            {this.props.item.is_special &&
-              <Image source={Images.skill[3]}
+            {this.props.item.is_special
+              && <Image source={Images.skill[3]}
                 style={[ApplicationStyles.mediumIcon, { tintColor: this.state.colors[0] }]} />}
 
-            {this.props.item.event !== null &&
-              <Image source={Images.event}
+            {this.props.item.event !== null
+              && <Image source={Images.event}
                 style={[ApplicationStyles.mediumIcon, { tintColor: this.state.colors[0] }]} />}
           </View>
         </Touchable>

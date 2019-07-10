@@ -27,7 +27,7 @@ class PromoCardRow extends React.Component {
             style={[
               styles.textButton,
               styles.standardButton,
-              this.props.is_promo === '' && styles.selectedValue
+              this.props.is_promo === '' && styles.selectedValue,
             ]}>
             <Text style={styles.buttonText}>All</Text>
           </TouchableOpacity>
@@ -35,7 +35,7 @@ class PromoCardRow extends React.Component {
             style={[
               styles.textButton,
               styles.standardButton,
-              this.props.is_promo === 'True' && styles.selectedValue
+              this.props.is_promo === 'True' && styles.selectedValue,
             ]}>
             <Text style={styles.buttonText}>Only</Text>
           </TouchableOpacity>
@@ -43,19 +43,19 @@ class PromoCardRow extends React.Component {
             style={[
               styles.textButton,
               styles.standardButton,
-              this.props.is_promo === 'False' && styles.selectedValue
+              this.props.is_promo === 'False' && styles.selectedValue,
             ]}>
             <Text style={styles.buttonText}>None</Text>
           </TouchableOpacity>
         </View>
       </View>
-    )
+    );
   }
 }
 
 PromoCardRow.propTypes = {
   is_promo: PropTypes.string.isRequired,
-  selectPromo: PropTypes.func.isRequired
+  selectPromo: PropTypes.func.isRequired,
 };
 
 export default PromoCardRow;

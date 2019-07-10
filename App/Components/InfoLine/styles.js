@@ -3,19 +3,19 @@ import { Metrics, Fonts } from '../../Theme';
 
 export default StyleSheet.create({
   container: {
-    marginVertical: Metrics.smallMargin
-  },
-  title: {
-    ...Fonts.style.black,
-    fontSize: Fonts.size.small,
-    fontWeight: 'bold'
+    marginVertical: Metrics.smallMargin,
   },
   content: {
     ...Fonts.style.normal,
     ...Fonts.style.black,
-    textAlign: 'justify'
+    textAlign: 'justify',
   },
   link: {
-    textDecorationLine: 'underline'
-  }
+    textDecorationLine: 'underline',
+  },
+  title: {
+    ...Fonts.style.black,
+    fontSize: Fonts.size.small,
+    fontWeight: 'bold',
+  },
 });

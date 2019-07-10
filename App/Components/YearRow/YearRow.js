@@ -27,7 +27,7 @@ class YearRow extends React.Component {
             style={[
               styles.textButton,
               styles.standardButton,
-              this.props.idol_year === '' && styles.selectedValue
+              this.props.idol_year === '' && styles.selectedValue,
             ]}>
             <Text style={styles.buttonText}>All</Text>
           </TouchableOpacity>
@@ -35,7 +35,7 @@ class YearRow extends React.Component {
             style={[
               styles.textButton,
               styles.standardButton,
-              this.props.idol_year === 'First' && styles.selectedValue
+              this.props.idol_year === 'First' && styles.selectedValue,
             ]}>
             <Text style={styles.buttonText}>1st</Text>
           </TouchableOpacity>
@@ -43,7 +43,7 @@ class YearRow extends React.Component {
             style={[
               styles.textButton,
               styles.standardButton,
-              this.props.idol_year === 'Second' && styles.selectedValue
+              this.props.idol_year === 'Second' && styles.selectedValue,
             ]}>
             <Text style={styles.buttonText}>2nd</Text>
           </TouchableOpacity>
@@ -51,7 +51,7 @@ class YearRow extends React.Component {
             style={[
               styles.textButton,
               styles.standardButton,
-              this.props.idol_year === 'Third' && styles.selectedValue
+              this.props.idol_year === 'Third' && styles.selectedValue,
             ]}>
             <Text style={styles.buttonText}>3rd</Text>
           </TouchableOpacity>
@@ -63,7 +63,7 @@ class YearRow extends React.Component {
 
 YearRow.propTypes = {
   idol_year: PropTypes.string.isRequired,
-  selectYear: PropTypes.func.isRequired
+  selectYear: PropTypes.func.isRequired,
 };
 
 export default YearRow;

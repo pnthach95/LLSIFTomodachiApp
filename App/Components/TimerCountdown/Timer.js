@@ -1,14 +1,15 @@
-var __importStar = (this && this.__importStar) || function (mod) {
-  if (mod && mod.__esModule) return mod;
-  var result = {};
-  if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
-  result["default"] = mod;
-  return result;
-}
+import { Text } from 'react-native';
 
-Object.defineProperty(exports, "__esModule", { value: true });
-const React = __importStar(require("react"));
-import { Text } from "react-native";
+const __importStar = (this && this.__importStar) || function (mod) {
+  if (mod && mod.__esModule) return mod;
+  const result = {};
+  if (mod != null) for (const k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
+  result.default = mod;
+  return result;
+};
+
+Object.defineProperty(exports, '__esModule', { value: true });
+const React = __importStar(require('react'));
 
 export default class TimerCountdown extends React.Component {
   constructor() {
@@ -17,12 +18,12 @@ export default class TimerCountdown extends React.Component {
     this.state = {
       secondsRemaining: this.props.initialSecondsRemaining,
       timeoutId: null,
-      previousSeconds: null
+      previousSeconds: null,
     };
     this.tick = () => {
       const currentSeconds = Date.now();
       const dt = this.state.previousSeconds ? currentSeconds - this.state.previousSeconds : 0;
-      const interval = this.props.interval;
+      const { interval } = this.props;
       const intervalSecondsRemaing = interval - (dt % interval);
       let timeout = intervalSecondsRemaing;
       if (intervalSecondsRemaing < interval / 2.0) {
@@ -37,7 +38,7 @@ export default class TimerCountdown extends React.Component {
         this.setState({
           timeoutId: isComplete ? null : setTimeout(this.tick, timeout),
           previousSeconds: currentSeconds,
-          secondsRemaining
+          secondsRemaining,
         });
       }
       if (isComplete) {
@@ -59,13 +60,13 @@ export default class TimerCountdown extends React.Component {
       const minutes = parseInt(((remainingSec / 60) % 60).toString(), 10);
       const hours = parseInt(((remainingSec / 3600) % 24).toString(), 10);
       const days = parseInt((remainingSec / (3600 * 24)).toString(), 10);
-      const s = seconds < 10 ? '0' + seconds : seconds;
-      let m = minutes < 10 ? '0' + minutes : minutes;
-      let h = hours < 10 ? '0' + hours : hours;
+      const s = seconds < 10 ? `0${seconds}` : seconds;
+      let m = minutes < 10 ? `0${minutes}` : minutes;
+      let h = hours < 10 ? `0${hours}` : hours;
       const d = days == 0 ? '' : days + (days == 1 ? ' day ' : ' days ');
       h = h === '00' ? '' : h + (h == 1 ? ' hour ' : ' hours ');
       m = m === '00' ? '' : m + (m == 1 ? ' minute ' : ' minutes ');
-      return d + h + m + s + ' seconds';
+      return `${d + h + m + s} seconds`;
     };
   }
 
@@ -80,7 +81,7 @@ export default class TimerCountdown extends React.Component {
     }
     this.setState({
       previousSeconds: null,
-      secondsRemaining: newProps.initialSecondsRemaining
+      secondsRemaining: newProps.initialSecondsRemaining,
     });
   }
 
@@ -96,9 +97,9 @@ export default class TimerCountdown extends React.Component {
   }
 
   render() {
-    const secondsRemaining = this.state.secondsRemaining;
-    const allowFontScaling = this.props.allowFontScaling;
-    const style = this.props.style;
+    const { secondsRemaining } = this.state;
+    const { allowFontScaling } = this.props;
+    const { style } = this.props;
     return (
       <Text allowFontScaling={allowFontScaling} style={style}>
         {this.getFormattedTime(secondsRemaining)}
@@ -111,5 +112,5 @@ TimerCountdown.defaultProps = {
   interval: 1000,
   formatSecondsRemaining: null,
   onTick: null,
-  onTimeElapsed: null
+  onTimeElapsed: null,
 };

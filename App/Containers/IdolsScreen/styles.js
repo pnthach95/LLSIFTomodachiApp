@@ -3,18 +3,18 @@ import { Metrics, Colors } from '../../Theme';
 
 export default StyleSheet.create({
   container: {
-    backgroundColor: Colors.blue
+    backgroundColor: Colors.blue,
   },
   hole: {
+    height: Metrics.navBarHeight,
     width: Metrics.navBarHeight,
-    height: Metrics.navBarHeight
   },
   list: {
-    padding: Metrics.smallMargin
+    padding: Metrics.smallMargin,
   },
   sectionText: {
-    fontWeight: 'bold',
     color: 'white',
-    fontSize: 20
-  }
+    fontSize: 20,
+    fontWeight: 'bold',
+  },
 });

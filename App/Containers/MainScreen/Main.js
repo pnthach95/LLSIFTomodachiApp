@@ -1,5 +1,7 @@
 import React from 'react';
-import { Text, View, Image, ScrollView, TouchableNativeFeedback, Alert, Platform } from 'react-native';
+import {
+  Text, View, Image, ScrollView, TouchableNativeFeedback, Alert, Platform,
+} from 'react-native';
 import { connect } from 'react-redux';
 import FastImage from 'react-native-fast-image';
 import Icon from 'react-native-vector-icons/SimpleLineIcons';
@@ -14,7 +16,9 @@ import SplashScreen from '../SplashScreen/SplashScreen';
 import { AddHTTPS, openLink } from '../../Utils';
 import { Config, EventStatus } from '../../Config';
 import { GithubService } from '../../Services/GithubService';
-import { Metrics, Colors, Images, ApplicationStyles } from '../../Theme';
+import {
+  Metrics, Colors, Images, ApplicationStyles,
+} from '../../Theme';
 import styles from './styles';
 
 /**
@@ -39,8 +43,8 @@ class MainScreen extends React.Component {
       imgHeight: 0,
       ENEvent: null,
       JPEvent: null,
-      currentContests: []
-    }
+      currentContests: [],
+    };
   }
 
   static navigationOptions = {
@@ -49,25 +53,25 @@ class MainScreen extends React.Component {
     tabBarLabel: 'Home',
     tabBarOptions: {
       activeTintColor: Colors.pink,
-      inactiveTintColor: Colors.inactive
-    }
+      inactiveTintColor: Colors.inactive,
+    },
   }
 
   componentDidMount() {
     if (Platform.OS === 'android') {
-      GithubService.fetchLatestVersion().then(result => {
+      GithubService.fetchLatestVersion().then((result) => {
         // console.log('github', result);
-        let appVersionArr = VersionNumber.appVersion.split(/\D|[a-zA-Z]/);
-        let gitVersionArr = result.tag_name.split(/\./);
-        let appVersion = Number.parseInt(appVersionArr[0] + (appVersionArr[1].length === 1 ? '0' : '') + appVersionArr[1] + (appVersionArr[2].length === 1 ? '0' : '') + (appVersionArr[2] + 1));
-        let gitVersion = Number.parseInt(gitVersionArr[0] + (gitVersionArr[1].length === 1 ? '0' : '') + gitVersionArr[1] + (gitVersionArr[2].length === 1 ? '0' : '') + gitVersionArr[2]);
+        const appVersionArr = VersionNumber.appVersion.split(/\D|[a-zA-Z]/);
+        const gitVersionArr = result.tag_name.split(/\./);
+        const appVersion = Number.parseInt(appVersionArr[0] + (appVersionArr[1].length === 1 ? '0' : '') + appVersionArr[1] + (appVersionArr[2].length === 1 ? '0' : '') + (appVersionArr[2] + 1));
+        const gitVersion = Number.parseInt(gitVersionArr[0] + (gitVersionArr[1].length === 1 ? '0' : '') + gitVersionArr[1] + (gitVersionArr[2].length === 1 ? '0' : '') + gitVersionArr[2]);
         if (gitVersion > appVersion) {
           this.setState({
             version: {
               tag: result.tag_name,
               filename: result.assets[0].name,
-              link: result.assets[0].browser_download_url
-            }
+              link: result.assets[0].browser_download_url,
+            },
           });
         }
       });
@@ -83,7 +87,7 @@ class MainScreen extends React.Component {
    */
   timer(time) {
     return <TimerCountdown initialSecondsRemaining={time}
-      allowFontScaling={true} style={styles.text} />
+      allowFontScaling={true} style={styles.text} />;
   }
 
   /**
@@ -115,20 +119,20 @@ class MainScreen extends React.Component {
       Alert.alert('Error', this.props.cachedDataErrorMessage);
       return <View style={{ backgroundColor: Colors.pink }} />;
     }
-    let data = this.props.cachedData;
-    let currentContests = data.get('current_contests');
+    const data = this.props.cachedData;
+    const currentContests = data.get('current_contests');
     /** English event */
-    let ENEvent = data.get('eventEN');
+    const ENEvent = data.get('eventEN');
     /** Start time of English event */
-    let ENEventStart = moment(ENEvent.get('english_beginning'));
+    const ENEventStart = moment(ENEvent.get('english_beginning'));
     /** End time of English event */
-    let ENEventEnd = moment(ENEvent.get('english_end'));
+    const ENEventEnd = moment(ENEvent.get('english_end'));
     /** Japanese event */
-    let JPEvent = data.get('eventJP');
+    const JPEvent = data.get('eventJP');
     /** Start time of Japanese event */
-    let JPEventStart = moment(JPEvent.get('beginning'), Config.DATETIME_FORMAT_INPUT);
+    const JPEventStart = moment(JPEvent.get('beginning'), Config.DATETIME_FORMAT_INPUT);
     /** End time of Japanese event */
-    let JPEventEnd = moment(JPEvent.get('end'), Config.DATETIME_FORMAT_INPUT);
+    const JPEventEnd = moment(JPEvent.get('end'), Config.DATETIME_FORMAT_INPUT);
 
     return (
       <View style={styles.container}>
@@ -138,8 +142,8 @@ class MainScreen extends React.Component {
           <Image source={Images.logo} style={ApplicationStyles.imageHeader} />
           <SquareButton name={'ios-menu'} color={Colors.pink} />
         </View>
-        {this.state.version !== null &&
-          <Touchable useForeground style={styles.update}
+        {this.state.version !== null
+          && <Touchable useForeground style={styles.update}
             background={TouchableNativeFeedback.Ripple('white', false)}
             onLongPress={() => { }}
             onPress={() => openLink(this.state.version.link)}>
@@ -164,23 +168,23 @@ class MainScreen extends React.Component {
               onLoad={e => this.onLoadFastImage(e)}
               style={{
                 width: Metrics.widthBanner,
-                height: Metrics.widthBanner * this.state.imgHeight / this.state.imgWidth
+                height: Metrics.widthBanner * this.state.imgHeight / this.state.imgWidth,
               }} />
             <View style={styles.textbox}>
               <Text style={styles.text}>
                 {`Start: ${ENEventStart.format(Config.DATETIME_FORMAT_OUTPUT)}\nEnd: ${ENEventEnd.format(Config.DATETIME_FORMAT_OUTPUT)}`}
               </Text>
             </View>
-            {ENEvent.get('world_current') &&
-              <View style={styles.textbox}>
+            {ENEvent.get('world_current')
+              && <View style={styles.textbox}>
                 <Text style={styles.text}>
-                  {this.timer(ENEventEnd.diff(moment()))}{` left`}
+                  {this.timer(ENEventEnd.diff(moment()))}{' left'}
                 </Text>
               </View>}
-            {ENEvent.get('english_status') === EventStatus.ANNOUNCED &&
-              <View style={styles.textbox}>
+            {ENEvent.get('english_status') === EventStatus.ANNOUNCED
+              && <View style={styles.textbox}>
                 <Text style={styles.text}>
-                  {`Starts in `}{this.timer(ENEventStart.diff(moment()))}
+                  {'Starts in '}{this.timer(ENEventStart.diff(moment()))}
                 </Text>
               </View>}
           </Touchable>
@@ -200,23 +204,23 @@ class MainScreen extends React.Component {
               onLoad={e => this.onLoadFastImage(e)}
               style={{
                 width: Metrics.widthBanner,
-                height: Metrics.widthBanner * this.state.imgHeight / this.state.imgWidth
+                height: Metrics.widthBanner * this.state.imgHeight / this.state.imgWidth,
               }} />
             <View style={styles.textbox}>
               <Text style={styles.text}>
                 {`Start: ${JPEventStart.format(Config.DATETIME_FORMAT_OUTPUT)}\nEnd: ${JPEventEnd.format(Config.DATETIME_FORMAT_OUTPUT)}`}
               </Text>
             </View>
-            {JPEvent.get('japan_current') &&
-              <View style={styles.textbox}>
+            {JPEvent.get('japan_current')
+              && <View style={styles.textbox}>
                 <Text style={styles.text}>
-                  {this.timer(JPEventEnd.diff(moment()))}{` left`}
+                  {this.timer(JPEventEnd.diff(moment()))}{' left'}
                 </Text>
               </View>}
-            {JPEvent.get('japan_status') === EventStatus.ANNOUNCED &&
-              <View style={styles.textbox}>
+            {JPEvent.get('japan_status') === EventStatus.ANNOUNCED
+              && <View style={styles.textbox}>
                 <Text style={styles.text}>
-                  {`Starts in `}{this.timer(JPEventStart.diff(moment()))}
+                  {'Starts in '}{this.timer(JPEventStart.diff(moment()))}
                 </Text>
               </View>}
           </Touchable>
@@ -237,15 +241,15 @@ class MainScreen extends React.Component {
           ))} */}
         </ScrollView>
       </View>
-    )
+    );
   }
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
   cachedData: state.cachedData.get('cachedData'),
   cachedDataErrorMessage: state.cachedData.get('cachedDataErrorMessage'),
-  cachedDataIsLoading: state.cachedData.get('cachedDataIsLoading')
+  cachedDataIsLoading: state.cachedData.get('cachedDataIsLoading'),
 });
 
-const mapDispatchToProps = (dispatch) => ({});
+const mapDispatchToProps = dispatch => ({});
 export default connect(mapStateToProps, mapDispatchToProps)(MainScreen);

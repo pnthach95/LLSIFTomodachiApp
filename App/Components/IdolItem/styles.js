@@ -3,19 +3,19 @@ import { Metrics, Colors } from '../../Theme';
 
 export default StyleSheet.create({
   container: {
-    borderRadius: 5,
     alignItems: 'center',
     backgroundColor: Colors.itemColor,
+    borderRadius: 5,
+    margin: Metrics.smallMargin,
     width: Metrics.images.smallItemWidth,
-    margin: Metrics.smallMargin
   },
   info: {
+    alignItems: 'center',
     flexDirection: 'row',
-    margin: Metrics.smallMargin,
     justifyContent: 'space-around',
-    alignItems: 'center'
+    margin: Metrics.smallMargin,
   },
   text: {
-    textAlign: 'center'
-  }
+    textAlign: 'center',
+  },
 });

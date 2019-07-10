@@ -3,7 +3,7 @@ import { put, call } from 'redux-saga/effects';
 import SettingActions from '../Stores/Settings/Actions';
 
 export function* setSettings(action) {
-  let j = JSON.stringify(action.settings);
+  const j = JSON.stringify(action.settings);
   AsyncStorage.setItem('settings', j);
   yield put(SettingActions.saveSettings(action.settings));
 }

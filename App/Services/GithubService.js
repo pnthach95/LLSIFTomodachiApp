@@ -4,7 +4,7 @@ import { Config } from '../Config';
 
 const GithubApiClient = create({
   baseURL: Config.GITHUB_API,
-  timeout: 10000
+  timeout: 10000,
 });
 
 GithubApiClient.addMonitor(Reactotron.apisauce);
@@ -16,7 +16,7 @@ GithubApiClient.addMonitor(Reactotron.apisauce);
  */
 async function fetchLatestVersion() {
   return new Promise((resolve, reject) => {
-    GithubApiClient.get(Config.REPO).then(response => {
+    GithubApiClient.get(Config.REPO).then((response) => {
       if (response.ok) {
         resolve(response.data[0]);
       }
@@ -26,5 +26,5 @@ async function fetchLatestVersion() {
 }
 
 export const GithubService = {
-  fetchLatestVersion
-}
+  fetchLatestVersion,
+};

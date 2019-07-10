@@ -28,14 +28,14 @@ import { AddHTTPS, findColorByAttribute, findSkill } from '../../Utils';
 export default class Card2PicsItem extends Component {
   constructor(props) {
     super(props);
-    var tmp = [];
+    const tmp = [];
     if (props.item.card_image !== null) tmp.push(AddHTTPS(props.item.card_image));
     if (props.item.card_idolized_image !== null) tmp.push(AddHTTPS(props.item.card_idolized_image));
     this.state = {
       imgWidth: 0,
       imgHeight: 0,
       images: tmp,
-      colors: findColorByAttribute(props.item.attribute)
+      colors: findColorByAttribute(props.item.attribute),
     };
   }
 
@@ -49,13 +49,13 @@ export default class Card2PicsItem extends Component {
             {this.state.images.map((value, index) => <FastImage
               key={index}
               source={{ uri: value }}
-              onLoad={e => {
-                const { width, height } = e.nativeEvent
-                this.setState({ imgWidth: width, imgHeight: height })
+              onLoad={(e) => {
+                const { width, height } = e.nativeEvent;
+                this.setState({ imgWidth: width, imgHeight: height });
               }}
               style={{
                 width: Metrics.images.itemWidth,
-                height: Metrics.images.itemWidth * this.state.imgHeight / this.state.imgWidth
+                height: Metrics.images.itemWidth * this.state.imgHeight / this.state.imgWidth,
               }} />)}
           </View>
           {/* FOOTER */}
@@ -63,38 +63,38 @@ export default class Card2PicsItem extends Component {
           <View style={[styles.info, { backgroundColor: this.state.colors[1] }]}>
             <View style={ApplicationStyles.screen} />
             <View style={[styles.infoRight, ApplicationStyles.screen]}>
-              {(this.props.item.skill !== null && this.props.item.skill.length !== 0) &&
-                <Image source={findSkill(this.props.item.skill)}
+              {(this.props.item.skill !== null && this.props.item.skill.length !== 0)
+                && <Image source={findSkill(this.props.item.skill)}
                   style={[
                     ApplicationStyles.mediumIcon,
-                    { tintColor: this.state.colors[0] }
+                    { tintColor: this.state.colors[0] },
                   ]} />}
 
               <Image source={this.props.item.japan_only ? Images.region[0] : Images.region[1]}
                 style={[
                   ApplicationStyles.mediumIcon,
-                  { tintColor: this.state.colors[0] }
+                  { tintColor: this.state.colors[0] },
                 ]} />
 
-              {this.props.item.is_promo &&
-                <Image source={Images.promo}
+              {this.props.item.is_promo
+                && <Image source={Images.promo}
                   style={[
                     ApplicationStyles.mediumIcon,
-                    { tintColor: this.state.colors[0] }
+                    { tintColor: this.state.colors[0] },
                   ]} />}
 
-              {this.props.item.is_special &&
-                <Image source={Images.skill[3]}
+              {this.props.item.is_special
+                && <Image source={Images.skill[3]}
                   style={[
                     ApplicationStyles.mediumIcon,
-                    { tintColor: this.state.colors[0] }
+                    { tintColor: this.state.colors[0] },
                   ]} />}
 
-              {this.props.item.event !== null &&
-                <Image source={Images.event}
+              {this.props.item.event !== null
+                && <Image source={Images.event}
                   style={[
                     ApplicationStyles.mediumIcon,
-                    { tintColor: this.state.colors[0] }
+                    { tintColor: this.state.colors[0] },
                   ]} />}
             </View>
           </View>

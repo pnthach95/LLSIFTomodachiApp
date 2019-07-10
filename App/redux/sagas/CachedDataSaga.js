@@ -1,5 +1,5 @@
 import { put, call } from 'redux-saga/effects';
-import { fetchCachedDataSuccess, fetchCachedDataFailure } from '../actions/cachedDataActions';
+import * as ActionTypes from '../actions/actionTypes';
 import { LLSIFService } from '../../Services/LLSIFService';
 import { LLSIFdotnetService } from '../../Services/LLSIFdotnetService';
 
@@ -8,7 +8,8 @@ import { LLSIFdotnetService } from '../../Services/LLSIFdotnetService';
  *
  * @export
  */
-export default function* fetchCachedData() {
+export default function* fetchCachedData(action) {
+  const { meta } = action;
   try {
     const data = yield call(LLSIFService.fetchCachedData);
     const eventEN = yield call(LLSIFService.fetchEventList,
@@ -31,8 +32,16 @@ export default function* fetchCachedData() {
     data.bgImage = bgImage;
     const eventInfo = yield call(LLSIFdotnetService.fetchEventInfo);
     data.eventInfo = eventInfo;
-    yield put(fetchCachedDataSuccess(data));
+    yield put({
+      type: ActionTypes.CACHED_DATA_SUCCESS,
+      cachedData: data,
+      meta,
+    });
   } catch (error) {
-    yield put(fetchCachedDataFailure('There was an error while fetching cached data.'));
+    yield put({
+      type: ActionTypes.CACHED_DATA_FAILED,
+      error: 'There was an error while fetching cached data.',
+      meta,
+    });
   }
 }

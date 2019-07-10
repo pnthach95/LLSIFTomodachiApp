@@ -20,6 +20,8 @@ target 'LLSIFTomodachi' do
     # Pods for testing
     pod 'RNGestureHandler', :path => '../node_modules/react-native-gesture-handler'
 
+    pod 'RNCAsyncStorage', :path => '../node_modules/@react-native-community/async-storage'
+
   end
 
   target 'LLSIFTomodachiTests' do

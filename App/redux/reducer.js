@@ -10,7 +10,7 @@ export default (state = init, action) => {
   switch (action.type) {
     // SUCCESS
     case ActionTypes.CACHED_DATA_SUCCESS:
-      return { ...state, loginData: action.payload };
+      return { ...state, cachedData: action.cachedData };
     // ERROR
     case ActionTypes.CACHED_DATA_FAILED:
       return { ...state, error: action.payload };

@@ -5,18 +5,21 @@ import {
   createStackNavigator,
   createBottomTabNavigator,
   createDrawerNavigator,
+  createSwitchNavigator,
   createAppContainer,
 } from 'react-navigation';
-import { connect } from 'react-redux';
+import { Provider } from 'react-redux';
 import firebase from 'react-native-firebase';
+import { Sentry } from 'react-native-sentry';
 
 import StatusBarBackground from '~/Components/StatusBarBackground/StatusBar';
-import CachedDataActions from '~/redux/Stores/CachedData/Actions';
 import { ApplicationStyles } from '~/Theme';
 import { loadSettings } from '~/Utils';
 import NavigationService from '~/Services/NavigationService';
 import { FirebaseTopic } from '~/Config';
+import ConfigureStore from '~/redux/store';
 
+import LoadingScreen from './LoadingScreen';
 import MainScreen from './MainScreen/Main';
 import CardsScreen from './CardsScreen/Cards';
 import IdolsScreen from './IdolsScreen/Idols';
@@ -30,6 +33,9 @@ import IdolDetailScreen from './IdolDetailScreen/IdolDetail';
 import SongDetailScreen from './SongDetailScreen/SongDetail';
 import ImageViewer from './ImageViewer/ImageViewer';
 
+Sentry.config('https://ac9aa894ab9341fba115b29731378b6b@sentry.io/1330276').install();
+const store = ConfigureStore;
+
 const LLSIFTab = createBottomTabNavigator(
   {
     MainScreen,
@@ -38,10 +44,13 @@ const LLSIFTab = createBottomTabNavigator(
     EventsScreen,
     SongsScreen,
   },
-  { initialRouteName: 'MainScreen' },
+  {
+    initialRouteName: 'MainScreen',
+    navigationOptions: {
+      header: null,
+    },
+  },
 );
-
-LLSIFTab.navigationOptions = { header: null };
 
 const Stack = createStackNavigator(
   {
@@ -58,9 +67,16 @@ const Stack = createStackNavigator(
   },
 );
 
-const AppNav = createDrawerNavigator({ Stack }, { contentComponent: Drawer });
+const AppStack = createDrawerNavigator({ Stack }, { contentComponent: Drawer });
 
-class RootScreen extends Component {
+const SwitchNavigator = createSwitchNavigator({
+  Loading: LoadingScreen,
+  AppStack,
+});
+
+const AppContainer = createAppContainer(SwitchNavigator);
+
+export default class MainContainer extends Component {
   componentDidMount() {
     // eslint-disable-next-line no-undef
     if (__DEV__) {
@@ -142,7 +158,6 @@ class RootScreen extends Component {
       }
     });
     firebase.messaging().subscribeToTopic(FirebaseTopic.MESSAGE);
-    this.props.startup();
   }
 
   componentWillUnmount() {
@@ -154,20 +169,14 @@ class RootScreen extends Component {
 
   render() {
     return (
-      <SafeAreaView style={ApplicationStyles.screen}>
-        <View style={ApplicationStyles.screen}>
-          <StatusBarBackground />
-          <AppNav ref={navigatorRef => NavigationService.setTopLevelNavigator(navigatorRef)} />
-        </View>
-      </SafeAreaView>
+      <Provider store={store}>
+        <SafeAreaView style={ApplicationStyles.screen}>
+          <View style={ApplicationStyles.screen}>
+            <StatusBarBackground />
+            <AppContainer />
+          </View>
+        </SafeAreaView>
+      </Provider>
     );
   }
 }
-
-const mapStateToProps = state => ({});
-
-const mapDispatchToProps = dispatch => ({
-  startup: () => dispatch(CachedDataActions.fetchCachedData()),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(createAppContainer(RootScreen));

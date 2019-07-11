@@ -61,7 +61,7 @@ export default class Information extends React.PureComponent {
 	 *
 	 * @param {Number} time Remaining time (miliseconds)
 	 * @returns
-	 * @memberof MainScreen
+	 * @memberof Information
 	 */
   timer(time) {
     return <TimerCountdown initialSecondsRemaining={time}

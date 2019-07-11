@@ -24,6 +24,9 @@ const style = {
   black: {
     color: 'black',
   },
+  white: {
+    color: 'white',
+  },
 };
 
 export default { size, style };

@@ -1,6 +1,6 @@
 import { put, call } from 'redux-saga/effects';
 import * as ActionTypes from '../actions/actionTypes';
-import { LLSIFService } from '~/Services/LLSIFService';
+import LLSIFService from '~/Services/LLSIFService';
 import { LLSIFdotnetService } from '~/Services/LLSIFdotnetService';
 
 /**
@@ -34,7 +34,7 @@ export default function* fetchCachedData(action) {
     data.eventInfo = eventInfo;
     yield put({
       type: ActionTypes.CACHED_DATA_SUCCESS,
-      cachedData: data,
+      payload: data,
       meta,
     });
   } catch (error) {

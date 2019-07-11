@@ -1,6 +1,11 @@
 import React from 'react';
+import {
+  View, Text, TouchableOpacity,
+  StyleSheet,
+} from 'react-native';
 import PropTypes from 'prop-types';
 import SplashScreen from '../SplashScreen/SplashScreen';
+import { Colors, ApplicationStyles, Fonts } from '~/Theme';
 
 /**
  * Loading Screen
@@ -10,22 +15,62 @@ import SplashScreen from '../SplashScreen/SplashScreen';
  * @extends {React.Component}
  */
 export default class LoadingScreen extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      error: false,
+    };
+  }
+
   static propTypes = {
     fetchCachedData: PropTypes.func,
   }
 
   componentDidMount() {
+    this.loadCachedData();
+  }
+
+  loadCachedData = () => {
+    this.setState({ error: false });
     this.props.fetchCachedData()
-      .then((res) => {
-        // eslint-disable-next-line no-console
-        console.log('fetchCachedData', res);
+      .then(() => {
         this.props.navigation.navigate('AppStack');
+      })
+      .catch((error) => {
+        // eslint-disable-next-line no-console
+        console.log(error);
+        this.setState({ error: true });
       });
   }
 
   render() {
-    return (
-      <SplashScreen />
-    );
+    if (this.state.error) {
+      return (
+        <View style={[
+          ApplicationStyles.screen,
+          ApplicationStyles.center,
+          styles.bg,
+        ]}>
+          <Text style={[Fonts.style.normal, Fonts.style.white]}>Failed</Text>
+          <TouchableOpacity onPress={this.loadCachedData}>
+            <View style={styles.button}>
+              <Text style={Fonts.style.normal}>Retry</Text>
+            </View>
+          </TouchableOpacity>
+        </View>
+      );
+    }
+    return <SplashScreen bgColor={Colors.pink} />;
   }
 }
+
+const styles = StyleSheet.create({
+  bg: {
+    backgroundColor: Colors.pink,
+  },
+  button: {
+    backgroundColor: Colors.white,
+    margin: 10,
+    padding: 10,
+  },
+});

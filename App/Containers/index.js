@@ -20,7 +20,7 @@ import { FirebaseTopic } from '~/Config';
 import ConfigureStore from '~/redux/store';
 
 import LoadingScreen from './LoadingScreen';
-import MainScreen from './MainScreen/Main';
+import MainScreen from './MainScreen';
 import CardsScreen from './CardsScreen/Cards';
 import IdolsScreen from './IdolsScreen/Idols';
 import EventsScreen from './EventsScreen/Events';

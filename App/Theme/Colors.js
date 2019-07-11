@@ -22,4 +22,5 @@ export default {
   ongoing: '#00C200',
   finished: '#EBA3FF',
   star: ['#D8FD53', '#F7FB34', '#FBAAC3', '#F33256'],
+  white: 'white',
 };

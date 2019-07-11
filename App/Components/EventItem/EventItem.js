@@ -4,9 +4,9 @@ import ElevatedView from 'react-native-elevated-view';
 import FastImage from 'react-native-fast-image';
 import styles from './styles';
 import Touchable from '../Touchable/Touchable';
-import { Metrics, Colors } from '../../Theme';
-import { AddHTTPS } from '../../Utils';
-import { EventStatus } from '../../Config';
+import { Metrics, Colors } from '~/Theme';
+import { AddHTTPS } from '~/Utils';
+import { EventStatus } from '~/Config';
 
 /**
  * Event item for Event List Screen

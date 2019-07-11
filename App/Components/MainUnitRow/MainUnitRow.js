@@ -3,8 +3,8 @@ import {
   Text, View, TouchableOpacity, Image,
 } from 'react-native';
 import PropTypes from 'prop-types';
-import { Images, ApplicationStyles } from '../../Theme';
-import styles from '../../Theme/RowStyles';
+import { Images, ApplicationStyles } from '~/Theme';
+import styles from '~/Theme/RowStyles';
 
 /**
  * Main Unit Row (None, μ's, Aqours)

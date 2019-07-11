@@ -6,7 +6,7 @@ import PureChart from 'react-native-pure-chart';
 import SegmentedControlTab from 'react-native-segmented-control-tab';
 import { Row } from 'react-native-table-component';
 
-import { ApplicationStyles, Metrics } from '../../Theme';
+import { ApplicationStyles, Metrics } from '~/Theme';
 import styles from './styles';
 
 export default class Tracker extends React.PureComponent {

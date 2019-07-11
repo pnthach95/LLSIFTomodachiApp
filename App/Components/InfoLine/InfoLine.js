@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text } from 'react-native';
 import { PropTypes } from 'prop-types';
-import { openLink } from '../../Utils';
+import { openLink } from '~/Utils';
 import styles from './styles';
 
 /**

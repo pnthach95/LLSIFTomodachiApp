@@ -7,20 +7,20 @@ import ElevatedView from 'react-native-elevated-view';
 import Icon from 'react-native-vector-icons/Ionicons';
 import _ from 'lodash';
 
-import Fade from '../../Components/Fade/Fade';
-import SkillRow from '../../Components/SkillRow/SkillRow';
-import EventItem from '../../Components/EventItem/EventItem';
-import RegionRow from '../../Components/RegionRow/RegionRow';
-import Touchable from '../../Components/Touchable/Touchable';
-import IdolNameRow from '../../Components/IdolNameRow/IdolNameRow';
-import MainUnitRow from '../../Components/MainUnitRow/MainUnitRow';
-import AttributeRow from '../../Components/AttributeRow/AttributeRow';
-import SquareButton from '../../Components/SquareButton/SquareButton';
+import Fade from '~/Components/Fade/Fade';
+import SkillRow from '~/Components/SkillRow';
+import EventItem from '~/Components/EventItem/EventItem';
+import RegionRow from '~/Components/RegionRow/RegionRow';
+import Touchable from '~/Components/Touchable/Touchable';
+import IdolNameRow from '~/Components/IdolNameRow';
+import MainUnitRow from '~/Components/MainUnitRow/MainUnitRow';
+import AttributeRow from '~/Components/AttributeRow/AttributeRow';
+import SquareButton from '~/Components/SquareButton/SquareButton';
 import SplashScreen from '../SplashScreen/SplashScreen';
-import { Colors, ApplicationStyles, Images } from '../../Theme';
+import { Colors, ApplicationStyles, Images } from '~/Theme';
 import styles from './styles';
-import { LLSIFService } from '../../Services/LLSIFService';
-import { loadSettings } from '../../Utils';
+import { LLSIFService } from '~/Services/LLSIFService';
+import { loadSettings } from '~/Utils';
 
 /**
  * [Event List Screen](https://github.com/MagiCircles/SchoolIdolAPI/wiki/API-Events#get-the-list-of-events)
@@ -77,7 +77,7 @@ class EventsScreen extends React.Component {
 
   static navigationOptions = {
     tabBarIcon: ({ focused }) => <Icon name='md-calendar' size={30}
-        color={focused ? Colors.pink : Colors.inactive} />,
+      color={focused ? Colors.pink : Colors.inactive} />,
     tabBarLabel: 'Events',
     tabBarOptions: {
       activeTintColor: Colors.pink,

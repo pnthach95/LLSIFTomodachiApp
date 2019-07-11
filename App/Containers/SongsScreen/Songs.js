@@ -7,18 +7,18 @@ import ElevatedView from 'react-native-elevated-view';
 import Icon from 'react-native-vector-icons/Ionicons';
 import _ from 'lodash';
 
-import Fade from '../../Components/Fade/Fade';
-import EventRow from '../../Components/EventRow/EventRow';
-import SongItem from '../../Components/SongItem/SongItem';
-import Touchable from '../../Components/Touchable/Touchable';
-import MainUnitRow from '../../Components/MainUnitRow/MainUnitRow';
-import OrderingRow from '../../Components/OrderingRow/OrderingRow';
-import AttributeRow from '../../Components/AttributeRow/AttributeRow';
-import SquareButton from '../../Components/SquareButton/SquareButton';
+import Fade from '~/Components/Fade/Fade';
+import EventRow from '~/Components/EventRow/EventRow';
+import SongItem from '~/Components/SongItem/SongItem';
+import Touchable from '~/Components/Touchable/Touchable';
+import MainUnitRow from '~/Components/MainUnitRow/MainUnitRow';
+import OrderingRow from '~/Components/OrderingRow/OrderingRow';
+import AttributeRow from '~/Components/AttributeRow/AttributeRow';
+import SquareButton from '~/Components/SquareButton/SquareButton';
 import SplashScreen from '../SplashScreen/SplashScreen';
-import { LLSIFService } from '../../Services/LLSIFService';
-import { Colors, ApplicationStyles, Images } from '../../Theme';
-import { OrderingGroup } from '../../Config';
+import { LLSIFService } from '~/Services/LLSIFService';
+import { Colors, ApplicationStyles, Images } from '~/Theme';
+import { OrderingGroup } from '~/Config';
 import styles from './styles';
 
 const defaultFilter = {

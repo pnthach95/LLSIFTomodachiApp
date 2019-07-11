@@ -1,21 +1,22 @@
 import React, { Component } from 'react';
 import {
-  View, Text, ImageBackground, TouchableHighlight, TouchableOpacity, Image, Switch, ScrollView,
+  View, Text, ImageBackground,
+  TouchableHighlight, TouchableOpacity, Image,
+  Switch, ScrollView,
 } from 'react-native';
+import PropTypes from 'prop-types';
 import { SafeAreaView } from 'react-navigation';
-import { connect } from 'react-redux';
 import firebase from 'react-native-firebase';
 import Icon from 'react-native-vector-icons/Ionicons';
 import VersionNumber from 'react-native-version-number';
 
-import Fade from '../../Components/Fade/Fade';
+import Fade from '~/Components/Fade/Fade';
 import styles from './styles';
-import { Images, ApplicationStyles, Fonts } from '../../Theme';
-import { Config, RELEASE_NOTE } from '../../Config';
+import { Images, ApplicationStyles, Fonts } from '~/Theme';
+import { Config, RELEASE_NOTE } from '~/Config';
 import {
   AddHTTPS, loadSettings, saveSettings, openLink,
-} from '../../Utils';
-import { getRandomCard, getBGImage } from '../../redux/Stores/CachedData/Selectors';
+} from '~/Utils';
 
 /**
  * Left Drawer show some information
@@ -24,7 +25,7 @@ import { getRandomCard, getBGImage } from '../../redux/Stores/CachedData/Selecto
  * @class Drawer
  * @extends {Component}
  */
-class Drawer extends Component {
+export default class Drawer extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -34,6 +35,11 @@ class Drawer extends Component {
       jp_event: true,
       worldwide_only: true,
     };
+  }
+
+  static propTypes = {
+    bgImage: PropTypes.string,
+    randomCard: PropTypes.any,
   }
 
   componentDidMount() {
@@ -51,14 +57,14 @@ class Drawer extends Component {
    *
    * @memberof Drawer
    */
-  _visibleToggle = () => this.setState({ visible: !this.state.visible });
+  visibleToggle = () => this.setState({ visible: !this.state.visible });
 
   /**
    * Toggle worldwide option
    *
    * @memberof Drawer
    */
-  _worldwideToggle = () => {
+  worldwideToggle = () => {
     const settings = {
       ww_event: this.state.ww_event,
       jp_event: this.state.jp_event,
@@ -73,7 +79,7 @@ class Drawer extends Component {
    *
    * @memberof Drawer
    */
-  _wwEventToggle = () => {
+  wwEventToggle = () => {
     const settings = {
       ww_event: !this.state.ww_event,
       jp_event: this.state.jp_event,
@@ -93,14 +99,14 @@ class Drawer extends Component {
    *
    * @memberof Drawer
    */
-  _groupToggle = () => this.setState({ isCollapsed: !this.state.isCollapsed });
+  groupToggle = () => this.setState({ isCollapsed: !this.state.isCollapsed });
 
   /**
    * Toggle receiving japanese event notification option
    *
    * @memberof Drawer
    */
-  _jpEventToggle = () => {
+  jpEventToggle = () => {
     const settings = {
       ww_event: this.state.ww_event,
       jp_event: !this.state.jp_event,
@@ -121,7 +127,7 @@ class Drawer extends Component {
    * @param {Object} item Card's information
    * @memberof Drawer
    */
-  _navigateToCardDetail = item => () => {
+  navigateToCardDetail = item => () => {
     this.setState({ visible: true });
     this.props.navigation.navigate('CardDetailScreen', { item });
   }
@@ -139,7 +145,7 @@ class Drawer extends Component {
                 <Image source={Images.logo} style={styles.logo} resizeMode={'contain'} />
               </View>
               <View style={ApplicationStyles.screen}>
-                <TouchableOpacity onPress={this._groupToggle}>
+                <TouchableOpacity onPress={this.groupToggle}>
                   <View style={styles.group}>
                     <Text style={Fonts.style.black}>OPTIONS</Text>
                     <Icon name={this.state.isCollapsed ? 'ios-arrow-up' : 'ios-arrow-down'} size={20} />
@@ -150,21 +156,21 @@ class Drawer extends Component {
                     <View style={styles.settingRow}>
                       <Text style={Fonts.style.black}>Search Worldwide only</Text>
                       <Switch value={this.state.worldwide_only}
-                        onValueChange={this._worldwideToggle} />
+                        onValueChange={this.worldwideToggle} />
                     </View>
                     <View style={styles.settingRow}>
                       <Text style={Fonts.style.black}>Notify WW event</Text>
                       <Switch value={this.state.ww_event}
-                        onValueChange={this._wwEventToggle} />
+                        onValueChange={this.wwEventToggle} />
                     </View>
                     <View style={styles.settingRow}>
                       <Text style={Fonts.style.black}>Notify JP event</Text>
                       <Switch value={this.state.jp_event}
-                        onValueChange={this._jpEventToggle} />
+                        onValueChange={this.jpEventToggle} />
                     </View>
                   </ScrollView>
                 </View>}
-                <TouchableOpacity onPress={this._groupToggle}>
+                <TouchableOpacity onPress={this.groupToggle}>
                   <View style={styles.group}>
                     <Text style={Fonts.style.black}>ABOUT ME</Text>
                     <Icon name={!this.state.isCollapsed ? 'ios-arrow-up' : 'ios-arrow-down'} size={20} />
@@ -182,12 +188,12 @@ class Drawer extends Component {
                   <Text style={styles.versionText}>
                     {'Powered by '}
                     {<Text onPress={() => openLink(Config.SCHOOLIDO)}
-                      style={[styles.versionText, { textDecorationLine: 'underline' }]}>
+                      style={[styles.versionText, styles.textUnderline]}>
                       {'School Idol Tomodachi'}
                     </Text>}
                     {', '}
                     {<Text onPress={() => openLink(Config.LLSIFNET)}
-                      style={[styles.versionText, { textDecorationLine: 'underline' }]}>
+                      style={[styles.versionText, styles.textUnderline]}>
                       {'llsif.net'}
                     </Text>}
                   </Text>
@@ -206,15 +212,15 @@ class Drawer extends Component {
             </Fade>
 
             <Fade visible={!this.state.visible}
-              style={[styles.container, { backgroundColor: '#0000' }]}>
-              <TouchableHighlight onPress={this._navigateToCardDetail(this.props.randomCard)}
+              style={[styles.container, styles.transparent]}>
+              <TouchableHighlight onPress={this.navigateToCardDetail(this.props.randomCard)}
                 underlayColor={'#fffa'}
                 style={[ApplicationStyles.center, styles.viewMore]}>
                 <Text style={styles.versionText}>View card info</Text>
               </TouchableHighlight>
             </Fade>
 
-            <TouchableHighlight onPress={this._visibleToggle}
+            <TouchableHighlight onPress={this.visibleToggle}
               underlayColor={'#fff'}
               style={[ApplicationStyles.center, styles.versionContainer]}>
               <Text style={styles.versionText}>Version {VersionNumber.appVersion}</Text>
@@ -225,11 +231,3 @@ class Drawer extends Component {
     );
   }
 }
-
-const mapStateToProps = state => ({
-  randomCard: getRandomCard(state),
-  bgImage: getBGImage(state),
-});
-
-const mapDispatchToProps = dispatch => ({});
-export default connect(mapStateToProps, mapDispatchToProps)(Drawer);

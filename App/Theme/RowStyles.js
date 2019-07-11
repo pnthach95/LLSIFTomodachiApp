@@ -16,6 +16,9 @@ export default StyleSheet.create({
     color: 'black',
     fontSize: 16,
   },
+  flex2: {
+    flex: 2,
+  },
   leftView: {
     flex: 1,
     justifyContent: 'center',

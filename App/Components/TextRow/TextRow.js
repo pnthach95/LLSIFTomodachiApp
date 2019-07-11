@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text } from 'react-native';
-import { Fonts, ApplicationStyles } from '../../Theme';
+import { Fonts, ApplicationStyles } from '~/Theme';
 
 /**
  * TextRow

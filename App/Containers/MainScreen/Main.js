@@ -8,17 +8,17 @@ import Icon from 'react-native-vector-icons/SimpleLineIcons';
 import VersionNumber from 'react-native-version-number';
 import moment from 'moment';
 
-import Seperator from '../../Components/Seperator/Seperator';
-import Touchable from '../../Components/Touchable/Touchable';
-import SquareButton from '../../Components/SquareButton/SquareButton';
-import TimerCountdown from '../../Components/TimerCountdown/Timer';
+import Seperator from '~/Components/Seperator/Seperator';
+import Touchable from '~/Components/Touchable/Touchable';
+import SquareButton from '~/Components/SquareButton/SquareButton';
+import TimerCountdown from '~/Components/TimerCountdown/Timer';
 import SplashScreen from '../SplashScreen/SplashScreen';
-import { AddHTTPS, openLink } from '../../Utils';
-import { Config, EventStatus } from '../../Config';
-import { GithubService } from '../../Services/GithubService';
+import { AddHTTPS, openLink } from '~/Utils';
+import { Config, EventStatus } from '~/Config';
+import { GithubService } from '~/Services/GithubService';
 import {
   Metrics, Colors, Images, ApplicationStyles,
-} from '../../Theme';
+} from '~/Theme';
 import styles from './styles';
 
 /**

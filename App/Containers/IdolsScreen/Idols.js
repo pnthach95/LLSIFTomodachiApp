@@ -6,13 +6,13 @@ import { connect } from 'react-redux';
 import ElevatedView from 'react-native-elevated-view';
 import Icon from 'react-native-vector-icons/Ionicons';
 
-import Fade from '../../Components/Fade/Fade';
-import IdolItem from '../../Components/IdolItem/IdolItem';
-import Seperator from '../../Components/Seperator/Seperator';
-import SquareButton from '../../Components/SquareButton/SquareButton';
-import { LLSIFService } from '../../Services/LLSIFService';
+import Fade from '~/Components/Fade/Fade';
+import IdolItem from '~/Components/IdolItem/IdolItem';
+import Seperator from '~/Components/Seperator/Seperator';
+import SquareButton from '~/Components/SquareButton/SquareButton';
+import { LLSIFService } from '~/Services/LLSIFService';
 import SplashScreen from '../SplashScreen/SplashScreen';
-import { Colors, ApplicationStyles, Images } from '../../Theme';
+import { Colors, ApplicationStyles, Images } from '~/Theme';
 import styles from './styles';
 
 /**

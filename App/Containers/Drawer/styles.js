@@ -1,5 +1,16 @@
 import { StyleSheet } from 'react-native';
-import { Fonts, Metrics } from '../../Theme';
+import { Fonts, Metrics } from '~/Theme';
+
+const colors = {
+  c0005: '#0005',
+  ddda: '#ddda',
+  eeec: '#eeec',
+  fff6: '#fff6',
+  fff9: '#fff9',
+  fffb: '#fffb',
+  transparent: '#0000',
+  white: 'white',
+};
 
 export default StyleSheet.create({
   body: {
@@ -8,7 +19,7 @@ export default StyleSheet.create({
     paddingVertical: 6,
   },
   container: {
-    backgroundColor: '#ddda',
+    backgroundColor: colors.ddda,
     bottom: 50,
     flex: 0,
     flexGrow: 1,
@@ -19,7 +30,7 @@ export default StyleSheet.create({
   },
   footer: {
     alignSelf: 'flex-end',
-    backgroundColor: '#eeec',
+    backgroundColor: colors.eeec,
     height: 150,
     width: '100%',
   },
@@ -33,8 +44,8 @@ export default StyleSheet.create({
   },
   group: {
     alignItems: 'center',
-    backgroundColor: '#fff9',
-    borderBottomColor: '#0005',
+    backgroundColor: colors.fff9,
+    borderBottomColor: colors.c0005,
     borderBottomWidth: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -43,7 +54,7 @@ export default StyleSheet.create({
   },
   header: {
     alignSelf: 'stretch',
-    backgroundColor: '#fffb',
+    backgroundColor: colors.fffb,
     height: 70,
   },
   logo: {
@@ -52,7 +63,7 @@ export default StyleSheet.create({
   },
   settingRow: {
     alignItems: 'center',
-    backgroundColor: '#fff6',
+    backgroundColor: colors.fff6,
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginBottom: Metrics.smallMargin,
@@ -62,8 +73,14 @@ export default StyleSheet.create({
   textBlock: {
     padding: Metrics.baseMargin,
   },
+  textUnderline: {
+    textDecorationLine: 'underline',
+  },
+  transparent: {
+    backgroundColor: colors.transparent,
+  },
   versionContainer: {
-    backgroundColor: 'white',
+    backgroundColor: colors.white,
     bottom: 0,
     height: 50,
     left: 0,
@@ -76,7 +93,7 @@ export default StyleSheet.create({
   },
   viewMore: {
     alignSelf: 'stretch',
-    backgroundColor: '#fff9',
+    backgroundColor: colors.fff9,
     height: 50,
   },
 });

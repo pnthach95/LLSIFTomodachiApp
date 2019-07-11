@@ -1,10 +1,8 @@
 import React from 'react';
 import { Text, View } from 'react-native';
 import RNPickerSelect from 'react-native-picker-select';
-import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { getSchools } from '../../redux/Stores/CachedData/Selectors';
-import styles from '../../Theme/RowStyles';
+import styles from '~/Theme/RowStyles';
 
 /**
  * School Row.
@@ -19,14 +17,20 @@ import styles from '../../Theme/RowStyles';
  * @class SchoolRow
  * @extends {React.Component}
  */
-class SchoolRow extends React.Component {
+export default class SchoolRow extends React.Component {
+  static propTypes = {
+    idol_school: PropTypes.string.isRequired,
+    selectSchool: PropTypes.func.isRequired,
+    schools: PropTypes.any,
+  };
+
   render() {
     return (
       <View style={styles.pickerRow}>
         <View style={styles.leftView}>
           <Text>School</Text>
         </View>
-        <View style={{ flex: 2 }}>
+        <View style={styles.flex2}>
           <RNPickerSelect onValueChange={this.props.selectSchool}
             items={this.props.schools}
             hideIcon={true}
@@ -39,12 +43,3 @@ class SchoolRow extends React.Component {
     );
   }
 }
-
-SchoolRow.propTypes = {
-  idol_school: PropTypes.string.isRequired,
-  selectSchool: PropTypes.func.isRequired,
-};
-
-const mapStateToProps = state => ({ schools: getSchools(state) });
-const mapDispatchToProps = dispatch => ({});
-export default connect(mapStateToProps, mapDispatchToProps)(SchoolRow);

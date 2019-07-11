@@ -1,10 +1,8 @@
 import React from 'react';
 import { Text, View } from 'react-native';
 import RNPickerSelect from 'react-native-picker-select';
-import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { getSubunits } from '../../redux/Stores/CachedData/Selectors';
-import styles from '../../Theme/RowStyles';
+import styles from '~/Theme/RowStyles';
 
 /**
  * Sub Unit Row.
@@ -19,14 +17,20 @@ import styles from '../../Theme/RowStyles';
  * @class SubUnitRow
  * @extends {React.Component}
  */
-class SubUnitRow extends React.Component {
+export default class SubUnitRow extends React.Component {
+  static propTypes = {
+    idol_sub_unit: PropTypes.string.isRequired,
+    selectSubUnit: PropTypes.func.isRequired,
+    subUnits: PropTypes.any,
+  };
+
   render() {
     return (
       <View style={styles.pickerRow}>
         <View style={styles.leftView}>
           <Text>Sub unit</Text>
         </View>
-        <View style={{ flex: 2 }}>
+        <View style={styles.flex2}>
           <RNPickerSelect onValueChange={this.props.selectSubUnit}
             items={this.props.subUnits}
             hideIcon={true}
@@ -39,12 +43,3 @@ class SubUnitRow extends React.Component {
     );
   }
 }
-
-SubUnitRow.propTypes = {
-  idol_sub_unit: PropTypes.string.isRequired,
-  selectSubUnit: PropTypes.func.isRequired,
-};
-
-const mapStateToProps = state => ({ subUnits: getSubunits(state) });
-const mapDispatchToProps = dispatch => ({});
-export default connect(mapStateToProps, mapDispatchToProps)(SubUnitRow);

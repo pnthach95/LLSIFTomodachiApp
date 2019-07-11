@@ -1,13 +1,10 @@
 import { create } from 'apisauce';
-import Reactotron from 'reactotron-react-native';
 import { Config } from '../Config';
 
 const LLSIFApiClient = create({
   baseURL: Config.API_URL,
   timeout: 10000,
 });
-
-LLSIFApiClient.addMonitor(Reactotron.apisauce);
 
 /**
  * [Fetch cached data](https://github.com/MagiCircles/SchoolIdolAPI/wiki/API-Cached-data)
@@ -79,6 +76,7 @@ async function fetchIdol(name) {
  * @returns
  */
 async function fetchSongList(filter) {
+  // eslint-disable-next-line no-param-reassign
   filter.expand_event = '';
   const response = await LLSIFApiClient.get(Config.SONGS, filter);
   if (response.ok) {
@@ -135,7 +133,7 @@ async function fetchRandomCard() {
   return null;
 }
 
-export const LLSIFService = {
+export default {
   fetchCachedData,
   fetchCardList,
   fetchIdolList,

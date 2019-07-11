@@ -1,27 +1,27 @@
 import React from 'react';
 import { View } from 'react-native';
-import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import ElevatedView from 'react-native-elevated-view';
 import SegmentedControlTab from 'react-native-segmented-control-tab';
 import moment from 'moment';
 
 import Information from './Information';
 import Tracker from './Tracker';
-import Fade from '../../Components/Fade/Fade';
-import SquareButton from '../../Components/SquareButton/SquareButton';
+import Fade from '~/Components/Fade/Fade';
+import SquareButton from '~/Components/SquareButton/SquareButton';
 import SplashScreen from '../SplashScreen/SplashScreen';
-import { LLSIFService } from '../../Services/LLSIFService';
-import { LLSIFdotnetService } from '../../Services/LLSIFdotnetService';
-import { Config } from '../../Config';
-import { ApplicationStyles, Colors } from '../../Theme';
-import { getWWEventInfo, getJPEventInfo } from '../../redux/Stores/CachedData/Selectors';
-import { ReplaceQuestionMark } from '../../Utils';
+import { LLSIFService } from '~/Services/LLSIFService';
+import { LLSIFdotnetService } from '~/Services/LLSIFdotnetService';
+import { Config } from '~/Config';
+import { ApplicationStyles, Colors } from '~/Theme';
+import { ReplaceQuestionMark } from '~/Utils';
 import styles from './styles';
 
 /**
  * Event Detail Screen
  *
- * From parent screen, pass `item` (event object) or `eventName` (Japanese only) to show event detail
+ * From parent screen, pass `item` (event object)
+ *  or `eventName` (Japanese only) to show event detail
  *
  * State:
  * - `isLoading`: Loading state
@@ -41,7 +41,7 @@ import styles from './styles';
  * @class EventDetailScreen
  * @extends {React.PureComponent}
  */
-class EventDetailScreen extends React.PureComponent {
+export default class EventDetailScreen extends React.PureComponent {
   constructor(props) {
     super(props);
     this.state = {
@@ -57,6 +57,11 @@ class EventDetailScreen extends React.PureComponent {
       cards: [],
       songs: [],
     };
+  }
+
+  static propTypes = {
+    wwEventInfo: PropTypes.any,
+    jpEventInfo: PropTypes.any,
   }
 
   componentDidMount() {
@@ -90,10 +95,10 @@ class EventDetailScreen extends React.PureComponent {
    * @memberof EventDetailScreen
    */
   loadData() {
-    const _WWEventStart = moment(this.state.item.english_beginning);
-    const _JPEventStart = moment(this.state.item.beginning, Config.DATETIME_FORMAT_INPUT);
-    const wwEvent = this.props.wwEventInfo.filter(value => value.get('start_date') === _WWEventStart.unix());
-    const jpEvent = this.props.jpEventInfo.filter(value => value.get('start_date') === _JPEventStart.unix());
+    const WWEventStart = moment(this.state.item.english_beginning);
+    const JPEventStart = moment(this.state.item.beginning, Config.DATETIME_FORMAT_INPUT);
+    const wwEvent = this.props.wwEventInfo.filter(value => value.get('start_date') === WWEventStart.unix());
+    const jpEvent = this.props.jpEventInfo.filter(value => value.get('start_date') === JPEventStart.unix());
     if (wwEvent.length > 0) {
       LLSIFdotnetService.fetchEventData({ svr: 'EN', eid: wwEvent[0].get('event_id'), cname: 'en' })
         .then((res) => {
@@ -113,20 +118,21 @@ class EventDetailScreen extends React.PureComponent {
         LLSIFService.fetchSongList({ event: this.state.item.japanese_name })
           .then((resSong) => {
             this.setState({
-              WWEventStart: _WWEventStart,
+              WWEventStart,
               WWEventEnd: moment(this.state.item.english_end),
-              JPEventStart: _JPEventStart,
+              JPEventStart,
               JPEventEnd: moment(this.state.item.end, Config.DATETIME_FORMAT_INPUT),
               isLoading: false,
               cards: resCard,
               songs: resSong,
             });
+            // eslint-disable-next-line no-console
             console.log(`EventDetail ${this.state.item.japanese_name}`);
           });
       });
   }
 
-  _onTabPress = (index) => {
+  onTabPress = (index) => {
     if (!this.state.isLoading) this.setState({ selectedTab: index });
   }
 
@@ -136,18 +142,20 @@ class EventDetailScreen extends React.PureComponent {
         <ElevatedView elevation={5} style={[ApplicationStyles.header, styles.header]}>
           <SquareButton name={'ios-arrow-back'} color={'white'}
             onPress={() => this.props.navigation.goBack()} />
-          <View style={{ flex: 2 }}>
+          <View style={styles.flex2}>
             <SegmentedControlTab values={['Information', 'Cutoffs']}
               selectedIndex={this.state.selectedTab}
-              onTabPress={this._onTabPress} />
+              onTabPress={this.onTabPress} />
           </View>
           <SquareButton name={'ios-arrow-back'} color={Colors.lightViolet} />
         </ElevatedView>
         <View style={ApplicationStyles.screen}>
-          <Fade visible={this.state.isLoading} style={[ApplicationStyles.screen, ApplicationStyles.absolute]}>
+          <Fade visible={this.state.isLoading}
+            style={[ApplicationStyles.screen, ApplicationStyles.absolute]}>
             <SplashScreen bgColor={Colors.violet} />
           </Fade>
-          <Fade visible={!this.state.isLoading} style={[ApplicationStyles.screen, ApplicationStyles.absolute]}>
+          <Fade visible={!this.state.isLoading}
+            style={[ApplicationStyles.screen, ApplicationStyles.absolute]}>
             {!this.state.isLoading
               && <View style={ApplicationStyles.screen}>
                 {this.state.selectedTab === 0
@@ -167,11 +175,3 @@ class EventDetailScreen extends React.PureComponent {
     );
   }
 }
-
-const mapStateToProps = state => ({
-  wwEventInfo: getWWEventInfo(state),
-  jpEventInfo: getJPEventInfo(state),
-});
-
-const mapDispatchToProps = dispatch => ({});
-export default connect(mapStateToProps, mapDispatchToProps)(EventDetailScreen);

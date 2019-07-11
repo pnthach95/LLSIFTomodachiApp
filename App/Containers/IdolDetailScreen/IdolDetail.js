@@ -9,14 +9,14 @@ import LinearGradient from 'react-native-linear-gradient';
 import moment from 'moment';
 
 import SplashScreen from '../SplashScreen/SplashScreen';
-import Fade from '../../Components/Fade/Fade';
-import InfoLine from '../../Components/InfoLine/InfoLine';
-import { LLSIFService } from '../../Services/LLSIFService';
-import SquareButton from '../../Components/SquareButton/SquareButton';
+import Fade from '~/Components/Fade/Fade';
+import InfoLine from '~/Components/InfoLine/InfoLine';
+import { LLSIFService } from '~/Services/LLSIFService';
+import SquareButton from '~/Components/SquareButton/SquareButton';
 import {
   findColorByAttribute, AddHTTPS, findMainUnit, findSubUnit,
-} from '../../Utils';
-import { Metrics, ApplicationStyles, Colors } from '../../Theme';
+} from '~/Utils';
+import { Metrics, ApplicationStyles, Colors } from '~/Theme';
 import styles from './styles';
 
 /**

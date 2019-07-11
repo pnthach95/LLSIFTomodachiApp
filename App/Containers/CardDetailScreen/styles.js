@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { Metrics } from '../../Theme';
+import { Metrics } from '~/Theme';
 
 export default StyleSheet.create({
   banner: {
@@ -38,6 +38,9 @@ export default StyleSheet.create({
   leftRow: {
     alignItems: 'center',
     flexDirection: 'row',
+  },
+  marginRight10: {
+    marginRight: 10,
   },
   progressRow: {
     alignItems: 'center',

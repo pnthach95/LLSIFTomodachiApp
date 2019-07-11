@@ -1,10 +1,8 @@
 import React from 'react';
-import { Text, View } from 'react-native';
+import { Text, View, StyleSheet } from 'react-native';
 import RNPickerSelect from 'react-native-picker-select';
-import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { getSkills } from '../../redux/Stores/CachedData/Selectors';
-import styles from '../../Theme/RowStyles';
+import styles from '~/Theme/RowStyles';
 
 /**
  * Skill Row.
@@ -19,14 +17,20 @@ import styles from '../../Theme/RowStyles';
  * @class SkillRow
  * @extends {React.Component}
  */
-class SkillRow extends React.Component {
+export default class SkillRow extends React.Component {
+  static propTypes = {
+    skill: PropTypes.string.isRequired,
+    selectSkill: PropTypes.func.isRequired,
+    skills: PropTypes.any,
+  };
+
   render() {
     return (
       <View style={styles.pickerRow}>
         <View style={styles.leftView}>
           <Text>Skill</Text>
         </View>
-        <View style={{ flex: 2 }}>
+        <View style={styles.flex2}>
           <RNPickerSelect onValueChange={this.props.selectSkill}
             items={this.props.skills}
             hideIcon={true}
@@ -39,12 +43,3 @@ class SkillRow extends React.Component {
     );
   }
 }
-
-SkillRow.propTypes = {
-  skill: PropTypes.string.isRequired,
-  selectSkill: PropTypes.func.isRequired,
-};
-
-const mapStateToProps = state => ({ skills: getSkills(state) });
-const mapDispatchToProps = dispatch => ({});
-export default connect(mapStateToProps, mapDispatchToProps)(SkillRow);

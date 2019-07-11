@@ -4,8 +4,8 @@ import ElevatedView from 'react-native-elevated-view';
 import FastImage from 'react-native-fast-image';
 import styles from './styles';
 import Touchable from '../Touchable/Touchable';
-import { Metrics } from '../../Theme';
-import { findColorByAttribute } from '../../Utils';
+import { Metrics } from '~/Theme';
+import { findColorByAttribute } from '~/Utils';
 
 /**
  * Idol item for Idol List Screen

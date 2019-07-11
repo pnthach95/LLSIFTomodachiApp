@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { Metrics } from '../../Theme';
+import { Metrics } from '~/Theme';
 
 export default StyleSheet.create({
   button: {
@@ -33,6 +33,9 @@ export default StyleSheet.create({
   headerButton: {
     height: Metrics.navBarHeight,
     width: Metrics.navBarHeight,
+  },
+  height10: {
+    height: 10,
   },
   leftRadius: {
     borderBottomLeftRadius: Metrics.baseMargin,

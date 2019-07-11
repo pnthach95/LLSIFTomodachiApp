@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { Colors, Metrics } from '../../Theme';
+import { Colors, Metrics } from '~/Theme';
 
 export default StyleSheet.create({
   attributeIcon: {
@@ -28,6 +28,9 @@ export default StyleSheet.create({
     padding: Metrics.baseMargin,
     paddingBottom: Metrics.doubleBaseMargin,
     alignItems: 'center',
+  },
+  flex2: {
+    flex: 2,
   },
   header: {
     backgroundColor: Colors.lightViolet,

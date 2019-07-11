@@ -3,8 +3,8 @@ import {
   Text, View, TouchableOpacity, Image, ScrollView,
 } from 'react-native';
 import PropTypes from 'prop-types';
-import { Images, ApplicationStyles } from '../../Theme';
-import styles from '../../Theme/RowStyles';
+import { Images, ApplicationStyles } from '~/Theme';
+import styles from '~/Theme/RowStyles';
 
 /**
  * Rarity Row (None, N, R, SR, SSR, UR)

@@ -2,7 +2,7 @@ import React from 'react';
 import { TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import styles from './styles';
-import { ApplicationStyles } from '../../Theme';
+import { ApplicationStyles } from '~/Theme';
 
 /**
  * Square button, using Ionicons icon (https://oblador.github.io/react-native-vector-icons/).

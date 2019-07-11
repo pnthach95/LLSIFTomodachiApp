@@ -27,10 +27,10 @@ import EventsScreen from './EventsScreen/Events';
 import SongsScreen from './SongsScreen/Songs';
 import Drawer from './Drawer/Drawer';
 
-import CardDetailScreen from './CardDetailScreen/CardDetail';
-import EventDetailScreen from './EventDetailScreen/EventDetail';
+import CardDetailScreen from './CardDetailScreen';
+import EventDetailScreen from './EventDetailScreen';
 import IdolDetailScreen from './IdolDetailScreen/IdolDetail';
-import SongDetailScreen from './SongDetailScreen/SongDetail';
+import SongDetailScreen from './SongDetailScreen';
 import ImageViewer from './ImageViewer/ImageViewer';
 
 Sentry.config('https://ac9aa894ab9341fba115b29731378b6b@sentry.io/1330276').install();

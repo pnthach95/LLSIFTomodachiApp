@@ -1,4 +1,6 @@
-import { AsyncStorage, Alert, Linking } from 'react-native';
+import { Alert, Linking } from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
+import Color from 'color';
 import { Colors, Images } from '../Theme';
 
 /**
@@ -125,13 +127,13 @@ export const loadSettings = async () => new Promise((resolve, reject) => {
   AsyncStorage.getItem('settings')
     .then((res) => {
       if (res === null) {
-        res = {
+        resolve({
           ww_event: true,
           jp_event: true,
           worldwide_only: false,
-        };
+        });
       } else {
-        res = JSON.parse(res);
+        resolve(JSON.parse(res));
       }
       resolve(res);
     })
@@ -142,10 +144,7 @@ export const saveSettings = (settings) => {
   AsyncStorage.setItem('settings', JSON.stringify(settings));
 };
 
-export const darkenColor = (color) => {
-  const Color = require('color');
-  return Color(color).darken(0.5);
-};
+export const darkenColor = color => Color(color).darken(0.5);
 
 export const openLink = (link) => {
   Alert.alert('Open link', link, [

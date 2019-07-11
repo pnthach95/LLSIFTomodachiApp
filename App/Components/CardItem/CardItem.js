@@ -5,8 +5,8 @@ import FastImage from 'react-native-fast-image';
 import styles from './styles';
 import Seperator from '../Seperator/Seperator';
 import Touchable from '../Touchable/Touchable';
-import { Metrics, ApplicationStyles, Images } from '../../Theme';
-import { AddHTTPS, findColorByAttribute, findSkill } from '../../Utils';
+import { Metrics, ApplicationStyles, Images } from '~/Theme';
+import { AddHTTPS, findColorByAttribute, findSkill } from '~/Utils';
 
 /**
  * Card item for Card List Screen

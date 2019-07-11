@@ -2,8 +2,8 @@ import React from 'react';
 import { Text, View, TouchableWithoutFeedback } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import RNPickerSelect from 'react-native-picker-select';
-import styles from '../../Theme/RowStyles';
-import { Colors } from '../../Theme';
+import styles from '~/Theme/RowStyles';
+import { Colors } from '~/Theme';
 
 /**
  * Idol Name Row.

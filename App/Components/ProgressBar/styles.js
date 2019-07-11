@@ -3,8 +3,8 @@ import { Colors } from '~/Theme';
 
 export default StyleSheet.create({
   background: {
-    backgroundColor: '#aaa',
-    borderColor: 'white',
+    backgroundColor: Colors.aaa,
+    borderColor: Colors.white,
     borderRadius: 10,
     borderWidth: 1.5,
     flexDirection: 'row',
@@ -25,7 +25,7 @@ export default StyleSheet.create({
     flexDirection: 'row',
   },
   text: {
-    color: 'white',
+    color: Colors.white,
     paddingHorizontal: 10,
   },
 });

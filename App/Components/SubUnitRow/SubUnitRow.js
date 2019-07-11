@@ -10,8 +10,8 @@ import styles from '~/Theme/RowStyles';
  * Sub Unit list in `this.props.subUnits`.
  *
  * Prop:
- * - `selectSubUnit`: Save `idol_sub_unit` state
- * - `idol_sub_unit`: state from parent
+ * - `selectSubUnit`: Save `idolSubUnit` state
+ * - `idolSubUnit`: state from parent
  *
  * @export
  * @class SubUnitRow
@@ -19,7 +19,7 @@ import styles from '~/Theme/RowStyles';
  */
 export default class SubUnitRow extends React.Component {
   static propTypes = {
-    idol_sub_unit: PropTypes.string.isRequired,
+    idolSubUnit: PropTypes.string.isRequired,
     selectSubUnit: PropTypes.func.isRequired,
     subUnits: PropTypes.any,
   };
@@ -37,7 +37,7 @@ export default class SubUnitRow extends React.Component {
             style={{ inputIOS: styles.picker, inputAndroid: styles.picker }}
             placeholderTextColor={'black'}
             placeholder={{ label: 'All', value: 'All' }}
-            value={this.props.idol_sub_unit} />
+            value={this.props.idolSubUnit} />
         </View>
       </View>
     );

@@ -13,7 +13,7 @@ export default StyleSheet.create({
     width: 50,
   },
   buttonText: {
-    color: 'black',
+    color: Colors.black,
     fontSize: 16,
   },
   flex2: {

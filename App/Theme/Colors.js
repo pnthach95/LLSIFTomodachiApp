@@ -26,6 +26,8 @@ export default {
   black: 'black',
   c0005: '#0005',
   c333: '#333',
+  c777: '#777',
+  aaa: '#aaa',
   f1f8ff: '#f1f8ff',
   red: 'red',
 };

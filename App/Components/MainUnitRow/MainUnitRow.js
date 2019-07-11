@@ -10,14 +10,19 @@ import styles from '~/Theme/RowStyles';
  * Main Unit Row (None, μ's, Aqours)
  *
  * Prop:
- * - `selectMainUnit`: Save `main_unit` state
- * - `main_unit`: state from parent
+ * - `selectMainUnit`: Save `mainUnit` state
+ * - `mainUnit`: state from parent
  *
  * @export
  * @class MainUnitRow
  * @extends {React.Component}
  */
-class MainUnitRow extends React.Component {
+export default class MainUnitRow extends React.Component {
+  static propTypes = {
+    mainUnit: PropTypes.string.isRequired,
+    selectMainUnit: PropTypes.func.isRequired,
+  };
+
   render() {
     return (
       <View style={ApplicationStyles.row}>
@@ -29,21 +34,21 @@ class MainUnitRow extends React.Component {
             style={[
               styles.textButton,
               styles.standardButton,
-              this.props.main_unit === '' && styles.selectedValue,
+              this.props.mainUnit === '' && styles.selectedValue,
             ]}>
             <Text style={styles.buttonText}>All</Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={this.props.selectMainUnit('μ\'s')}
             style={[
               styles.standardButton,
-              this.props.main_unit === 'μ\'s' && styles.selectedValue1,
+              this.props.mainUnit === 'μ\'s' && styles.selectedValue1,
             ]}>
             <Image source={Images.mainUnit[0]} style={styles.buttonImage1} />
           </TouchableOpacity>
           <TouchableOpacity onPress={this.props.selectMainUnit('Aqours')}
             style={[
               styles.standardButton,
-              this.props.main_unit === 'Aqours' && styles.selectedValue1,
+              this.props.mainUnit === 'Aqours' && styles.selectedValue1,
             ]}>
             <Image source={Images.mainUnit[1]} style={styles.buttonImage1} />
           </TouchableOpacity>
@@ -52,10 +57,3 @@ class MainUnitRow extends React.Component {
     );
   }
 }
-
-MainUnitRow.propTypes = {
-  main_unit: PropTypes.string.isRequired,
-  selectMainUnit: PropTypes.func.isRequired,
-};
-
-export default MainUnitRow;

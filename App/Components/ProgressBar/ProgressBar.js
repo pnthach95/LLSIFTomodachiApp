@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text } from 'react-native';
+import PropTypes from 'prop-types';
 import styles from './styles';
 
 /**
@@ -14,16 +15,26 @@ import styles from './styles';
  * @extends {React.Component}
  */
 export default class ProgressBar extends React.Component {
+  static propTypes = {
+    backgroundStyle: PropTypes.any,
+    fillStyle: PropTypes.any,
+    progress: PropTypes.any.isRequired,
+    number: PropTypes.any.isRequired,
+  };
+
   render() {
+    const {
+      backgroundStyle, fillStyle, progress, number,
+    } = this.props;
     return (
-			<View style={[styles.background, this.props.backgroundStyle]}>
-				<View style={[styles.fill, this.props.fillStyle, { flex: this.props.progress }]}>
-					{this.props.progress >= 20 && <Text style={styles.text}>{this.props.number}</Text>}
-				</View>
-				<View style={[styles.noFill, { flex: 100 - this.props.progress }]}>
-					{this.props.progress < 20 && <Text style={styles.text}>{this.props.number}</Text>}
-				</View>
-			</View>
+      <View style={[styles.background, backgroundStyle]}>
+        <View style={[styles.fill, fillStyle, { flex: progress }]}>
+          {progress >= 20 && <Text style={styles.text}>{number}</Text>}
+        </View>
+        <View style={[styles.noFill, { flex: 100 - progress }]}>
+          {progress < 20 && <Text style={styles.text}>{number}</Text>}
+        </View>
+      </View>
     );
   }
 }

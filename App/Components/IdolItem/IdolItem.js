@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { TouchableNativeFeedback, View, Text } from 'react-native';
+import PropTypes from 'prop-types';
 import ElevatedView from 'react-native-elevated-view';
 import FastImage from 'react-native-fast-image';
 import styles from './styles';
@@ -33,7 +34,18 @@ export default class IdolItem extends Component {
     };
   }
 
+  static propTypes = {
+    item: PropTypes.object,
+    onPress: PropTypes.func,
+  };
+
   render() {
+    const { imgHeight, imgWidth } = this.state;
+    const styleImage = {
+      marginTop: 10,
+      width: Metrics.images.smallItemWidth,
+      height: Metrics.images.smallItemWidth * imgHeight / imgWidth,
+    };
     return (
       <ElevatedView elevation={5} style={[
         styles.container,
@@ -50,12 +62,7 @@ export default class IdolItem extends Component {
               const { width, height } = e.nativeEvent;
               this.setState({ imgWidth: width, imgHeight: height });
             }}
-            style={{
-              marginTop: 10,
-              width: Metrics.images.smallItemWidth,
-              height: Metrics.images.smallItemWidth * this.state.imgHeight / this.state.imgWidth,
-            }} />
-
+            style={styleImage} />
           <View style={styles.info}>
             <Text style={styles.text}>{this.props.item.name}</Text>
           </View>

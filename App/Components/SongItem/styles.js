@@ -15,7 +15,7 @@ export default StyleSheet.create({
     paddingVertical: Metrics.smallMargin,
   },
   text: {
-    color: 'white',
+    color: Colors.white,
     textAlign: 'center',
   },
 });

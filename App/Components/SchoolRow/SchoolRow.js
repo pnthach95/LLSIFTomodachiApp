@@ -10,8 +10,8 @@ import styles from '~/Theme/RowStyles';
  * School list in `this.props.schools`.
  *
  * Prop:
- * - `selectSchool`: Save `idol_school` state
- * - `idol_school`: state from parent
+ * - `selectSchool`: Save `idolSchool` state
+ * - `idolSchool`: state from parent
  *
  * @export
  * @class SchoolRow
@@ -19,25 +19,26 @@ import styles from '~/Theme/RowStyles';
  */
 export default class SchoolRow extends React.Component {
   static propTypes = {
-    idol_school: PropTypes.string.isRequired,
+    idolSchool: PropTypes.string.isRequired,
     selectSchool: PropTypes.func.isRequired,
     schools: PropTypes.any,
   };
 
   render() {
+    const { idolSchool, selectSchool, schools } = this.props;
     return (
       <View style={styles.pickerRow}>
         <View style={styles.leftView}>
           <Text>School</Text>
         </View>
         <View style={styles.flex2}>
-          <RNPickerSelect onValueChange={this.props.selectSchool}
-            items={this.props.schools}
+          <RNPickerSelect onValueChange={selectSchool}
+            items={schools}
             hideIcon={true}
             style={{ inputIOS: styles.picker, inputAndroid: styles.picker }}
             placeholderTextColor={'black'}
             placeholder={{ label: 'All', value: 'All' }}
-            value={this.props.idol_school} />
+            value={idolSchool} />
         </View>
       </View>
     );

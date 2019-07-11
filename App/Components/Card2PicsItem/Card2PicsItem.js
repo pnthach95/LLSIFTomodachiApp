@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { TouchableNativeFeedback, View, Image } from 'react-native';
+import PropTypes from 'prop-types';
 import ElevatedView from 'react-native-elevated-view';
 import FastImage from 'react-native-fast-image';
 import styles from './styles';
@@ -39,7 +40,16 @@ export default class Card2PicsItem extends Component {
     };
   }
 
+  static propTypes = {
+    item: PropTypes.object,
+    onPress: PropTypes.func,
+  };
+
   render() {
+    const styleSeperator = {
+      backgroundColor: this.state.colors[0],
+      marginVertical: 0,
+    };
     return (
       <ElevatedView elevation={5}
         style={[styles.container, { backgroundColor: this.state.colors[1] }]}>
@@ -59,7 +69,7 @@ export default class Card2PicsItem extends Component {
               }} />)}
           </View>
           {/* FOOTER */}
-          <Seperator style={{ backgroundColor: this.state.colors[0], marginVertical: 0 }} />
+          <Seperator style={styleSeperator} />
           <View style={[styles.info, { backgroundColor: this.state.colors[1] }]}>
             <View style={ApplicationStyles.screen} />
             <View style={[styles.infoRight, ApplicationStyles.screen]}>

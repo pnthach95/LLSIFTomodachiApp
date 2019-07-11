@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { TouchableNativeFeedback, View, Text } from 'react-native';
+import PropTypes from 'prop-types';
 import ElevatedView from 'react-native-elevated-view';
 import FastImage from 'react-native-fast-image';
 import styles from './styles';
@@ -33,9 +34,22 @@ export default class SongItem extends Component {
     };
   }
 
+  static propTypes = {
+    item: PropTypes.object,
+    onPress: PropTypes.func,
+  };
+
   getName = this.props.item.name + (this.props.item.romaji_name !== null ? `\n${this.props.item.romaji_name}` : '');
 
   render() {
+    const { itemWidth } = Metrics.images;
+    const { imgHeight, imgWidth } = this.state;
+    const styleImage = {
+      borderTopLeftRadius: 5,
+      borderTopRightRadius: 5,
+      width: itemWidth,
+      height: itemWidth * imgHeight / imgWidth,
+    };
     return (
       <ElevatedView elevation={5} style={[
         styles.container,
@@ -48,12 +62,7 @@ export default class SongItem extends Component {
               const { width, height } = e.nativeEvent;
               this.setState({ imgWidth: width, imgHeight: height });
             }}
-            style={{
-              borderTopLeftRadius: 5,
-              borderTopRightRadius: 5,
-              width: Metrics.images.itemWidth,
-              height: Metrics.images.itemWidth * this.state.imgHeight / this.state.imgWidth,
-            }} />
+            style={styleImage} />
           <View style={styles.info}>
             <Text style={styles.text}>{this.getName}</Text>
           </View>

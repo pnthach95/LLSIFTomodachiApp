@@ -1,5 +1,6 @@
 import React from 'react';
 import { View } from 'react-native';
+import PropTypes from 'prop-types';
 import Icon from 'react-native-vector-icons/Ionicons';
 import styles from './styles';
 import { Metrics, Colors } from '~/Theme';
@@ -15,6 +16,10 @@ import { Metrics, Colors } from '~/Theme';
  * @extends {React.Component}
  */
 export default class StarBar extends React.Component {
+  static propTypes = {
+    array: PropTypes.array.isRequired,
+  }
+
   render() {
     return (
       <View style={styles.container}>

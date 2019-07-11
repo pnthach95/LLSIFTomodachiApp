@@ -8,15 +8,21 @@ import { ApplicationStyles } from '~/Theme';
  * Promo Card Row (None, True, False)
  *
  * Prop:
- * - `selectPromo`: Save `is_promo` state
- * - `is_promo`: state from parent
+ * - `selectPromo`: Save `isPromo` state
+ * - `isPromo`: state from parent
  *
  * @export
  * @class PromoCardRow
  * @extends {React.Component}
  */
-class PromoCardRow extends React.Component {
+export default class PromoCardRow extends React.Component {
+  static propTypes = {
+    isPromo: PropTypes.string.isRequired,
+    selectPromo: PropTypes.func.isRequired,
+  };
+
   render() {
+    const { isPromo } = this.props;
     return (
       <View style={ApplicationStyles.row}>
         <View style={styles.leftView}>
@@ -27,7 +33,7 @@ class PromoCardRow extends React.Component {
             style={[
               styles.textButton,
               styles.standardButton,
-              this.props.is_promo === '' && styles.selectedValue,
+              isPromo === '' && styles.selectedValue,
             ]}>
             <Text style={styles.buttonText}>All</Text>
           </TouchableOpacity>
@@ -35,7 +41,7 @@ class PromoCardRow extends React.Component {
             style={[
               styles.textButton,
               styles.standardButton,
-              this.props.is_promo === 'True' && styles.selectedValue,
+              isPromo === 'True' && styles.selectedValue,
             ]}>
             <Text style={styles.buttonText}>Only</Text>
           </TouchableOpacity>
@@ -43,7 +49,7 @@ class PromoCardRow extends React.Component {
             style={[
               styles.textButton,
               styles.standardButton,
-              this.props.is_promo === 'False' && styles.selectedValue,
+              isPromo === 'False' && styles.selectedValue,
             ]}>
             <Text style={styles.buttonText}>None</Text>
           </TouchableOpacity>
@@ -52,10 +58,3 @@ class PromoCardRow extends React.Component {
     );
   }
 }
-
-PromoCardRow.propTypes = {
-  is_promo: PropTypes.string.isRequired,
-  selectPromo: PropTypes.func.isRequired,
-};
-
-export default PromoCardRow;

@@ -298,8 +298,8 @@ export default class SongsScreen extends React.Component {
             && <ElevatedView elevation={5} style={styles.filterContainer}>
               <AttributeRow attribute={this.state.attribute}
                 selectAttribute={this.selectAttribute} />
-              <EventRow is_event={this.state.is_event} selectEvent={this.selectEvent} />
-              <MainUnitRow main_unit={this.state.main_unit} selectMainUnit={this.selectMainUnit} />
+              <EventRow isEvent={this.state.is_event} selectEvent={this.selectEvent} />
+              <MainUnitRow mainUnit={this.state.main_unit} selectMainUnit={this.selectMainUnit} />
               <OrderingRow orderingItem={OrderingGroup.SONG}
                 selectedOrdering={this.state.selectedOrdering} selectOrdering={this.selectOrdering}
                 isReverse={this.state.isReverse} toggleReverse={this.toggleReverse} />

@@ -297,11 +297,11 @@ export default class EventsScreen extends React.Component {
           {this.state.isFilter
             && <ElevatedView elevation={5} style={styles.filterContainer}>
               <IdolNameRow name={this.state.idol} selectIdol={this.selectIdol} />
-              <MainUnitRow main_unit={this.state.main_unit} selectMainUnit={this.selectMainUnit} />
+              <MainUnitRow mainUnit={this.state.main_unit} selectMainUnit={this.selectMainUnit} />
               <SkillRow skill={this.state.skill} selectSkill={this.selectSkill} />
               <AttributeRow attribute={this.state.attribute}
                 selectAttribute={this.selectAttribute} />
-              <RegionRow japan_only={this.state.is_english} selectRegion={this.selectRegion} />
+              <RegionRow japanOnly={this.state.is_english} selectRegion={this.selectRegion} />
               <Touchable onPress={this.resetFilter} useForeground
                 style={styles.resetView}>
                 <Text style={styles.resetText}>RESET</Text>

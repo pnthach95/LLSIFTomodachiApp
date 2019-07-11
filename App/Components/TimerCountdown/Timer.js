@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { Text } from 'react-native';
 
 const __importStar = (this && this.__importStar) || function (mod) {

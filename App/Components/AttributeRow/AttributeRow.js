@@ -1,6 +1,7 @@
 import React from 'react';
 import {
-  Text, View, TouchableOpacity, Image, ScrollView,
+  Text, View, TouchableOpacity,
+  Image, ScrollView, StyleSheet,
 } from 'react-native';
 import PropTypes from 'prop-types';
 import { Images, ApplicationStyles } from '~/Theme';
@@ -17,7 +18,12 @@ import styles from '~/Theme/RowStyles';
  * @class AttributeRow
  * @extends {React.Component}
  */
-class AttributeRow extends React.Component {
+export default class AttributeRow extends React.Component {
+  static propTypes = {
+    attribute: PropTypes.string.isRequired,
+    selectAttribute: PropTypes.func.isRequired,
+  };
+
   render() {
     return (
       <View style={ApplicationStyles.row}>
@@ -30,7 +36,7 @@ class AttributeRow extends React.Component {
             <TouchableOpacity onPress={this.props.selectAttribute('')}
               style={[
                 styles.standardButton,
-                { paddingLeft: 0 },
+                styles1.paddingLeft0,
                 this.props.attribute === '' && styles.selectedValue1,
               ]}>
               <Image source={Images.empty} style={styles.buttonImage} />
@@ -70,9 +76,6 @@ class AttributeRow extends React.Component {
   }
 }
 
-AttributeRow.propTypes = {
-  attribute: PropTypes.string.isRequired,
-  selectAttribute: PropTypes.func.isRequired,
-};
-
-export default AttributeRow;
+const styles1 = StyleSheet.create({
+  paddingLeft0: { paddingLeft: 0 },
+});

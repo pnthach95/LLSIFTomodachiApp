@@ -23,7 +23,6 @@
     "appcenter-analytics": "1.11.0",
     "appcenter-crashes": "1.11.0",
     "color": "^3.1.2",
-    "immutable": "^3.8.2",
     "lodash": "^4.17.13",
     "moment": "^2.24.0",
     "prop-types": "^15.7.2",

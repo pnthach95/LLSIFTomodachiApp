@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React from 'react';
 import {
   Platform,
@@ -47,11 +48,11 @@ export default class TouchableNativeFeedbackSafe extends React.Component {
     const TouchableFallback = fallback || TouchableComponent;
 
     return (
-        <TouchableFallback {...props}>
-          <View style={style}>
-            {children}
-          </View>
-        </TouchableFallback>
+      <TouchableFallback {...props}>
+        <View style={style}>
+          {children}
+        </View>
+      </TouchableFallback>
     );
   }
 }

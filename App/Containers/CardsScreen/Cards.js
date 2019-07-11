@@ -454,18 +454,18 @@ export default class CardsScreen extends React.PureComponent {
                 <RarityRow rarity={this.state.rarity} selectRarity={this.selectRarity} />
                 <AttributeRow attribute={this.state.attribute}
                   selectAttribute={this.selectAttribute} />
-                <RegionRow japan_only={this.state.japan_only} selectRegion={this.selectRegion} />
-                <PromoCardRow is_promo={this.state.is_promo} selectPromo={this.selectPromo} />
-                <SpecialCardRow is_special={this.state.is_special}
+                <RegionRow japanOnly={this.state.japan_only} selectRegion={this.selectRegion} />
+                <PromoCardRow isPromo={this.state.is_promo} selectPromo={this.selectPromo} />
+                <SpecialCardRow isSpecial={this.state.is_special}
                   selectSpecial={this.selectSpecial} />
-                <EventRow is_event={this.state.is_event} selectEvent={this.selectEvent} />
+                <EventRow isEvent={this.state.is_event} selectEvent={this.selectEvent} />
                 <SkillRow skill={this.state.skill} selectSkill={this.selectSkill} />
-                <MainUnitRow main_unit={this.state.idol_main_unit}
+                <MainUnitRow mainUnit={this.state.idol_main_unit}
                   selectMainUnit={this.selectMainUnit} />
-                <SubUnitRow idol_sub_unit={this.state.idol_sub_unit}
+                <SubUnitRow idolSubUnit={this.state.idol_sub_unit}
                   selectSubUnit={this.selectSubUnit} />
-                <SchoolRow idol_school={this.state.idol_school} selectSchool={this.selectSchool} />
-                <YearRow idol_year={this.state.idol_year} selectYear={this.selectYear} />
+                <SchoolRow idolSchool={this.state.idol_school} selectSchool={this.selectSchool} />
+                <YearRow idolYear={this.state.idol_year} selectYear={this.selectYear} />
                 <OrderingRow orderingItem={OrderingGroup.CARD}
                   selectedOrdering={this.state.selectedOrdering}
                   selectOrdering={this.selectOrdering}

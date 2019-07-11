@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { TouchableNativeFeedback, View, Image } from 'react-native';
+import PropTypes from 'prop-types';
 import ElevatedView from 'react-native-elevated-view';
 import FastImage from 'react-native-fast-image';
 import styles from './styles';
@@ -34,7 +35,16 @@ export default class CardItem extends Component {
     };
   }
 
+  static propTypes = {
+    item: PropTypes.object,
+    onPress: PropTypes.func,
+  };
+
   render() {
+    const styleSeperator = {
+      backgroundColor: this.state.colors[0],
+      marginVertical: 0,
+    };
     return (
       <ElevatedView elevation={5} style={styles.container}>
         <Touchable onPress={this.props.onPress} useForeground
@@ -55,25 +65,20 @@ export default class CardItem extends Component {
                 height: Metrics.images.itemWidth * this.state.imgHeight / this.state.imgWidth,
               },
             ]} />
-
           {/* FOOTER */}
-          <Seperator style={{ backgroundColor: this.state.colors[0], marginVertical: 0 }} />
+          <Seperator style={styleSeperator} />
           <View style={[styles.info, { backgroundColor: this.state.colors[1] }]}>
             {(this.props.item.skill !== null && this.props.item.skill.length !== 0)
               && <Image source={findSkill(this.props.item.skill)}
                 style={[ApplicationStyles.mediumIcon, { tintColor: this.state.colors[0] }]} />}
-
             <Image source={this.props.item.japan_only ? Images.region[0] : Images.region[1]}
               style={[ApplicationStyles.mediumIcon, { tintColor: this.state.colors[0] }]} />
-
             {this.props.item.is_promo
               && <Image source={Images.promo}
                 style={[ApplicationStyles.mediumIcon, { tintColor: this.state.colors[0] }]} />}
-
             {this.props.item.is_special
               && <Image source={Images.skill[3]}
                 style={[ApplicationStyles.mediumIcon, { tintColor: this.state.colors[0] }]} />}
-
             {this.props.item.event !== null
               && <Image source={Images.event}
                 style={[ApplicationStyles.mediumIcon, { tintColor: this.state.colors[0] }]} />}

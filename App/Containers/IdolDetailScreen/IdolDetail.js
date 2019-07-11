@@ -2,7 +2,6 @@ import React from 'react';
 import {
   Text, View, ScrollView, Image,
 } from 'react-native';
-import { connect } from 'react-redux';
 import ElevatedView from 'react-native-elevated-view';
 import FastImage from 'react-native-fast-image';
 import LinearGradient from 'react-native-linear-gradient';
@@ -11,7 +10,7 @@ import moment from 'moment';
 import SplashScreen from '../SplashScreen/SplashScreen';
 import Fade from '~/Components/Fade/Fade';
 import InfoLine from '~/Components/InfoLine/InfoLine';
-import { LLSIFService } from '~/Services/LLSIFService';
+import LLSIFService from '~/Services/LLSIFService';
 import SquareButton from '~/Components/SquareButton/SquareButton';
 import {
   findColorByAttribute, AddHTTPS, findMainUnit, findSubUnit,
@@ -35,7 +34,7 @@ import styles from './styles';
  * @class IdolDetailScreen
  * @extends {React.Component}
  */
-class IdolDetailScreen extends React.Component {
+export default class IdolDetailScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -51,16 +50,16 @@ class IdolDetailScreen extends React.Component {
   componentDidMount() {
     const name = this.props.navigation.getParam('name');
     LLSIFService.fetchIdol(name).then((res1) => {
-      const _filter = {
+      const theFilter = {
         search: name,
         page_size: 1,
       };
       // console.log('IdolDetails', res1)
-      LLSIFService.fetchCardList(_filter).then((res2) => {
+      LLSIFService.fetchCardList(theFilter).then((res2) => {
         if (res2.length === 0) {
-          _filter.name = res1.name;
-          _filter.japanese_name = '';
-          LLSIFService.fetchCardList(_filter).then((res3) => {
+          theFilter.name = res1.name;
+          theFilter.japanese_name = '';
+          LLSIFService.fetchCardList(theFilter).then((res3) => {
             this.setState({
               isLoading: false,
               colors: findColorByAttribute(res1.attribute),
@@ -94,7 +93,8 @@ class IdolDetailScreen extends React.Component {
             <Fade visible={!this.state.isLoading}>
               {!this.state.isLoading && <View>
                 <Text>{this.state.item.name}</Text>
-                {this.state.item.japanese_name !== null && <Text>{this.state.item.japanese_name}</Text>}
+                {this.state.item.japanese_name !== null
+                  && <Text>{this.state.item.japanese_name}</Text>}
               </View>}
             </Fade>
           </View>
@@ -108,10 +108,12 @@ class IdolDetailScreen extends React.Component {
           </Fade>
         </ElevatedView>
         <View style={ApplicationStyles.screen}>
-          <Fade visible={this.state.isLoading} style={[ApplicationStyles.screen, ApplicationStyles.absolute]}>
+          <Fade visible={this.state.isLoading}
+            style={[ApplicationStyles.screen, ApplicationStyles.absolute]}>
             <SplashScreen bgColor={Colors.blue} />
           </Fade>
-          <Fade visible={!this.state.isLoading} style={[ApplicationStyles.screen, ApplicationStyles.absolute]}>
+          <Fade visible={!this.state.isLoading}
+            style={[ApplicationStyles.screen, ApplicationStyles.absolute]}>
             {!this.state.isLoading
               && <LinearGradient style={ApplicationStyles.screen}
                 colors={[this.state.colors[1], this.state.colors[0]]}>
@@ -175,7 +177,8 @@ class IdolDetailScreen extends React.Component {
                     {this.state.item.cv !== null
                       && <InfoLine title={'CV'}
                         content={`${this.state.item.cv.name} (${this.state.item.cv.nickname})`}
-                        twitter={this.state.item.cv.twitter} instagram={this.state.item.cv.instagram}
+                        twitter={this.state.item.cv.twitter}
+                        instagram={this.state.item.cv.instagram}
                         myanimelist={this.state.item.cv.url} />}
                     {this.state.item.summary !== null
                       && <InfoLine title={'Summary'} content={this.state.item.summary} />}
@@ -188,7 +191,3 @@ class IdolDetailScreen extends React.Component {
     );
   }
 }
-
-const mapStateToProps = state => ({});
-const mapDispatchToProps = dispatch => ({});
-export default connect(mapStateToProps, mapDispatchToProps)(IdolDetailScreen);

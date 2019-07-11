@@ -1,8 +1,11 @@
+/* eslint-disable no-unused-expressions */
+/* eslint-disable no-console */
 import React from 'react';
 import {
-  Text, View, FlatList, TextInput, TouchableNativeFeedback, Alert, ScrollView, Image, LayoutAnimation, UIManager,
+  Text, View, FlatList, TextInput,
+  TouchableNativeFeedback, Alert, ScrollView,
+  Image, LayoutAnimation, UIManager,
 } from 'react-native';
-import { connect } from 'react-redux';
 import ElevatedView from 'react-native-elevated-view';
 import Icon from 'react-native-vector-icons/Ionicons';
 import _ from 'lodash';
@@ -25,7 +28,7 @@ import PromoCardRow from '~/Components/PromoCardRow/PromoCardRow';
 import SquareButton from '~/Components/SquareButton/SquareButton';
 import Card2PicsItem from '~/Components/Card2PicsItem/Card2PicsItem';
 import SpecialCardRow from '~/Components/SpecialCardRow/SpecialCardRow';
-import { LLSIFService } from '~/Services/LLSIFService';
+import LLSIFService from '~/Services/LLSIFService';
 import SplashScreen from '../SplashScreen/SplashScreen';
 import { Colors, ApplicationStyles, Images } from '~/Theme';
 import styles from './styles';
@@ -61,7 +64,7 @@ import { OrderingGroup } from '~/Config';
  * @class CardsScreen
  * @extends {React.PureComponent}
  */
-class CardsScreen extends React.PureComponent {
+export default class CardsScreen extends React.PureComponent {
   constructor(props) {
     super(props);
     this.defaultFilter = {
@@ -109,9 +112,10 @@ class CardsScreen extends React.PureComponent {
       idol_school: 'All',
       idol_year: '',
     };
-    this._onEndReached = _.debounce(this._onEndReached, 1000);
-    this._listViewOffset = 0;
-    UIManager.setLayoutAnimationEnabledExperimental && UIManager.setLayoutAnimationEnabledExperimental(true);
+    this.onEndReached = _.debounce(this.onEndReached, 1000);
+    this.listViewOffset = 0;
+    UIManager.setLayoutAnimationEnabledExperimental
+      && UIManager.setLayoutAnimationEnabledExperimental(true);
   }
 
   static navigationOptions = {
@@ -125,7 +129,7 @@ class CardsScreen extends React.PureComponent {
   }
 
   componentDidMount() {
-    loadSettings().then(res => this.setState({ japan_only: res.worldwide_only ? 'False' : '' }, () => this._getCards()));
+    loadSettings().then(res => this.setState({ japan_only: res.worldwide_only ? 'False' : '' }, () => this.getCards()));
   }
 
   /**
@@ -133,18 +137,18 @@ class CardsScreen extends React.PureComponent {
    *
    * @memberof CardsScreen
    */
-  _keyExtractor = (item, index) => `card ${item.id}`;
+  keyExtractor = item => `card ${item.id}`;
 
   /**
    * Render item in FlatList
    *
    * @memberof CardsScreen
    */
-  _renderItem = ({ item }) => (this.state.column === 1
-    ? <Card2PicsItem item={item} onPress={this._navigateToCardDetail(item)} />
-    : <CardItem item={item} onPress={this._navigateToCardDetail(item)} />);
+  renderItem = ({ item }) => (this.state.column === 1
+    ? <Card2PicsItem item={item} onPress={this.navigateToCardDetail(item)} />
+    : <CardItem item={item} onPress={this.navigateToCardDetail(item)} />);
 
-  _onScroll = (event) => {
+  onScroll = (event) => {
     // Simple fade-in / fade-out animation
     const CustomLayoutLinear = {
       duration: 100,
@@ -152,9 +156,10 @@ class CardsScreen extends React.PureComponent {
       update: { type: LayoutAnimation.Types.linear, property: LayoutAnimation.Properties.opacity },
       delete: { type: LayoutAnimation.Types.linear, property: LayoutAnimation.Properties.opacity },
     };
-    // Check if the user is scrolling up or down by confronting the new scroll position with your own one
+    // Check if the user is scrolling up or down
+    // by confronting the new scroll position with your own one
     const currentOffset = event.nativeEvent.contentOffset.y;
-    const direction = (currentOffset > 0 && currentOffset > this._listViewOffset)
+    const direction = (currentOffset > 0 && currentOffset > this.listViewOffset)
       ? 'down'
       : 'up';
     // If the user is scrolling down (and the action-button is still visible) hide it
@@ -164,7 +169,7 @@ class CardsScreen extends React.PureComponent {
       this.setState({ isActionButtonVisible });
     }
     // Update your scroll position
-    this._listViewOffset = currentOffset;
+    this.listViewOffset = currentOffset;
   }
 
   /**
@@ -173,7 +178,7 @@ class CardsScreen extends React.PureComponent {
    * @param {Object} item Card's information
    * @memberof CardsScreen
    */
-  _navigateToCardDetail = item => () => this.props.navigation.navigate('CardDetailScreen', { item });
+  navigateToCardDetail = item => () => this.props.navigation.navigate('CardDetailScreen', { item });
 
   /**
    * Get card list
@@ -181,28 +186,28 @@ class CardsScreen extends React.PureComponent {
    * @param {Number} [page=this.state.page] Page number
    * @memberof CardsScreen
    */
-  _getCards(page = this.state.page) {
-    const _ordering = (this.state.isReverse ? '-' : '') + this.state.selectedOrdering;
-    const _filter = {
-      ordering: _ordering,
+  getCards(page = this.state.page) {
+    const ordering = (this.state.isReverse ? '-' : '') + this.state.selectedOrdering;
+    const theFilter = {
+      ordering,
       page_size: this.state.page_size,
       page,
     };
-    if (this.state.attribute !== '') _filter.attribute = this.state.attribute;
-    if (this.state.idol_main_unit !== '') _filter.idol_main_unit = this.state.idol_main_unit;
-    if (this.state.idol_sub_unit !== 'All') _filter.idol_sub_unit = this.state.idol_sub_unit;
-    if (this.state.idol_school !== 'All') _filter.idol_school = this.state.idol_school;
-    if (this.state.name !== 'All') _filter.name = this.state.name;
-    if (this.state.skill !== 'All') _filter.skill = this.state.skill;
-    if (this.state.is_event !== '') _filter.is_event = this.state.is_event;
-    if (this.state.is_promo !== '') _filter.is_promo = this.state.is_promo;
-    if (this.state.japan_only !== '') _filter.japan_only = this.state.japan_only;
-    if (this.state.idol_year !== '') _filter.idol_year = this.state.idol_year;
-    if (this.state.is_special !== '') _filter.is_special = this.state.is_special;
-    if (this.state.rarity !== '') _filter.rarity = this.state.rarity;
-    if (this.state.search !== '') _filter.search = this.state.search;
-    console.log(`Cards.getCards: ${JSON.stringify(_filter)}`);
-    LLSIFService.fetchCardList(_filter).then((result) => {
+    if (this.state.attribute !== '') theFilter.attribute = this.state.attribute;
+    if (this.state.idol_main_unit !== '') theFilter.idol_main_unit = this.state.idol_main_unit;
+    if (this.state.idol_sub_unit !== 'All') theFilter.idol_sub_unit = this.state.idol_sub_unit;
+    if (this.state.idol_school !== 'All') theFilter.idol_school = this.state.idol_school;
+    if (this.state.name !== 'All') theFilter.name = this.state.name;
+    if (this.state.skill !== 'All') theFilter.skill = this.state.skill;
+    if (this.state.is_event !== '') theFilter.is_event = this.state.is_event;
+    if (this.state.is_promo !== '') theFilter.is_promo = this.state.is_promo;
+    if (this.state.japan_only !== '') theFilter.japan_only = this.state.japan_only;
+    if (this.state.idol_year !== '') theFilter.idol_year = this.state.idol_year;
+    if (this.state.is_special !== '') theFilter.is_special = this.state.is_special;
+    if (this.state.rarity !== '') theFilter.rarity = this.state.rarity;
+    if (this.state.search !== '') theFilter.search = this.state.search;
+    console.log(`Cards.getCards: ${JSON.stringify(theFilter)}`);
+    LLSIFService.fetchCardList(theFilter).then((result) => {
       if (result === 404) {
         // console.log('LLSIFService.fetchCardList 404');
         this.setState({ stopSearch: true });
@@ -226,16 +231,16 @@ class CardsScreen extends React.PureComponent {
    *
    * @memberof CardsScreen
    */
-  _openDrawer = () => this.props.navigation.openDrawer();
+  openDrawer = () => this.props.navigation.openDrawer();
 
   /**
    * Call when pressing search button
    *
    * @memberof CardsScreen
    */
-  _onSearch = () => {
+  onSearch = () => {
     this.setState({ data: [], isFilter: false, stopSearch: false });
-    this._getCards(1);
+    this.getCards(1);
   }
 
   /**
@@ -244,9 +249,9 @@ class CardsScreen extends React.PureComponent {
    *
    * @memberof CardsScreen
    */
-  _onEndReached = () => {
+  onEndReached = () => {
     if (this.state.stopSearch) return;
-    this._getCards();
+    this.getCards();
   }
 
   /**
@@ -254,21 +259,21 @@ class CardsScreen extends React.PureComponent {
    *
    * @memberof CardsScreen
    */
-  _toggleFilter = () => this.setState({ isFilter: !this.state.isFilter });
+  toggleFilter = () => this.setState({ isFilter: !this.state.isFilter });
 
   /**
    * Reverse search on/off
    *
    * @memberof CardsScreen
    */
-  _toggleReverse = () => this.setState({ isReverse: !this.state.isReverse });
+  toggleReverse = () => this.setState({ isReverse: !this.state.isReverse });
 
   /**
    * Switch 1 column and 2 columns
    *
    * @memberof CardsScreen
    */
-  _switchColumn = () => this.setState({ column: this.state.column === 1 ? 2 : 1 });
+  switchColumn = () => this.setState({ column: this.state.column === 1 ? 2 : 1 });
 
   /**
    * Save is_promo
@@ -276,7 +281,7 @@ class CardsScreen extends React.PureComponent {
    * @param {String} value
    * @memberof CardsScreen
    */
-  _selectPromo = value => () => this.setState({ is_promo: value });
+  selectPromo = value => () => this.setState({ is_promo: value });
 
   /**
    * Save is_special
@@ -284,7 +289,7 @@ class CardsScreen extends React.PureComponent {
    * @param {String} value
    * @memberof CardsScreen
    */
-  _selectSpecial = value => () => this.setState({ is_special: value });
+  selectSpecial = value => () => this.setState({ is_special: value });
 
   /**
    * Save is_event
@@ -292,7 +297,7 @@ class CardsScreen extends React.PureComponent {
    * @param {String} value
    * @memberof CardsScreen
    */
-  _selectEvent = value => () => this.setState({ is_event: value });
+  selectEvent = value => () => this.setState({ is_event: value });
 
   /**
    * Save idol_main_unit
@@ -300,7 +305,7 @@ class CardsScreen extends React.PureComponent {
    * @param {String} value
    * @memberof CardsScreen
    */
-  _selectMainUnit = value => () => this.setState({ idol_main_unit: value });
+  selectMainUnit = value => () => this.setState({ idol_main_unit: value });
 
   /**
    * Save rarity
@@ -308,7 +313,7 @@ class CardsScreen extends React.PureComponent {
    * @param {String} value
    * @memberof CardsScreen
    */
-  _selectRarity = value => () => this.setState({ rarity: value });
+  selectRarity = value => () => this.setState({ rarity: value });
 
   /**
    * Save attribute
@@ -316,7 +321,7 @@ class CardsScreen extends React.PureComponent {
    * @param {String} value
    * @memberof CardsScreen
    */
-  _selectAttribute = value => () => this.setState({ attribute: value });
+  selectAttribute = value => () => this.setState({ attribute: value });
 
   /**
    * Save idol_year
@@ -324,7 +329,7 @@ class CardsScreen extends React.PureComponent {
    * @param {String} value
    * @memberof CardsScreen
    */
-  _selectYear = value => () => this.setState({ idol_year: value });
+  selectYear = value => () => this.setState({ idol_year: value });
 
   /**
    * Save region
@@ -332,7 +337,7 @@ class CardsScreen extends React.PureComponent {
    * @param {String} value
    * @memberof CardsScreen
    */
-  _selectRegion = value => () => this.setState({ japan_only: value });
+  selectRegion = value => () => this.setState({ japan_only: value });
 
   /**
    * Save idol_sub_unit
@@ -341,7 +346,7 @@ class CardsScreen extends React.PureComponent {
    * @param {String} itemIndex unused
    * @memberof CardsScreen
    */
-  _selectSubUnit = (itemValue, itemIndex) => this.setState({ idol_sub_unit: itemValue });
+  selectSubUnit = itemValue => this.setState({ idol_sub_unit: itemValue });
 
   /**
    * Save idol name
@@ -350,7 +355,7 @@ class CardsScreen extends React.PureComponent {
    * @param {String} itemIndex unused
    * @memberof CardsScreen
    */
-  _selectIdol = (itemValue, itemIndex) => this.setState({ name: itemValue });
+  selectIdol = itemValue => this.setState({ name: itemValue });
 
   /**
    * Save school
@@ -359,7 +364,7 @@ class CardsScreen extends React.PureComponent {
    * @param {String} itemIndex unused
    * @memberof CardsScreen
    */
-  _selectSchool = (itemValue, itemIndex) => this.setState({ idol_school: itemValue });
+  selectSchool = itemValue => this.setState({ idol_school: itemValue });
 
   /**
    * Save skill
@@ -368,7 +373,7 @@ class CardsScreen extends React.PureComponent {
    * @param {String} itemIndex unused
    * @memberof CardsScreen
    */
-  _selectSkill = (itemValue, itemIndex) => this.setState({ skill: itemValue });
+  selectSkill = itemValue => this.setState({ skill: itemValue });
 
   /**
    * Save ordering
@@ -377,14 +382,14 @@ class CardsScreen extends React.PureComponent {
    * @param {String} itemIndex unused
    * @memberof CardsScreen
    */
-  _selectOrdering = (itemValue, itemIndex) => this.setState({ selectedOrdering: itemValue });
+  selectOrdering = itemValue => this.setState({ selectedOrdering: itemValue });
 
   /**
    * Reset filter variables
    *
    * @memberof CardsScreen
    */
-  _resetFilter = () => {
+  resetFilter = () => {
     this.setState({
       name: this.defaultFilter.name,
       rarity: this.defaultFilter.rarity,
@@ -420,47 +425,55 @@ class CardsScreen extends React.PureComponent {
   render() {
     return (
       <View style={styles.container}>
-        <Fade visible={this.state.isLoading} style={[ApplicationStyles.screen, ApplicationStyles.absolute]}>
+        <Fade visible={this.state.isLoading}
+          style={[ApplicationStyles.screen, ApplicationStyles.absolute]}>
           <SplashScreen bgColor={Colors.green} />
         </Fade>
-        <Fade visible={!this.state.isLoading} style={[ApplicationStyles.screen, ApplicationStyles.absolute]}>
+        <Fade visible={!this.state.isLoading}
+          style={[ApplicationStyles.screen, ApplicationStyles.absolute]}>
           {/* HEADER */}
           <ElevatedView elevation={5} style={[ApplicationStyles.header, styles.header]}>
-            <SquareButton name={'ios-menu'} onPress={this._openDrawer} />
+            <SquareButton name={'ios-menu'} onPress={this.openDrawer} />
             <View style={ApplicationStyles.searchHeader}>
               <TextInput value={this.state.search}
                 onChangeText={text => this.setState({ search: text })}
-                onSubmitEditing={this._onSearch}
+                onSubmitEditing={this.onSearch}
                 placeholder={'Search card...'}
                 style={ApplicationStyles.searchInput} />
-              <SquareButton name={'ios-search'} onPress={this._onSearch}
+              <SquareButton name={'ios-search'} onPress={this.onSearch}
                 style={ApplicationStyles.searchButton} />
             </View>
-            <SquareButton name={'ios-more'} onPress={this._toggleFilter} />
+            <SquareButton name={'ios-more'} onPress={this.toggleFilter} />
           </ElevatedView>
 
           {/* FILTER */}
           {this.state.isFilter
             && <ElevatedView elevation={5} style={styles.filterContainer}>
               <ScrollView contentContainerStyle={styles.contentContainer}>
-                <IdolNameRow name={this.state.name} selectIdol={this._selectIdol} />
-                <RarityRow rarity={this.state.rarity} selectRarity={this._selectRarity} />
-                <AttributeRow attribute={this.state.attribute} selectAttribute={this._selectAttribute} />
-                <RegionRow japan_only={this.state.japan_only} selectRegion={this._selectRegion} />
-                <PromoCardRow is_promo={this.state.is_promo} selectPromo={this._selectPromo} />
-                <SpecialCardRow is_special={this.state.is_special} selectSpecial={this._selectSpecial} />
-                <EventRow is_event={this.state.is_event} selectEvent={this._selectEvent} />
-                <SkillRow skill={this.state.skill} selectSkill={this._selectSkill} />
-                <MainUnitRow main_unit={this.state.idol_main_unit} selectMainUnit={this._selectMainUnit} />
-                <SubUnitRow idol_sub_unit={this.state.idol_sub_unit} selectSubUnit={this._selectSubUnit} />
-                <SchoolRow idol_school={this.state.idol_school} selectSchool={this._selectSchool} />
-                <YearRow idol_year={this.state.idol_year} selectYear={this._selectYear} />
+                <IdolNameRow name={this.state.name} selectIdol={this.selectIdol} />
+                <RarityRow rarity={this.state.rarity} selectRarity={this.selectRarity} />
+                <AttributeRow attribute={this.state.attribute}
+                  selectAttribute={this.selectAttribute} />
+                <RegionRow japan_only={this.state.japan_only} selectRegion={this.selectRegion} />
+                <PromoCardRow is_promo={this.state.is_promo} selectPromo={this.selectPromo} />
+                <SpecialCardRow is_special={this.state.is_special}
+                  selectSpecial={this.selectSpecial} />
+                <EventRow is_event={this.state.is_event} selectEvent={this.selectEvent} />
+                <SkillRow skill={this.state.skill} selectSkill={this.selectSkill} />
+                <MainUnitRow main_unit={this.state.idol_main_unit}
+                  selectMainUnit={this.selectMainUnit} />
+                <SubUnitRow idol_sub_unit={this.state.idol_sub_unit}
+                  selectSubUnit={this.selectSubUnit} />
+                <SchoolRow idol_school={this.state.idol_school} selectSchool={this.selectSchool} />
+                <YearRow idol_year={this.state.idol_year} selectYear={this.selectYear} />
                 <OrderingRow orderingItem={OrderingGroup.CARD}
-                  selectedOrdering={this.state.selectedOrdering} selectOrdering={this._selectOrdering}
-                  isReverse={this.state.isReverse} toggleReverse={this._toggleReverse} />
+                  selectedOrdering={this.state.selectedOrdering}
+                  selectOrdering={this.selectOrdering}
+                  isReverse={this.state.isReverse}
+                  toggleReverse={this.toggleReverse} />
 
                 {/* RESET BUTTON */}
-                <Touchable onPress={this._resetFilter} useForeground
+                <Touchable onPress={this.resetFilter} useForeground
                   style={styles.resetView}>
                   <Text style={styles.resetText}>RESET</Text>
                 </Touchable>
@@ -473,18 +486,19 @@ class CardsScreen extends React.PureComponent {
             showsVerticalScrollIndicator={false}
             numColumns={this.state.column}
             initialNumToRender={8}
-            keyExtractor={this._keyExtractor}
-            onEndReached={this._onEndReached}
+            keyExtractor={this.keyExtractor}
+            onEndReached={this.onEndReached}
             style={styles.list}
-            onScroll={this._onScroll}
+            onScroll={this.onScroll}
             ListEmptyComponent={this.renderEmpty}
             ListFooterComponent={this.renderFooter}
-            renderItem={this._renderItem} />
+            renderItem={this.renderItem} />
           {this.state.isActionButtonVisible
             && <View style={[styles.floatButton, ApplicationStyles.center]}>
-              <Touchable onPress={this._switchColumn}
+              <Touchable onPress={this.switchColumn}
                 background={TouchableNativeFeedback.Ripple(Colors.green, true)}>
-                <Image source={Images.column[this.state.column - 1]} style={styles.floatButtonSize} />
+                <Image source={Images.column[this.state.column - 1]}
+                  style={styles.floatButtonSize} />
               </Touchable>
             </View>}
         </Fade>
@@ -492,7 +506,3 @@ class CardsScreen extends React.PureComponent {
     );
   }
 }
-
-const mapStateToProps = state => ({});
-const mapDispatchToProps = dispatch => ({});
-export default connect(mapStateToProps, mapDispatchToProps)(CardsScreen);

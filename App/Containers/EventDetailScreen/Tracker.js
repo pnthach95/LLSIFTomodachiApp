@@ -2,6 +2,7 @@ import React from 'react';
 import {
   View, ScrollView, Text, FlatList,
 } from 'react-native';
+import PropTypes from 'prop-types';
 import PureChart from 'react-native-pure-chart';
 import SegmentedControlTab from 'react-native-segmented-control-tab';
 import { Row } from 'react-native-table-component';
@@ -21,6 +22,11 @@ export default class Tracker extends React.PureComponent {
     };
   }
 
+  static propTypes = {
+    wwTracker: PropTypes.object,
+    jpTracker: PropTypes.object,
+  }
+
   componentDidMount() {
     this.setState({
       wwGroup: {
@@ -28,17 +34,17 @@ export default class Tracker extends React.PureComponent {
         chart: [
           {
             seriesName: 'T1',
-            data: this._getLine(this.props.wwTracker, 1),
+            data: this.getLine(this.props.wwTracker, 1),
             color: 'red',
           },
           {
             seriesName: 'T2',
-            data: this._getLine(this.props.wwTracker, 3),
+            data: this.getLine(this.props.wwTracker, 3),
             color: 'green',
           },
           {
             seriesName: 'T3',
-            data: this._getLine(this.props.wwTracker, 5),
+            data: this.getLine(this.props.wwTracker, 5),
             color: 'blue',
           },
         ],
@@ -48,17 +54,17 @@ export default class Tracker extends React.PureComponent {
         chart: [
           {
             seriesName: 'T1',
-            data: this._getLine(this.props.jpTracker, 1),
+            data: this.getLine(this.props.jpTracker, 1),
             color: 'red',
           },
           {
             seriesName: 'T2',
-            data: this._getLine(this.props.jpTracker, 3),
+            data: this.getLine(this.props.jpTracker, 3),
             color: 'green',
           },
           {
             seriesName: 'T3',
-            data: this._getLine(this.props.jpTracker, 5),
+            data: this.getLine(this.props.jpTracker, 5),
             color: 'blue',
           },
         ],
@@ -66,59 +72,61 @@ export default class Tracker extends React.PureComponent {
     });
   }
 
-	_getLine = (data, position) => {
-	  if (data === null) return [];
-	  const result = [];
-	  for (let i = 0; i < data.length; i += 4) {
-	    const element = data[i];
-	    result.push({ x: element[0], y: Number(element[position]) });
-	  }
-	  const last = data[data.length - 1];
-	  if (result[result.length - 1].x !== last[0]) result.push({ x: last[0], y: Number(last[position]) });
-	  return result;
-	}
+  getLine = (data, position) => {
+    if (data === null) return [];
+    const result = [];
+    for (let i = 0; i < data.length; i += 4) {
+      const element = data[i];
+      result.push({ x: element[0], y: Number(element[position]) });
+    }
+    const last = data[data.length - 1];
+    if (result[result.length - 1].x !== last[0]) {
+      result.push({ x: last[0], y: Number(last[position]) });
+    }
+    return result;
+  }
 
-	_onTabPress = index => this.setState({ selectedTab: index });
+  onTabPress = index => this.setState({ selectedTab: index });
 
-	_keyExtractor = (item, index) => `data ${index}`;
+  keyExtractor = (item, index) => `data ${index}`;
 
-	_renderItem = ({ item }) => <Row data={item}
-		widthArr={this.state.widCell}
-		style={styles.trackerCell}
-		textStyle={styles.trackerText} />
+  renderItem = ({ item }) => <Row data={item}
+    widthArr={this.state.widCell}
+    style={styles.trackerCell}
+    textStyle={styles.trackerText} />
 
-	_renderGroup = data => (data.table !== null
-	  ? <View style={ApplicationStyles.screen}>
-			{data.chart !== undefined
-				&& <PureChart data={data.chart} type='line'
-					height={Metrics.screenHeight / 4} />}
-			<Text style={[styles.whiteCenter, styles.trackerText]}>Data from llsif.net</Text>
-			<ScrollView horizontal={true}
-				showsHorizontalScrollIndicator={false}>
-				<View>
-					<Row data={this.state.tableHead}
-						widthArr={this.state.widCell}
-						style={styles.trackerHead}
-						textStyle={styles.trackerText} />
-					<FlatList data={data.table}
-						showsVerticalScrollIndicator={false}
-						keyExtractor={this._keyExtractor}
-						renderItem={this._renderItem} />
-				</View>
-			</ScrollView>
-		</View>
-	  : <Text style={styles.whiteCenter}>No data</Text>)
+  renderGroup = data => (data.table !== null
+    ? <View style={ApplicationStyles.screen}>
+      {data.chart !== undefined
+        && <PureChart data={data.chart} type='line'
+          height={Metrics.screenHeight / 4} />}
+      <Text style={[styles.whiteCenter, styles.trackerText]}>Data from llsif.net</Text>
+      <ScrollView horizontal={true}
+        showsHorizontalScrollIndicator={false}>
+        <View>
+          <Row data={this.state.tableHead}
+            widthArr={this.state.widCell}
+            style={styles.trackerHead}
+            textStyle={styles.trackerText} />
+          <FlatList data={data.table}
+            showsVerticalScrollIndicator={false}
+            keyExtractor={this.keyExtractor}
+            renderItem={this.renderItem} />
+        </View>
+      </ScrollView>
+    </View>
+    : <Text style={styles.whiteCenter}>No data</Text>)
 
-	render() {
-	  return <View style={styles.container}>
-			<View style={[ApplicationStyles.center, styles.trackerRegion]}>
-				<SegmentedControlTab values={['Japanese', 'Worldwide']}
-					selectedIndex={this.state.selectedTab}
-					onTabPress={this._onTabPress} />
-			</View>
-			{this.state.selectedTab === 0
-			  ? this._renderGroup(this.state.jpGroup)
-			  : this._renderGroup(this.state.wwGroup)}
-		</View>;
-	}
+  render() {
+    return <View style={styles.container}>
+      <View style={[ApplicationStyles.center, styles.trackerRegion]}>
+        <SegmentedControlTab values={['Japanese', 'Worldwide']}
+          selectedIndex={this.state.selectedTab}
+          onTabPress={this.onTabPress} />
+      </View>
+      {this.state.selectedTab === 0
+        ? this.renderGroup(this.state.jpGroup)
+        : this.renderGroup(this.state.wwGroup)}
+    </View>;
+  }
 }

@@ -10,22 +10,25 @@ export default StyleSheet.create({
     alignItems: 'center',
   },
   filterContainer: {
-    backgroundColor: 'white',
+    backgroundColor: Colors.white,
     padding: 10,
   },
   header: {
-    backgroundColor: 'white',
+    backgroundColor: Colors.white,
   },
   list: {
     padding: Metrics.smallMargin,
   },
+  margin10: {
+    margin: 10,
+  },
   resetText: {
-    color: 'white',
+    color: Colors.white,
     textAlign: 'center',
   },
   resetView: {
     alignItems: 'stretch',
-    backgroundColor: 'red',
+    backgroundColor: Colors.red,
     justifyContent: 'center',
     marginTop: 10,
     padding: 10,

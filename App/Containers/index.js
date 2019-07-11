@@ -22,7 +22,7 @@ import ConfigureStore from '~/redux/store';
 import LoadingScreen from './LoadingScreen';
 import MainScreen from './MainScreen';
 import CardsScreen from './CardsScreen/Cards';
-import IdolsScreen from './IdolsScreen/Idols';
+import IdolsScreen from './IdolsScreen';
 import EventsScreen from './EventsScreen/Events';
 import SongsScreen from './SongsScreen/Songs';
 import Drawer from './Drawer/Drawer';

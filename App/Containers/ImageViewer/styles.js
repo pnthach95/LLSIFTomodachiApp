@@ -1,18 +1,18 @@
 import { StyleSheet } from 'react-native';
-import { ApplicationStyles, Metrics } from '~/Theme';
+import { ApplicationStyles, Metrics, Colors } from '~/Theme';
 
 export default StyleSheet.create({
   close: {
     paddingLeft: 20,
   },
   container: {
-    backgroundColor: '#000',
+    backgroundColor: Colors.black,
     flex: 1,
   },
   headerAbsolutePosition: {
     ...ApplicationStyles.absolute,
     alignItems: 'center',
-    backgroundColor: '#0005',
+    backgroundColor: Colors.c0005,
     flexDirection: 'row',
     height: Metrics.navBarHeight,
     justifyContent: 'space-between',
@@ -29,7 +29,7 @@ export default StyleSheet.create({
     top: '50%',
   },
   textCenter: {
-    color: 'white',
+    color: Colors.white,
     fontSize: 26,
     textAlign: 'center',
   },

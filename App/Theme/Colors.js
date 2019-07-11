@@ -23,4 +23,9 @@ export default {
   finished: '#EBA3FF',
   star: ['#D8FD53', '#F7FB34', '#FBAAC3', '#F33256'],
   white: 'white',
+  black: 'black',
+  c0005: '#0005',
+  c333: '#333',
+  f1f8ff: '#f1f8ff',
+  red: 'red',
 };

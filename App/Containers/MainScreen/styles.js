@@ -2,6 +2,9 @@ import { StyleSheet } from 'react-native';
 import { Colors, Metrics } from '~/Theme';
 
 export default StyleSheet.create({
+  bgWhite: {
+    backgroundColor: Colors.white,
+  },
   block: {
     alignItems: 'center',
     width: Metrics.screenWidth,
@@ -29,7 +32,7 @@ export default StyleSheet.create({
     justifyContent: 'flex-end',
   },
   text: {
-    color: 'white',
+    color: Colors.white,
     fontSize: 16,
     textAlign: 'center',
   },
@@ -38,7 +41,7 @@ export default StyleSheet.create({
     paddingVertical: 4,
   },
   title: {
-    color: 'white',
+    color: Colors.white,
     fontSize: 24,
     fontWeight: 'bold',
     textAlign: 'center',

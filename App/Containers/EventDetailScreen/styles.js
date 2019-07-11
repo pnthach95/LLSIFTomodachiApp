@@ -60,7 +60,7 @@ export default StyleSheet.create({
     backgroundColor: Colors.lightViolet,
   },
   trackerHead: {
-    backgroundColor: '#f1f8ff',
+    backgroundColor: Colors.f1f8ff,
     height: 40,
   },
   trackerRegion: {
@@ -71,10 +71,13 @@ export default StyleSheet.create({
     margin: 6,
   },
   whiteCenter: {
-    color: 'white',
+    color: Colors.white,
     textAlign: 'center',
   },
   whiteLine: {
-    backgroundColor: 'white',
+    backgroundColor: Colors.white,
+  },
+  width5: {
+    width: 5,
   },
 });

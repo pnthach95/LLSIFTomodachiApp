@@ -1,7 +1,9 @@
 import React from 'react';
 import {
-  Text, View, ScrollView, TouchableOpacity, Image,
+  Text, View, ScrollView,
+  TouchableOpacity, Image,
 } from 'react-native';
+import PropTypes from 'prop-types';
 import FastImage from 'react-native-fast-image';
 import moment from 'moment';
 
@@ -10,7 +12,7 @@ import Seperator from '~/Components/Seperator/Seperator';
 import TimerCountdown from '~/Components/TimerCountdown/Timer';
 import { AddHTTPS, findAttribute } from '~/Utils';
 import { Config, EventStatus } from '~/Config';
-import { Metrics, ApplicationStyles } from '~/Theme';
+import { Metrics, ApplicationStyles, Fonts } from '~/Theme';
 import styles from './styles';
 
 export default class Information extends React.PureComponent {
@@ -29,46 +31,61 @@ export default class Information extends React.PureComponent {
     };
   }
 
+  static propTypes = {
+    item: PropTypes.object,
+    WWEventStart: PropTypes.object,
+    WWEventEnd: PropTypes.object,
+    JPEventStart: PropTypes.object,
+    JPEventEnd: PropTypes.object,
+    cards: PropTypes.object,
+    songs: PropTypes.object,
+  }
+
   /**
-	 * Get width, height of image in FastImage
-	 *
-	 * @param {*} e
-	 * @memberof EventDetailScreen
-	 */
+   * Get width, height of image in FastImage
+   *
+   * @param {*} e
+   * @memberof EventDetailScreen
+   */
   onLoadFastImage(e) {
     const { width, height } = e.nativeEvent;
     this.setState({ imgWidth: width, imgHeight: height });
   }
 
   /**
-	 * Navigate to Card Detail Screen
-	 *
-	 * @param {Object} item Card object
-	 * @memberof EventDetailScreen
-	 */
+   * Navigate to Card Detail Screen
+   *
+   * @param {Object} item Card object
+   * @memberof EventDetailScreen
+   */
   navigateToCardDetail = item => () => Navigation.navigate('CardDetailScreen', { item });
 
   /**
-	 * Navigate to Song Detail Screen
-	 *
-	 * @param {Object} item Song object
-	 * @memberof EventDetailScreen
-	 */
+   * Navigate to Song Detail Screen
+   *
+   * @param {Object} item Song object
+   * @memberof EventDetailScreen
+   */
   navigateToSongDetail = item => () => Navigation.navigate('SongDetailScreen', { item });
 
   /**
-	 * Countdown timer for ongoing event
-	 *
-	 * @param {Number} time Remaining time (miliseconds)
-	 * @returns
-	 * @memberof Information
-	 */
+   * Countdown timer for ongoing event
+   *
+   * @param {Number} time Remaining time (miliseconds)
+   * @returns
+   * @memberof Information
+   */
   timer(time) {
     return <TimerCountdown initialSecondsRemaining={time}
       allowFontScaling={true} />;
   }
 
   render() {
+    const styleFastImage = {
+      alignSelf: 'center',
+      width: Metrics.widthBanner,
+      height: Metrics.widthBanner * this.state.imgHeight / this.state.imgWidth,
+    };
     return (
       <View style={styles.container}>
         <ScrollView showsVerticalScrollIndicator={false}
@@ -85,11 +102,7 @@ export default class Information extends React.PureComponent {
               <FastImage source={{ uri: AddHTTPS(this.state.item.english_image) }}
                 resizeMode={FastImage.resizeMode.contain}
                 onLoad={e => this.onLoadFastImage(e)}
-                style={{
-                  alignSelf: 'center',
-                  width: Metrics.widthBanner,
-                  height: Metrics.widthBanner * this.state.imgHeight / this.state.imgWidth,
-                }} />
+                style={styleFastImage} />
               <Text style={[styles.text, styles.whiteCenter]}>
                 {`Start: ${this.state.WWEventStart.format(Config.DATETIME_FORMAT_OUTPUT)}\nEnd: ${this.state.WWEventEnd.format(Config.DATETIME_FORMAT_OUTPUT)}`}
               </Text>
@@ -107,15 +120,13 @@ export default class Information extends React.PureComponent {
 
           {/* JAPANESE BLOCK */}
           <Text style={styles.whiteCenter}>Japanese</Text>
-          <Text style={[styles.text, styles.title, styles.whiteCenter]}>{this.state.item.romaji_name}</Text>
+          <Text style={[styles.text, styles.title, styles.whiteCenter]}>
+            {this.state.item.romaji_name}
+          </Text>
           <FastImage source={{ uri: AddHTTPS(this.state.item.image) }}
             resizeMode={FastImage.resizeMode.contain}
             onLoad={e => this.onLoadFastImage(e)}
-            style={{
-              alignSelf: 'center',
-              width: Metrics.widthBanner,
-              height: Metrics.widthBanner * this.state.imgHeight / this.state.imgWidth,
-            }} />
+            style={styleFastImage} />
           <Text style={[styles.text, styles.whiteCenter]}>
             {`Start: ${this.state.JPEventStart.format(Config.DATETIME_FORMAT_OUTPUT)}\nEnd: ${this.state.JPEventEnd.format(Config.DATETIME_FORMAT_OUTPUT)}`}
           </Text>
@@ -157,13 +168,13 @@ export default class Information extends React.PureComponent {
               <View style={styles.cardImage}>
                 <FastImage source={{ uri: AddHTTPS(item.round_card_image) }}
                   style={styles.roundImage} />
-                <View style={{ width: 5 }} />
+                <View style={styles.width5} />
                 <FastImage source={{ uri: AddHTTPS(item.round_card_idolized_image) }}
                   style={styles.roundImage} />
               </View>
-              <Text style={{ color: 'white' }}>{item.idol.name}</Text>
+              <Text style={Fonts.style.white}>{item.idol.name}</Text>
               {item.other_event !== null
-                && <Text style={{ color: 'white' }}>{'(English only)'}</Text>}
+                && <Text style={Fonts.style.white}>{'(English only)'}</Text>}
             </TouchableOpacity>)}
           </View>
         </ScrollView>

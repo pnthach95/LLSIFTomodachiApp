@@ -2,7 +2,6 @@ import React from 'react';
 import {
   View, FlatList, Text, TextInput, Alert, Image,
 } from 'react-native';
-import { connect } from 'react-redux';
 import ElevatedView from 'react-native-elevated-view';
 import Icon from 'react-native-vector-icons/Ionicons';
 import _ from 'lodash';
@@ -19,7 +18,7 @@ import SquareButton from '~/Components/SquareButton/SquareButton';
 import SplashScreen from '../SplashScreen/SplashScreen';
 import { Colors, ApplicationStyles, Images } from '~/Theme';
 import styles from './styles';
-import { LLSIFService } from '~/Services/LLSIFService';
+import LLSIFService from '~/Services/LLSIFService';
 import { loadSettings } from '~/Utils';
 
 /**
@@ -43,7 +42,7 @@ import { loadSettings } from '~/Utils';
  * @class EventsScreen
  * @extends {React.Component}
  */
-class EventsScreen extends React.Component {
+export default class EventsScreen extends React.Component {
   constructor(props) {
     super(props);
     this.defaultFilter = {
@@ -72,7 +71,7 @@ class EventsScreen extends React.Component {
       attribute: '',
       is_english: '',
     };
-    this._onEndReached = _.debounce(this._onEndReached, 500);
+    this.onEndReached = _.debounce(this.onEndReached, 500);
   }
 
   static navigationOptions = {
@@ -87,7 +86,7 @@ class EventsScreen extends React.Component {
 
   componentDidMount() {
     loadSettings().then((res) => {
-      this.setState({ is_english: res.worldwide_only ? 'False' : '' }, () => this._getEvents());
+      this.setState({ is_english: res.worldwide_only ? 'False' : '' }, () => this.getEvents());
     });
   }
 
@@ -96,14 +95,14 @@ class EventsScreen extends React.Component {
    *
    * @memberof EventsScreen
    */
-  _keyExtractor = (item, index) => `event ${item.japanese_name}`;
+  keyExtractor = item => `event ${item.japanese_name}`;
 
   /**
    * Render item in FlatList
    *
    * @memberof EventsScreen
    */
-  _renderItem = ({ item }) => <EventItem item={item} onPress={this._navigateToEventDetail(item)} />;
+  renderItem = ({ item }) => <EventItem item={item} onPress={this.navigateToEventDetail(item)} />;
 
   /**
    * Navigate to Event Detail Screen
@@ -111,7 +110,7 @@ class EventsScreen extends React.Component {
    * @param {Object} item
    * @memberof EventsScreen
    */
-  _navigateToEventDetail = item => () => this.props.navigation.navigate('EventDetailScreen', { eventName: item.japanese_name });
+  navigateToEventDetail = item => () => this.props.navigation.navigate('EventDetailScreen', { eventName: item.japanese_name });
 
   /**
    * Call when scrolling to the end of list.
@@ -119,9 +118,9 @@ class EventsScreen extends React.Component {
    *
    * @memberof CardsScreen
    */
-  _onEndReached = () => {
+  onEndReached = () => {
     if (this.state.stopSearch) return;
-    this._getEvents();
+    this.getEvents();
   }
 
   /**
@@ -130,30 +129,32 @@ class EventsScreen extends React.Component {
    * @param {Number} [page=this.state.page] Page number
    * @memberof EventsScreen
    */
-  _getEvents(page = this.state.page) {
-    const _filter = {
+  getEvents(page = this.state.page) {
+    const theFilter = {
       ordering: this.state.ordering,
       page_size: this.state.page_size,
       page,
     };
-    if (this.state.idol !== 'All') _filter.idol = this.state.idol;
-    if (this.state.skill !== 'All') _filter.skill = this.state.skill;
-    let _is_english = this.state.is_english;
-    if (_is_english !== '') {
-      if (_is_english === 'True') _is_english = 'False';
-      else _is_english = 'True';
-      _filter.is_english = _is_english;
+    if (this.state.idol !== 'All') theFilter.idol = this.state.idol;
+    if (this.state.skill !== 'All') theFilter.skill = this.state.skill;
+    let isEnglish = this.state.is_english;
+    if (isEnglish !== '') {
+      if (isEnglish === 'True') isEnglish = 'False';
+      else isEnglish = 'True';
+      theFilter.is_english = isEnglish;
     }
-    if (this.state.main_unit !== '') _filter.main_unit = this.state.main_unit;
-    if (this.state.attribute !== '') _filter.attribute = this.state.attribute;
-    if (this.state.search !== '') _filter.search = this.state.search;
-    console.log(`Events.getEvents ${JSON.stringify(_filter)}`);
-    LLSIFService.fetchEventList(_filter).then((result) => {
+    if (this.state.main_unit !== '') theFilter.main_unit = this.state.main_unit;
+    if (this.state.attribute !== '') theFilter.attribute = this.state.attribute;
+    if (this.state.search !== '') theFilter.search = this.state.search;
+    // eslint-disable-next-line no-console
+    console.log(`Events.getEvents ${JSON.stringify(theFilter)}`);
+    LLSIFService.fetchEventList(theFilter).then((result) => {
       if (result === 404) {
         // console.log('LLSIFService.fetchEventList 404');
         this.setState({ stopSearch: true });
       } else {
         let x = [...this.state.list, ...result];
+        // eslint-disable-next-line max-len
         x = x.filter((thing, index, self) => index === self.findIndex(t => t.japanese_name === thing.japanese_name));
         this.setState({
           list: x,
@@ -163,6 +164,7 @@ class EventsScreen extends React.Component {
       }
     }).catch((err) => {
       Alert.alert('Error', 'Error when get songs',
+        // eslint-disable-next-line no-console
         [{ text: 'OK', onPress: () => console.log('OK Pressed', err) }]);
     });
   }
@@ -172,18 +174,18 @@ class EventsScreen extends React.Component {
    *
    * @memberof EventsScreen
    */
-  _openDrawer = () => this.props.navigation.openDrawer();
+  openDrawer = () => this.props.navigation.openDrawer();
 
   /**
    * Call when pressing search button
    *
    * @memberof EventsScreen
    */
-  _onSearch = () => {
+  onSearch = () => {
     this.setState({
       list: [], page: 1, isFilter: false, stopSearch: false,
     });
-    this._getEvents(1);
+    this.getEvents(1);
   }
 
   /**
@@ -191,7 +193,7 @@ class EventsScreen extends React.Component {
    *
    * @memberof EventsScreen
    */
-  _resetFilter = () => {
+  resetFilter = () => {
     this.setState({
       ordering: this.defaultFilter.ordering,
       page_size: this.defaultFilter.page_size,
@@ -210,7 +212,7 @@ class EventsScreen extends React.Component {
    *
    * @memberof EventsScreen
    */
-  _toggleFilter = () => this.setState({ isFilter: !this.state.isFilter });
+  toggleFilter = () => this.setState({ isFilter: !this.state.isFilter });
 
   /**
    * Save `attribute`
@@ -218,7 +220,7 @@ class EventsScreen extends React.Component {
    * @param {String} value
    * @memberof EventsScreen
    */
-  _selectAttribute = value => () => this.setState({ attribute: value });
+  selectAttribute = value => () => this.setState({ attribute: value });
 
   /**
    * Save `main_unit`
@@ -226,7 +228,7 @@ class EventsScreen extends React.Component {
    * @param {String} value
    * @memberof EventsScreen
    */
-  _selectMainUnit = value => () => this.setState({ main_unit: value });
+  selectMainUnit = value => () => this.setState({ main_unit: value });
 
   /**
    * Save `is_english`
@@ -234,7 +236,7 @@ class EventsScreen extends React.Component {
    * @param {String} value
    * @memberof EventsScreen
    */
-  _selectRegion = value => () => this.setState({ is_english: value });
+  selectRegion = value => () => this.setState({ is_english: value });
 
   /**
    * Save `skill`
@@ -243,7 +245,7 @@ class EventsScreen extends React.Component {
    * @param {String} itemIndex unused
    * @memberof EventsScreen
    */
-  _selectSkill = (itemValue, itemIndex) => this.setState({ skill: itemValue });
+  selectSkill = itemValue => this.setState({ skill: itemValue });
 
   /**
    * Save `idol`
@@ -252,52 +254,55 @@ class EventsScreen extends React.Component {
    * @param {String} itemIndex unused
    * @memberof EventsScreen
    */
-  _selectIdol = (itemValue, itemIndex) => this.setState({ idol: itemValue });
+  selectIdol = itemValue => this.setState({ idol: itemValue });
 
   /**
    * Render footer of FlatList
    *
    * @memberof EventsScreen
    */
-  renderFooter = <View style={[ApplicationStyles.center, { margin: 10 }]}>
+  renderFooter = <View style={[ApplicationStyles.center, styles.margin10]}>
     <Image source={Images.alpaca} />
   </View>
 
-  renderEmpty = <View style={{ margin: 10 }}>
+  renderEmpty = <View style={styles.margin10}>
     <Text style={styles.resetText}>No result</Text>
   </View>
 
   render() {
     return (
       <View style={styles.container}>
-        <Fade visible={this.state.isLoading} style={[ApplicationStyles.screen, ApplicationStyles.absolute]}>
+        <Fade visible={this.state.isLoading}
+          style={[ApplicationStyles.screen, ApplicationStyles.absolute]}>
           <SplashScreen bgColor={Colors.violet} />
         </Fade>
-        <Fade visible={!this.state.isLoading} style={[ApplicationStyles.screen, ApplicationStyles.absolute]}>
+        <Fade visible={!this.state.isLoading}
+          style={[ApplicationStyles.screen, ApplicationStyles.absolute]}>
           {/* HEADER */}
           <ElevatedView elevation={5} style={[ApplicationStyles.header, styles.header]}>
-            <SquareButton name={'ios-menu'} onPress={this._openDrawer} />
+            <SquareButton name={'ios-menu'} onPress={this.openDrawer} />
             <View style={ApplicationStyles.searchHeader}>
               <TextInput value={this.state.search}
                 onChangeText={text => this.setState({ search: text })}
-                onSubmitEditing={this._onSearch}
+                onSubmitEditing={this.onSearch}
                 placeholder={'Search event...'}
                 style={ApplicationStyles.searchInput} />
-              <SquareButton name={'ios-search'} onPress={this._onSearch}
+              <SquareButton name={'ios-search'} onPress={this.onSearch}
                 style={ApplicationStyles.searchButton} />
             </View>
-            <SquareButton name={'ios-more'} onPress={this._toggleFilter} />
+            <SquareButton name={'ios-more'} onPress={this.toggleFilter} />
           </ElevatedView>
 
           {/* FILTER */}
           {this.state.isFilter
             && <ElevatedView elevation={5} style={styles.filterContainer}>
-              <IdolNameRow name={this.state.idol} selectIdol={this._selectIdol} />
-              <MainUnitRow main_unit={this.state.main_unit} selectMainUnit={this._selectMainUnit} />
-              <SkillRow skill={this.state.skill} selectSkill={this._selectSkill} />
-              <AttributeRow attribute={this.state.attribute} selectAttribute={this._selectAttribute} />
-              <RegionRow japan_only={this.state.is_english} selectRegion={this._selectRegion} />
-              <Touchable onPress={this._resetFilter} useForeground
+              <IdolNameRow name={this.state.idol} selectIdol={this.selectIdol} />
+              <MainUnitRow main_unit={this.state.main_unit} selectMainUnit={this.selectMainUnit} />
+              <SkillRow skill={this.state.skill} selectSkill={this.selectSkill} />
+              <AttributeRow attribute={this.state.attribute}
+                selectAttribute={this.selectAttribute} />
+              <RegionRow japan_only={this.state.is_english} selectRegion={this.selectRegion} />
+              <Touchable onPress={this.resetFilter} useForeground
                 style={styles.resetView}>
                 <Text style={styles.resetText}>RESET</Text>
               </Touchable>
@@ -307,18 +312,14 @@ class EventsScreen extends React.Component {
           <FlatList data={this.state.list}
             contentContainerStyle={styles.content}
             initialNumToRender={6}
-            keyExtractor={this._keyExtractor}
+            keyExtractor={this.keyExtractor}
             style={styles.list}
             ListEmptyComponent={this.renderEmpty}
             ListFooterComponent={this.renderFooter}
-            onEndReached={this._onEndReached}
-            renderItem={this._renderItem} />
+            onEndReached={this.onEndReached}
+            renderItem={this.renderItem} />
         </Fade>
       </View>
     );
   }
 }
-
-const mapStateToProps = state => ({});
-const mapDispatchToProps = dispatch => ({});
-export default connect(mapStateToProps, mapDispatchToProps)(EventsScreen);

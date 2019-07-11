@@ -2,8 +2,7 @@ import * as ActionTypes from './actions/actionTypes';
 
 const init = {
   cachedData: null,
-  cachedDataErrorMessage: null,
-  cachedDataIsLoading: true,
+  error: null,
 };
 
 export default (state = init, action) => {

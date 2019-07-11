@@ -23,7 +23,6 @@ async function fetchLatestVersion() {
   });
 }
 
-// eslint-disable-next-line import/prefer-default-export
-export const GithubService = {
+export default {
   fetchLatestVersion,
 };

@@ -1,8 +1,7 @@
 import React from 'react';
-import { View, Image } from 'react-native';
+import { View, Image, StyleSheet } from 'react-native';
 import PropTypes from 'prop-types';
 import { BarIndicator } from 'react-native-indicators';
-import styles from './styles';
 import { Images, ApplicationStyles } from '~/Theme';
 
 /**
@@ -36,3 +35,10 @@ export default class SplashScreen extends React.Component {
     );
   }
 }
+
+const styles = StyleSheet.create({
+  logo: {
+    resizeMode: 'contain',
+    width: '70%',
+  },
+});

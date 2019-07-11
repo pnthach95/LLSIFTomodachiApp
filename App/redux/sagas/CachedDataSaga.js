@@ -18,8 +18,8 @@ export default function* fetchCachedData(action) {
       { ordering: '-beginning', page_size: 1 });
     const [eventEN0] = eventEN;
     const [eventJP0] = eventJP;
-    data.eventEN = eventEN0;
-    data.eventJP = eventJP0;
+    data.ENEvent = eventEN0;
+    data.JPEvent = eventJP0;
     const randomCard = yield call(LLSIFService.fetchRandomCard);
     const r = Math.floor(Math.random() * 10);
     let bgImage = '';

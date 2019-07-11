@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { Metrics } from '~/Theme';
+import { Metrics, Colors, Fonts } from '~/Theme';
 
 export default StyleSheet.create({
   banner: {
@@ -49,7 +49,7 @@ export default StyleSheet.create({
     paddingHorizontal: '5%',
   },
   progressText: {
-    color: '#333',
+    color: Colors.c333,
     paddingLeft: '10%',
     paddingVertical: Metrics.baseMargin,
   },
@@ -72,6 +72,6 @@ export default StyleSheet.create({
     paddingBottom: Metrics.doubleBaseMargin,
   },
   subtitleText: {
-    fontSize: 14,
+    fontSize: Fonts.size.medium,
   },
 });

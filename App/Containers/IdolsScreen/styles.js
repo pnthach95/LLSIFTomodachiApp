@@ -5,6 +5,9 @@ export default StyleSheet.create({
   container: {
     backgroundColor: Colors.blue,
   },
+  height10: {
+    height: 10,
+  },
   hole: {
     height: Metrics.navBarHeight,
     width: Metrics.navBarHeight,
@@ -13,7 +16,7 @@ export default StyleSheet.create({
     padding: Metrics.smallMargin,
   },
   sectionText: {
-    color: 'white',
+    color: Colors.white,
     fontSize: 20,
     fontWeight: 'bold',
   },

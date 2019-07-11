@@ -2,7 +2,7 @@ import React from 'react';
 import {
   View, Text, SectionList, FlatList, Image,
 } from 'react-native';
-import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import ElevatedView from 'react-native-elevated-view';
 import Icon from 'react-native-vector-icons/Ionicons';
 
@@ -10,7 +10,7 @@ import Fade from '~/Components/Fade/Fade';
 import IdolItem from '~/Components/IdolItem/IdolItem';
 import Seperator from '~/Components/Seperator/Seperator';
 import SquareButton from '~/Components/SquareButton/SquareButton';
-import { LLSIFService } from '~/Services/LLSIFService';
+import LLSIFService from '~/Services/LLSIFService';
 import SplashScreen from '../SplashScreen/SplashScreen';
 import { Colors, ApplicationStyles, Images } from '~/Theme';
 import styles from './styles';
@@ -25,13 +25,17 @@ import styles from './styles';
  * @class IdolsScreen
  * @extends {React.Component}
  */
-class IdolsScreen extends React.Component {
+export default class IdolsScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       isLoading: true,
       list: [],
     };
+  }
+
+  static propTypes = {
+    schools: PropTypes.array,
   }
 
   static navigationOptions = {
@@ -51,7 +55,7 @@ class IdolsScreen extends React.Component {
     LLSIFService.fetchIdolList().then((res) => {
       const { schools } = this.props;
       const array = [];
-      for (const school of schools) {
+      schools.forEach((school) => {
         const item = {
           title: school,
           data: [
@@ -62,7 +66,7 @@ class IdolsScreen extends React.Component {
           ],
         };
         array.push(item);
-      }
+      });
       const item = {
         title: 'Other',
         data: [
@@ -90,7 +94,7 @@ class IdolsScreen extends React.Component {
    *
    * @memberof IdolsScreen
    */
-  _keyExtractor = (item, index) => `idol${item.name}`;
+  keyExtractor = item => `idol${item.name}`;
 
   /**
    * Render item in FlatList
@@ -98,26 +102,29 @@ class IdolsScreen extends React.Component {
    * @param {Object} item
    * @memberof IdolsScreen
    */
-  _renderItem = ({ item }) => <IdolItem item={item} onPress={this.navigateToIdolDetail(item.name)} />;
+  renderItem = ({ item }) => <IdolItem item={item}
+    onPress={this.navigateToIdolDetail(item.name)} />;
 
   /**
    * Open drawer
    *
    * @memberof IdolsScreen
    */
-  _openDrawer = () => this.props.navigation.openDrawer();
+  openDrawer = () => this.props.navigation.openDrawer();
 
   render() {
     return (
       <View style={[ApplicationStyles.screen, styles.container]}>
-        <Fade visible={this.state.isLoading} style={[ApplicationStyles.screen, ApplicationStyles.absolute]}>
+        <Fade visible={this.state.isLoading}
+          style={[ApplicationStyles.screen, ApplicationStyles.absolute]}>
           <SplashScreen bgColor={Colors.blue} />
         </Fade>
-        <Fade visible={!this.state.isLoading} style={[ApplicationStyles.screen, ApplicationStyles.absolute]}>
+        <Fade visible={!this.state.isLoading}
+          style={[ApplicationStyles.screen, ApplicationStyles.absolute]}>
           {/* HEADER */}
           <ElevatedView elevation={5}
             style={[ApplicationStyles.header, styles.container]}>
-            <SquareButton name={'ios-menu'} onPress={this._openDrawer} color={'white'} />
+            <SquareButton name={'ios-menu'} onPress={this.openDrawer} color={'white'} />
             <Image source={Images.logo} style={ApplicationStyles.imageHeader} />
             <View style={styles.hole} />
           </ElevatedView>
@@ -130,18 +137,22 @@ class IdolsScreen extends React.Component {
               <Text style={styles.sectionText}>{title}</Text>
             )}
             stickySectionHeadersEnabled={false}
-            ListHeaderComponent={<View style={{ height: 10 }} />}
-            ListFooterComponent={<View style={{ height: 10 }} />}
+            ListHeaderComponent={<View style={styles.height10} />}
+            ListFooterComponent={<View style={styles.height10} />}
             SectionSeparatorComponent={(data) => {
               if (data.leadingItem && data.leadingItem.key === 'Other') return null;
-              return <Seperator style={{ backgroundColor: 'white', marginBottom: data.leadingItem ? 20 : 0 }} />;
+              const styleSeperator = {
+                backgroundColor: 'white',
+                marginBottom: data.leadingItem ? 20 : 0,
+              };
+              return <Seperator style={styleSeperator} />;
             }}
-            renderItem={({ item, index, section }) => <FlatList
+            renderItem={({ item }) => <FlatList
               numColumns={3}
               data={item.list}
               initialNumToRender={9}
-              renderItem={this._renderItem}
-              keyExtractor={this._keyExtractor}
+              renderItem={this.renderItem}
+              keyExtractor={this.keyExtractor}
             />}
           />
         </Fade>
@@ -149,9 +160,3 @@ class IdolsScreen extends React.Component {
     );
   }
 }
-
-const mapStateToProps = state => ({
-  schools: state.cachedData.get('cachedData').get('cards_info').get('schools'),
-});
-const mapDispatchToProps = dispatch => ({});
-export default connect(mapStateToProps, mapDispatchToProps)(IdolsScreen);

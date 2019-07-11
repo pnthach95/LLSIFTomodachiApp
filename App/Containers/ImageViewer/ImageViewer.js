@@ -16,9 +16,9 @@ export default class ImageViewerScreen extends React.Component {
     };
   }
 
-  _handleOnPressImage = () => this.setState(prevState => ({ hideHeader: !prevState.hideHeader }));
+  handleOnPressImage = () => this.setState(prevState => ({ hideHeader: !prevState.hideHeader }));
 
-  _onChangeImage = index => this.setState({ index });
+  onChangeImage = index => this.setState({ index });
 
   header() {
     return (
@@ -41,9 +41,9 @@ export default class ImageViewerScreen extends React.Component {
       <View style={styles.container}>
         <Gallery images={images} pageMargin={10}
           style={styles.container} initialPage={index}
-          onPageSelected={this._onChangeImage}
+          onPageSelected={this.onChangeImage}
           errorComponent={this.error}
-          onSingleTapConfirmed={this._handleOnPressImage} />
+          onSingleTapConfirmed={this.handleOnPressImage} />
         {hideHeader || this.header()}
       </View>
     );

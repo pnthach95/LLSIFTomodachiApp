@@ -1,8 +1,9 @@
 import React from 'react';
 import {
-  Text, View, Image, ScrollView, TouchableNativeFeedback, Alert, Platform,
+  Text, View, Image, ScrollView,
+  TouchableNativeFeedback, Alert, Platform,
 } from 'react-native';
-import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import FastImage from 'react-native-fast-image';
 import Icon from 'react-native-vector-icons/SimpleLineIcons';
 import VersionNumber from 'react-native-version-number';
@@ -12,10 +13,9 @@ import Seperator from '~/Components/Seperator/Seperator';
 import Touchable from '~/Components/Touchable/Touchable';
 import SquareButton from '~/Components/SquareButton/SquareButton';
 import TimerCountdown from '~/Components/TimerCountdown/Timer';
-import SplashScreen from '../SplashScreen/SplashScreen';
 import { AddHTTPS, openLink } from '~/Utils';
 import { Config, EventStatus } from '~/Config';
-import { GithubService } from '~/Services/GithubService';
+import GithubService from '~/Services/GithubService';
 import {
   Metrics, Colors, Images, ApplicationStyles,
 } from '~/Theme';
@@ -34,7 +34,7 @@ import styles from './styles';
  * @class MainScreen
  * @extends {React.Component}
  */
-class MainScreen extends React.Component {
+export default class MainScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -45,6 +45,11 @@ class MainScreen extends React.Component {
       JPEvent: null,
       currentContests: [],
     };
+  }
+
+  static propTypes = {
+    cachedData: PropTypes.object,
+    cachedDataErrorMessage: PropTypes.string,
   }
 
   static navigationOptions = {
@@ -63,8 +68,8 @@ class MainScreen extends React.Component {
         // console.log('github', result);
         const appVersionArr = VersionNumber.appVersion.split(/\D|[a-zA-Z]/);
         const gitVersionArr = result.tag_name.split(/\./);
-        const appVersion = Number.parseInt(appVersionArr[0] + (appVersionArr[1].length === 1 ? '0' : '') + appVersionArr[1] + (appVersionArr[2].length === 1 ? '0' : '') + (appVersionArr[2] + 1));
-        const gitVersion = Number.parseInt(gitVersionArr[0] + (gitVersionArr[1].length === 1 ? '0' : '') + gitVersionArr[1] + (gitVersionArr[2].length === 1 ? '0' : '') + gitVersionArr[2]);
+        const appVersion = Number.parseInt(appVersionArr[0] + (appVersionArr[1].length === 1 ? '0' : '') + appVersionArr[1] + (appVersionArr[2].length === 1 ? '0' : '') + (appVersionArr[2] + 1), 10);
+        const gitVersion = Number.parseInt(gitVersionArr[0] + (gitVersionArr[1].length === 1 ? '0' : '') + gitVersionArr[1] + (gitVersionArr[2].length === 1 ? '0' : '') + gitVersionArr[2], 10);
         if (gitVersion > appVersion) {
           this.setState({
             version: {
@@ -108,37 +113,35 @@ class MainScreen extends React.Component {
    * @memberof MainScreen
    */
   navigateToEventDetail(event) {
-    this.props.navigation.navigate('EventDetailScreen', { event: event.toObject() });
+    this.props.navigation.navigate('EventDetailScreen', { event });
   }
 
-  _openDrawer = () => this.props.navigation.openDrawer();
+  openDrawer = () => this.props.navigation.openDrawer();
 
   render() {
-    if (this.props.cachedDataIsLoading) return <SplashScreen bgColor={Colors.pink} />;
     if (this.props.cachedDataErrorMessage) {
       Alert.alert('Error', this.props.cachedDataErrorMessage);
       return <View style={{ backgroundColor: Colors.pink }} />;
     }
     const data = this.props.cachedData;
-    const currentContests = data.get('current_contests');
-    /** English event */
-    const ENEvent = data.get('eventEN');
+    // eslint-disable-next-line no-unused-vars
+    const currentContests = data.current_contests;
+    /** Japanese event, English event */
+    const { JPEvent, ENEvent } = data;
     /** Start time of English event */
-    const ENEventStart = moment(ENEvent.get('english_beginning'));
+    const ENEventStart = moment(ENEvent.english_beginning);
     /** End time of English event */
-    const ENEventEnd = moment(ENEvent.get('english_end'));
-    /** Japanese event */
-    const JPEvent = data.get('eventJP');
+    const ENEventEnd = moment(ENEvent.english_end);
     /** Start time of Japanese event */
-    const JPEventStart = moment(JPEvent.get('beginning'), Config.DATETIME_FORMAT_INPUT);
+    const JPEventStart = moment(JPEvent.beginning, Config.DATETIME_FORMAT_INPUT);
     /** End time of Japanese event */
-    const JPEventEnd = moment(JPEvent.get('end'), Config.DATETIME_FORMAT_INPUT);
+    const JPEventEnd = moment(JPEvent.end, Config.DATETIME_FORMAT_INPUT);
 
     return (
       <View style={styles.container}>
         {/* HEADER */}
         <View style={ApplicationStyles.header}>
-          <SquareButton name={'ios-menu'} onPress={this._openDrawer} color={'white'} />
+          <SquareButton name={'ios-menu'} onPress={this.openDrawer} color={'white'} />
           <Image source={Images.logo} style={ApplicationStyles.imageHeader} />
           <SquareButton name={'ios-menu'} color={Colors.pink} />
         </View>
@@ -159,12 +162,12 @@ class MainScreen extends React.Component {
             onLongPress={() => { }}
             onPress={() => this.navigateToEventDetail(ENEvent)}>
             <Text style={styles.text}>
-              {`English Event: ${ENEvent.get('english_status')}`}
+              {`English Event: ${ENEvent.english_status}`}
             </Text>
             <View style={styles.textbox}>
-              <Text style={styles.title}>{ENEvent.get('english_name')}</Text>
+              <Text style={styles.title}>{ENEvent.english_name}</Text>
             </View>
-            <FastImage source={{ uri: AddHTTPS(ENEvent.get('english_image')) }}
+            <FastImage source={{ uri: AddHTTPS(ENEvent.english_image) }}
               onLoad={e => this.onLoadFastImage(e)}
               style={{
                 width: Metrics.widthBanner,
@@ -175,32 +178,32 @@ class MainScreen extends React.Component {
                 {`Start: ${ENEventStart.format(Config.DATETIME_FORMAT_OUTPUT)}\nEnd: ${ENEventEnd.format(Config.DATETIME_FORMAT_OUTPUT)}`}
               </Text>
             </View>
-            {ENEvent.get('world_current')
+            {ENEvent.world_current
               && <View style={styles.textbox}>
                 <Text style={styles.text}>
                   {this.timer(ENEventEnd.diff(moment()))}{' left'}
                 </Text>
               </View>}
-            {ENEvent.get('english_status') === EventStatus.ANNOUNCED
+            {ENEvent.english_status === EventStatus.ANNOUNCED
               && <View style={styles.textbox}>
                 <Text style={styles.text}>
                   {'Starts in '}{this.timer(ENEventStart.diff(moment()))}
                 </Text>
               </View>}
           </Touchable>
-          <Seperator style={{ backgroundColor: 'white' }} />
+          <Seperator style={styles.bgWhite} />
           {/* JAPANESE BLOCK */}
           <Touchable useForeground style={styles.block}
             background={TouchableNativeFeedback.Ripple('white', false)}
             onLongPress={() => { }}
             onPress={() => this.navigateToEventDetail(JPEvent)}>
             <Text style={styles.text}>
-              {`Japanese Event: ${JPEvent.get('japan_status')}`}
+              {`Japanese Event: ${JPEvent.japan_status}`}
             </Text>
             <View style={styles.textbox}>
-              <Text style={styles.title}>{JPEvent.get('romaji_name')}</Text>
+              <Text style={styles.title}>{JPEvent.romaji_name}</Text>
             </View>
-            <FastImage source={{ uri: AddHTTPS(JPEvent.get('image')) }}
+            <FastImage source={{ uri: AddHTTPS(JPEvent.image) }}
               onLoad={e => this.onLoadFastImage(e)}
               style={{
                 width: Metrics.widthBanner,
@@ -211,13 +214,13 @@ class MainScreen extends React.Component {
                 {`Start: ${JPEventStart.format(Config.DATETIME_FORMAT_OUTPUT)}\nEnd: ${JPEventEnd.format(Config.DATETIME_FORMAT_OUTPUT)}`}
               </Text>
             </View>
-            {JPEvent.get('japan_current')
+            {JPEvent.japan_current
               && <View style={styles.textbox}>
                 <Text style={styles.text}>
                   {this.timer(JPEventEnd.diff(moment()))}{' left'}
                 </Text>
               </View>}
-            {JPEvent.get('japan_status') === EventStatus.ANNOUNCED
+            {JPEvent.japan_status === EventStatus.ANNOUNCED
               && <View style={styles.textbox}>
                 <Text style={styles.text}>
                   {'Starts in '}{this.timer(JPEventStart.diff(moment()))}
@@ -244,12 +247,3 @@ class MainScreen extends React.Component {
     );
   }
 }
-
-const mapStateToProps = state => ({
-  cachedData: state.cachedData.get('cachedData'),
-  cachedDataErrorMessage: state.cachedData.get('cachedDataErrorMessage'),
-  cachedDataIsLoading: state.cachedData.get('cachedDataIsLoading'),
-});
-
-const mapDispatchToProps = dispatch => ({});
-export default connect(mapStateToProps, mapDispatchToProps)(MainScreen);

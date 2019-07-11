@@ -1,29 +1,32 @@
 import { StyleSheet } from 'react-native';
-import { Metrics } from '~/Theme';
+import { Metrics, Colors } from '~/Theme';
 
 export default StyleSheet.create({
   filterContainer: {
-    backgroundColor: 'white',
+    backgroundColor: Colors.white,
     padding: 10,
   },
   flatListElement: {
     margin: 10,
   },
   header: {
-    backgroundColor: 'white',
+    backgroundColor: Colors.white,
   },
   list: {
     padding: Metrics.smallMargin,
   },
   resetText: {
-    color: 'white',
+    color: Colors.white,
     textAlign: 'center',
   },
   resetView: {
     alignItems: 'stretch',
-    backgroundColor: 'red',
+    backgroundColor: Colors.red,
     justifyContent: 'center',
     marginTop: 10,
     padding: 10,
+  },
+  textCenter: {
+    textAlign: 'center',
   },
 });

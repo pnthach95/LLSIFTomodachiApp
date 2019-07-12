@@ -48,7 +48,7 @@ export default class SongDetailScreen extends React.PureComponent {
     this.state = {
       item: this.props.navigation.getParam('item'),
       name: '',
-      imgWidth: 0,
+      imgWidth: 1,
       imgHeight: 0,
       colors: [],
       currentStats: [],

@@ -29,7 +29,7 @@ export default class CardItem extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      imgWidth: 0,
+      imgWidth: 1,
       imgHeight: 0,
       colors: findColorByAttribute(props.item.attribute),
     };

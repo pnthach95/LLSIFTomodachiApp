@@ -33,7 +33,7 @@ export default class Card2PicsItem extends Component {
     if (props.item.card_image !== null) tmp.push(AddHTTPS(props.item.card_image));
     if (props.item.card_idolized_image !== null) tmp.push(AddHTTPS(props.item.card_idolized_image));
     this.state = {
-      imgWidth: 0,
+      imgWidth: 1,
       imgHeight: 0,
       images: tmp,
       colors: findColorByAttribute(props.item.attribute),

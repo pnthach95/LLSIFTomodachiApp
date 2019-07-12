@@ -47,7 +47,7 @@ export default class CardDetailScreen extends React.Component {
     super(props);
     this.state = {
       item: this.props.navigation.getParam('item'),
-      imgWidth: 0,
+      imgWidth: 1,
       imgHeight: 0,
       propertyLine: '',
       images: [],

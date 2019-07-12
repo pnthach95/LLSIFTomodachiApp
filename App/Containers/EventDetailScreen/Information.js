@@ -20,7 +20,7 @@ export default class Information extends React.PureComponent {
     super(props);
     this.state = {
       item: this.props.item,
-      imgWidth: 0,
+      imgWidth: 1,
       imgHeight: 0,
       WWEventStart: this.props.WWEventStart,
       WWEventEnd: this.props.WWEventEnd,

@@ -25,8 +25,6 @@ import styles from './styles';
  *
  * State:
  * - `item`: [Idol object](https://github.com/MagiCircles/SchoolIdolAPI/wiki/API-Idols#objects)
- * - `imgWidth`: Image width
- * - `imgHeight`: Image height
  * - `colors`: Color array
  * - `images`: Image array
  * - `isLoading`: Loading state
@@ -39,8 +37,6 @@ export default class IdolDetailScreen extends React.Component {
     super(props);
     this.state = {
       item: null,
-      imgWidth: 0,
-      imgHeight: 0,
       colors: [],
       images: [],
       isLoading: true,

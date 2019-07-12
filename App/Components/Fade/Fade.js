@@ -20,7 +20,7 @@ export default class Fade extends Component {
 
   static propTypes = {
     visible: PropTypes.any,
-    style: PropTypes.object,
+    style: PropTypes.any,
     children: PropTypes.any,
   };
 

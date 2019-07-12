@@ -21,7 +21,7 @@ import { ApplicationStyles } from '~/Theme';
 export default class SquareButton extends React.Component {
   static propTypes = {
     name: PropTypes.string.isRequired,
-    onPress: PropTypes.func.isRequired,
+    onPress: PropTypes.func,
     color: PropTypes.string.isRequired,
     style: PropTypes.object,
   };

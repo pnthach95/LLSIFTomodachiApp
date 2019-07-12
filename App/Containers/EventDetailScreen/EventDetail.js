@@ -97,17 +97,19 @@ export default class EventDetailScreen extends React.PureComponent {
   loadData() {
     const WWEventStart = moment(this.state.item.english_beginning);
     const JPEventStart = moment(this.state.item.beginning, Config.DATETIME_FORMAT_INPUT);
-    const wwEvent = this.props.wwEventInfo.filter(value => value.get('start_date') === WWEventStart.unix());
-    const jpEvent = this.props.jpEventInfo.filter(value => value.get('start_date') === JPEventStart.unix());
+    const wwEvent = this.props.wwEventInfo
+      .filter(value => value.start_date === WWEventStart.unix());
+    const jpEvent = this.props.jpEventInfo
+      .filter(value => value.start_date === JPEventStart.unix());
     if (wwEvent.length > 0) {
-      LLSIFdotnetService.fetchEventData({ svr: 'EN', eid: wwEvent[0].get('event_id'), cname: 'en' })
+      LLSIFdotnetService.fetchEventData({ svr: 'EN', eid: wwEvent[0].event_id, cname: 'en' })
         .then((res) => {
           const data = this.parseEventTracker(res);
           this.setState({ wwTracker: data });
         });
     }
     if (jpEvent.length > 0) {
-      LLSIFdotnetService.fetchEventData({ svr: 'JP', eid: jpEvent[0].get('event_id'), cname: 'jp' })
+      LLSIFdotnetService.fetchEventData({ svr: 'JP', eid: jpEvent[0].event_id, cname: 'jp' })
         .then((res) => {
           const data = this.parseEventTracker(res);
           this.setState({ jpTracker: data });

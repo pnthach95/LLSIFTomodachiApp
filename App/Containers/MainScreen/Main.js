@@ -39,7 +39,7 @@ export default class MainScreen extends React.Component {
     super(props);
     this.state = {
       version: null,
-      imgWidth: 0,
+      imgWidth: 1,
       imgHeight: 0,
       ENEvent: null,
       JPEvent: null,
@@ -101,7 +101,7 @@ export default class MainScreen extends React.Component {
    * @param {*} e
    * @memberof MainScreen
    */
-  onLoadFastImage(e) {
+  onLoadFastImage = (e) => {
     const { width, height } = e.nativeEvent;
     this.setState({ imgWidth: width, imgHeight: height });
   }
@@ -167,8 +167,9 @@ export default class MainScreen extends React.Component {
             <View style={styles.textbox}>
               <Text style={styles.title}>{ENEvent.english_name}</Text>
             </View>
-            <FastImage source={{ uri: AddHTTPS(ENEvent.english_image) }}
-              onLoad={e => this.onLoadFastImage(e)}
+            <FastImage source={{ uri: 'https://i.schoolido.lu/events/EN/Round%207%20COMPANION%20MATCH87J5zL3BNgnZb20A.png' }}
+              // <FastImage source={{ uri: AddHTTPS(ENEvent.english_image) }}
+              onLoad={this.onLoadFastImage}
               style={{
                 width: Metrics.widthBanner,
                 height: Metrics.widthBanner * this.state.imgHeight / this.state.imgWidth,
@@ -204,7 +205,7 @@ export default class MainScreen extends React.Component {
               <Text style={styles.title}>{JPEvent.romaji_name}</Text>
             </View>
             <FastImage source={{ uri: AddHTTPS(JPEvent.image) }}
-              onLoad={e => this.onLoadFastImage(e)}
+              onLoad={this.onLoadFastImage}
               style={{
                 width: Metrics.widthBanner,
                 height: Metrics.widthBanner * this.state.imgHeight / this.state.imgWidth,
@@ -232,8 +233,8 @@ export default class MainScreen extends React.Component {
           {/* CONTEST BLOCK */}
           {/* {currentContests.map((item, id) => (
             <View key={'contest' + id}>
-              <Text style={styles.text}>{item.get('name')}</Text>
-              <FastImage source={{ uri: AddHTTPS(item.get('image')) }}
+              <Text style={styles.text}>{item.name}</Text>
+              <FastImage source={{ uri: AddHTTPS(item.image)) }}
                 resizeMode={FastImage.resizeMode.contain}
                 style={{
                   width: Metrics.widthBanner,

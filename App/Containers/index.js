@@ -25,7 +25,7 @@ import CardsScreen from './CardsScreen/Cards';
 import IdolsScreen from './IdolsScreen';
 import EventsScreen from './EventsScreen/Events';
 import SongsScreen from './SongsScreen/Songs';
-import Drawer from './Drawer/Drawer';
+import Drawer from './Drawer';
 
 import CardDetailScreen from './CardDetailScreen';
 import EventDetailScreen from './EventDetailScreen';

@@ -53,9 +53,9 @@ export default class CardDetailScreen extends React.Component {
       images: [],
       colors: findColorByAttribute(this.props.navigation.getParam('item').attribute),
       maxStats: [
-        this.props.maxStats.get('Smile'),
-        this.props.maxStats.get('Pure'),
-        this.props.maxStats.get('Cool'),
+        this.props.maxStats.Smile,
+        this.props.maxStats.Pure,
+        this.props.maxStats.Cool,
       ],
       minStats: [],
       nonIdolMaxStats: [],

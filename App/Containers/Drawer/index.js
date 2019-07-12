@@ -1,10 +1,9 @@
 import { connect } from 'react-redux';
 import Drawer from './Drawer';
-import { getRandomCard, getBGImage } from '~/redux/selectors/cachedDataSelectors';
 
 const mapStateToProps = state => ({
-  randomCard: getRandomCard(state),
-  bgImage: getBGImage(state),
+  randomCard: state.cachedData.randomCard,
+  bgImage: state.cachedData.bgImage,
 });
 
 const mapDispatchToProps = null;

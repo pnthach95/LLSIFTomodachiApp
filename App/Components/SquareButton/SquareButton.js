@@ -22,7 +22,7 @@ export default class SquareButton extends React.Component {
   static propTypes = {
     name: PropTypes.string.isRequired,
     onPress: PropTypes.func,
-    color: PropTypes.string.isRequired,
+    color: PropTypes.string,
     style: PropTypes.object,
   };
 

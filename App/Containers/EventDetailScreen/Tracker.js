@@ -23,8 +23,8 @@ export default class Tracker extends React.PureComponent {
   }
 
   static propTypes = {
-    wwTracker: PropTypes.object,
-    jpTracker: PropTypes.object,
+    wwTracker: PropTypes.any,
+    jpTracker: PropTypes.any,
   }
 
   componentDidMount() {

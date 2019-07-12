@@ -37,8 +37,8 @@ export default class Information extends React.PureComponent {
     WWEventEnd: PropTypes.object,
     JPEventStart: PropTypes.object,
     JPEventEnd: PropTypes.object,
-    cards: PropTypes.object,
-    songs: PropTypes.object,
+    cards: PropTypes.any,
+    songs: PropTypes.any,
   }
 
   /**

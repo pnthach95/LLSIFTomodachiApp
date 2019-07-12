@@ -10,6 +10,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import Icon from 'react-native-vector-icons/Ionicons';
 import moment from 'moment';
 
+import SplashScreen from '../SplashScreen/SplashScreen';
 import TextRow from '~/Components/TextRow/TextRow';
 import Seperator from '~/Components/Seperator/Seperator';
 import ProgressBar from '~/Components/ProgressBar/ProgressBar';
@@ -46,6 +47,7 @@ export default class CardDetailScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      done: false,
       item: this.props.navigation.getParam('item'),
       imgWidth: 1,
       imgHeight: 0,
@@ -82,6 +84,7 @@ export default class CardDetailScreen extends React.Component {
     propertyLine = tmp.join(' - ');
 
     this.setState({
+      done: true,
       images,
       propertyLine,
       minStats: [
@@ -119,24 +122,23 @@ export default class CardDetailScreen extends React.Component {
     return 100 * stat / this.state.maxStats[2];
   }
 
-  selectIcon = (text) => {
+  progressUnit(text, stat, color) {
+    let icon = 2;
     switch (text) {
       case 'Smile':
-        return 0;
+        icon = 0;
+        break;
       case 'Pure':
-        return 1;
+        icon = 1;
+        break;
       default:
-        return 2;
+        icon = 2;
     }
-  };
-
-  progressUnit(text, stat, color) {
-    const icon = this.selectIcon(text);
     return (
       <View style={{ width: Metrics.screenWidth }}>
         <Text style={[Fonts.style.normal, styles.progressText]}>{text}</Text>
         <View style={styles.progressRow}>
-          <Image source={Images.attribute[icon(text)]}
+          <Image source={Images.attribute[icon]}
             style={[ApplicationStyles.mediumIcon, styles.marginRight10]} />
           <ProgressBar
             number={stat}
@@ -194,6 +196,7 @@ export default class CardDetailScreen extends React.Component {
   navigateToImageViewerScreen = index => () => this.props.navigation.navigate('ImageViewerScreen', { index, images: this.state.images });
 
   render() {
+    if (!this.state.done) return <SplashScreen />;
     const { item } = this.state;
     return (
       <View style={ApplicationStyles.screen}>

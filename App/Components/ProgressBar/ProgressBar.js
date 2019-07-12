@@ -18,8 +18,8 @@ export default class ProgressBar extends React.Component {
   static propTypes = {
     backgroundStyle: PropTypes.any,
     fillStyle: PropTypes.any,
-    progress: PropTypes.any.isRequired,
-    number: PropTypes.any.isRequired,
+    progress: PropTypes.any,
+    number: PropTypes.any,
   };
 
   render() {

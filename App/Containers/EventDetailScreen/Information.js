@@ -7,7 +7,6 @@ import PropTypes from 'prop-types';
 import FastImage from 'react-native-fast-image';
 import moment from 'moment';
 
-import Navigation from '~/Services/NavigationService';
 import Seperator from '~/Components/Seperator/Seperator';
 import TimerCountdown from '~/Components/TimerCountdown/Timer';
 import { AddHTTPS, findAttribute } from '~/Utils';
@@ -53,20 +52,13 @@ export default class Information extends React.PureComponent {
   }
 
   /**
-   * Navigate to Card Detail Screen
+   * Navigate to destination screen
    *
+   * @param {String} destination destination screen
    * @param {Object} item Card object
    * @memberof EventDetailScreen
    */
-  navigateToCardDetail = item => () => Navigation.navigate('CardDetailScreen', { item });
-
-  /**
-   * Navigate to Song Detail Screen
-   *
-   * @param {Object} item Song object
-   * @memberof EventDetailScreen
-   */
-  navigateToSongDetail = item => () => Navigation.navigate('SongDetailScreen', { item });
+  navigateTo = (destination, item) => () => this.props.navigation.navigate(destination, { item });
 
   /**
    * Countdown timer for ongoing event
@@ -146,7 +138,7 @@ export default class Information extends React.PureComponent {
               <Text style={styles.whiteCenter}>Song</Text>
               <View style={styles.cardList}>
                 {this.state.songs.map((item, index) => <TouchableOpacity key={`song${index}`}
-                  onPress={this.navigateToSongDetail(item)}
+                  onPress={this.navigateTo('SongDetailScreen', item)}
                   style={styles.card}>
                   <FastImage source={{ uri: AddHTTPS(item.image) }} style={styles.song} />
                   <View style={styles.songInfo}>
@@ -163,7 +155,7 @@ export default class Information extends React.PureComponent {
           {/* CARDS */}
           <View style={styles.cardList}>
             {this.state.cards.map((item, index) => <TouchableOpacity key={`card${index}`}
-              onPress={this.navigateToCardDetail(item)}
+              onPress={this.navigateTo('CardDetailScreen', item)}
               style={styles.card}>
               <View style={styles.cardImage}>
                 <FastImage source={{ uri: AddHTTPS(item.round_card_image) }}

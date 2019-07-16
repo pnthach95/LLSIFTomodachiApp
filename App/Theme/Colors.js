@@ -30,4 +30,10 @@ export default {
   aaa: '#aaa',
   f1f8ff: '#f1f8ff',
   red: 'red',
+  ddda: '#ddda',
+  eeec: '#eeec',
+  fff6: '#fff6',
+  fff9: '#fff9',
+  fffb: '#fffb',
+  transparent: '#0000',
 };

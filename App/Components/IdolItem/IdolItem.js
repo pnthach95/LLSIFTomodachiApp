@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
-import { TouchableNativeFeedback, View, Text } from 'react-native';
+import {
+  TouchableNativeFeedback, View, Text,
+  StyleSheet,
+} from 'react-native';
 import PropTypes from 'prop-types';
 import ElevatedView from 'react-native-elevated-view';
 import FastImage from 'react-native-fast-image';
-import styles from './styles';
 import Touchable from '../Touchable/Touchable';
-import { Metrics } from '~/Theme';
+import { Metrics, Fonts, Colors } from '~/Theme';
 import { findColorByAttribute } from '~/Utils';
 
 /**
@@ -64,10 +66,26 @@ export default class IdolItem extends Component {
             }}
             style={styleImage} />
           <View style={styles.info}>
-            <Text style={styles.text}>{this.props.item.name}</Text>
+            <Text style={Fonts.style.center}>{this.props.item.name}</Text>
           </View>
         </Touchable>
       </ElevatedView>
     );
   }
 }
+
+const styles = StyleSheet.create({
+  container: {
+    alignItems: 'center',
+    backgroundColor: Colors.itemColor,
+    borderRadius: 5,
+    margin: Metrics.smallMargin,
+    width: Metrics.images.smallItemWidth,
+  },
+  info: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    margin: Metrics.smallMargin,
+  },
+});

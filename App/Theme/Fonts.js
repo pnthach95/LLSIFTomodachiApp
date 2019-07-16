@@ -9,6 +9,9 @@ const size = {
 };
 
 const style = {
+  center: {
+    textAlign: 'center',
+  },
   h1: {
     fontSize: size.h1,
   },

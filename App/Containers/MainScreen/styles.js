@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { Colors, Metrics } from '~/Theme';
+import { Colors, Metrics, Fonts } from '~/Theme';
 
 export default StyleSheet.create({
   bgWhite: {
@@ -32,19 +32,19 @@ export default StyleSheet.create({
     justifyContent: 'flex-end',
   },
   text: {
-    color: Colors.white,
+    ...Fonts.style.white,
+    ...Fonts.style.center,
     fontSize: 16,
-    textAlign: 'center',
   },
   textbox: {
     paddingHorizontal: Metrics.baseMargin,
     paddingVertical: 4,
   },
   title: {
-    color: Colors.white,
+    ...Fonts.style.white,
+    ...Fonts.style.center,
     fontSize: 24,
     fontWeight: 'bold',
-    textAlign: 'center',
   },
   update: {
     alignItems: 'center',

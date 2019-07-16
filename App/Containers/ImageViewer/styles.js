@@ -1,5 +1,8 @@
 import { StyleSheet } from 'react-native';
-import { ApplicationStyles, Metrics, Colors } from '~/Theme';
+import {
+  ApplicationStyles,
+  Metrics, Colors, Fonts,
+} from '~/Theme';
 
 export default StyleSheet.create({
   close: {
@@ -29,8 +32,8 @@ export default StyleSheet.create({
     top: '50%',
   },
   textCenter: {
-    color: Colors.white,
+    ...Fonts.style.white,
+    ...Fonts.style.center,
     fontSize: 26,
-    textAlign: 'center',
   },
 });

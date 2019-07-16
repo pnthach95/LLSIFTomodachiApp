@@ -1,16 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { Fonts, Metrics } from '~/Theme';
-
-const colors = {
-  c0005: '#0005',
-  ddda: '#ddda',
-  eeec: '#eeec',
-  fff6: '#fff6',
-  fff9: '#fff9',
-  fffb: '#fffb',
-  transparent: '#0000',
-  white: 'white',
-};
+import { Fonts, Metrics, Colors } from '~/Theme';
 
 export default StyleSheet.create({
   body: {
@@ -19,7 +8,7 @@ export default StyleSheet.create({
     paddingVertical: 6,
   },
   container: {
-    backgroundColor: colors.ddda,
+    backgroundColor: Colors.ddda,
     bottom: 50,
     flex: 0,
     flexGrow: 1,
@@ -30,7 +19,7 @@ export default StyleSheet.create({
   },
   footer: {
     alignSelf: 'flex-end',
-    backgroundColor: colors.eeec,
+    backgroundColor: Colors.eeec,
     height: 150,
     width: '100%',
   },
@@ -44,8 +33,8 @@ export default StyleSheet.create({
   },
   group: {
     alignItems: 'center',
-    backgroundColor: colors.fff9,
-    borderBottomColor: colors.c0005,
+    backgroundColor: Colors.fff9,
+    borderBottomColor: Colors.c0005,
     borderBottomWidth: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -54,7 +43,7 @@ export default StyleSheet.create({
   },
   header: {
     alignSelf: 'stretch',
-    backgroundColor: colors.fffb,
+    backgroundColor: Colors.fffb,
     height: 70,
   },
   logo: {
@@ -63,7 +52,7 @@ export default StyleSheet.create({
   },
   settingRow: {
     alignItems: 'center',
-    backgroundColor: colors.fff6,
+    backgroundColor: Colors.fff6,
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginBottom: Metrics.smallMargin,
@@ -77,10 +66,10 @@ export default StyleSheet.create({
     textDecorationLine: 'underline',
   },
   transparent: {
-    backgroundColor: colors.transparent,
+    backgroundColor: Colors.transparent,
   },
   versionContainer: {
-    backgroundColor: colors.white,
+    backgroundColor: Colors.white,
     bottom: 0,
     height: 50,
     left: 0,
@@ -89,11 +78,11 @@ export default StyleSheet.create({
   },
   versionText: {
     ...Fonts.style.black,
-    textAlign: 'center',
+    ...Fonts.style.center,
   },
   viewMore: {
     alignSelf: 'stretch',
-    backgroundColor: colors.fff9,
+    backgroundColor: Colors.fff9,
     height: 50,
   },
 });

@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { Colors, Metrics } from '~/Theme';
+import { Colors, Metrics, Fonts } from '~/Theme';
 
 export default StyleSheet.create({
   attributeIcon: {
@@ -71,8 +71,8 @@ export default StyleSheet.create({
     margin: 6,
   },
   whiteCenter: {
-    color: Colors.white,
-    textAlign: 'center',
+    ...Fonts.style.white,
+    ...Fonts.style.center,
   },
   whiteLine: {
     backgroundColor: Colors.white,

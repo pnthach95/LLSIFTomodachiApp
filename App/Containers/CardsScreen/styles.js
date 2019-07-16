@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { Metrics, Colors } from '~/Theme';
+import { Metrics, Colors, Fonts } from '~/Theme';
 
 export default StyleSheet.create({
   container: {
@@ -10,14 +10,14 @@ export default StyleSheet.create({
     padding: Metrics.baseMargin,
   },
   filterContainer: {
-    backgroundColor: 'white',
+    backgroundColor: Colors.white,
     height: Metrics.screenHeight * 0.35,
   },
   flatListElement: {
     margin: Metrics.baseMargin,
   },
   floatButton: {
-    backgroundColor: 'white',
+    backgroundColor: Colors.white,
     borderRadius: 50,
     bottom: 10,
     height: 50,
@@ -30,18 +30,18 @@ export default StyleSheet.create({
     width: 35,
   },
   header: {
-    backgroundColor: 'white',
+    backgroundColor: Colors.white,
   },
   list: {
     padding: Metrics.smallMargin,
   },
   resetText: {
-    color: 'white',
-    textAlign: 'center',
+    ...Fonts.style.white,
+    ...Fonts.style.center,
   },
   resetView: {
     alignItems: 'stretch',
-    backgroundColor: 'red',
+    backgroundColor: Colors.red,
     justifyContent: 'center',
     marginTop: Metrics.baseMargin,
     padding: Metrics.baseMargin,

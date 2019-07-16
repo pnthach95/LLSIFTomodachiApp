@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { Metrics, Colors } from '~/Theme';
+import { Metrics, Fonts } from '~/Theme';
 
 export default StyleSheet.create({
   container: {
@@ -11,8 +11,8 @@ export default StyleSheet.create({
     width: Metrics.screenWidth - 20,
   },
   text: {
-    color: Colors.white,
-    textAlign: 'center',
+    ...Fonts.style.white,
+    ...Fonts.style.center,
   },
   textBox: {
     paddingVertical: Metrics.smallMargin,

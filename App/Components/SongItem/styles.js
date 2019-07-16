@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { Metrics, Colors } from '~/Theme';
+import { Metrics, Colors, Fonts } from '~/Theme';
 
 export default StyleSheet.create({
   container: {
@@ -15,7 +15,7 @@ export default StyleSheet.create({
     paddingVertical: Metrics.smallMargin,
   },
   text: {
-    color: Colors.white,
-    textAlign: 'center',
+    ...Fonts.style.white,
+    ...Fonts.style.center,
   },
 });

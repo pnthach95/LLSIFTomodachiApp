@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { Metrics, Colors } from '~/Theme';
+import { Metrics, Colors, Fonts } from '~/Theme';
 
 export default StyleSheet.create({
   filterContainer: {
@@ -16,8 +16,8 @@ export default StyleSheet.create({
     padding: Metrics.smallMargin,
   },
   resetText: {
-    color: Colors.white,
-    textAlign: 'center',
+    ...Fonts.style.white,
+    ...Fonts.style.center,
   },
   resetView: {
     alignItems: 'stretch',
@@ -25,8 +25,5 @@ export default StyleSheet.create({
     justifyContent: 'center',
     marginTop: 10,
     padding: 10,
-  },
-  textCenter: {
-    textAlign: 'center',
   },
 });

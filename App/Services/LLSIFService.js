@@ -36,12 +36,21 @@ async function fetchCardList(filter) {
   return null;
 }
 
-/**
- * [Fetch idol list](https://github.com/MagiCircles/SchoolIdolAPI/wiki/API-Idols#get-the-list-of-idols)
- *
- * @returns
- */
-async function fetchIdolList() {
+async function fetchIdolListBySchool(schools) {
+  let data = [];
+  // eslint-disable-next-line no-plusplus
+  for (let i = 0; i < schools.length; i++) {
+    const school = schools[i];
+    const response = LLSIFApiClient.get(Config.IDOLS, { school });
+    if (response.ok) {
+      data = [...data, ...response.data.results];
+    }
+  }
+  const result = await Promise.all(data);
+  return result;
+}
+
+async function fetchIdolListByPageSize() {
   const response1 = await LLSIFApiClient.get(Config.IDOLS, { page_size: 100 });
   const response2 = await LLSIFApiClient.get(Config.IDOLS, { page_size: 100, page: 2 });
   let data1 = [];
@@ -51,8 +60,31 @@ async function fetchIdolList() {
   } else return null;
   if (response2.ok) {
     data2 = response2.data.results;
-  }
+  } else return null;
   return [...data1, ...data2];
+}
+
+/**
+ * [Fetch idol list](https://github.com/MagiCircles/SchoolIdolAPI/wiki/API-Idols#get-the-list-of-idols)
+ *
+ * @returns
+ */
+function fetchIdolList(schools = null) {
+  return new Promise((resolve, reject) => {
+    if (schools === null) {
+      fetchIdolListByPageSize()
+        .then((res) => {
+          if (res.length === 0) reject(Error('Failed to get idol list'));
+          resolve(res);
+        });
+    } else {
+      fetchIdolListBySchool(schools)
+        .then((res) => {
+          if (res.length === 0) reject(Error('Failed to get idol list'));
+          resolve(res);
+        });
+    }
+  });
 }
 
 /**

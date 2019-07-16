@@ -1,6 +1,7 @@
 import React from 'react';
 import {
-  View, Text, SectionList, FlatList, Image,
+  View, Text, SectionList,
+  FlatList, Image, Alert,
 } from 'react-native';
 import PropTypes from 'prop-types';
 import ElevatedView from 'react-native-elevated-view';
@@ -53,33 +54,42 @@ export default class IdolsScreen extends React.Component {
   }
 
   componentDidMount() {
-    LLSIFService.fetchIdolList().then((res) => {
-      const { schools } = this.props;
-      const array = [];
-      schools.forEach((school) => {
+    this.loadData();
+  }
+
+  loadData() {
+    const { schools } = this.props;
+    LLSIFService.fetchIdolList(schools)
+      .then((res) => {
+        const array = [];
+        schools.forEach((school) => {
+          const item = {
+            title: school,
+            data: [
+              {
+                key: school,
+                list: res.filter(value => value.school === school),
+              },
+            ],
+          };
+          if (item.data[0].list.length !== 0) array.push(item);
+        });
         const item = {
-          title: school,
+          title: 'Other',
           data: [
             {
-              key: school,
-              list: res.filter(value => value.school === school),
+              key: 'Other',
+              list: res.filter(value => value.school === null),
             },
           ],
         };
-        array.push(item);
+        if (item.data[0].list.length !== 0) array.push(item);
+        this.setState({ isLoading: false, list: array });
+      })
+      .catch((e) => {
+        this.setState({ isLoading: false });
+        Alert.alert('Error', e.message);
       });
-      const item = {
-        title: 'Other',
-        data: [
-          {
-            key: 'Other',
-            list: res.filter(value => value.school === null),
-          },
-        ],
-      };
-      array.push(item);
-      this.setState({ isLoading: false, list: array });
-    });
   }
 
   /**

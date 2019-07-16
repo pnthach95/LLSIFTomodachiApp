@@ -6,10 +6,12 @@ import {
   TouchableNativeFeedback, Alert, ScrollView,
   Image, LayoutAnimation, UIManager,
 } from 'react-native';
+import PropTypes from 'prop-types';
 import ElevatedView from 'react-native-elevated-view';
 import Icon from 'react-native-vector-icons/Ionicons';
 import _ from 'lodash';
 
+import ConnectStatus from '~/Components/ConnectStatus';
 import Fade from '~/Components/Fade/Fade';
 import YearRow from '~/Components/YearRow/YearRow';
 import CardItem from '~/Components/CardItem/CardItem';
@@ -118,6 +120,10 @@ export default class CardsScreen extends React.PureComponent {
       && UIManager.setLayoutAnimationEnabledExperimental(true);
   }
 
+  static propTypes = {
+    isConnected: PropTypes.bool,
+  }
+
   static navigationOptions = {
     tabBarIcon: ({ focused }) => <Icon name='ios-photos' size={30}
       color={focused ? Colors.pink : Colors.inactive} />,
@@ -129,7 +135,8 @@ export default class CardsScreen extends React.PureComponent {
   }
 
   componentDidMount() {
-    loadSettings().then(res => this.setState({ japan_only: res.worldwide_only ? 'False' : '' }, () => this.getCards()));
+    loadSettings()
+      .then(res => this.setState({ japan_only: res.worldwide_only ? 'False' : '' }, () => this.getCards()));
   }
 
   /**
@@ -187,6 +194,10 @@ export default class CardsScreen extends React.PureComponent {
    * @memberof CardsScreen
    */
   getCards(page = this.state.page) {
+    if (this.props.isConnected === false) {
+      this.setState({ isLoading: false });
+      return;
+    }
     const ordering = (this.state.isReverse ? '-' : '') + this.state.selectedOrdering;
     const theFilter = {
       ordering,
@@ -479,7 +490,7 @@ export default class CardsScreen extends React.PureComponent {
                 </Touchable>
               </ScrollView>
             </ElevatedView>}
-
+          <ConnectStatus />
           {/* LIST */}
           <FlatList data={this.state.data}
             key={`${this.state.column}c`}

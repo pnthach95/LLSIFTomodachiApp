@@ -1,10 +1,9 @@
 import { connect } from 'react-redux';
 import EventDetailScreen from './EventDetail';
-import { getWWEventInfo, getJPEventInfo } from '~/redux/selectors/cachedDataSelectors';
 
 const mapStateToProps = state => ({
-  wwEventInfo: getWWEventInfo(state),
-  jpEventInfo: getJPEventInfo(state),
+  wwEventInfo: state.reducer.cachedData.eventInfo.ww,
+  jpEventInfo: state.reducer.cachedData.eventInfo.jp,
 });
 
 const mapDispatchToProps = null;

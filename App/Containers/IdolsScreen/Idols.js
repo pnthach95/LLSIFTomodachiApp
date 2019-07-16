@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 import ElevatedView from 'react-native-elevated-view';
 import Icon from 'react-native-vector-icons/Ionicons';
 
+import ConnectStatus from '~/Components/ConnectStatus';
 import Fade from '~/Components/Fade/Fade';
 import IdolItem from '~/Components/IdolItem/IdolItem';
 import Seperator from '~/Components/Seperator/Seperator';
@@ -128,6 +129,7 @@ export default class IdolsScreen extends React.Component {
             <Image source={Images.logo} style={ApplicationStyles.imageHeader} />
             <View style={styles.hole} />
           </ElevatedView>
+          <ConnectStatus />
           {/* BODY */}
           <SectionList sections={this.state.list}
             initialNumToRender={9}

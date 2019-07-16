@@ -1,9 +1,8 @@
 import { connect } from 'react-redux';
 import SongDetailScreen from './SongDetail';
-import { getSongMaxStat } from '~/redux/selectors/cachedDataSelectors';
 
 const mapStateToProps = state => ({
-  songMaxStat: getSongMaxStat(state),
+  songMaxStat: state.reducer.cachedData.cards_info.songs_max_stats,
 });
 
 const mapDispatchToProps = null;

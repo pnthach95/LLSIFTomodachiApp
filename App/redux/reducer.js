@@ -1,3 +1,4 @@
+import { offlineActionTypes } from 'react-native-offline';
 import * as ActionTypes from './actions/actionTypes';
 
 const init = {
@@ -13,6 +14,11 @@ export default (state = init, action) => {
     // ERROR
     case ActionTypes.CACHED_DATA_FAILED:
       return { ...state, error: action.payload };
+    // react-native-offline
+    case offlineActionTypes.CONNECTION_CHANGE:
+      return state;
+    case offlineActionTypes.FETCH_OFFLINE_MODE:
+      return state;
     // DEFAULT
     default:
       return state;

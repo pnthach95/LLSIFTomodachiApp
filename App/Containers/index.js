@@ -21,10 +21,10 @@ import ConfigureStore from '~/redux/store';
 
 import LoadingScreen from './LoadingScreen';
 import MainScreen from './MainScreen';
-import CardsScreen from './CardsScreen/Cards';
+import CardsScreen from './CardsScreen';
 import IdolsScreen from './IdolsScreen';
-import EventsScreen from './EventsScreen/Events';
-import SongsScreen from './SongsScreen/Songs';
+import EventsScreen from './EventsScreen';
+import SongsScreen from './SongsScreen';
 import Drawer from './Drawer';
 
 import CardDetailScreen from './CardDetailScreen';

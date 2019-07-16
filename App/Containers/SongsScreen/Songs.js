@@ -1,11 +1,14 @@
 import React from 'react';
 import {
-  View, FlatList, TextInput, Alert, Text, Image,
+  View, FlatList, TextInput,
+  Alert, Text, Image,
 } from 'react-native';
+import PropTypes from 'prop-types';
 import ElevatedView from 'react-native-elevated-view';
 import Icon from 'react-native-vector-icons/Ionicons';
 import _ from 'lodash';
 
+import ConnectStatus from '~/Components/ConnectStatus';
 import Fade from '~/Components/Fade/Fade';
 import EventRow from '~/Components/EventRow/EventRow';
 import SongItem from '~/Components/SongItem/SongItem';
@@ -16,7 +19,9 @@ import AttributeRow from '~/Components/AttributeRow/AttributeRow';
 import SquareButton from '~/Components/SquareButton/SquareButton';
 import SplashScreen from '../SplashScreen/SplashScreen';
 import LLSIFService from '~/Services/LLSIFService';
-import { Colors, ApplicationStyles, Images } from '~/Theme';
+import {
+  Colors, ApplicationStyles, Images, Fonts,
+} from '~/Theme';
 import { OrderingGroup } from '~/Config';
 import styles from './styles';
 
@@ -81,6 +86,10 @@ export default class SongsScreen extends React.Component {
     this.onEndReached = _.debounce(this.onEndReached, 500);
   }
 
+  static propTypes = {
+    isConnected: PropTypes.bool,
+  }
+
   static navigationOptions = {
     tabBarIcon: ({ focused }) => <Icon name='ios-musical-notes' size={30}
       color={focused ? Colors.pink : Colors.inactive} />,
@@ -139,6 +148,10 @@ export default class SongsScreen extends React.Component {
    * @memberof SongsScreen
    */
   getSongs(page = this.state.page) {
+    if (this.props.isConnected === false) {
+      this.setState({ isLoading: false });
+      return;
+    }
     const ordering = (this.state.isReverse ? '-' : '') + this.state.selectedOrdering;
     const theFilter = {
       ordering,
@@ -267,7 +280,7 @@ export default class SongsScreen extends React.Component {
   </View>
 
   renderEmpty = <View style={styles.flatListElement}>
-    <Text style={styles.textCenter}>No result</Text>
+    <Text style={Fonts.style.center}>No result</Text>
   </View>
 
   render() {
@@ -308,7 +321,7 @@ export default class SongsScreen extends React.Component {
                 <Text style={styles.resetText}>RESET</Text>
               </Touchable>
             </ElevatedView>}
-
+          <ConnectStatus />
           {/* LIST */}
           <FlatList data={this.state.list}
             initialNumToRender={6}

@@ -1,11 +1,14 @@
 import React from 'react';
 import {
-  View, FlatList, Text, TextInput, Alert, Image,
+  View, FlatList, Text,
+  TextInput, Alert, Image,
 } from 'react-native';
+import PropTypes from 'prop-types';
 import ElevatedView from 'react-native-elevated-view';
 import Icon from 'react-native-vector-icons/Ionicons';
 import _ from 'lodash';
 
+import ConnectStatus from '~/Components/ConnectStatus';
 import Fade from '~/Components/Fade/Fade';
 import SkillRow from '~/Components/SkillRow';
 import EventItem from '~/Components/EventItem/EventItem';
@@ -74,6 +77,10 @@ export default class EventsScreen extends React.Component {
     this.onEndReached = _.debounce(this.onEndReached, 500);
   }
 
+  static propTypes = {
+    isConnected: PropTypes.bool,
+  }
+
   static navigationOptions = {
     tabBarIcon: ({ focused }) => <Icon name='md-calendar' size={30}
       color={focused ? Colors.pink : Colors.inactive} />,
@@ -130,6 +137,10 @@ export default class EventsScreen extends React.Component {
    * @memberof EventsScreen
    */
   getEvents(page = this.state.page) {
+    if (this.props.isConnected === false) {
+      this.setState({ isLoading: false });
+      return;
+    }
     const theFilter = {
       ordering: this.state.ordering,
       page_size: this.state.page_size,
@@ -307,7 +318,7 @@ export default class EventsScreen extends React.Component {
                 <Text style={styles.resetText}>RESET</Text>
               </Touchable>
             </ElevatedView>}
-
+          <ConnectStatus />
           {/* LIST */}
           <FlatList data={this.state.list}
             contentContainerStyle={styles.content}

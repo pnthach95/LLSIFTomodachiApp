@@ -9,6 +9,7 @@ import Icon from 'react-native-vector-icons/SimpleLineIcons';
 import VersionNumber from 'react-native-version-number';
 import moment from 'moment';
 
+import ConnectStatus from '~/Components/ConnectStatus';
 import Seperator from '~/Components/Seperator/Seperator';
 import Touchable from '~/Components/Touchable/Touchable';
 import SquareButton from '~/Components/SquareButton/SquareButton';
@@ -125,7 +126,7 @@ export default class MainScreen extends React.Component {
     }
     const data = this.props.cachedData;
     // eslint-disable-next-line no-unused-vars
-    const currentContests = data.current_contests;
+    // const currentContests = data.current_contests;
     /** Japanese event, English event */
     const { JPEvent, ENEvent } = data;
     /** Start time of English event */
@@ -152,7 +153,7 @@ export default class MainScreen extends React.Component {
             onPress={() => openLink(this.state.version.link)}>
             <Text>{`Download new version ${this.state.version.tag} on Github!`}</Text>
           </Touchable>}
-
+        <ConnectStatus />
         {/* BODY */}
         <ScrollView showsVerticalScrollIndicator={false}
           contentContainerStyle={styles.content}>

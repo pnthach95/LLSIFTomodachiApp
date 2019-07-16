@@ -1,7 +1,6 @@
 import { connect } from 'react-redux';
 import CardDetailScreen from './CardDetail';
-import { getMaxStats } from '~/redux/selectors/cachedDataSelectors';
 
-const mapStateToProps = state => ({ maxStats: getMaxStats(state) });
+const mapStateToProps = state => ({ maxStats: state.reducer.cachedData.cards_info.max_stats });
 const mapDispatchToProps = null;
 export default connect(mapStateToProps, mapDispatchToProps)(CardDetailScreen);

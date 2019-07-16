@@ -2,8 +2,8 @@ import { connect } from 'react-redux';
 import MainScreen from './Main';
 
 const mapStateToProps = state => ({
-  cachedData: state.cachedData,
-  cachedDataErrorMessage: state.error,
+  cachedData: state.reducer.cachedData,
+  cachedDataErrorMessage: state.reducer.error,
 });
 
 const mapDispatchToProps = null;

@@ -161,7 +161,8 @@ export default class EventDetailScreen extends React.PureComponent {
             {!this.state.isLoading
               && <View style={ApplicationStyles.screen}>
                 {this.state.selectedTab === 0
-                  ? <Information item={this.state.item}
+                  ? <Information navigation={this.props.navigation}
+                    item={this.state.item}
                     cards={this.state.cards}
                     songs={this.state.songs}
                     WWEventStart={this.state.WWEventStart}

@@ -51,7 +51,11 @@ export default class LoadingScreen extends React.Component {
           ApplicationStyles.center,
           styles.bg,
         ]}>
-          <Text style={[Fonts.style.normal, Fonts.style.white]}>Failed</Text>
+          <View style={styles.textBox}>
+            <Text style={styles.text}>
+              {'Can\'t get data.\nCheck internet connection and retry.'}
+            </Text>
+          </View>
           <TouchableOpacity onPress={this.loadCachedData}>
             <View style={styles.button}>
               <Text style={Fonts.style.normal}>Retry</Text>
@@ -72,5 +76,13 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.white,
     margin: 10,
     padding: 10,
+  },
+  text: {
+    ...Fonts.style.normal,
+    ...Fonts.style.white,
+    ...Fonts.style.center,
+  },
+  textBox: {
+    marginHorizontal: 10,
   },
 });

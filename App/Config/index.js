@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 export const Config = {
   DATETIME_FORMAT_OUTPUT: 'HH:mm MMM Do YYYY',
   DATE_FORMAT_OUTPUT: 'MMM Do YYYY',
@@ -49,8 +50,10 @@ Press Version to view background.
 Change log:
 
 - Version 0.3.0:
-  • Add LLSIF Cutoffs (llsif.net) to Event detail screen.
-  • Fix open event has '?' in name.
+  • Add LLSIF Tier cutoff data (from llsif.net) to Event detail screen.
+  • Add offline warning.
+  • Fix open event has '?' in Japanese name.
+  • Fix load idol list temporarily. Not show no-school characters in list.
   • Update UI.
 
 - Version 0.2.3:

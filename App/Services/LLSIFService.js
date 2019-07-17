@@ -1,4 +1,5 @@
 import { create } from 'apisauce';
+import _ from 'lodash/array';
 import { Config } from '../Config';
 
 const LLSIFApiClient = create({
@@ -36,18 +37,25 @@ async function fetchCardList(filter) {
   return null;
 }
 
+async function getIdols(school) {
+  const response = await LLSIFApiClient.get(Config.IDOLS, { school });
+  if (response.ok) {
+    return response.data.results;
+  }
+  return [];
+}
+
 async function fetchIdolListBySchool(schools) {
-  let data = [];
+  const data = [];
   // eslint-disable-next-line no-plusplus
   for (let i = 0; i < schools.length; i++) {
     const school = schools[i];
-    const response = LLSIFApiClient.get(Config.IDOLS, { school });
-    if (response.ok) {
-      data = [...data, ...response.data.results];
-    }
+    const response = getIdols(school);
+    data.push(response);
   }
   const result = await Promise.all(data);
-  return result;
+  const final = _.flattenDeep(result);
+  return final;
 }
 
 async function fetchIdolListByPageSize() {

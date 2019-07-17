@@ -143,9 +143,9 @@ export default class Information extends React.PureComponent {
                   <FastImage source={{ uri: AddHTTPS(item.image) }} style={styles.song} />
                   <View style={styles.songInfo}>
                     <Image source={findAttribute(item.attribute)} style={styles.attributeIcon} />
-                    <Text style={styles.whiteCenter}>{item.name}</Text>
-                    {item.romaji_name !== null
-                      && <Text style={styles.whiteCenter}>{item.romaji_name}</Text>}
+                    <Text style={styles.whiteCenter}>
+                      {`${item.name}${item.romaji_name !== null ? `\n${item.romaji_name}` : ''}`}
+                    </Text>
                   </View>
                 </TouchableOpacity>)}
               </View>

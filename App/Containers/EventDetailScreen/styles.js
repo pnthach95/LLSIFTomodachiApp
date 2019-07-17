@@ -4,6 +4,7 @@ import { Colors, Metrics, Fonts } from '~/Theme';
 export default StyleSheet.create({
   attributeIcon: {
     height: 25,
+    margin: 5,
     width: 25,
   },
   card: {

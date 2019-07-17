@@ -145,7 +145,7 @@ export default class EventDetailScreen extends React.PureComponent {
           <SquareButton name={'ios-arrow-back'} color={'white'}
             onPress={() => this.props.navigation.goBack()} />
           <View style={styles.flex2}>
-            <SegmentedControlTab values={['Information', 'Cutoffs']}
+            <SegmentedControlTab values={['Information', 'Tier cutoff']}
               selectedIndex={this.state.selectedTab}
               onTabPress={this.onTabPress} />
           </View>

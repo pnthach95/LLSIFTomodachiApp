@@ -69,6 +69,7 @@ export default class CardDetailScreen extends React.Component {
 
   static propTypes = {
     maxStats: PropTypes.any,
+    isConnected: PropTypes.bool,
   }
 
   componentDidMount() {
@@ -183,7 +184,11 @@ export default class CardDetailScreen extends React.Component {
    * @param {String} name Event name
    * @memberof CardDetailScreen
    */
-  navigateToEventDetail = name => () => this.props.navigation.navigate('EventDetailScreen', { eventName: name });
+  navigateToEventDetail = name => () => {
+    if (this.props.isConnected) {
+      this.props.navigation.navigate('EventDetailScreen', { eventName: name });
+    }
+  }
 
   /**
    * Navigate to Idol Detail Screen
@@ -191,7 +196,11 @@ export default class CardDetailScreen extends React.Component {
    * @param {String} name Idol name
    * @memberof CardDetailScreen
    */
-  navigateToIdolDetail = name => () => this.props.navigation.navigate('IdolDetailScreen', { name });
+  navigateToIdolDetail = name => () => {
+    if (this.props.isConnected) {
+      this.props.navigation.navigate('IdolDetailScreen', { name });
+    }
+  }
 
   navigateToImageViewerScreen = index => () => this.props.navigation.navigate('ImageViewerScreen', { index, images: this.state.images });
 

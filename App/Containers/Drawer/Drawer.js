@@ -38,6 +38,7 @@ export default class Drawer extends Component {
   }
 
   static propTypes = {
+    isConnected: PropTypes.bool,
     bgImage: PropTypes.string,
     randomCard: PropTypes.any,
   }
@@ -129,7 +130,9 @@ export default class Drawer extends Component {
    */
   navigateToCardDetail = item => () => {
     this.setState({ visible: true });
-    this.props.navigation.navigate('CardDetailScreen', { item });
+    if (this.props.isConnected) {
+      this.props.navigation.navigate('CardDetailScreen', { item });
+    }
   }
 
   toggleExpanded = () => this.setState({ collapsed: !this.state.collapsed });

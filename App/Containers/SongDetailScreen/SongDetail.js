@@ -64,6 +64,7 @@ export default class SongDetailScreen extends React.PureComponent {
   }
 
   static propTypes = {
+    isConnected: PropTypes.bool,
     songMaxStat: PropTypes.number,
   }
 
@@ -155,7 +156,9 @@ export default class SongDetailScreen extends React.PureComponent {
    * @memberof SongDetailScreen
    */
   navigateToEventDetail(event) {
-    this.props.navigation.navigate('EventDetailScreen', { event });
+    if (this.props.isConnected) {
+      this.props.navigation.navigate('EventDetailScreen', { event });
+    }
   }
 
   /**

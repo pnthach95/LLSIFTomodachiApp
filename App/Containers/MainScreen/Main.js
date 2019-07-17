@@ -49,6 +49,7 @@ export default class MainScreen extends React.Component {
   }
 
   static propTypes = {
+    isConnected: PropTypes.bool,
     cachedData: PropTypes.object,
     cachedDataErrorMessage: PropTypes.string,
   }
@@ -114,7 +115,9 @@ export default class MainScreen extends React.Component {
    * @memberof MainScreen
    */
   navigateToEventDetail(event) {
-    this.props.navigation.navigate('EventDetailScreen', { event });
+    if (this.props.isConnected) {
+      this.props.navigation.navigate('EventDetailScreen', { event });
+    }
   }
 
   openDrawer = () => this.props.navigation.openDrawer();

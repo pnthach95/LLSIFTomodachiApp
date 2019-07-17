@@ -127,7 +127,9 @@ export default class SongsScreen extends React.Component {
    * @memberof SongsScreen
    */
   navigateToSongDetail(item) {
-    this.props.navigation.navigate('SongDetailScreen', { item });
+    if (this.props.isConnected) {
+      this.props.navigation.navigate('SongDetailScreen', { item });
+    }
   }
 
   /**

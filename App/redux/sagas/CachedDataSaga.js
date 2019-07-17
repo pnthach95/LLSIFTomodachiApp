@@ -35,6 +35,7 @@ export default function* fetchCachedData(action) {
     yield put({
       type: ActionTypes.CACHED_DATA_SUCCESS,
       payload: data,
+      error: null,
       meta,
     });
   } catch (error) {

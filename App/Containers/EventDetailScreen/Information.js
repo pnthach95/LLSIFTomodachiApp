@@ -31,6 +31,7 @@ export default class Information extends React.PureComponent {
   }
 
   static propTypes = {
+    isConnected: PropTypes.bool,
     item: PropTypes.object,
     WWEventStart: PropTypes.object,
     WWEventEnd: PropTypes.object,
@@ -58,7 +59,11 @@ export default class Information extends React.PureComponent {
    * @param {Object} item Card object
    * @memberof EventDetailScreen
    */
-  navigateTo = (destination, item) => () => this.props.navigation.navigate(destination, { item });
+  navigateTo = (destination, item) => () => {
+    if (this.props.isConnected) {
+      this.props.navigation.navigate(destination, { item });
+    }
+  }
 
   /**
    * Countdown timer for ongoing event

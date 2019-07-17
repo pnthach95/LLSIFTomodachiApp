@@ -185,7 +185,11 @@ export default class CardsScreen extends React.PureComponent {
    * @param {Object} item Card's information
    * @memberof CardsScreen
    */
-  navigateToCardDetail = item => () => this.props.navigation.navigate('CardDetailScreen', { item });
+  navigateToCardDetail = item => () => {
+    if (this.props.isConnected) {
+      this.props.navigation.navigate('CardDetailScreen', { item });
+    }
+  }
 
   /**
    * Get card list

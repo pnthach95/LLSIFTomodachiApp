@@ -13,4 +13,5 @@ export const fetchCachedDataSuccess = data => ({
 export const fetchCachedDataFailure = error => ({
   type: ActionTypes.CACHED_DATA_FAILED,
   error,
+  meta: { thunk: true },
 });

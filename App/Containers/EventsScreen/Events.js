@@ -117,7 +117,11 @@ export default class EventsScreen extends React.Component {
    * @param {Object} item
    * @memberof EventsScreen
    */
-  navigateToEventDetail = item => () => this.props.navigation.navigate('EventDetailScreen', { eventName: item.japanese_name });
+  navigateToEventDetail = item => () => {
+    if (this.props.isConnected) {
+      this.props.navigation.navigate('EventDetailScreen', { eventName: item.japanese_name });
+    }
+  }
 
   /**
    * Call when scrolling to the end of list.

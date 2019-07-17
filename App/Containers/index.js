@@ -9,6 +9,7 @@ import {
   createAppContainer,
 } from 'react-navigation';
 import { Provider } from 'react-redux';
+import { PersistGate } from 'redux-persist/integration/react';
 import firebase from 'react-native-firebase';
 import { Sentry } from 'react-native-sentry';
 
@@ -17,7 +18,7 @@ import { ApplicationStyles } from '~/Theme';
 import { loadSettings } from '~/Utils';
 import NavigationService from '~/Services/NavigationService';
 import { FirebaseTopic } from '~/Config';
-import ConfigureStore from '~/redux/store';
+import ConfigureStore, { persistor } from '~/redux/store';
 
 import LoadingScreen from './LoadingScreen';
 import MainScreen from './MainScreen';
@@ -170,12 +171,14 @@ export default class MainContainer extends Component {
   render() {
     return (
       <Provider store={store}>
-        <SafeAreaView style={ApplicationStyles.screen}>
-          <View style={ApplicationStyles.screen}>
-            <StatusBarBackground />
-            <AppContainer />
-          </View>
-        </SafeAreaView>
+        <PersistGate persistor={persistor} loading={null}>
+          <SafeAreaView style={ApplicationStyles.screen}>
+            <View style={ApplicationStyles.screen}>
+              <StatusBarBackground />
+              <AppContainer />
+            </View>
+          </SafeAreaView>
+        </PersistGate>
       </Provider>
     );
   }

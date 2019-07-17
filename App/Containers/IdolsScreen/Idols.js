@@ -37,6 +37,7 @@ export default class IdolsScreen extends React.Component {
   }
 
   static propTypes = {
+    isConnected: PropTypes.bool,
     schools: PropTypes.array,
   }
 
@@ -98,7 +99,11 @@ export default class IdolsScreen extends React.Component {
    * @param {String} name
    * @memberof IdolsScreen
    */
-  navigateToIdolDetail = name => () => this.props.navigation.navigate('IdolDetailScreen', { name });
+  navigateToIdolDetail = name => () => {
+    if (this.props.isConnected) {
+      this.props.navigation.navigate('IdolDetailScreen', { name });
+    }
+  }
 
   /**
    * Key extractor for FlatList

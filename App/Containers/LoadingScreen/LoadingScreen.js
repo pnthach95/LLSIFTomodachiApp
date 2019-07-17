@@ -24,6 +24,7 @@ export default class LoadingScreen extends React.Component {
 
   static propTypes = {
     fetchCachedData: PropTypes.func,
+    cachedData: PropTypes.object,
   }
 
   componentDidMount() {
@@ -39,7 +40,11 @@ export default class LoadingScreen extends React.Component {
       .catch((error) => {
         // eslint-disable-next-line no-console
         console.log(error);
-        this.setState({ error: true });
+        if (this.props.cachedData === null) {
+          this.setState({ error: true });
+        } else {
+          this.props.navigation.navigate('AppStack');
+        }
       });
   }
 

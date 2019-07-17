@@ -60,6 +60,7 @@ export default class EventDetailScreen extends React.PureComponent {
   }
 
   static propTypes = {
+    isConnected: PropTypes.bool,
     wwEventInfo: PropTypes.any,
     jpEventInfo: PropTypes.any,
   }
@@ -162,6 +163,7 @@ export default class EventDetailScreen extends React.PureComponent {
               && <View style={ApplicationStyles.screen}>
                 {this.state.selectedTab === 0
                   ? <Information navigation={this.props.navigation}
+                    isConnected={this.props.isConnected}
                     item={this.state.item}
                     cards={this.state.cards}
                     songs={this.state.songs}

@@ -3,7 +3,8 @@ import { fetchCachedData } from '~/redux/actions/cachedDataActions';
 import LoadingScreen from './LoadingScreen';
 
 const mapStateToProps = state => ({
-  error: state.error,
+  cachedData: state.reducer.cachedData,
+  error: state.reducer.error,
 });
 
 const mapDispatchToProps = { fetchCachedData };

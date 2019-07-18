@@ -42,7 +42,7 @@ import { OrderingGroup } from '~/Config';
  *
  * State:
  * - `isLoading`: Loading state
- * - `data`: Data for FlatList
+ * - `list`: Data for FlatList
  * - `isFilter`: Filter on/off
  * - `stopSearch`: Prevent calling API
  * - `search`: Keyword for search
@@ -93,7 +93,7 @@ export default class CardsScreen extends React.PureComponent {
       isLoading: true,
       column: 2,
       isActionButtonVisible: true,
-      data: [],
+      list: [],
       isFilter: false,
       stopSearch: false,
       search: '',
@@ -135,8 +135,19 @@ export default class CardsScreen extends React.PureComponent {
   }
 
   componentDidMount() {
-    loadSettings()
-      .then(res => this.setState({ japan_only: res.worldwide_only ? 'False' : '' }, () => this.getCards()));
+    this.focusListener = this.props.navigation.addListener('didFocus', () => {
+      if (this.state.list.length === 0) {
+        loadSettings()
+          .then(res => this.setState({
+            japan_only: res.worldwide_only ? 'False' : '',
+            isLoading: true,
+          }, () => this.getCards()));
+      }
+    });
+  }
+
+  componentWillUnmount() {
+    this.focusListener.remove();
   }
 
   /**
@@ -227,10 +238,10 @@ export default class CardsScreen extends React.PureComponent {
         // console.log('LLSIFService.fetchCardList 404');
         this.setState({ stopSearch: true });
       } else {
-        let x = [...this.state.data, ...result];
+        let x = [...this.state.list, ...result];
         x = x.filter((thing, index, self) => index === self.findIndex(t => t.id === thing.id));
         this.setState({
-          data: x,
+          list: x,
           isLoading: false,
           page: page + 1,
         });
@@ -254,7 +265,7 @@ export default class CardsScreen extends React.PureComponent {
    * @memberof CardsScreen
    */
   onSearch = () => {
-    this.setState({ data: [], isFilter: false, stopSearch: false });
+    this.setState({ list: [], isFilter: false, stopSearch: false });
     this.getCards(1);
   }
 
@@ -496,7 +507,7 @@ export default class CardsScreen extends React.PureComponent {
             </ElevatedView>}
           <ConnectStatus />
           {/* LIST */}
-          <FlatList data={this.state.data}
+          <FlatList data={this.state.list}
             key={`${this.state.column}c`}
             showsVerticalScrollIndicator={false}
             numColumns={this.state.column}

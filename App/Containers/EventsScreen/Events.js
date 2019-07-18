@@ -92,9 +92,20 @@ export default class EventsScreen extends React.Component {
   }
 
   componentDidMount() {
-    loadSettings().then((res) => {
-      this.setState({ is_english: res.worldwide_only ? 'False' : '' }, () => this.getEvents());
+    this.focusListener = this.props.navigation.addListener('didFocus', () => {
+      if (this.state.list.length === 0) {
+        loadSettings().then((res) => {
+          this.setState({
+            is_english: res.worldwide_only ? 'False' : '',
+            isLoading: true,
+          }, () => this.getEvents());
+        });
+      }
     });
+  }
+
+  componentWillUnmount() {
+    this.focusListener.remove();
   }
 
   /**

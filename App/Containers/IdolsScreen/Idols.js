@@ -55,7 +55,13 @@ export default class IdolsScreen extends React.Component {
   }
 
   componentDidMount() {
-    this.loadData();
+    this.focusListener = this.props.navigation.addListener('didFocus', () => {
+      if (this.state.list.length === 0) this.setState({ isLoading: true }, () => this.loadData());
+    });
+  }
+
+  componentWillUnmount() {
+    this.focusListener.remove();
   }
 
   loadData() {

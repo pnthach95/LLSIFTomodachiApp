@@ -101,7 +101,13 @@ export default class SongsScreen extends React.Component {
   }
 
   componentDidMount() {
-    this.getSongs();
+    this.focusListener = this.props.navigation.addListener('didFocus', () => {
+      if (this.state.list.length === 0) this.setState({ isLoading: true }, () => this.getSongs());
+    });
+  }
+
+  componentWillUnmount() {
+    this.focusListener.remove();
   }
 
   /**

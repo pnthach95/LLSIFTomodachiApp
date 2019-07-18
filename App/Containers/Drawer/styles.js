@@ -26,6 +26,7 @@ export default StyleSheet.create({
   footerBlock: {
     flexDirection: 'row',
     marginVertical: Metrics.baseMargin,
+    paddingHorizontal: 5,
   },
   fullscreen: {
     height: '100%',

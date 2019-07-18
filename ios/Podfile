@@ -2,38 +2,31 @@
 platform :ios, '9.0'
 
 target 'LLSIFTomodachi' do
-  # Uncomment the next line if you're using Swift or would like to use dynamic frameworks
-  # use_frameworks!
-
-  # Pods for LLSIFTomodachi
-  pod 'React', :path => '../node_modules/react-native'
-  pod 'yoga', :path => '../node_modules/react-native/ReactCommon/yoga'
   pod 'AppCenter/Crashes', '~> 2.1.0'
   pod 'AppCenter/Analytics', '~> 2.1.0'
   pod 'AppCenterReactNativeShared', '~> 2.1.0'
   pod 'Firebase/Core', '~> 6.3.0'
   pod 'Firebase/Messaging', '~> 6.3.0'
 
-  target 'LLSIFTomodachi-tvOSTests' do
-    inherit! :search_paths
-    # Pods for testing
-    pod 'RNGestureHandler', :path => '../node_modules/react-native-gesture-handler'
+  # Pods for LLSIFTomodachi
 
-    pod 'RNCAsyncStorage', :path => '../node_modules/@react-native-community/async-storage'
-
-  end
-
+  platform :ios, '9.0'
   target 'LLSIFTomodachiTests' do
     inherit! :search_paths
     # Pods for testing
   end
 
-  post_install do |installer|
-    installer.pods_project.targets.each do |target|
-      if target.name == "React"
-        target.remove_from_project
-      end
-    end
+end
+
+target 'LLSIFTomodachi-tvOS' do
+  # Comment the next line if you don't want to use dynamic frameworks
+  use_frameworks!
+
+  # Pods for LLSIFTomodachi-tvOS
+
+  target 'LLSIFTomodachi-tvOSTests' do
+    inherit! :search_paths
+    # Pods for testing
   end
 
 end

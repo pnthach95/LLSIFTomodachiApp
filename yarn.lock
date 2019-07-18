@@ -1264,39 +1264,38 @@ apisauce@^1.0.3:
     axios "^0.18.1"
     ramda "^0.25.0"
 
-appcenter-analytics@1.11.0:
-  version "1.11.0"
-  resolved "https://registry.yarnpkg.com/appcenter-analytics/-/appcenter-analytics-1.11.0.tgz#a1ba900511ca7f6550cd52eb81aaf6fe9b56f19f"
-  integrity sha512-hmxD18Xn5voikK0vDrv0rrda99OssgizpFE84w/1QDroecm24erCfkgcM3n5H3LJr4myYHOp2rQKoA/GSKhl3A==
+appcenter-analytics@2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/appcenter-analytics/-/appcenter-analytics-2.1.0.tgz#67b66e01245d472be8fecc0b28f591b7d64dc8b9"
+  integrity sha512-4gMvlTSSlyc+Lp0jW3mLvlMJavXJsOVQX30upKaYnRgKH+YCjix9a/Iy99CaH40MZoEVFSQiZdj3KfDnTjAKvQ==
   dependencies:
-    appcenter "1.11.0"
+    appcenter "2.1.0"
 
-appcenter-crashes@1.11.0:
-  version "1.11.0"
-  resolved "https://registry.yarnpkg.com/appcenter-crashes/-/appcenter-crashes-1.11.0.tgz#eb4b73b218181cd5ecdc3f54e5aa18acbcec77be"
-  integrity sha512-Ljsln6TDJ/OQkWSMNdLxuOrsT9uk5XyZR0DrMEP/XfgogykMKRxCrPOifXFJ0/dxD/7iD02fjxpaIEzbdhiy6A==
+appcenter-crashes@2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/appcenter-crashes/-/appcenter-crashes-2.1.0.tgz#cd88344acab16fe699df02b90c804bce77e92b80"
+  integrity sha512-TP3yfALyoTVdsi/p9TBkBZAtf8XwoxdK+6Gz7h1ByGQ0qcF7INxFrrKePj5qYXCJznkxPL0WvkV2ArqI+xFkrw==
   dependencies:
-    appcenter "1.11.0"
+    appcenter "2.1.0"
 
-appcenter-link-scripts@1.11.0:
-  version "1.11.0"
-  resolved "https://registry.yarnpkg.com/appcenter-link-scripts/-/appcenter-link-scripts-1.11.0.tgz#61ace5bd22d84182e7fc95aa836c0427e2287c93"
-  integrity sha512-6X0ZVoxnQPlLQxelQTkFZ2yhg6f0X7qMm/I1pfnw5h2o98Myv4CqBzKsUs3Az/070hoijEpe8ZbTQ4YSWZPnTA==
+appcenter-link-scripts@2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/appcenter-link-scripts/-/appcenter-link-scripts-2.1.0.tgz#a15b1efe59327851c605e93dc1eb8af576fbf0cf"
+  integrity sha512-oCEUUi1hlEIu7xzeM6Hly3TROfqBUoUe7b6yqttJzZnu9xy7oAK6W1L/cH3gh15I8g2melDQd+0E2dbAfSY2yg==
   dependencies:
     debug "^2.2.0"
     glob "^5.0.15"
-    inquirer "6.2.0"
     mkdirp "^0.5.1"
     plist "^3.0.1"
     which "^1.2.11"
-    xcode "^1.0.0"
+    xcode "^2.0.0"
 
-appcenter@1.11.0:
-  version "1.11.0"
-  resolved "https://registry.yarnpkg.com/appcenter/-/appcenter-1.11.0.tgz#037083f63efd48a6c19ded5a27250f4deeb2e838"
-  integrity sha512-azX+gxs1dRFY2bxnqUncUEi8sNhcpnspecPsGjgGt3em9FrYtHqIiZl/GiGuN53l0mw8rJyNWpi3eKTHAjSspA==
+appcenter@2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/appcenter/-/appcenter-2.1.0.tgz#e378c6270030edf0a57b96010371d3b6ba8e9ff4"
+  integrity sha512-6cmdAOCFTPeV1rPMT8+I8izk2Ug79xfOSNuj4mKkOnT0NEM6tPe5gj+QkhTXWy17Y77n40giYSqdFXs12sty/g==
   dependencies:
-    appcenter-link-scripts "1.11.0"
+    appcenter-link-scripts "2.1.0"
 
 aproba@^1.0.3:
   version "1.2.0"
@@ -2857,7 +2856,7 @@ external-editor@^2.0.4:
     iconv-lite "^0.4.17"
     tmp "^0.0.33"
 
-external-editor@^3.0.0, external-editor@^3.0.3:
+external-editor@^3.0.3:
   version "3.1.0"
   resolved "https://registry.yarnpkg.com/external-editor/-/external-editor-3.1.0.tgz#cb03f740befae03ea4d283caed2741a83f335495"
   integrity sha512-hMQ4CX1p1izmuLYyZqLMO/qGNw10wSv9QDCPfzXfyFrOaCSSoRfqE1Kf1s5an66J5JZC62NewG+mK49jOCtQew==
@@ -3563,25 +3562,6 @@ ini@~1.3.0:
   version "1.3.5"
   resolved "https://registry.yarnpkg.com/ini/-/ini-1.3.5.tgz#eee25f56db1c9ec6085e0c22778083f596abf927"
   integrity sha512-RZY5huIKCMRWDUqZlEi72f/lmXKMvuszcMBduliQ3nnWbx9X/ZBQO7DijMEYS9EhHBb2qacRUMtC7svLwe0lcw==
-
-inquirer@6.2.0:
-  version "6.2.0"
-  resolved "https://registry.yarnpkg.com/inquirer/-/inquirer-6.2.0.tgz#51adcd776f661369dc1e894859c2560a224abdd8"
-  integrity sha512-QIEQG4YyQ2UYZGDC4srMZ7BjHOmNk1lR2JQj5UknBapklm6WHA+VVH7N+sUdX3A7NeCfGF8o4X1S3Ao7nAcIeg==
-  dependencies:
-    ansi-escapes "^3.0.0"
-    chalk "^2.0.0"
-    cli-cursor "^2.1.0"
-    cli-width "^2.0.0"
-    external-editor "^3.0.0"
-    figures "^2.0.0"
-    lodash "^4.17.10"
-    mute-stream "0.0.7"
-    run-async "^2.2.0"
-    rxjs "^6.1.0"
-    string-width "^2.1.0"
-    strip-ansi "^4.0.0"
-    through "^2.3.6"
 
 inquirer@^3.0.6:
   version "3.3.0"
@@ -6834,7 +6814,7 @@ rx-lite@*, rx-lite@^4.0.8:
   resolved "https://registry.yarnpkg.com/rx-lite/-/rx-lite-4.0.8.tgz#0b1e11af8bc44836f04a6407e92da42467b79444"
   integrity sha1-Cx4Rr4vESDbwSmQH6S2kJGe3lEQ=
 
-rxjs@^6.1.0, rxjs@^6.4.0:
+rxjs@^6.4.0:
   version "6.5.2"
   resolved "https://registry.yarnpkg.com/rxjs/-/rxjs-6.5.2.tgz#2e35ce815cd46d84d02a209fb4e5921e051dbec7"
   integrity sha512-HUb7j3kvb7p7eCUHE3FqjoDsC1xfZQ4AHFWfTKSpZ+sAhhz5X1WX0ZuUqWbzB2QhSLp3DoLUG+hMdEDKqWo2Zg==
@@ -7882,14 +7862,6 @@ ws@^5.2.0:
   integrity sha512-jaHFD6PFv6UgoIVda6qZllptQsMlDEJkTQcybzzXDYM1XO9Y8em691FGMPmM46WGyLU4z9KMgQN+qrux/nhlHA==
   dependencies:
     async-limiter "~1.0.0"
-
-xcode@^1.0.0:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/xcode/-/xcode-1.1.0.tgz#9fcb63f417a9af377bfb743a5c22afce4e1da964"
-  integrity sha512-hllHFtfsNu5WbVzj8KbGNdI3NgOYmTLZqyF4a9c9J1aGMhAdxmLLsXlpG0Bz8fEtKh6I3pyargRXN0ZlLpcF5w==
-  dependencies:
-    simple-plist "^0.2.1"
-    uuid "^3.3.2"
 
 xcode@^2.0.0:
   version "2.0.0"

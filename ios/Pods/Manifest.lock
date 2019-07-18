@@ -1,11 +1,11 @@
 PODS:
-  - AppCenter/Analytics (1.11.0):
+  - AppCenter/Analytics (2.1.0):
     - AppCenter/Core
-  - AppCenter/Core (1.11.0)
-  - AppCenter/Crashes (1.11.0):
+  - AppCenter/Core (2.1.0)
+  - AppCenter/Crashes (2.1.0):
     - AppCenter/Core
-  - AppCenterReactNativeShared (1.10.0):
-    - AppCenter/Core (= 1.11.0)
+  - AppCenterReactNativeShared (2.1.0):
+    - AppCenter/Core (= 2.1.0)
   - Firebase/Core (5.11.0):
     - Firebase/CoreOnly
     - FirebaseAnalytics (= 5.3.0)
@@ -67,27 +67,30 @@ PODS:
   - nanopb/decode (0.3.901)
   - nanopb/encode (0.3.901)
   - Protobuf (3.6.1)
-  - React (0.57.8):
-    - React/Core (= 0.57.8)
-  - React/Core (0.57.8):
-    - yoga (= 0.57.8.React)
-  - RNSVG (8.0.10):
+  - React (0.59.10):
+    - React/Core (= 0.59.10)
+  - React/Core (0.59.10):
+    - yoga (= 0.59.10.React)
+  - RNCAsyncStorage (1.5.1):
     - React
-  - yoga (0.57.8.React)
+  - RNGestureHandler (1.3.0):
+    - React
+  - yoga (0.59.10.React)
 
 DEPENDENCIES:
-  - AppCenter/Analytics (~> 1.11.0)
-  - AppCenter/Crashes (~> 1.11.0)
-  - AppCenterReactNativeShared (~> 1.10.0)
+  - AppCenter/Analytics (~> 2.1.0)
+  - AppCenter/Crashes (~> 2.1.0)
+  - AppCenterReactNativeShared (~> 2.1.0)
   - Firebase/Core (~> 5.11.0)
   - Firebase/Messaging (~> 5.11.0)
   - GoogleAppMeasurement (~> 5.3.0)
   - React (from `../node_modules/react-native`)
-  - RNSVG (from `../node_modules/react-native-svg`)
+  - "RNCAsyncStorage (from `../node_modules/@react-native-community/async-storage`)"
+  - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
   - yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
-  https://github.com/CocoaPods/Specs.git:
+  https://github.com/cocoapods/specs.git:
     - AppCenter
     - AppCenterReactNativeShared
     - Firebase
@@ -104,14 +107,16 @@ SPEC REPOS:
 EXTERNAL SOURCES:
   React:
     :path: "../node_modules/react-native"
-  RNSVG:
-    :path: "../node_modules/react-native-svg"
+  RNCAsyncStorage:
+    :path: "../node_modules/@react-native-community/async-storage"
+  RNGestureHandler:
+    :path: "../node_modules/react-native-gesture-handler"
   yoga:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
 SPEC CHECKSUMS:
-  AppCenter: 3bccf8d733e337d0db574dd4cb0e33ab9637b7f2
-  AppCenterReactNativeShared: a77b000c2ac6dc2e44472621d7d0770f196e5822
+  AppCenter: 21decaa4488024e8355e650e44ccabb69ca60d47
+  AppCenterReactNativeShared: 6e856a993f022a2a7afaa1bc21834d4dded708b2
   Firebase: b48f9e653da971ecce5b8c749684bc8bb2d26bd3
   FirebaseAnalytics: 63202d2665de4e6adcbdce189135255d8b5962ba
   FirebaseAnalyticsInterop: e5f21be9af6548372e2f0815834ff909bff395a2
@@ -122,10 +127,11 @@ SPEC CHECKSUMS:
   GoogleUtilities: 95996bea7c7d9b8fb811b7507669a4a8762f80c7
   nanopb: 2901f78ea1b7b4015c860c2fdd1ea2fee1a18d48
   Protobuf: 1eb9700044745f00181c136ef21b8ff3ad5a0fd5
-  React: 1fe0eb13d90b625d94c3b117c274dcfd2e760e11
-  RNSVG: 6252323c0312735f0af5f58b5adf2965b6a9ffbf
-  yoga: b1ce48b6cf950b98deae82838f5173ea7cf89e85
+  React: 36d0768f9e93be2473b37e7fa64f92c1d5341eef
+  RNCAsyncStorage: b63d6e83fc629b01df6b624688f17944cea5637f
+  RNGestureHandler: 5329a942fce3d41c68b84c2c2276ce06a696d8b0
+  yoga: 684513b14b03201579ba3cee20218c9d1298b0cc
 
-PODFILE CHECKSUM: 4e53776360f5331804eac2635a53d139a3b4f558
+PODFILE CHECKSUM: febdb2f09d7f1224e7acbc57305d2e36d9dd58f0
 
-COCOAPODS: 1.5.0
+COCOAPODS: 1.7.4

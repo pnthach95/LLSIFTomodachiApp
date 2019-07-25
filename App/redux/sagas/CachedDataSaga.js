@@ -1,7 +1,7 @@
 import { put, call } from 'redux-saga/effects';
 import * as ActionTypes from '../actions/actionTypes';
 import LLSIFService from '~/Services/LLSIFService';
-import { LLSIFdotnetService } from '~/Services/LLSIFdotnetService';
+import LLSIFdotnetService from '~/Services/LLSIFdotnetService';
 
 /**
  * [Fetch cached data](https://github.com/MagiCircles/SchoolIdolAPI/wiki/API-Cached-data)

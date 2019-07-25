@@ -13,7 +13,6 @@ const LLSIFnet = create({
 async function fetchEventData(params) {
   const response = await LLSIFnet.get('download.php', params);
   if (response.ok) {
-    const lines = response.data.split('\n');
     return response.data;
   }
   return null;
@@ -21,15 +20,16 @@ async function fetchEventData(params) {
 
 function parseEvent(events) {
   const result = [];
-  for (const key in events) {
-    if (events.hasOwnProperty(key)) {
+  const keys = Object.keys(events);
+  keys.forEach((key) => {
+    if (Object.prototype.hasOwnProperty.call(events, key)) {
       const element = events[key];
       result.push({
         event_id: element.event_id,
         start_date: element.start_date,
       });
     }
-  }
+  });
   return result;
 }
 
@@ -42,9 +42,10 @@ async function fetchEventInfo() {
     };
     return result;
   }
+  return { ww: null, jp: null };
 }
 
-export const LLSIFdotnetService = {
+export default {
   fetchEventData,
   fetchEventInfo,
 };

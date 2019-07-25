@@ -11,7 +11,7 @@ import Fade from '~/Components/Fade/Fade';
 import SquareButton from '~/Components/SquareButton/SquareButton';
 import SplashScreen from '../SplashScreen/SplashScreen';
 import LLSIFService from '~/Services/LLSIFService';
-import { LLSIFdotnetService } from '~/Services/LLSIFdotnetService';
+import LLSIFdotnetService from '~/Services/LLSIFdotnetService';
 import { Config } from '~/Config';
 import { ApplicationStyles, Colors } from '~/Theme';
 import { ReplaceQuestionMark } from '~/Utils';

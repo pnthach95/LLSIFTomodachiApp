@@ -1014,11 +1014,6 @@
     xcode "^2.0.0"
     xmldoc "^0.4.0"
 
-"@react-native-community/netinfo@^4.1.2":
-  version "4.1.3"
-  resolved "https://registry.yarnpkg.com/@react-native-community/netinfo/-/netinfo-4.1.3.tgz#77571619eb90ff59777a85a913fc30acd30b6020"
-  integrity sha512-c9ppXNFpKkXiKFJhik9Lzw62dosm+cAIvHl6OOGXp2D+1GlliIP+nMMtNapdppPoilRc33f4/GosqnL70viH9Q==
-
 "@react-navigation/core@~3.4.1":
   version "3.4.2"
   resolved "https://registry.yarnpkg.com/@react-navigation/core/-/core-3.4.2.tgz#bec563e94fde40fbab3730cdc97f22afbb2a1498"
@@ -6289,12 +6284,11 @@ react-native-linear-gradient@^2.5.5:
   resolved "https://registry.yarnpkg.com/react-native-linear-gradient/-/react-native-linear-gradient-2.5.5.tgz#efea1f862bde939f6e073a51b4b3ca9e0bb62437"
   integrity sha512-BoaRqWtQ0Powxrz/4cdkzLQIyV/bwMXCZ+S7fGKSFZr/NtKrOpb9vvyG+d45ufnkuFPbWIqUflFvuLOpf067ag==
 
-react-native-offline@^5.0.0:
-  version "5.0.0"
-  resolved "https://registry.yarnpkg.com/react-native-offline/-/react-native-offline-5.0.0.tgz#981a73c9f2075ad458cbc38652717a955e960a92"
-  integrity sha512-VaUQzuhx7SRFUfirCT6USMQkuqZWrlW3BlKHjiqUaSvQ794tmegF5uvyVFSpwIiMhv69aIU0kxfMV+o7EqLb5g==
+react-native-offline@^4.3.2:
+  version "4.3.2"
+  resolved "https://registry.yarnpkg.com/react-native-offline/-/react-native-offline-4.3.2.tgz#6f83dd61cc6e90ee15dd91cf13ccb134446acdf8"
+  integrity sha512-5gB7FInD8PBIjpiLeBdY2UdVU+Z3Xd3D/Yp9kC9evTOyXqPCshrsGHYH0VFE6KL1xB7KqeA/jqpDrUtpsnRB0A==
   dependencies:
-    "@react-native-community/netinfo" "^4.1.2"
     lodash "^4.17.11"
     react-redux "^6.0.0 || ^7.0.0"
     redux "4.x"

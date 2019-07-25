@@ -123,11 +123,13 @@ export default class MainScreen extends React.Component {
   openDrawer = () => this.props.navigation.openDrawer();
 
   render() {
-    if (this.props.cachedDataErrorMessage) {
-      Alert.alert('Error', this.props.cachedDataErrorMessage);
-      return <View style={{ backgroundColor: Colors.pink }} />;
-    }
     const data = this.props.cachedData;
+    if (data === null) {
+      if (this.props.cachedDataErrorMessage) {
+        Alert.alert('Error', this.props.cachedDataErrorMessage);
+      }
+      return <View style={styles.blank} />;
+    }
     // eslint-disable-next-line no-unused-vars
     // const currentContests = data.current_contests;
     /** Japanese event, English event */

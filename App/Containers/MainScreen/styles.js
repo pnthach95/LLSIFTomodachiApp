@@ -5,6 +5,10 @@ export default StyleSheet.create({
   bgWhite: {
     backgroundColor: Colors.white,
   },
+  blank: {
+    backgroundColor: Colors.pink,
+    flex: 1,
+  },
   block: {
     alignItems: 'center',
     width: Metrics.screenWidth,

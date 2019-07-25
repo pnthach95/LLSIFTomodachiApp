@@ -35,7 +35,7 @@
     "react-native-image-gallery": "^2.1.5",
     "react-native-indicators": "^0.13.0",
     "react-native-linear-gradient": "^2.5.5",
-    "react-native-offline": "^5.0.0",
+    "react-native-offline": "^4.3.2",
     "react-native-picker-select": "^5.2.0",
     "react-native-pure-chart": "0.0.24",
     "react-native-segmented-control-tab": "^3.4.1",

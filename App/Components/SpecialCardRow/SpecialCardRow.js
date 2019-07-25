@@ -1,21 +1,27 @@
 import React from 'react';
 import { Text, View, TouchableOpacity } from 'react-native';
 import PropTypes from 'prop-types';
-import styles from '../../Theme/RowStyles';
-import { ApplicationStyles } from '../../Theme';
+import styles from '~/Theme/RowStyles';
+import { ApplicationStyles } from '~/Theme';
 /**
  * Special Card Row (None, True, False)
  *
  * Prop:
- * - `selectSpecial`: Save `is_special` state
- * - `is_special`: state from parent
+ * - `selectSpecial`: Save `isSpecial` state
+ * - `isSpecial`: state from parent
  *
  * @export
  * @class SpecialCardRow
  * @extends {React.Component}
  */
-class SpecialCardRow extends React.Component {
+export default class SpecialCardRow extends React.Component {
+  static propTypes = {
+    isSpecial: PropTypes.string.isRequired,
+    selectSpecial: PropTypes.func.isRequired,
+  };
+
   render() {
+    const { isSpecial } = this.props;
     return (
       <View style={ApplicationStyles.row}>
         <View style={styles.leftView}>
@@ -26,7 +32,7 @@ class SpecialCardRow extends React.Component {
             style={[
               styles.textButton,
               styles.standardButton,
-              this.props.is_special === '' && styles.selectedValue
+              isSpecial === '' && styles.selectedValue,
             ]}>
             <Text style={styles.buttonText}>All</Text>
           </TouchableOpacity>
@@ -34,7 +40,7 @@ class SpecialCardRow extends React.Component {
             style={[
               styles.textButton,
               styles.standardButton,
-              this.props.is_special === 'True' && styles.selectedValue
+              isSpecial === 'True' && styles.selectedValue,
             ]}>
             <Text style={styles.buttonText}>Only</Text>
           </TouchableOpacity>
@@ -42,7 +48,7 @@ class SpecialCardRow extends React.Component {
             style={[
               styles.textButton,
               styles.standardButton,
-              this.props.is_special === 'False' && styles.selectedValue
+              isSpecial === 'False' && styles.selectedValue,
             ]}>
             <Text style={styles.buttonText}>None</Text>
           </TouchableOpacity>
@@ -51,10 +57,3 @@ class SpecialCardRow extends React.Component {
     );
   }
 }
-
-SpecialCardRow.propTypes = {
-  is_special: PropTypes.string.isRequired,
-  selectSpecial: PropTypes.func.isRequired
-};
-
-export default SpecialCardRow;

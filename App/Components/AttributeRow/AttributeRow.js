@@ -1,8 +1,11 @@
 import React from 'react';
-import { Text, View, TouchableOpacity, Image, ScrollView } from 'react-native';
+import {
+  Text, View, TouchableOpacity,
+  Image, ScrollView, StyleSheet,
+} from 'react-native';
 import PropTypes from 'prop-types';
-import { Images, ApplicationStyles } from '../../Theme';
-import styles from '../../Theme/RowStyles';
+import { Images, ApplicationStyles } from '~/Theme';
+import styles from '~/Theme/RowStyles';
 
 /**
  * Attribute Row (None, Smile, Pure, Cool, All)
@@ -15,7 +18,12 @@ import styles from '../../Theme/RowStyles';
  * @class AttributeRow
  * @extends {React.Component}
  */
-class AttributeRow extends React.Component {
+export default class AttributeRow extends React.Component {
+  static propTypes = {
+    attribute: PropTypes.string.isRequired,
+    selectAttribute: PropTypes.func.isRequired,
+  };
+
   render() {
     return (
       <View style={ApplicationStyles.row}>
@@ -28,36 +36,36 @@ class AttributeRow extends React.Component {
             <TouchableOpacity onPress={this.props.selectAttribute('')}
               style={[
                 styles.standardButton,
-                { paddingLeft: 0 },
-                this.props.attribute === '' && styles.selectedValue1
+                styles1.paddingLeft0,
+                this.props.attribute === '' && styles.selectedValue1,
               ]}>
               <Image source={Images.empty} style={styles.buttonImage} />
             </TouchableOpacity>
             <TouchableOpacity onPress={this.props.selectAttribute('Smile')}
               style={[
                 styles.standardButton,
-                this.props.attribute === 'Smile' && styles.selectedValue1
+                this.props.attribute === 'Smile' && styles.selectedValue1,
               ]}>
               <Image source={Images.attribute[0]} style={styles.buttonImage} />
             </TouchableOpacity>
             <TouchableOpacity onPress={this.props.selectAttribute('Pure')}
               style={[
                 styles.standardButton,
-                this.props.attribute === 'Pure' && styles.selectedValue1
+                this.props.attribute === 'Pure' && styles.selectedValue1,
               ]}>
               <Image source={Images.attribute[1]} style={styles.buttonImage} />
             </TouchableOpacity>
             <TouchableOpacity onPress={this.props.selectAttribute('Cool')}
               style={[
                 styles.standardButton,
-                this.props.attribute === 'Cool' && styles.selectedValue1
+                this.props.attribute === 'Cool' && styles.selectedValue1,
               ]}>
               <Image source={Images.attribute[2]} style={styles.buttonImage} />
             </TouchableOpacity>
             <TouchableOpacity onPress={this.props.selectAttribute('All')}
               style={[
                 styles.standardButton,
-                this.props.attribute === 'All' && styles.selectedValue1
+                this.props.attribute === 'All' && styles.selectedValue1,
               ]}>
               <Image source={Images.attribute[3]} style={styles.buttonImage} />
             </TouchableOpacity>
@@ -68,9 +76,6 @@ class AttributeRow extends React.Component {
   }
 }
 
-AttributeRow.propTypes = {
-  attribute: PropTypes.string.isRequired,
-  selectAttribute: PropTypes.func.isRequired
-};
-
-export default AttributeRow;
+const styles1 = StyleSheet.create({
+  paddingLeft0: { paddingLeft: 0 },
+});

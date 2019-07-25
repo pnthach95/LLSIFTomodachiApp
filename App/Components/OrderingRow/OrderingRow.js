@@ -1,9 +1,13 @@
 import React from 'react';
-import { Text, View, TouchableWithoutFeedback } from 'react-native';
+import {
+  Text, View, StyleSheet,
+  TouchableWithoutFeedback,
+} from 'react-native';
+import PropTypes from 'prop-types';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import RNPickerSelect from 'react-native-picker-select';
-import styles from '../../Theme/RowStyles';
-import { Colors } from '../../Theme';
+import styles from '~/Theme/RowStyles';
+import { Colors } from '~/Theme';
 
 /**
  * Idol Name Row.
@@ -19,6 +23,14 @@ import { Colors } from '../../Theme';
  * @extends {React.Component}
  */
 export default class OrderingRow extends React.Component {
+  static propTypes = {
+    orderingItem: PropTypes.any,
+    selectOrdering: PropTypes.any,
+    selectedOrdering: PropTypes.any,
+    toggleReverse: PropTypes.any,
+    isReverse: PropTypes.bool,
+  };
+
   render() {
     // console.log('orderingItem', this.props.orderingItem);
     // console.log('selectedOrdering', this.props.selectedOrdering);
@@ -28,7 +40,7 @@ export default class OrderingRow extends React.Component {
           <View style={styles.leftView}>
             <Text>Ordering</Text>
           </View>
-          <View style={{ flex: 2 }}>
+          <View style={styles.flex2}>
             <RNPickerSelect onValueChange={this.props.selectOrdering}
               items={this.props.orderingItem}
               hideIcon={true}
@@ -37,13 +49,13 @@ export default class OrderingRow extends React.Component {
               value={this.props.selectedOrdering} />
           </View>
         </View>
-        <View style={[styles.pickerRow, { marginTop: 10 }]}>
+        <View style={[styles.pickerRow, styles1.marginTop10]}>
           <View style={styles.leftView} />
-          <View style={{ flex: 2 }}>
+          <View style={styles.flex2}>
             <TouchableWithoutFeedback onPress={this.props.toggleReverse}>
               <View style={styles.pickerRow}>
-                <Icon name={'check-box' + (this.props.isReverse ? '' : '-outline-blank')}
-                  size={20} color={Colors.green} style={{ marginRight: 10 }} />
+                <Icon name={`check-box${this.props.isReverse ? '' : '-outline-blank'}`}
+                  size={20} color={Colors.green} style={styles1.marginRight10} />
                 <Text>Reverse order</Text>
               </View>
             </TouchableWithoutFeedback>
@@ -53,3 +65,8 @@ export default class OrderingRow extends React.Component {
     );
   }
 }
+
+const styles1 = StyleSheet.create({
+  marginRight10: { marginRight: 10 },
+  marginTop10: { marginTop: 10 },
+});

@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 #import <Foundation/Foundation.h>
 
 #import "MSChannelProtocol.h"
@@ -55,7 +58,7 @@ NS_ASSUME_NONNULL_BEGIN
  * @discussion The default maximum database size is 10485760 bytes (10 MiB).
  *
  * @param sizeInBytes Maximum size of the internal storage in bytes. This will be rounded up to the nearest multiple of a SQLite page size
- * (default is 4096 bytes). Values below 20480 bytes (20 KiB) will be ignored.
+ * (default is 4096 bytes). Values below 24576 bytes (24 KiB) will be ignored.
  * @param completionHandler Callback that is invoked when the database size has been set. The `BOOL` parameter is `YES` if changing the size
  * is successful, and `NO` otherwise.
  */

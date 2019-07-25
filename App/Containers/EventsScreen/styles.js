@@ -1,33 +1,36 @@
 import { StyleSheet } from 'react-native';
-import { Metrics, Colors } from '../../Theme';
+import { Metrics, Colors, Fonts } from '~/Theme';
 
 export default StyleSheet.create({
   container: {
+    backgroundColor: Colors.violet,
     flex: 1,
-    backgroundColor: Colors.violet
-  },
-  header: {
-    backgroundColor: 'white'
-  },
-  list: {
-    padding: Metrics.smallMargin
   },
   content: {
-    alignItems: 'center'
+    alignItems: 'center',
   },
   filterContainer: {
-    backgroundColor: 'white',
-    padding: 10
+    backgroundColor: Colors.white,
+    padding: 10,
+  },
+  header: {
+    backgroundColor: Colors.white,
+  },
+  list: {
+    padding: Metrics.smallMargin,
+  },
+  margin10: {
+    margin: 10,
   },
   resetText: {
-    color: 'white',
-    textAlign: 'center'
+    ...Fonts.style.white,
+    ...Fonts.style.center,
   },
   resetView: {
     alignItems: 'stretch',
-    backgroundColor: 'red',
+    backgroundColor: Colors.red,
     justifyContent: 'center',
+    marginTop: 10,
     padding: 10,
-    marginTop: 10
-  }
+  },
 });

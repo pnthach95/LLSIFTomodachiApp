@@ -1,22 +1,28 @@
 import React from 'react';
-import { View, FlatList, TextInput, Alert, Text, Image } from 'react-native';
-import { connect } from 'react-redux';
+import {
+  View, FlatList, TextInput,
+  Alert, Text, Image,
+} from 'react-native';
+import PropTypes from 'prop-types';
 import ElevatedView from 'react-native-elevated-view';
 import Icon from 'react-native-vector-icons/Ionicons';
 import _ from 'lodash';
 
-import Fade from '../../Components/Fade/Fade';
-import EventRow from '../../Components/EventRow/EventRow';
-import SongItem from '../../Components/SongItem/SongItem';
-import Touchable from '../../Components/Touchable/Touchable';
-import MainUnitRow from '../../Components/MainUnitRow/MainUnitRow';
-import OrderingRow from '../../Components/OrderingRow/OrderingRow';
-import AttributeRow from '../../Components/AttributeRow/AttributeRow';
-import SquareButton from '../../Components/SquareButton/SquareButton';
+import ConnectStatus from '~/Components/ConnectStatus';
+import Fade from '~/Components/Fade/Fade';
+import EventRow from '~/Components/EventRow/EventRow';
+import SongItem from '~/Components/SongItem/SongItem';
+import Touchable from '~/Components/Touchable/Touchable';
+import MainUnitRow from '~/Components/MainUnitRow/MainUnitRow';
+import OrderingRow from '~/Components/OrderingRow/OrderingRow';
+import AttributeRow from '~/Components/AttributeRow/AttributeRow';
+import SquareButton from '~/Components/SquareButton/SquareButton';
 import SplashScreen from '../SplashScreen/SplashScreen';
-import { LLSIFService } from '../../Services/LLSIFService';
-import { Colors, ApplicationStyles, Images } from '../../Theme';
-import { OrderingGroup } from '../../Config';
+import LLSIFService from '~/Services/LLSIFService';
+import {
+  Colors, ApplicationStyles, Images, Fonts,
+} from '~/Theme';
+import { OrderingGroup } from '~/Config';
 import styles from './styles';
 
 const defaultFilter = {
@@ -31,8 +37,8 @@ const defaultFilter = {
   is_event: '',
   is_daily_rotation: '',
   available: '',
-  main_unit: ''
-}
+  main_unit: '',
+};
 
 /**
  * [Song List Screen](https://github.com/MagiCircles/SchoolIdolAPI/wiki/API-Songs#get-the-list-of-songs)
@@ -56,7 +62,7 @@ const defaultFilter = {
  * @class SongsScreen
  * @extends {React.Component}
  */
-class SongsScreen extends React.Component {
+export default class SongsScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -75,9 +81,13 @@ class SongsScreen extends React.Component {
       is_daily_rotation: '',
       available: '',
       main_unit: '',
-      stopSearch: false
-    }
-    this._onEndReached = _.debounce(this._onEndReached, 500);
+      stopSearch: false,
+    };
+    this.onEndReached = _.debounce(this.onEndReached, 500);
+  }
+
+  static propTypes = {
+    isConnected: PropTypes.bool,
   }
 
   static navigationOptions = {
@@ -86,12 +96,18 @@ class SongsScreen extends React.Component {
     tabBarLabel: 'Songs',
     tabBarOptions: {
       activeTintColor: Colors.pink,
-      inactiveTintColor: Colors.inactive
-    }
+      inactiveTintColor: Colors.inactive,
+    },
   }
 
   componentDidMount() {
-    this._getSongs();
+    this.focusListener = this.props.navigation.addListener('didFocus', () => {
+      if (this.state.list.length === 0) this.setState({ isLoading: true }, () => this.getSongs());
+    });
+  }
+
+  componentWillUnmount() {
+    this.focusListener.remove();
   }
 
   /**
@@ -99,7 +115,7 @@ class SongsScreen extends React.Component {
    *
    * @memberof SongsScreen
    */
-  _keyExtractor = (item, index) => `song ${item.name}`;
+  keyExtractor = item => `song ${item.name}`;
 
   /**
    * Render item in FlatList
@@ -107,8 +123,8 @@ class SongsScreen extends React.Component {
    * @param {Object} item
    * @memberof SongsScreen
    */
-  _renderItem = ({ item }) => <SongItem item={item}
-    onPress={() => this._navigateToSongDetail(item)} />
+  renderItem = ({ item }) => <SongItem item={item}
+    onPress={() => this.navigateToSongDetail(item)} />
 
   /**
    * Navigate to Song Detail Screen
@@ -116,8 +132,10 @@ class SongsScreen extends React.Component {
    * @param {Object} item
    * @memberof SongsScreen
    */
-  _navigateToSongDetail(item) {
-    this.props.navigation.navigate('SongDetailScreen', { item: item });
+  navigateToSongDetail(item) {
+    if (this.props.isConnected) {
+      this.props.navigation.navigate('SongDetailScreen', { item });
+    }
   }
 
   /**
@@ -126,9 +144,9 @@ class SongsScreen extends React.Component {
    *
    * @memberof CardsScreen
    */
-  _onEndReached = () => {
+  onEndReached = () => {
     if (this.state.stopSearch) return;
-    this._getSongs();
+    this.getSongs();
   }
 
   /**
@@ -137,40 +155,44 @@ class SongsScreen extends React.Component {
    * @param {Number} [page=this.state.page] page
    * @memberof SongsScreen
    */
-  _getSongs(page = this.state.page) {
-    let _ordering = (this.state.isReverse ? '-' : '') + this.state.selectedOrdering;
-    var _filter = {
-      ordering: _ordering,
+  getSongs(page = this.state.page) {
+    if (this.props.isConnected === false) {
+      this.setState({ isLoading: false });
+      return;
+    }
+    const ordering = (this.state.isReverse ? '-' : '') + this.state.selectedOrdering;
+    const theFilter = {
+      ordering,
       page_size: this.state.page_size,
-      page: page,
+      page,
       expand_event: this.state.expand_event,
       // is_daily_rotation: this.state.is_daily_rotation
     };
-    if (this.state.attribute !== '') _filter.attribute = this.state.attribute;
-    if (this.state.available !== '') _filter.available = this.state.available;
-    if (this.state.is_event !== '') _filter.is_event = this.state.is_event;
-    if (this.state.main_unit !== '') _filter.main_unit = this.state.main_unit;
-    if (this.state.search !== '') _filter.search = this.state.search;
-    console.log(`Songs.getSongs ${JSON.stringify(_filter)}`);
-    LLSIFService.fetchSongList(_filter).then(result => {
+    if (this.state.attribute !== '') theFilter.attribute = this.state.attribute;
+    if (this.state.available !== '') theFilter.available = this.state.available;
+    if (this.state.is_event !== '') theFilter.is_event = this.state.is_event;
+    if (this.state.main_unit !== '') theFilter.main_unit = this.state.main_unit;
+    if (this.state.search !== '') theFilter.search = this.state.search;
+    // eslint-disable-next-line no-console
+    console.log(`Songs.getSongs ${JSON.stringify(theFilter)}`);
+    LLSIFService.fetchSongList(theFilter).then((result) => {
       if (result === 404) {
         // console.log('LLSIFService.fetchSongList 404')
         this.setState({ stopSearch: true });
       } else {
-        var x = [...this.state.list, ...result];
-        x = x.filter((thing, index, self) =>
-          index === self.findIndex(t => t.name === thing.name)
-        );
+        let x = [...this.state.list, ...result];
+        x = x.filter((thing, index, self) => index === self.findIndex(t => t.name === thing.name));
         this.setState({
           list: x,
           isLoading: false,
-          page: page + 1
+          page: page + 1,
         });
       }
-    }).catch(err => {
+    }).catch((err) => {
       Alert.alert('Error', 'Error when get songs',
+        // eslint-disable-next-line no-console
         [{ text: 'OK', onPress: () => console.log(`OK Pressed ${err}`) }]);
-    })
+    });
   }
 
   /**
@@ -178,30 +200,32 @@ class SongsScreen extends React.Component {
    *
    * @memberof SongsScreen
    */
-  _toggleFilter = () => this.setState({ isFilter: !this.state.isFilter });
+  toggleFilter = () => this.setState({ isFilter: !this.state.isFilter });
 
   /**
    * Reverse search on/off
    *
    * @memberof SongsScreen
    */
-  _toggleReverse = () => this.setState({ isReverse: !this.state.isReverse });
+  toggleReverse = () => this.setState({ isReverse: !this.state.isReverse });
 
   /**
    * Open drawer
    *
    * @memberof SongsScreen
    */
-  _openDrawer = () => this.props.navigation.openDrawer();
+  openDrawer = () => this.props.navigation.openDrawer();
 
   /**
    * Call when pressing search button
    *
    * @memberof SongsScreen
    */
-  _onSearch = () => {
-    this.setState({ list: [], page: 1, isFilter: false, stopSearch: false });
-    this._getSongs(1);
+  onSearch = () => {
+    this.setState({
+      list: [], page: 1, isFilter: false, stopSearch: false,
+    });
+    this.getSongs(1);
   }
 
   /**
@@ -209,7 +233,7 @@ class SongsScreen extends React.Component {
    *
    * @memberof SongsScreen
    */
-  _resetFilter = () => {
+  resetFilter = () => {
     this.setState({
       ordering: defaultFilter.ordering,
       page_size: defaultFilter.page_size,
@@ -223,8 +247,7 @@ class SongsScreen extends React.Component {
       main_unit: defaultFilter.main_unit,
       selectedOrdering: defaultFilter.selectedOrdering,
       isReverse: defaultFilter.isReverse,
-      search: ''
-    })
+    });
   }
 
   /**
@@ -233,30 +256,29 @@ class SongsScreen extends React.Component {
    * @param {String} value
    * @memberof SongsScreen
    */
-  _selectEvent = (value) => () => this.setState({ is_event: value });
+  selectEvent = value => () => this.setState({ is_event: value });
 
   /**
    * Save `attribute`
    *
    * @memberof SongsScreen
    */
-  _selectAttribute = (value) => () => this.setState({ attribute: value });
+  selectAttribute = value => () => this.setState({ attribute: value });
 
   /**
    * Save `main_unit`
    *
    * @memberof SongsScreen
    */
-  _selectMainUnit = (value) => () => this.setState({ main_unit: value });
+  selectMainUnit = value => () => this.setState({ main_unit: value });
 
   /**
    * Save ordering
    *
    * @param {String} itemValue
-   * @param {String} itemIndex unused
    * @memberof SongsScreen
    */
-  _selectOrdering = (itemValue, itemIndex) => this.setState({ selectedOrdering: itemValue });
+  selectOrdering = itemValue => this.setState({ selectedOrdering: itemValue });
 
   /**
    * Render footer in FlatList
@@ -266,61 +288,60 @@ class SongsScreen extends React.Component {
   </View>
 
   renderEmpty = <View style={styles.flatListElement}>
-    <Text style={{ textAlign: 'center' }}>No result</Text>
+    <Text style={Fonts.style.center}>No result</Text>
   </View>
 
   render() {
     return (
       <View style={ApplicationStyles.screen}>
-        <Fade visible={this.state.isLoading} style={[ApplicationStyles.screen, ApplicationStyles.absolute]}>
+        <Fade visible={this.state.isLoading}
+          style={[ApplicationStyles.screen, ApplicationStyles.absolute]}>
           <SplashScreen />
         </Fade>
-        <Fade visible={!this.state.isLoading} style={[ApplicationStyles.screen, ApplicationStyles.absolute]}>
+        <Fade visible={!this.state.isLoading}
+          style={[ApplicationStyles.screen, ApplicationStyles.absolute]}>
           {/* HEADER */}
           <ElevatedView elevation={5} style={[ApplicationStyles.header, styles.header]}>
-            <SquareButton name={'ios-menu'} onPress={this._openDrawer} />
+            <SquareButton name={'ios-menu'} onPress={this.openDrawer} />
             <View style={ApplicationStyles.searchHeader}>
               <TextInput style={ApplicationStyles.searchInput}
                 onChangeText={text => this.setState({ search: text })}
-                onSubmitEditing={this._onSearch}
+                onSubmitEditing={this.onSearch}
                 placeholder={'Search song...'}
                 value={this.state.search} />
-              <SquareButton name={'ios-search'} onPress={this._onSearch}
+              <SquareButton name={'ios-search'} onPress={this.onSearch}
                 style={ApplicationStyles.searchButton} />
             </View>
-            <SquareButton name={'ios-more'} onPress={this._toggleFilter} />
+            <SquareButton name={'ios-more'} onPress={this.toggleFilter} />
           </ElevatedView>
           {/* FILTER */}
-          {this.state.isFilter &&
-            <ElevatedView elevation={5} style={styles.filterContainer}>
-              <AttributeRow attribute={this.state.attribute} selectAttribute={this._selectAttribute} />
-              <EventRow is_event={this.state.is_event} selectEvent={this._selectEvent} />
-              <MainUnitRow main_unit={this.state.main_unit} selectMainUnit={this._selectMainUnit} />
+          {this.state.isFilter
+            && <ElevatedView elevation={5} style={styles.filterContainer}>
+              <AttributeRow attribute={this.state.attribute}
+                selectAttribute={this.selectAttribute} />
+              <EventRow isEvent={this.state.is_event} selectEvent={this.selectEvent} />
+              <MainUnitRow mainUnit={this.state.main_unit} selectMainUnit={this.selectMainUnit} />
               <OrderingRow orderingItem={OrderingGroup.SONG}
-                selectedOrdering={this.state.selectedOrdering} selectOrdering={this._selectOrdering}
-                isReverse={this.state.isReverse} toggleReverse={this._toggleReverse} />
-              <Touchable onPress={this._resetFilter} useForeground
+                selectedOrdering={this.state.selectedOrdering} selectOrdering={this.selectOrdering}
+                isReverse={this.state.isReverse} toggleReverse={this.toggleReverse} />
+              <Touchable onPress={this.resetFilter} useForeground
                 style={styles.resetView}>
                 <Text style={styles.resetText}>RESET</Text>
               </Touchable>
             </ElevatedView>}
-
+          <ConnectStatus />
           {/* LIST */}
           <FlatList data={this.state.list}
             initialNumToRender={6}
             numColumns={2}
-            keyExtractor={this._keyExtractor}
+            keyExtractor={this.keyExtractor}
             style={styles.list}
-            onEndReached={this._onEndReached}
+            onEndReached={this.onEndReached}
             ListEmptyComponent={this.renderEmpty}
             ListFooterComponent={this.renderFooter}
-            renderItem={this._renderItem} />
+            renderItem={this.renderItem} />
         </Fade>
       </View>
-    )
+    );
   }
 }
-
-const mapStateToProps = (state) => ({});
-const mapDispatchToProps = (dispatch) => ({});
-export default connect(mapStateToProps, mapDispatchToProps)(SongsScreen);

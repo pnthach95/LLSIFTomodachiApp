@@ -1,16 +1,20 @@
 import React from 'react';
-import { View, Text, SectionList, FlatList, Image } from 'react-native';
-import { connect } from 'react-redux';
+import {
+  View, Text, SectionList,
+  FlatList, Image, Alert,
+} from 'react-native';
+import PropTypes from 'prop-types';
 import ElevatedView from 'react-native-elevated-view';
 import Icon from 'react-native-vector-icons/Ionicons';
 
-import Fade from '../../Components/Fade/Fade';
-import IdolItem from '../../Components/IdolItem/IdolItem';
-import Seperator from '../../Components/Seperator/Seperator';
-import SquareButton from '../../Components/SquareButton/SquareButton';
-import { LLSIFService } from '../../Services/LLSIFService';
+import ConnectStatus from '~/Components/ConnectStatus';
+import Fade from '~/Components/Fade/Fade';
+import IdolItem from '~/Components/IdolItem/IdolItem';
+import Seperator from '~/Components/Seperator/Seperator';
+import SquareButton from '~/Components/SquareButton/SquareButton';
+import LLSIFService from '~/Services/LLSIFService';
 import SplashScreen from '../SplashScreen/SplashScreen';
-import { Colors, ApplicationStyles, Images } from '../../Theme';
+import { Colors, ApplicationStyles, Images } from '~/Theme';
 import styles from './styles';
 
 /**
@@ -23,13 +27,18 @@ import styles from './styles';
  * @class IdolsScreen
  * @extends {React.Component}
  */
-class IdolsScreen extends React.Component {
+export default class IdolsScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       isLoading: true,
-      list: []
+      list: [],
     };
+  }
+
+  static propTypes = {
+    isConnected: PropTypes.bool,
+    schools: PropTypes.array,
   }
 
   static navigationOptions = {
@@ -41,38 +50,53 @@ class IdolsScreen extends React.Component {
     tabBarLabel: 'Idols',
     tabBarOptions: {
       activeTintColor: Colors.pink,
-      inactiveTintColor: Colors.inactive
-    }
+      inactiveTintColor: Colors.inactive,
+    },
   }
 
   componentDidMount() {
-    LLSIFService.fetchIdolList().then(res => {
-      let schools = this.props.schools;
-      var array = [];
-      for (let school of schools) {
-        let item = {
-          title: school,
+    this.focusListener = this.props.navigation.addListener('didFocus', () => {
+      if (this.state.list.length === 0) this.setState({ isLoading: true }, () => this.loadData());
+    });
+  }
+
+  componentWillUnmount() {
+    this.focusListener.remove();
+  }
+
+  loadData() {
+    const { schools } = this.props;
+    LLSIFService.fetchIdolList(schools)
+      .then((res) => {
+        const array = [];
+        schools.forEach((school) => {
+          const item = {
+            title: school,
+            data: [
+              {
+                key: school,
+                list: res.filter(value => value.school === school),
+              },
+            ],
+          };
+          if (item.data[0].list.length !== 0) array.push(item);
+        });
+        const item = {
+          title: 'Other',
           data: [
             {
-              key: school,
-              list: res.filter(value => value.school === school)
-            }
-          ]
+              key: 'Other',
+              list: res.filter(value => value.school === null),
+            },
+          ],
         };
-        array.push(item);
-      }
-      let item = {
-        title: 'Other',
-        data: [
-          {
-            key: 'Other',
-            list: res.filter(value => value.school === null)
-          }
-        ]
-      };
-      array.push(item);
-      this.setState({ isLoading: false, list: array });
-    })
+        if (item.data[0].list.length !== 0) array.push(item);
+        this.setState({ isLoading: false, list: array });
+      })
+      .catch((e) => {
+        this.setState({ isLoading: false });
+        Alert.alert('Error', e.message);
+      });
   }
 
   /**
@@ -81,14 +105,18 @@ class IdolsScreen extends React.Component {
    * @param {String} name
    * @memberof IdolsScreen
    */
-  navigateToIdolDetail = (name) => () => this.props.navigation.navigate('IdolDetailScreen', { name: name });
+  navigateToIdolDetail = name => () => {
+    if (this.props.isConnected) {
+      this.props.navigation.navigate('IdolDetailScreen', { name });
+    }
+  }
 
   /**
    * Key extractor for FlatList
    *
    * @memberof IdolsScreen
    */
-  _keyExtractor = (item, index) => `idol${item.name}`;
+  keyExtractor = item => `idol${item.name}`;
 
   /**
    * Render item in FlatList
@@ -96,60 +124,62 @@ class IdolsScreen extends React.Component {
    * @param {Object} item
    * @memberof IdolsScreen
    */
-  _renderItem = ({ item }) => <IdolItem item={item} onPress={this.navigateToIdolDetail(item.name)} />;
+  renderItem = ({ item }) => <IdolItem item={item}
+    onPress={this.navigateToIdolDetail(item.name)} />;
 
   /**
    * Open drawer
    *
    * @memberof IdolsScreen
    */
-  _openDrawer = () => this.props.navigation.openDrawer();
+  openDrawer = () => this.props.navigation.openDrawer();
 
   render() {
     return (
       <View style={[ApplicationStyles.screen, styles.container]}>
-        <Fade visible={this.state.isLoading} style={[ApplicationStyles.screen, ApplicationStyles.absolute]}>
+        <Fade visible={this.state.isLoading}
+          style={[ApplicationStyles.screen, ApplicationStyles.absolute]}>
           <SplashScreen bgColor={Colors.blue} />
         </Fade>
-        <Fade visible={!this.state.isLoading} style={[ApplicationStyles.screen, ApplicationStyles.absolute]}>
+        <Fade visible={!this.state.isLoading}
+          style={[ApplicationStyles.screen, ApplicationStyles.absolute]}>
           {/* HEADER */}
           <ElevatedView elevation={5}
             style={[ApplicationStyles.header, styles.container]}>
-            <SquareButton name={'ios-menu'} onPress={this._openDrawer} color={'white'} />
+            <SquareButton name={'ios-menu'} onPress={this.openDrawer} color={'white'} />
             <Image source={Images.logo} style={ApplicationStyles.imageHeader} />
             <View style={styles.hole} />
           </ElevatedView>
+          <ConnectStatus />
           {/* BODY */}
           <SectionList sections={this.state.list}
             initialNumToRender={9}
-            keyExtractor={(item, index) => 'School' + index}
+            keyExtractor={(item, index) => `School${index}`}
             style={styles.list}
             renderSectionHeader={({ section: { title } }) => (
               <Text style={styles.sectionText}>{title}</Text>
             )}
             stickySectionHeadersEnabled={false}
-            ListHeaderComponent={<View style={{ height: 10 }} />}
-            ListFooterComponent={<View style={{ height: 10 }} />}
-            SectionSeparatorComponent={data => {
+            ListHeaderComponent={<View style={styles.height10} />}
+            ListFooterComponent={<View style={styles.height10} />}
+            SectionSeparatorComponent={(data) => {
               if (data.leadingItem && data.leadingItem.key === 'Other') return null;
-              return <Seperator style={{ backgroundColor: 'white', marginBottom: data.leadingItem ? 20 : 0 }} />;
+              const styleSeperator = {
+                backgroundColor: 'white',
+                marginBottom: data.leadingItem ? 20 : 0,
+              };
+              return <Seperator style={styleSeperator} />;
             }}
-            renderItem={({ item, index, section }) => <FlatList
+            renderItem={({ item }) => <FlatList
               numColumns={3}
               data={item.list}
               initialNumToRender={9}
-              renderItem={this._renderItem}
-              keyExtractor={this._keyExtractor}
+              renderItem={this.renderItem}
+              keyExtractor={this.keyExtractor}
             />}
           />
         </Fade>
       </View>
-    )
+    );
   }
 }
-
-const mapStateToProps = (state) => ({
-  schools: state.cachedData.get('cachedData').get('cards_info').get('schools')
-});
-const mapDispatchToProps = (dispatch) => ({});
-export default connect(mapStateToProps, mapDispatchToProps)(IdolsScreen);

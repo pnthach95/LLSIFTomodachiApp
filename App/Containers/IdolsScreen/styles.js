@@ -1,20 +1,23 @@
 import { StyleSheet } from 'react-native';
-import { Metrics, Colors } from '../../Theme';
+import { Metrics, Colors } from '~/Theme';
 
 export default StyleSheet.create({
   container: {
-    backgroundColor: Colors.blue
+    backgroundColor: Colors.blue,
+  },
+  height10: {
+    height: 10,
   },
   hole: {
+    height: Metrics.navBarHeight,
     width: Metrics.navBarHeight,
-    height: Metrics.navBarHeight
   },
   list: {
-    padding: Metrics.smallMargin
+    padding: Metrics.smallMargin,
   },
   sectionText: {
+    color: Colors.white,
+    fontSize: 20,
     fontWeight: 'bold',
-    color: 'white',
-    fontSize: 20
-  }
+  },
 });

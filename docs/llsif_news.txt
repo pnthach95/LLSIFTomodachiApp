@@ -4,3 +4,9 @@ updates
 https://llsif.org/en/api/news/2?limit=10&offset=3985
 issues
 https://llsif.org/en/api/news/1?limit=10&offset=3728
+
+tier
+https://llsif.net/download.php?svr=JP&eid=1405839600&cname=sdas
+svr = EN | JP
+eid = event id
+cname = file name

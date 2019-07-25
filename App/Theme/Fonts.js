@@ -6,9 +6,12 @@ const size = {
   regular: 17,
   medium: 14,
   small: 12,
-}
+};
 
 const style = {
+  center: {
+    textAlign: 'center',
+  },
   h1: {
     fontSize: size.h1,
   },
@@ -22,8 +25,11 @@ const style = {
     fontSize: size.regular,
   },
   black: {
-    color: 'black'
-  }
-}
+    color: 'black',
+  },
+  white: {
+    color: 'white',
+  },
+};
 
-export default { size, style }
+export default { size, style };

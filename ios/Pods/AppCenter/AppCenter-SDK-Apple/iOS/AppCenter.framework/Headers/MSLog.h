@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 #import <Foundation/Foundation.h>
 
 @class MSDevice;
@@ -24,6 +27,11 @@
  * Optional distribution group ID value.
  */
 @property(nonatomic, copy) NSString *distributionGroupId;
+
+/**
+ * Optional user identifier.
+ */
+@property(nonatomic, copy) NSString *userId;
 
 /**
  * Device properties associated to this log.

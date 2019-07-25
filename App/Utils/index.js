@@ -1,4 +1,6 @@
-import { AsyncStorage, Alert, Linking } from 'react-native';
+import { Alert, Linking } from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
+import Color from 'color';
 import { Colors, Images } from '../Theme';
 
 /**
@@ -6,14 +8,21 @@ import { Colors, Images } from '../Theme';
  *
  * @param {String} link
  */
-export const AddHTTPS = link => { return 'https:' + link }
+export const AddHTTPS = link => `https:${link}`;
+
+/**
+ * Replace question mark to %3F
+ *
+ * @param {String} key
+ */
+export const ReplaceQuestionMark = key => key.replace('?', '%3F');
 
 /**
  * Find color by attribute
  *
  * @param {String} key Smile || Pure || Cool || null
  */
-export const findColorByAttribute = key => {
+export const findColorByAttribute = (key) => {
   switch (key) {
     case 'Smile':
       return [Colors.pink, Colors.lightPink];
@@ -24,13 +33,13 @@ export const findColorByAttribute = key => {
     default:
       return [Colors.violet, Colors.lightViolet];
   }
-}
+};
 
 /**
  * Find icon by attribute
  * @param {String} key Smile || Pure || Cool || null
  */
-export const findAttribute = key => {
+export const findAttribute = (key) => {
   switch (key) {
     case 'Smile':
       return Images.attribute[0];
@@ -41,28 +50,28 @@ export const findAttribute = key => {
     default:
       return Images.attribute[3];
   }
-}
+};
 
 /**
  * Find icon by main unit
  * @param {String} key μ's || Aqours || null
  */
-export const findMainUnit = key => {
+export const findMainUnit = (key) => {
   switch (key) {
     case 'Aqours':
       return Images.mainUnit[1];
-    case `μ's`:
+    case 'μ\'s':
       return Images.mainUnit[0];
     default:
       return null;
   }
-}
+};
 
 /**
  * Find icon by sub unit
  * @param {String} key Printemps, Lily White, Bibi, CYaRon!, AZALEA, Guilty Kiss, Saint Snow, A-RISE
  */
-export const findSubUnit = key => {
+export const findSubUnit = (key) => {
   switch (key) {
     case 'Printemps':
       return Images.subUnit[0];
@@ -83,7 +92,7 @@ export const findSubUnit = key => {
     default:
       return null;
   }
-}
+};
 
 /**
  * Find image for skill
@@ -91,7 +100,7 @@ export const findSubUnit = key => {
  * @param {String} key
  * @returns Image
  */
-export const findSkill = key => {
+export const findSkill = (key) => {
   switch (key) {
     case 'Score Up':
     case 'Perfect Charm':
@@ -112,39 +121,34 @@ export const findSkill = key => {
     default:
       return Images.skill[3];
   }
-}
+};
 
-export const loadSettings = async () => {
-  return new Promise((resolve, reject) => {
-    AsyncStorage.getItem('settings')
-      .then(res => {
-        if (res === null) {
-          res = {
-            ww_event: true,
-            jp_event: true,
-            worldwide_only: false
-          }
-        } else {
-          res = JSON.parse(res);
-        }
-        resolve(res);
-      })
-      .catch(err => reject(err));
-  })
-}
+export const loadSettings = async () => new Promise((resolve, reject) => {
+  AsyncStorage.getItem('settings')
+    .then((res) => {
+      if (res === null) {
+        resolve({
+          ww_event: true,
+          jp_event: true,
+          worldwide_only: false,
+        });
+      } else {
+        resolve(JSON.parse(res));
+      }
+      resolve(res);
+    })
+    .catch(err => reject(err));
+});
 
-export const saveSettings = settings => {
+export const saveSettings = (settings) => {
   AsyncStorage.setItem('settings', JSON.stringify(settings));
-}
+};
 
-export const darkenColor = color => {
-  var Color = require('color');
-  return Color(color).darken(0.5);
-}
+export const darkenColor = color => Color(color).darken(0.5);
 
-export const openLink = link => {
+export const openLink = (link) => {
   Alert.alert('Open link', link, [
     { text: 'Cancel', onPress: () => { }, style: 'cancel' },
-    { text: 'OK', onPress: () => Linking.openURL(link) }
+    { text: 'OK', onPress: () => Linking.openURL(link) },
   ]);
-}
+};

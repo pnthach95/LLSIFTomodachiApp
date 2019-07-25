@@ -21,5 +21,19 @@ export default {
   announced: '#D1D100',
   ongoing: '#00C200',
   finished: '#EBA3FF',
-  star: ['#D8FD53', '#F7FB34', '#FBAAC3', '#F33256']
-}
+  star: ['#D8FD53', '#F7FB34', '#FBAAC3', '#F33256'],
+  white: 'white',
+  black: 'black',
+  c0005: '#0005',
+  c333: '#333',
+  c777: '#777',
+  aaa: '#aaa',
+  f1f8ff: '#f1f8ff',
+  red: 'red',
+  ddda: '#ddda',
+  eeec: '#eeec',
+  fff6: '#fff6',
+  fff9: '#fff9',
+  fffb: '#fffb',
+  transparent: '#0000',
+};

@@ -1,21 +1,27 @@
 import React from 'react';
 import { Text, View, TouchableOpacity } from 'react-native';
 import PropTypes from 'prop-types';
-import styles from '../../Theme/RowStyles';
-import { ApplicationStyles } from '../../Theme';
+import styles from '~/Theme/RowStyles';
+import { ApplicationStyles } from '~/Theme';
 
 /**
  * Region Row (None, False, True)
  *
- * - `selectRegion`: Save `japan_only` state
- * - `japan_only` state from parent
+ * - `selectRegion`: Save `japanOnly` state
+ * - `japanOnly` state from parent
  *
  * @export
  * @class RegionRow
  * @extends {React.Component}
  */
-class RegionRow extends React.Component {
+export default class RegionRow extends React.Component {
+  static propTypes = {
+    japanOnly: PropTypes.string.isRequired,
+    selectRegion: PropTypes.func.isRequired,
+  };
+
   render() {
+    const { japanOnly } = this.props;
     return (
       <View style={ApplicationStyles.row}>
         <View style={styles.leftView}>
@@ -26,7 +32,7 @@ class RegionRow extends React.Component {
             style={[
               styles.textButton,
               styles.standardButton,
-              this.props.japan_only === '' && styles.selectedValue
+              japanOnly === '' && styles.selectedValue,
             ]}>
             <Text style={styles.buttonText}>All</Text>
           </TouchableOpacity>
@@ -34,7 +40,7 @@ class RegionRow extends React.Component {
             style={[
               styles.textButton,
               styles.standardButton,
-              this.props.japan_only === 'False' && styles.selectedValue
+              japanOnly === 'False' && styles.selectedValue,
             ]}>
             <Text style={styles.buttonText}>EN Only</Text>
           </TouchableOpacity>
@@ -42,7 +48,7 @@ class RegionRow extends React.Component {
             style={[
               styles.textButton,
               styles.standardButton,
-              this.props.japan_only === 'True' && styles.selectedValue
+              japanOnly === 'True' && styles.selectedValue,
             ]}>
             <Text style={styles.buttonText}>JP Only</Text>
           </TouchableOpacity>
@@ -51,10 +57,3 @@ class RegionRow extends React.Component {
     );
   }
 }
-
-RegionRow.propTypes = {
-  japan_only: PropTypes.string.isRequired,
-  selectRegion: PropTypes.func.isRequired
-};
-
-export default RegionRow;

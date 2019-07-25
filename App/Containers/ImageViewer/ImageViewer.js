@@ -10,15 +10,15 @@ export default class ImageViewerScreen extends React.Component {
     const { images, index } = this.props.navigation.state.params;
     this.state = {
       loading: true,
-      index: index,
+      index,
       images: images.map(image => ({ source: { uri: image.url } })),
-      hideHeader: false
+      hideHeader: false,
     };
   }
 
-  _handleOnPressImage = () => this.setState(prevState => ({ hideHeader: !prevState.hideHeader }));
+  handleOnPressImage = () => this.setState(prevState => ({ hideHeader: !prevState.hideHeader }));
 
-  _onChangeImage = (index) => this.setState({ index });
+  onChangeImage = index => this.setState({ index });
 
   header() {
     return (
@@ -26,7 +26,7 @@ export default class ImageViewerScreen extends React.Component {
         <Icon name={'ios-close'} size={40} color={'white'}
           onPress={() => this.props.navigation.goBack()}
           style={styles.close} />
-      </View>)
+      </View>);
   }
 
   error = () => <View style={styles.loaderContainer}>
@@ -36,16 +36,16 @@ export default class ImageViewerScreen extends React.Component {
 
   render() {
     const { index } = this.props.navigation.state.params;
-    let { images, hideHeader } = this.state;
+    const { images, hideHeader } = this.state;
     return (
       <View style={styles.container}>
         <Gallery images={images} pageMargin={10}
           style={styles.container} initialPage={index}
-          onPageSelected={this._onChangeImage}
+          onPageSelected={this.onChangeImage}
           errorComponent={this.error}
-          onSingleTapConfirmed={this._handleOnPressImage} />
+          onSingleTapConfirmed={this.handleOnPressImage} />
         {hideHeader || this.header()}
       </View>
-    )
+    );
   }
 }

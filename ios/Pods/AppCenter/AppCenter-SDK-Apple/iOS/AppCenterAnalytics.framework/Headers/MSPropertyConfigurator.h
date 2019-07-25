@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 #import <Foundation/Foundation.h>
 
 NS_ASSUME_NONNULL_BEGIN
@@ -24,6 +27,14 @@ NS_ASSUME_NONNULL_BEGIN
  * @param appLocale New application locale for a transmission target.
  */
 - (void)setAppLocale:(nullable NSString *)appLocale;
+
+/**
+ * Set the user identifier.
+ * The user identifier needs to start with c: or i: or d: or w: prefixes.
+ *
+ * @param userId user identifier.
+ */
+- (void)setUserId:(nullable NSString *)userId;
 
 /**
  * Set a string event property to be attached to events tracked by this transmission target and its child transmission targets.

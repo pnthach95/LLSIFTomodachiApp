@@ -1,21 +1,21 @@
 import { StyleSheet } from 'react-native';
-import { Metrics } from '../../Theme';
+import { Metrics } from '~/Theme';
 
 export default StyleSheet.create({
   container: {
-    width: Metrics.images.itemWidth,
+    borderRadius: 4,
     margin: Metrics.smallMargin,
-    borderRadius: 4
+    width: Metrics.images.itemWidth,
   },
   info: {
-    flexDirection: 'row',
-    padding: Metrics.smallMargin,
     borderBottomLeftRadius: 4,
     borderBottomRightRadius: 4,
-    justifyContent: 'space-around'
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    padding: Metrics.smallMargin,
   },
   topRadius: {
     borderTopLeftRadius: 4,
-    borderTopRightRadius: 4
-  }
+    borderTopRightRadius: 4,
+  },
 });

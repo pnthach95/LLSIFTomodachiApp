@@ -1,13 +1,10 @@
 import { create } from 'apisauce';
-import Reactotron from 'reactotron-react-native';
 import { Config } from '../Config';
 
 const GithubApiClient = create({
   baseURL: Config.GITHUB_API,
-  timeout: 10000
+  timeout: 10000,
 });
-
-GithubApiClient.addMonitor(Reactotron.apisauce);
 
 /**
  * Fetch latest version
@@ -16,15 +13,16 @@ GithubApiClient.addMonitor(Reactotron.apisauce);
  */
 async function fetchLatestVersion() {
   return new Promise((resolve, reject) => {
-    GithubApiClient.get(Config.REPO).then(response => {
+    GithubApiClient.get(Config.REPO).then((response) => {
       if (response.ok) {
         resolve(response.data[0]);
       }
-      reject(null);
+      // eslint-disable-next-line prefer-promise-reject-errors
+      reject('error while fetchLatestVersion (GithubService)');
     });
   });
 }
 
-export const GithubService = {
-  fetchLatestVersion
-}
+export default {
+  fetchLatestVersion,
+};

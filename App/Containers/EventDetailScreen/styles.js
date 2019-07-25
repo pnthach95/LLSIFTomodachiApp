@@ -1,62 +1,84 @@
 import { StyleSheet } from 'react-native';
-import { Colors, Metrics } from '../../Theme';
+import { Colors, Metrics, Fonts } from '~/Theme';
 
 export default StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: Colors.violet
-  },
-  header: {
-    backgroundColor: Colors.lightViolet
-  },
-  content: {
-    padding: Metrics.baseMargin,
-    alignItems: 'center'
-  },
-  text: {
-    fontSize: 16,
-    paddingVertical: Metrics.baseMargin
-  },
-  whiteCenter: {
-    color: 'white',
-    textAlign: 'center'
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold'
-  },
-  song: {
-    width: Metrics.screenWidth / 3,
-    height: Metrics.screenWidth / 3
-  },
-  songInfo: {
-    flexDirection: 'row',
-    paddingVertical: Metrics.baseMargin,
-    alignItems: 'center'
-  },
-  roundImage: {
-    width: Metrics.screenWidth / 6,
-    height: Metrics.screenWidth / 6
-  },
-  cardList: {
-    marginTop: Metrics.baseMargin,
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'center'
+  attributeIcon: {
+    height: 25,
+    margin: 5,
+    width: 25,
   },
   card: {
     alignItems: 'center',
-    marginVertical: Metrics.baseMargin
+    marginVertical: Metrics.baseMargin,
   },
   cardImage: {
     flexDirection: 'row',
-    marginHorizontal: Metrics.baseMargin
+    marginHorizontal: Metrics.baseMargin,
   },
-  attributeIcon: {
-    width: 25,
-    height: 25
+  cardList: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'center',
+    marginTop: Metrics.baseMargin,
+  },
+  container: {
+    backgroundColor: Colors.violet,
+    flex: 1,
+  },
+  content: {
+    padding: Metrics.baseMargin,
+    paddingBottom: Metrics.doubleBaseMargin,
+    alignItems: 'center',
+  },
+  flex2: {
+    flex: 2,
+  },
+  header: {
+    backgroundColor: Colors.lightViolet,
+  },
+  roundImage: {
+    height: Metrics.screenWidth / 6,
+    width: Metrics.screenWidth / 6,
+  },
+  song: {
+    height: Metrics.screenWidth / 3,
+    width: Metrics.screenWidth / 3,
+  },
+  songInfo: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    paddingVertical: Metrics.baseMargin,
+  },
+  text: {
+    fontSize: 16,
+    paddingVertical: Metrics.baseMargin,
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: 'bold',
+  },
+  trackerCell: {
+    backgroundColor: Colors.lightViolet,
+  },
+  trackerHead: {
+    backgroundColor: Colors.f1f8ff,
+    height: 40,
+  },
+  trackerRegion: {
+    height: Metrics.navBarHeight,
+    marginHorizontal: Metrics.doubleBaseMargin,
+  },
+  trackerText: {
+    margin: 6,
+  },
+  whiteCenter: {
+    ...Fonts.style.white,
+    ...Fonts.style.center,
   },
   whiteLine: {
-    backgroundColor: 'white'
-  }
+    backgroundColor: Colors.white,
+  },
+  width5: {
+    width: 5,
+  },
 });

@@ -1,21 +1,26 @@
 import React from 'react';
 import { Text, View, TouchableOpacity } from 'react-native';
 import PropTypes from 'prop-types';
-import styles from '../../Theme/RowStyles';
-import { ApplicationStyles } from '../../Theme';
+import styles from '~/Theme/RowStyles';
+import { ApplicationStyles } from '~/Theme';
 
 /**
  * Event Card Row (None, True, False)
  *
  * Prop:
- * - `selectEvent`: Save `is_event` state
- * - `is_event`: state from parent
+ * - `selectEvent`: Save `isEvent` state
+ * - `isEvent`: state from parent
  *
  * @export
  * @class EventRow
  * @extends {React.Component}
  */
-class EventRow extends React.Component {
+export default class EventRow extends React.Component {
+  static propTypes = {
+    isEvent: PropTypes.string.isRequired,
+    selectEvent: PropTypes.func.isRequired,
+  };
+
   render() {
     return (
       <View style={ApplicationStyles.row}>
@@ -27,7 +32,7 @@ class EventRow extends React.Component {
             style={[
               styles.textButton,
               styles.standardButton,
-              this.props.is_event === '' && styles.selectedValue
+              this.props.isEvent === '' && styles.selectedValue,
             ]}>
             <Text style={styles.buttonText}>All</Text>
           </TouchableOpacity>
@@ -35,7 +40,7 @@ class EventRow extends React.Component {
             style={[
               styles.textButton,
               styles.standardButton,
-              this.props.is_event === 'True' && styles.selectedValue
+              this.props.isEvent === 'True' && styles.selectedValue,
             ]}>
             <Text style={styles.buttonText}>Only</Text>
           </TouchableOpacity>
@@ -43,7 +48,7 @@ class EventRow extends React.Component {
             style={[
               styles.textButton,
               styles.standardButton,
-              this.props.is_event === 'False' && styles.selectedValue
+              this.props.isEvent === 'False' && styles.selectedValue,
             ]}>
             <Text style={styles.buttonText}>None</Text>
           </TouchableOpacity>
@@ -52,10 +57,3 @@ class EventRow extends React.Component {
     );
   }
 }
-
-EventRow.propTypes = {
-  is_event: PropTypes.string.isRequired,
-  selectEvent: PropTypes.func.isRequired
-};
-
-export default EventRow;

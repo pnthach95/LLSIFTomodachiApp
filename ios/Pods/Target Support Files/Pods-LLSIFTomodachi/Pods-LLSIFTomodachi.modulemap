@@ -1,0 +1,6 @@
+framework module Pods_LLSIFTomodachi {
+  umbrella header "Pods-LLSIFTomodachi-umbrella.h"
+
+  export *
+  module * { export * }
+}

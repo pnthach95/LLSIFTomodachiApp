@@ -5,30 +5,28 @@ This project is a Love Live School Idol Festival app using data from [School Ido
 [![Download APK file here](https://img.shields.io/github/downloads/pnthach95/LLSIFTomodachiApp/total.svg?style=flat-square)](https://github.com/pnthach95/LLSIFTomodachiApp/releases)
 [![GitHub issues](https://img.shields.io/github/issues/pnthach95/LLSIFTomodachiApp.svg?style=flat-square)](https://github.com/pnthach95/LLSIFTomodachiApp/issues)
 
-
 ## Content
 
 The project contains:
 
-- [React Native](https://facebook.github.io/react-native/) (v0.57.7) (in "[ejected](https://github.com/react-community/create-react-native-app/blob/master/EJECTING.md)" mode)
-- [Redux](https://redux.js.org/) (v3.7.2)
-- [Redux Persist](https://github.com/rt2zz/redux-persist) (v5.9.1)
-- [Redux Sagas](https://redux-saga.js.org) (v0.16.2)
-- [React Navigation](https://reactnavigation.org/) (v2.18.2)
-- [reduxsauce](https://github.com/infinitered/reduxsauce) (v1.0.0)
-- [apisauce](https://github.com/infinitered/apisauce) (v1.0.0)
-- [react-native-firebase](http://rnfirebase.io) (v5.1.1, for push notification)
-- [react-native-fast-image](https://github.com/DylanVann/react-native-fast-image) (v5.1.1)
-- [react-native-image-gallery](https://github.com/archriss/react-native-image-gallery) (v2.1.5)
-- [react-native-picker-select](https://github.com/lawnstarter/react-native-picker-select) (v5.1.0)
-- [react-native-sentry](https://sentry.io) (v0.39.1)
-- [react-native-linear-gradienet](https://github.com/react-native-community/react-native-linear-gradient) (v2.4.3)
-- [react-native-offline](https://github.com/rgommezz/react-native-offline) (v3.14.1)
-- [react-native-indicators](https://github.com/n4kz/react-native-indicators) (v0.13.0)
-- [moment](https://momentjs.com/) (v2.22.2)
-- [react-native-vector-icons](https://github.com/oblador/react-native-vector-icons) (v5.0.0)
-- [react-native-version-number](https://github.com/APSL/react-native-version-number) (v0.3.5)
-- [react-native-version-up](https://github.com/gustarus/react-native-version-up) (v1.0.9)
+- [React Native](https://facebook.github.io/react-native/) (v0.59.10) (in "[ejected](https://github.com/react-community/create-react-native-app/blob/master/EJECTING.md)" mode)
+- [Redux](https://redux.js.org/) (v4.0.3)
+- [Redux Saga](https://redux-saga.js.org) (v1.0.5)
+- [Redux Saga Thunk](https://github.com/diegohaz/redux-saga-thunk) (v0.7.3)
+- [React Navigation](https://reactnavigation.org/) (v3.11.0)
+- [apisauce](https://github.com/infinitered/apisauce) (v1.0.3)
+- [React Native Firebase](http://rnfirebase.io) (v5.1.1, for push notification)
+- [React Native Fast Image](https://github.com/DylanVann/react-native-fast-image) (v6.1.1)
+- [React Native Image Gallery](https://github.com/archriss/react-native-image-gallery) (v2.1.5)
+- [React Native Picker Select](https://github.com/lawnstarter/react-native-picker-select) (v5.2.0)
+- [React Native Sentry](https://sentry.io) (v0.40.2)
+- [React Native Linear Gradienet](https://github.com/react-native-community/react-native-linear-gradient) (v2.5.4)
+- [React Native Offline](https://github.com/rgommezz/react-native-offline) (v4.3.1)
+- [React Native Indicators](https://github.com/n4kz/react-native-indicators) (v0.13.0)
+- [Moment](https://momentjs.com/) (v2.24.0)
+- [React Native Vector Icons](https://github.com/oblador/react-native-vector-icons) (v6.6.0)
+- [React Native Version Number](https://github.com/APSL/react-native-version-number) (v0.3.6)
+- [async-storage](https://github.com/react-native-community/react-native-async-storage) (v1.5.1)
 
 ## Directory layout
 
@@ -72,6 +70,7 @@ Assuming you have all the requirements installed, you can setup and run the proj
 ![09](docs/images/0.2.3/09.png)
 ![10](docs/images/0.2.3/10.png)
 ![11](docs/images/0.2.3/11.png)
+![12](docs/images/0.2.3/12.png)
 
 ## Author
 
@@ -83,7 +82,6 @@ I'm a React Native developer, play Love Live and BanG Dream everyday.
 
 ## TODO
 
-- Sort option in filter
 - Handle offline mode
 - Official name
 

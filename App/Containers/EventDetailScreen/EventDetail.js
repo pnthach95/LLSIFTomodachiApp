@@ -1,65 +1,93 @@
 import React from 'react';
-import { Text, View, ScrollView, TouchableOpacity, Image } from 'react-native';
-import { connect } from 'react-redux';
+import { View } from 'react-native';
+import PropTypes from 'prop-types';
 import ElevatedView from 'react-native-elevated-view';
-import FastImage from 'react-native-fast-image';
+import SegmentedControlTab from 'react-native-segmented-control-tab';
 import moment from 'moment';
 
-import Fade from '../../Components/Fade/Fade';
-import Seperator from '../../Components/Seperator/Seperator';
-import TimerCountdown from '../../Components/TimerCountdown/Timer';
-import SquareButton from '../../Components/SquareButton/SquareButton';
+import Information from './Information';
+import Tracker from './Tracker';
+import Fade from '~/Components/Fade/Fade';
+import SquareButton from '~/Components/SquareButton/SquareButton';
 import SplashScreen from '../SplashScreen/SplashScreen';
-import { LLSIFService } from '../../Services/LLSIFService';
-import { AddHTTPS, findAttribute } from '../../Utils';
-import { Config, EventStatus } from '../../Config';
-import { Metrics, ApplicationStyles, Colors } from '../../Theme';
+import LLSIFService from '~/Services/LLSIFService';
+import LLSIFdotnetService from '~/Services/LLSIFdotnetService';
+import { Config } from '~/Config';
+import { ApplicationStyles, Colors } from '~/Theme';
+import { ReplaceQuestionMark } from '~/Utils';
 import styles from './styles';
 
 /**
  * Event Detail Screen
  *
- * From parent screen, pass `item` (event object) or `eventName` (Japanese only) to show event detail
+ * From parent screen, pass `item` (event object)
+ *  or `eventName` (Japanese only) to show event detail
  *
  * State:
  * - `isLoading`: Loading state
  * - `item`: Event object
- * - `imgWidth`: Image width
- * - `imgHeight`: Image height
+ * - `WWEventStart`: Time when WW event start
+ * - `WWEventEnd`: Time when WW event end
+ * - `JPEventStart`: Time when JP event start
+ * - `JPEventEnd`: Time when JP event end
+ * - `wwTracker`: WW event tracking data
+ * - `jpTracker`: JP event tracking data
+ * - `selectedTab`: select Information or Tracker tab
  * - `cards`: Card list
  * - `songs`: Song list
  *
  * Event object: https://github.com/MagiCircles/SchoolIdolAPI/wiki/API-Events#objects
  *
  * @class EventDetailScreen
- * @extends {React.Component}
+ * @extends {React.PureComponent}
  */
-class EventDetailScreen extends React.Component {
+export default class EventDetailScreen extends React.PureComponent {
   constructor(props) {
     super(props);
     this.state = {
       isLoading: true,
       item: this.props.navigation.getParam('event'),
-      imgWidth: 0,
-      imgHeight: 0,
-      ENEventStart: null,
-      ENEventEnd: null,
+      WWEventStart: null,
+      WWEventEnd: null,
       JPEventStart: null,
       JPEventEnd: null,
+      wwTracker: null,
+      jpTracker: null,
+      selectedTab: 0,
       cards: [],
-      songs: []
+      songs: [],
     };
+  }
+
+  static propTypes = {
+    isConnected: PropTypes.bool,
+    wwEventInfo: PropTypes.any,
+    jpEventInfo: PropTypes.any,
   }
 
   componentDidMount() {
     if (this.state.item) {
       this.loadData();
     } else {
-      let name = this.props.navigation.getParam('eventName');
-      LLSIFService.fetchEventData(name).then(res => {
-        this.setState({ item: res }, () => this.loadData())
+      const name = ReplaceQuestionMark(this.props.navigation.getParam('eventName'));
+      LLSIFService.fetchEventData(name).then((res) => {
+        this.setState({ item: res }, () => this.loadData());
       });
     }
+  }
+
+  parseEventTracker(data) {
+    const result = [];
+    const rows = data.split('\n');
+    rows.forEach((row) => {
+      if (row.indexOf('#') !== 0 && row.length > 0) {
+        const rowArr = row.split(',');
+        rowArr.splice(1, 1);
+        rowArr.splice(7, 6);
+        result.push(rowArr);
+      }
+    });
+    return result;
   }
 
   /**
@@ -68,65 +96,47 @@ class EventDetailScreen extends React.Component {
    * @memberof EventDetailScreen
    */
   loadData() {
+    const WWEventStart = moment(this.state.item.english_beginning);
+    const JPEventStart = moment(this.state.item.beginning, Config.DATETIME_FORMAT_INPUT);
+    const wwEvent = this.props.wwEventInfo
+      .filter(value => value.start_date === WWEventStart.unix());
+    const jpEvent = this.props.jpEventInfo
+      .filter(value => value.start_date === JPEventStart.unix());
+    if (wwEvent.length > 0) {
+      LLSIFdotnetService.fetchEventData({ svr: 'EN', eid: wwEvent[0].event_id, cname: 'en' })
+        .then((res) => {
+          const data = this.parseEventTracker(res);
+          this.setState({ wwTracker: data });
+        });
+    }
+    if (jpEvent.length > 0) {
+      LLSIFdotnetService.fetchEventData({ svr: 'JP', eid: jpEvent[0].event_id, cname: 'jp' })
+        .then((res) => {
+          const data = this.parseEventTracker(res);
+          this.setState({ jpTracker: data });
+        });
+    }
     LLSIFService.fetchCardList({ event_japanese_name: this.state.item.japanese_name })
-      .then(resCard => {
+      .then((resCard) => {
         LLSIFService.fetchSongList({ event: this.state.item.japanese_name })
-          .then(resSong => {
+          .then((resSong) => {
             this.setState({
-              ENEventStart: moment(this.state.item.english_beginning),
-              ENEventEnd: moment(this.state.item.english_end),
-              JPEventStart: moment(this.state.item.beginning, Config.DATETIME_FORMAT_INPUT),
+              WWEventStart,
+              WWEventEnd: moment(this.state.item.english_end),
+              JPEventStart,
               JPEventEnd: moment(this.state.item.end, Config.DATETIME_FORMAT_INPUT),
               isLoading: false,
               cards: resCard,
-              songs: resSong
+              songs: resSong,
             });
+            // eslint-disable-next-line no-console
             console.log(`EventDetail ${this.state.item.japanese_name}`);
           });
       });
   }
 
-  /**
-   * Get width, height of image in FastImage
-   *
-   * @param {*} e
-   * @memberof EventDetailScreen
-   */
-  onLoadFastImage(e) {
-    const { width, height } = e.nativeEvent;
-    this.setState({ imgWidth: width, imgHeight: height });
-  }
-
-  /**
-   * Navigate to Card Detail Screen
-   *
-   * @param {Object} item Card object
-   * @memberof EventDetailScreen
-   */
-  navigateToCardDetail(item) {
-    this.props.navigation.navigate('CardDetailScreen', { item: item });
-  }
-
-  /**
-   * Navigate to Song Detail Screen
-   *
-   * @param {Object} item Song object
-   * @memberof EventDetailScreen
-   */
-  navigateToSongDetail(item) {
-    this.props.navigation.navigate('SongDetailScreen', { item: item });
-  }
-
-  /**
-   * Countdown timer for ongoing event
-   *
-   * @param {Number} time Remaining time (miliseconds)
-   * @returns
-   * @memberof MainScreen
-   */
-  timer(time) {
-    return <TimerCountdown initialSecondsRemaining={time}
-      allowFontScaling={true} />
+  onTabPress = (index) => {
+    if (!this.state.isLoading) this.setState({ selectedTab: index });
   }
 
   render() {
@@ -135,115 +145,38 @@ class EventDetailScreen extends React.Component {
         <ElevatedView elevation={5} style={[ApplicationStyles.header, styles.header]}>
           <SquareButton name={'ios-arrow-back'} color={'white'}
             onPress={() => this.props.navigation.goBack()} />
+          <View style={styles.flex2}>
+            <SegmentedControlTab values={['Information', 'Tier cutoff']}
+              selectedIndex={this.state.selectedTab}
+              onTabPress={this.onTabPress} />
+          </View>
+          <SquareButton name={'ios-arrow-back'} color={Colors.lightViolet} />
         </ElevatedView>
         <View style={ApplicationStyles.screen}>
-          <Fade visible={this.state.isLoading} style={[ApplicationStyles.screen, ApplicationStyles.absolute]}>
+          <Fade visible={this.state.isLoading}
+            style={[ApplicationStyles.screen, ApplicationStyles.absolute]}>
             <SplashScreen bgColor={Colors.violet} />
           </Fade>
-          <Fade visible={!this.state.isLoading} style={[ApplicationStyles.screen, ApplicationStyles.absolute]}>
-            {!this.state.isLoading &&
-              <ScrollView showsVerticalScrollIndicator={false}
-                style={ApplicationStyles.screen}
-                contentContainerStyle={styles.content}>
-                {/* ENGLISH BLOCK */}
-                {this.state.item.english_name !== null &&
-                  <View>
-                    <Text style={styles.whiteCenter}>English</Text>
-                    <Text style={[styles.text, styles.title, styles.whiteCenter]}>
-                      {this.state.item.english_name.length === 0 ?
-                        this.state.item.romaji_name : this.state.item.english_name}
-                    </Text>
-                    <FastImage source={{ uri: AddHTTPS(this.state.item.english_image) }}
-                      resizeMode={FastImage.resizeMode.contain}
-                      onLoad={e => this.onLoadFastImage(e)}
-                      style={{
-                        alignSelf: 'center',
-                        width: Metrics.widthBanner,
-                        height: Metrics.widthBanner * this.state.imgHeight / this.state.imgWidth
-                      }} />
-                    <Text style={[styles.text, styles.whiteCenter]}>
-                      {`Start: ${this.state.ENEventStart.format(Config.DATETIME_FORMAT_OUTPUT)}\nEnd: ${this.state.ENEventEnd.format(Config.DATETIME_FORMAT_OUTPUT)}`}
-                    </Text>
-                    {this.state.item.world_current &&
-                      <Text style={[styles.text, styles.whiteCenter]}>
-                        {this.timer(this.state.ENEventEnd.diff(moment()))}{` left`}
-                      </Text>}
-                    {this.state.item.english_status === EventStatus.ANNOUNCED &&
-                      <Text style={[styles.text, styles.whiteCenter]}>
-                        {`Starts in `}{this.timer(this.state.ENEventStart.diff(moment()))}
-                      </Text>}
-                  </View>}
-                {this.state.item.english_name !== null &&
-                  <Seperator style={styles.whiteLine} />}
-
-                {/* JAPANESE BLOCK */}
-                <Text style={styles.whiteCenter}>Japanese</Text>
-                <Text style={[styles.text, styles.title, styles.whiteCenter]}>{this.state.item.romaji_name}</Text>
-                <FastImage source={{ uri: AddHTTPS(this.state.item.image) }}
-                  resizeMode={FastImage.resizeMode.contain}
-                  onLoad={e => this.onLoadFastImage(e)}
-                  style={{
-                    alignSelf: 'center',
-                    width: Metrics.widthBanner,
-                    height: Metrics.widthBanner * this.state.imgHeight / this.state.imgWidth
-                  }} />
-                <Text style={[styles.text, styles.whiteCenter]}>
-                  {`Start: ${this.state.JPEventStart.format(Config.DATETIME_FORMAT_OUTPUT)}\nEnd: ${this.state.JPEventEnd.format(Config.DATETIME_FORMAT_OUTPUT)}`}
-                </Text>
-                {this.state.item.japan_current &&
-                  <Text style={[styles.text, styles.whiteCenter]}>
-                    {this.timer(this.state.JPEventEnd.diff(moment()))}{` left`}
-                  </Text>}
-                {this.state.item.japan_status === EventStatus.ANNOUNCED &&
-                  <Text style={[styles.text, styles.whiteCenter]}>
-                    {`Starts in `}{this.timer(this.state.JPEventStart.diff(moment()))}
-                  </Text>}
-                {this.state.songs.length !== 0 &&
-                  <Seperator style={styles.whiteLine} />}
-                {/* SONGS */}
-                {this.state.songs.length !== 0
-                  && <View>
-                    <Text style={styles.whiteCenter}>Song</Text>
-                    <View style={styles.cardList}>
-                      {this.state.songs.map((item, index) =>
-                        <TouchableOpacity key={'song' + index}
-                          onPress={() => this.navigateToSongDetail(item)}
-                          style={styles.card}>
-                          <FastImage source={{ uri: AddHTTPS(item.image) }} style={styles.song} />
-                          <View style={styles.songInfo}>
-                            <Image source={findAttribute(item.attribute)} style={styles.attributeIcon} />
-                            <Text style={styles.whiteCenter}>{item.name}</Text>
-                          </View>
-                        </TouchableOpacity>)}
-                    </View>
-                  </View>}
-                <Seperator style={styles.whiteLine} />
-                <Text style={styles.whiteCenter}>Rewards</Text>
-                {/* CARDS */}
-                <View style={styles.cardList}>
-                  {this.state.cards.map((item, index) =>
-                    <TouchableOpacity key={'card' + index}
-                      onPress={() => this.navigateToCardDetail(item)}
-                      style={styles.card}>
-                      <View style={styles.cardImage}>
-                        <FastImage source={{ uri: AddHTTPS(item.round_card_image) }}
-                          style={styles.roundImage} />
-                        <View style={{ width: 5 }} />
-                        <FastImage source={{ uri: AddHTTPS(item.round_card_idolized_image) }}
-                          style={styles.roundImage} />
-                      </View>
-                      <Text style={{ color: 'white' }}>{item.idol.name}</Text>
-                    </TouchableOpacity>
-                  )}
-                </View>
-                <View style={{ height: 10 }} />
-              </ScrollView>}
+          <Fade visible={!this.state.isLoading}
+            style={[ApplicationStyles.screen, ApplicationStyles.absolute]}>
+            {!this.state.isLoading
+              && <View style={ApplicationStyles.screen}>
+                {this.state.selectedTab === 0
+                  ? <Information navigation={this.props.navigation}
+                    isConnected={this.props.isConnected}
+                    item={this.state.item}
+                    cards={this.state.cards}
+                    songs={this.state.songs}
+                    WWEventStart={this.state.WWEventStart}
+                    WWEventEnd={this.state.WWEventEnd}
+                    JPEventStart={this.state.JPEventStart}
+                    JPEventEnd={this.state.JPEventEnd} />
+                  : <Tracker jpTracker={this.state.jpTracker}
+                    wwTracker={this.state.wwTracker} />}
+              </View>}
           </Fade>
         </View>
-      </View>)
+      </View>
+    );
   }
 }
-
-const mapStateToProps = (state) => ({});
-const mapDispatchToProps = (dispatch) => ({});
-export default connect(mapStateToProps, mapDispatchToProps)(EventDetailScreen);

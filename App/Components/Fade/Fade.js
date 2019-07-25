@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Animated } from 'react-native';
+import PropTypes from 'prop-types';
 
 /**
  * [Tutorial here!](https://goshakkk.name/react-native-animated-appearance-disappearance/)
@@ -15,40 +16,48 @@ export default class Fade extends Component {
   constructor(props) {
     super(props);
     this.state = { visible: props.visible };
+  }
+
+  static propTypes = {
+    visible: PropTypes.any,
+    style: PropTypes.any,
+    children: PropTypes.any,
   };
 
   componentWillMount() {
-    this._visibility = new Animated.Value(this.props.visible ? 1 : 0);
+    this.visibility = new Animated.Value(this.props.visible ? 1 : 0);
   }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.visible) {
       this.setState({ visible: true });
     }
-    Animated.timing(this._visibility, {
+    Animated.timing(this.visibility, {
       toValue: nextProps.visible ? 1 : 0,
-      duration: 500
+      duration: 500,
     }).start(() => {
       this.setState({ visible: nextProps.visible });
     });
   }
 
   render() {
-    const { visible, style, children, ...rest } = this.props;
+    const {
+      visible, style, children, ...rest
+    } = this.props;
 
     const containerStyle = {
-      opacity: this._visibility.interpolate({
+      opacity: this.visibility.interpolate({
         inputRange: [0, 1],
         outputRange: [0, 1],
       }),
       transform: [
         {
-          scale: this._visibility.interpolate({
+          scale: this.visibility.interpolate({
             inputRange: [0, 1],
-            outputRange: [1.1, 1]
-          })
-        }
-      ]
+            outputRange: [1.1, 1],
+          }),
+        },
+      ],
     };
 
     const combinedStyle = [containerStyle, style];

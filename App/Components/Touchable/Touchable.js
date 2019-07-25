@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React from 'react';
 import {
   Platform,
@@ -21,15 +22,17 @@ if (TouchableComponent !== TouchableNativeFeedback) {
 }
 
 export default class TouchableNativeFeedbackSafe extends React.Component {
-
   static SelectableBackground = TouchableComponent.SelectableBackground;
+
   static SelectableBackgroundBorderless = TouchableComponent.SelectableBackgroundBorderless;
+
   static Ripple = TouchableComponent.Ripple;
+
   static propTypes = TouchableComponent.propTypes;
 
   render() {
     if (TouchableComponent === TouchableNativeFeedback) {
-      let { children, style, ...props } = this.props;
+      const { children, style, ...props } = this.props;
 
       return (
         <TouchableComponent {...props}>
@@ -38,17 +41,18 @@ export default class TouchableNativeFeedbackSafe extends React.Component {
           </View>
         </TouchableComponent>
       );
-    } else {
-      let { children, fallback, style, ...props } = this.props;
-      let TouchableFallback = fallback || TouchableComponent;
-
-      return (
-        <TouchableFallback {...props}>
-          <View style={style}>
-            {children}
-          </View>
-        </TouchableFallback>
-      );
     }
+    const {
+      children, fallback, style, ...props
+    } = this.props;
+    const TouchableFallback = fallback || TouchableComponent;
+
+    return (
+      <TouchableFallback {...props}>
+        <View style={style}>
+          {children}
+        </View>
+      </TouchableFallback>
+    );
   }
 }

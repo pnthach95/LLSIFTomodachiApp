@@ -1,13 +1,11 @@
 import { create } from 'apisauce';
-import Reactotron from 'reactotron-react-native';
+import _ from 'lodash/array';
 import { Config } from '../Config';
 
 const LLSIFApiClient = create({
   baseURL: Config.API_URL,
-  timeout: 10000
+  timeout: 10000,
 });
-
-LLSIFApiClient.addMonitor(Reactotron.apisauce);
 
 /**
  * [Fetch cached data](https://github.com/MagiCircles/SchoolIdolAPI/wiki/API-Cached-data)
@@ -39,23 +37,62 @@ async function fetchCardList(filter) {
   return null;
 }
 
-/**
- * [Fetch idol list](https://github.com/MagiCircles/SchoolIdolAPI/wiki/API-Idols#get-the-list-of-idols)
- *
- * @returns
- */
-async function fetchIdolList() {
+async function getIdols(school) {
+  const response = await LLSIFApiClient.get(Config.IDOLS, { school });
+  if (response.ok) {
+    return response.data.results;
+  }
+  return [];
+}
+
+async function fetchIdolListBySchool(schools) {
+  const data = [];
+  // eslint-disable-next-line no-plusplus
+  for (let i = 0; i < schools.length; i++) {
+    const school = schools[i];
+    const response = getIdols(school);
+    data.push(response);
+  }
+  const result = await Promise.all(data);
+  const final = _.flattenDeep(result);
+  return final;
+}
+
+async function fetchIdolListByPageSize() {
   const response1 = await LLSIFApiClient.get(Config.IDOLS, { page_size: 100 });
   const response2 = await LLSIFApiClient.get(Config.IDOLS, { page_size: 100, page: 2 });
-  var data1 = [];
-  var data2 = [];
+  let data1 = [];
+  let data2 = [];
   if (response1.ok) {
     data1 = response1.data.results;
   } else return null;
   if (response2.ok) {
     data2 = response2.data.results;
-  }
+  } else return null;
   return [...data1, ...data2];
+}
+
+/**
+ * [Fetch idol list](https://github.com/MagiCircles/SchoolIdolAPI/wiki/API-Idols#get-the-list-of-idols)
+ *
+ * @returns
+ */
+function fetchIdolList(schools = null) {
+  return new Promise((resolve, reject) => {
+    if (schools === null) {
+      fetchIdolListByPageSize()
+        .then((res) => {
+          if (res.length === 0) reject(Error('Failed to get idol list'));
+          resolve(res);
+        });
+    } else {
+      fetchIdolListBySchool(schools)
+        .then((res) => {
+          if (res.length === 0) reject(Error('Failed to get idol list'));
+          resolve(res);
+        });
+    }
+  });
 }
 
 /**
@@ -79,6 +116,7 @@ async function fetchIdol(name) {
  * @returns
  */
 async function fetchSongList(filter) {
+  // eslint-disable-next-line no-param-reassign
   filter.expand_event = '';
   const response = await LLSIFApiClient.get(Config.SONGS, filter);
   if (response.ok) {
@@ -122,11 +160,11 @@ async function fetchEventData(name) {
 }
 
 async function fetchRandomCard() {
-  let filter = {
+  const filter = {
     ordering: 'random',
     page_size: 1,
     rarity: 'SSR,UR',
-    idol_main_unit: `μ's,Aqours`
+    idol_main_unit: 'μ\'s,Aqours',
   };
   const response = await LLSIFApiClient.get(Config.CARDS, filter);
   if (response.ok) {
@@ -135,7 +173,7 @@ async function fetchRandomCard() {
   return null;
 }
 
-export const LLSIFService = {
+export default {
   fetchCachedData,
   fetchCardList,
   fetchIdolList,
@@ -143,5 +181,5 @@ export const LLSIFService = {
   fetchSongList,
   fetchEventList,
   fetchEventData,
-  fetchRandomCard
-}
+  fetchRandomCard,
+};

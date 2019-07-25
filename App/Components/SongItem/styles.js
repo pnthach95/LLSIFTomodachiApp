@@ -1,21 +1,21 @@
 import { StyleSheet } from 'react-native';
-import { Metrics, Colors } from '../../Theme';
+import { Metrics, Colors, Fonts } from '~/Theme';
 
 export default StyleSheet.create({
   container: {
-    borderRadius: 5,
     backgroundColor: Colors.itemColor,
+    borderRadius: 5,
+    margin: Metrics.smallMargin,
     width: Metrics.images.itemWidth,
-    margin: Metrics.smallMargin
   },
   info: {
-    paddingVertical: Metrics.smallMargin,
-    justifyContent: 'center',
     alignItems: 'center',
-    paddingHorizontal: 4
+    justifyContent: 'center',
+    paddingHorizontal: 4,
+    paddingVertical: Metrics.smallMargin,
   },
   text: {
-    color: 'white',
-    textAlign: 'center'
-  }
+    ...Fonts.style.white,
+    ...Fonts.style.center,
+  },
 });

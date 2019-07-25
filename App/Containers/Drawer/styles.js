@@ -1,82 +1,89 @@
 import { StyleSheet } from 'react-native';
-import { Fonts, Metrics } from '../../Theme';
+import { Fonts, Metrics, Colors } from '~/Theme';
 
 export default StyleSheet.create({
-  fullscreen: {
-    width: '100%',
-    height: '100%'
+  body: {
+    alignItems: 'stretch',
+    flex: 1,
+    paddingVertical: 6,
   },
   container: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
+    backgroundColor: Colors.ddda,
     bottom: 50,
     flex: 0,
     flexGrow: 1,
-    backgroundColor: '#ddda'
-  },
-  header: {
-    alignSelf: 'stretch',
-    height: 70,
-    backgroundColor: '#fffb'
-  },
-  logo: {
-    height: 70,
-    width: '75%'
-  },
-  body: {
-    flex: 1,
-    paddingVertical: 6,
-    alignItems: 'stretch'
-  },
-  textBlock: {
-    padding: Metrics.baseMargin
-  },
-  settingRow: {
-    flexDirection: 'row',
-    backgroundColor: '#fff6',
-    padding: Metrics.baseMargin,
-    marginBottom: Metrics.smallMargin,
-    marginLeft: Metrics.baseMargin,
-    alignItems: 'center',
-    justifyContent: 'space-between'
-  },
-  group: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    padding: Metrics.baseMargin,
-    marginTop: 5,
-    borderBottomWidth: 1,
-    borderBottomColor: '#0005',
-    backgroundColor: '#fff9'
+    left: 0,
+    position: 'absolute',
+    right: 0,
+    top: 0,
   },
   footer: {
     alignSelf: 'flex-end',
-    backgroundColor: '#eeec',
+    backgroundColor: Colors.eeec,
+    height: 150,
     width: '100%',
-    height: 150
   },
   footerBlock: {
     flexDirection: 'row',
-    marginVertical: Metrics.baseMargin
+    marginVertical: Metrics.baseMargin,
+    paddingHorizontal: 5,
+  },
+  fullscreen: {
+    height: '100%',
+    width: '100%',
+  },
+  group: {
+    alignItems: 'center',
+    backgroundColor: Colors.fff9,
+    borderBottomColor: Colors.c0005,
+    borderBottomWidth: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: 5,
+    padding: Metrics.baseMargin,
+  },
+  header: {
+    alignSelf: 'stretch',
+    backgroundColor: Colors.fffb,
+    height: 70,
+  },
+  logo: {
+    height: 70,
+    width: '75%',
+  },
+  settingRow: {
+    alignItems: 'center',
+    backgroundColor: Colors.fff6,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: Metrics.smallMargin,
+    marginLeft: Metrics.baseMargin,
+    padding: Metrics.baseMargin,
+  },
+  textBlock: {
+    padding: Metrics.baseMargin,
+  },
+  textUnderline: {
+    textDecorationLine: 'underline',
+  },
+  transparent: {
+    backgroundColor: Colors.transparent,
   },
   versionContainer: {
-    position: 'absolute',
-    left: 0,
-    right: 0,
+    backgroundColor: Colors.white,
     bottom: 0,
-    backgroundColor: 'white',
-    height: 50
+    height: 50,
+    left: 0,
+    position: 'absolute',
+    right: 0,
   },
   versionText: {
     ...Fonts.style.black,
-    textAlign: 'center'
+    ...Fonts.style.center,
   },
   viewMore: {
-    backgroundColor: '#fff9',
     alignSelf: 'stretch',
-    height: 50
-  }
+    backgroundColor: Colors.fff9,
+    height: 50,
+  },
 });

@@ -78,12 +78,7 @@ Phạm Ngọc Thạch
 
 Email: [thachxyz123@gmail.com](mailto:thachxyz123@gmail.com)
 
-I'm a React Native developer, play Love Live and BanG Dream everyday.
-
-## TODO
-
-- Handle offline mode
-- Official name
+I'm a React Native developer, play Love Live, BanGDream, Starlight everyday.
 
 ## License
 

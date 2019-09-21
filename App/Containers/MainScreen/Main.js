@@ -28,7 +28,7 @@ import styles from './styles';
  * State:
  * - `imgWidth`: Image width
  * - `imgHeight`: Image height
- * - `ENEvent`: English event
+ * - `ENEvent`: Worldwide event
  * - `JPEvent`: Japanese event
  * - `currentContests`: Contest array
  *
@@ -132,11 +132,11 @@ export default class MainScreen extends React.Component {
     }
     // eslint-disable-next-line no-unused-vars
     // const currentContests = data.current_contests;
-    /** Japanese event, English event */
+    /** Japanese event, Worldwide event */
     const { JPEvent, ENEvent } = data;
-    /** Start time of English event */
+    /** Start time of Worldwide event */
     const ENEventStart = moment(ENEvent.english_beginning);
-    /** End time of English event */
+    /** End time of Worldwide event */
     const ENEventEnd = moment(ENEvent.english_end);
     /** Start time of Japanese event */
     const JPEventStart = moment(JPEvent.beginning, Config.DATETIME_FORMAT_INPUT);
@@ -168,7 +168,7 @@ export default class MainScreen extends React.Component {
             onLongPress={() => { }}
             onPress={() => this.navigateToEventDetail(ENEvent)}>
             <Text style={styles.text}>
-              {`English Event: ${ENEvent.english_status}`}
+              {`Worldwide Event: ${ENEvent.english_status}`}
             </Text>
             <View style={styles.textbox}>
               <Text style={styles.title}>{ENEvent.english_name}</Text>

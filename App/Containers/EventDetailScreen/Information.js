@@ -91,14 +91,14 @@ export default class Information extends React.PureComponent {
           {/* ENGLISH BLOCK */}
           {this.state.item.english_name !== null
             && <View>
-              <Text style={styles.whiteCenter}>English</Text>
+              <Text style={styles.whiteCenter}>Worldwide</Text>
               <Text style={[styles.text, styles.title, styles.whiteCenter]}>
                 {this.state.item.english_name.length === 0
                   ? this.state.item.romaji_name : this.state.item.english_name}
               </Text>
               <FastImage source={{ uri: AddHTTPS(this.state.item.english_image) }}
                 resizeMode={FastImage.resizeMode.contain}
-                onLoad={e => this.onLoadFastImage(e)}
+                onLoad={(e) => this.onLoadFastImage(e)}
                 style={styleFastImage} />
               <Text style={[styles.text, styles.whiteCenter]}>
                 {`Start: ${this.state.WWEventStart.format(Config.DATETIME_FORMAT_OUTPUT)}\nEnd: ${this.state.WWEventEnd.format(Config.DATETIME_FORMAT_OUTPUT)}`}
@@ -122,7 +122,7 @@ export default class Information extends React.PureComponent {
           </Text>
           <FastImage source={{ uri: AddHTTPS(this.state.item.image) }}
             resizeMode={FastImage.resizeMode.contain}
-            onLoad={e => this.onLoadFastImage(e)}
+            onLoad={(e) => this.onLoadFastImage(e)}
             style={styleFastImage} />
           <Text style={[styles.text, styles.whiteCenter]}>
             {`Start: ${this.state.JPEventStart.format(Config.DATETIME_FORMAT_OUTPUT)}\nEnd: ${this.state.JPEventEnd.format(Config.DATETIME_FORMAT_OUTPUT)}`}
@@ -171,7 +171,7 @@ export default class Information extends React.PureComponent {
               </View>
               <Text style={Fonts.style.white}>{item.idol.name}</Text>
               {item.other_event !== null
-                && <Text style={Fonts.style.white}>{'(English only)'}</Text>}
+                && <Text style={Fonts.style.white}>{'(Worldwide only)'}</Text>}
             </TouchableOpacity>)}
           </View>
         </ScrollView>

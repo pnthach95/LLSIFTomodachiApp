@@ -62,7 +62,7 @@ export default class CardItem extends Component {
               styles.topRadius,
               {
                 width: Metrics.images.itemWidth,
-                height: Metrics.images.itemWidth * this.state.imgHeight / this.state.imgWidth,
+                height: (Metrics.images.itemWidth * this.state.imgHeight) / this.state.imgWidth,
               },
             ]} />
           {/* FOOTER */}

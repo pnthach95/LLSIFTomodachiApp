@@ -184,7 +184,7 @@ export default class SongDetailScreen extends React.PureComponent {
   }
 
   progressStat(stat) {
-    return 100 * stat / this.props.songMaxStat;
+    return (100 * stat) / this.props.songMaxStat;
   }
 
   render() {
@@ -219,10 +219,10 @@ export default class SongDetailScreen extends React.PureComponent {
                   contentContainerStyle={styles.scrollViewContainer}
                   style={ApplicationStyles.screen}>
                   <FastImage source={{ uri: AddHTTPS(item.image) }}
-                    onLoad={e => this.onLoadFastImage(e)}
+                    onLoad={(e) => this.onLoadFastImage(e)}
                     style={{
                       width: Metrics.screenWidth / 2,
-                      height: (Metrics.screenWidth / 2) * imgHeight / imgWidth,
+                      height: ((Metrics.screenWidth / 2) * imgHeight) / imgWidth,
                     }} />
                   <View style={styles.height10} />
 

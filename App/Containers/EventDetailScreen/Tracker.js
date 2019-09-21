@@ -86,7 +86,7 @@ export default class Tracker extends React.PureComponent {
     return result;
   }
 
-  onTabPress = index => this.setState({ selectedTab: index });
+  onTabPress = (index) => this.setState({ selectedTab: index });
 
   keyExtractor = (item, index) => `data ${index}`;
 
@@ -95,7 +95,7 @@ export default class Tracker extends React.PureComponent {
     style={styles.trackerCell}
     textStyle={styles.trackerText} />
 
-  renderGroup = data => (data.table !== null
+  renderGroup = (data) => (data.table !== null
     ? <View style={ApplicationStyles.screen}>
       {data.chart !== undefined
         && <PureChart data={data.chart} type='line'

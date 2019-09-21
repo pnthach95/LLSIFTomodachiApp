@@ -9,7 +9,7 @@ export default StyleSheet.create({
   },
   card: {
     alignItems: 'center',
-    marginVertical: Metrics.baseMargin,
+    margin: Metrics.baseMargin,
   },
   cardImage: {
     flexDirection: 'row',

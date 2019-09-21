@@ -9,13 +9,13 @@ export const getIdols = (state) => {
 
 export const getSubunits = (state) => {
   const y = state.reducer.cachedData.cards_info.sub_units;
-  const z = y.map(item => ({ label: item, value: item }));
+  const z = y.map((item) => ({ label: item, value: item }));
   return z;
 };
 
 export const getSchools = (state) => {
   const y = state.reducer.cachedData.cards_info.schools;
-  const z = y.map(item => ({ label: item, value: item }));
+  const z = y.map((item) => ({ label: item, value: item }));
   return z;
 };
 

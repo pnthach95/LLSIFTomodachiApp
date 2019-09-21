@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import ConnectStatus from './ConnectStatus';
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   isConnected: state.network.isConnected,
 });
 

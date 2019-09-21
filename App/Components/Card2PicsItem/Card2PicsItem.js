@@ -65,7 +65,7 @@ export default class Card2PicsItem extends Component {
               }}
               style={{
                 width: Metrics.images.itemWidth,
-                height: Metrics.images.itemWidth * this.state.imgHeight / this.state.imgWidth,
+                height: (Metrics.images.itemWidth * this.state.imgHeight) / this.state.imgWidth,
               }} />)}
           </View>
           {/* FOOTER */}

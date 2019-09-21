@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import CardDetailScreen from './CardDetail';
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   maxStats: state.reducer.cachedData.cards_info.max_stats,
   isConnected: state.network.isConnected,
 });

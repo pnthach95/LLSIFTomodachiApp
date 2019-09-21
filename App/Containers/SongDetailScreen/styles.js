@@ -28,7 +28,7 @@ export default StyleSheet.create({
   eventImage: {
     height: Metrics.screenWidth / 5,
     marginVertical: 10,
-    width: 2 * Metrics.screenWidth / 3,
+    width: (2 * Metrics.screenWidth) / 3,
   },
   headerButton: {
     height: Metrics.navBarHeight,

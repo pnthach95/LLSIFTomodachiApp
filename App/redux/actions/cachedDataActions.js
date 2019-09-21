@@ -5,12 +5,12 @@ export const fetchCachedData = () => ({
   meta: { thunk: true },
 });
 
-export const fetchCachedDataSuccess = data => ({
+export const fetchCachedDataSuccess = (data) => ({
   type: ActionTypes.CACHED_DATA_SUCCESS,
   cachedData: data,
 });
 
-export const fetchCachedDataFailure = error => ({
+export const fetchCachedDataFailure = (error) => ({
   type: ActionTypes.CACHED_DATA_FAILED,
   error,
   meta: { thunk: true },

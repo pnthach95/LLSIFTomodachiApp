@@ -8,14 +8,14 @@ import { Colors, Images } from '../Theme';
  *
  * @param {String} link
  */
-export const AddHTTPS = link => `https:${link}`;
+export const AddHTTPS = (link) => `https:${link}`;
 
 /**
  * Replace question mark to %3F
  *
  * @param {String} key
  */
-export const ReplaceQuestionMark = key => key.replace('?', '%3F');
+export const ReplaceQuestionMark = (key) => key.replace('?', '%3F');
 
 /**
  * Find color by attribute
@@ -137,14 +137,14 @@ export const loadSettings = async () => new Promise((resolve, reject) => {
       }
       resolve(res);
     })
-    .catch(err => reject(err));
+    .catch((err) => reject(err));
 });
 
 export const saveSettings = (settings) => {
   AsyncStorage.setItem('settings', JSON.stringify(settings));
 };
 
-export const darkenColor = color => Color(color).darken(0.5);
+export const darkenColor = (color) => Color(color).darken(0.5);
 
 export const openLink = (link) => {
   Alert.alert('Open link', link, [

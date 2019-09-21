@@ -102,6 +102,8 @@ export default class MainContainer extends Component {
         }
       });
 
+    const channel = new firebase.notifications.Android.Channel('notifications', 'Default channel', firebase.notifications.Android.Importance.Max).enableLights(false);
+    firebase.notifications().android.createChannel(channel);
     this.notificationDisplayedListener = firebase.notifications()
       .onNotificationDisplayed((notification) => {
         // Process your notification as required

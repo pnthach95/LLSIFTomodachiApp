@@ -29,4 +29,24 @@
       "iconColour": "yellow"
     }
   },
+  "todo-tree.highlights.customHighlight": {
+    "TODO": {
+      "icon": "check",
+      "type": "line",
+      "background": "green"
+    },
+    "FIXME": {
+      "icon": "tools",
+      "background": "yellow",
+      "iconColour": "yellow"
+    }
+  },
+  "todo-tree.highlights.defaultHighlight": {
+    "icon": "dash",
+    "type": "text",
+    "opacity": 50,
+    "foreground": "white",
+    "background": "blue",
+    "iconColour": "green"
+  },
 }

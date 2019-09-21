@@ -28,7 +28,7 @@ import styles from './styles';
  * State:
  * - `imgWidth`: Image width
  * - `imgHeight`: Image height
- * - `ENEvent`: English event
+ * - `ENEvent`: Worldwide event
  * - `JPEvent`: Japanese event
  * - `currentContests`: Contest array
  *
@@ -68,11 +68,7 @@ export default class MainScreen extends React.Component {
     if (Platform.OS === 'android') {
       GithubService.fetchLatestVersion().then((result) => {
         // console.log('github', result);
-        const appVersionArr = VersionNumber.appVersion.split(/\D|[a-zA-Z]/);
-        const gitVersionArr = result.tag_name.split(/\./);
-        const appVersion = Number.parseInt(appVersionArr[0] + (appVersionArr[1].length === 1 ? '0' : '') + appVersionArr[1] + (appVersionArr[2].length === 1 ? '0' : '') + (appVersionArr[2] + 1), 10);
-        const gitVersion = Number.parseInt(gitVersionArr[0] + (gitVersionArr[1].length === 1 ? '0' : '') + gitVersionArr[1] + (gitVersionArr[2].length === 1 ? '0' : '') + gitVersionArr[2], 10);
-        if (gitVersion > appVersion) {
+        if (this.compareVersion(VersionNumber.appVersion, result.tag_name)) {
           this.setState({
             version: {
               tag: result.tag_name,
@@ -83,6 +79,22 @@ export default class MainScreen extends React.Component {
         }
       });
     }
+  }
+
+  compareVersion(appVersion, gitVersion) {
+    const appVersionArr = appVersion.split(/\D|[a-zA-Z]/);
+    const gitVersionArr = gitVersion.split(/\./);
+    if (appVersionArr[0] < gitVersionArr[0]) {
+      return true;
+    }
+    if (appVersionArr[0] === gitVersionArr[0] && appVersionArr[1] < gitVersionArr[1]) {
+      return true;
+    }
+    if (appVersionArr[0] === gitVersionArr[0] && appVersionArr[1] === gitVersionArr[1]
+      && appVersionArr[2] < gitVersionArr[2]) {
+      return true;
+    }
+    return false;
   }
 
   /**
@@ -132,11 +144,11 @@ export default class MainScreen extends React.Component {
     }
     // eslint-disable-next-line no-unused-vars
     // const currentContests = data.current_contests;
-    /** Japanese event, English event */
+    /** Japanese event, Worldwide event */
     const { JPEvent, ENEvent } = data;
-    /** Start time of English event */
+    /** Start time of Worldwide event */
     const ENEventStart = moment(ENEvent.english_beginning);
-    /** End time of English event */
+    /** End time of Worldwide event */
     const ENEventEnd = moment(ENEvent.english_end);
     /** Start time of Japanese event */
     const JPEventStart = moment(JPEvent.beginning, Config.DATETIME_FORMAT_INPUT);
@@ -168,7 +180,7 @@ export default class MainScreen extends React.Component {
             onLongPress={() => { }}
             onPress={() => this.navigateToEventDetail(ENEvent)}>
             <Text style={styles.text}>
-              {`English Event: ${ENEvent.english_status}`}
+              {`Worldwide Event: ${ENEvent.english_status}`}
             </Text>
             <View style={styles.textbox}>
               <Text style={styles.title}>{ENEvent.english_name}</Text>
@@ -178,7 +190,7 @@ export default class MainScreen extends React.Component {
               onLoad={this.onLoadFastImage}
               style={{
                 width: Metrics.widthBanner,
-                height: Metrics.widthBanner * this.state.imgHeight / this.state.imgWidth,
+                height: (Metrics.widthBanner * this.state.imgHeight) / this.state.imgWidth,
               }} />
             <View style={styles.textbox}>
               <Text style={styles.text}>
@@ -214,7 +226,7 @@ export default class MainScreen extends React.Component {
               onLoad={this.onLoadFastImage}
               style={{
                 width: Metrics.widthBanner,
-                height: Metrics.widthBanner * this.state.imgHeight / this.state.imgWidth,
+                height: (Metrics.widthBanner * this.state.imgHeight) / this.state.imgWidth,
               }} />
             <View style={styles.textbox}>
               <Text style={styles.text}>

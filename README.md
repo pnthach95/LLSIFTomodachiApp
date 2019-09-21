@@ -72,6 +72,10 @@ Assuming you have all the requirements installed, you can setup and run the proj
 ![11](docs/images/0.2.3/11.png)
 ![12](docs/images/0.2.3/12.png)
 
+## TODO:
+
+- Dark mode.
+
 ## Author
 
 Phạm Ngọc Thạch

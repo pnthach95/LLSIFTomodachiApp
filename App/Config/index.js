@@ -49,6 +49,10 @@ Press Version to view background.
 
 Change log:
 
+- Version 0.3.1:
+  • Fix notification for Android O and above.
+  • Fix layout for Shadowverse event, because there is no normal round card image.
+
 - Version 0.3.0:
   • Add LLSIF Tier cutoff data (from llsif.net) to Event detail screen.
   • Add offline warning.

@@ -115,7 +115,7 @@ export default class SongsScreen extends React.Component {
    *
    * @memberof SongsScreen
    */
-  keyExtractor = item => `song ${item.name}`;
+  keyExtractor = (item) => `song ${item.name}`;
 
   /**
    * Render item in FlatList
@@ -181,7 +181,7 @@ export default class SongsScreen extends React.Component {
         this.setState({ stopSearch: true });
       } else {
         let x = [...this.state.list, ...result];
-        x = x.filter((thing, index, self) => index === self.findIndex(t => t.name === thing.name));
+        x = x.filter((thing, ind, self) => ind === self.findIndex((t) => t.name === thing.name));
         this.setState({
           list: x,
           isLoading: false,
@@ -256,21 +256,21 @@ export default class SongsScreen extends React.Component {
    * @param {String} value
    * @memberof SongsScreen
    */
-  selectEvent = value => () => this.setState({ is_event: value });
+  selectEvent = (value) => () => this.setState({ is_event: value });
 
   /**
    * Save `attribute`
    *
    * @memberof SongsScreen
    */
-  selectAttribute = value => () => this.setState({ attribute: value });
+  selectAttribute = (value) => () => this.setState({ attribute: value });
 
   /**
    * Save `main_unit`
    *
    * @memberof SongsScreen
    */
-  selectMainUnit = value => () => this.setState({ main_unit: value });
+  selectMainUnit = (value) => () => this.setState({ main_unit: value });
 
   /**
    * Save ordering
@@ -278,7 +278,7 @@ export default class SongsScreen extends React.Component {
    * @param {String} itemValue
    * @memberof SongsScreen
    */
-  selectOrdering = itemValue => this.setState({ selectedOrdering: itemValue });
+  selectOrdering = (itemValue) => this.setState({ selectedOrdering: itemValue });
 
   /**
    * Render footer in FlatList
@@ -305,7 +305,7 @@ export default class SongsScreen extends React.Component {
             <SquareButton name={'ios-menu'} onPress={this.openDrawer} />
             <View style={ApplicationStyles.searchHeader}>
               <TextInput style={ApplicationStyles.searchInput}
-                onChangeText={text => this.setState({ search: text })}
+                onChangeText={(text) => this.setState({ search: text })}
                 onSubmitEditing={this.onSearch}
                 placeholder={'Search song...'}
                 value={this.state.search} />

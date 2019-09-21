@@ -112,15 +112,15 @@ export default class CardDetailScreen extends React.Component {
   }
 
   progressSmile(stat) {
-    return 100 * stat / this.state.maxStats[0];
+    return (100 * stat) / this.state.maxStats[0];
   }
 
   progressPure(stat) {
-    return 100 * stat / this.state.maxStats[1];
+    return (100 * stat) / this.state.maxStats[1];
   }
 
   progressCool(stat) {
-    return 100 * stat / this.state.maxStats[2];
+    return (100 * stat) / this.state.maxStats[2];
   }
 
   progressUnit(text, stat, color) {
@@ -184,7 +184,7 @@ export default class CardDetailScreen extends React.Component {
    * @param {String} name Event name
    * @memberof CardDetailScreen
    */
-  navigateToEventDetail = name => () => {
+  navigateToEventDetail = (name) => () => {
     if (this.props.isConnected) {
       this.props.navigation.navigate('EventDetailScreen', { eventName: name });
     }
@@ -196,13 +196,13 @@ export default class CardDetailScreen extends React.Component {
    * @param {String} name Idol name
    * @memberof CardDetailScreen
    */
-  navigateToIdolDetail = name => () => {
+  navigateToIdolDetail = (name) => () => {
     if (this.props.isConnected) {
       this.props.navigation.navigate('IdolDetailScreen', { name });
     }
   }
 
-  navigateToImageViewerScreen = index => () => this.props.navigation.navigate('ImageViewerScreen', { index, images: this.state.images });
+  navigateToImageViewerScreen = (index) => () => this.props.navigation.navigate('ImageViewerScreen', { index, images: this.state.images });
 
   render() {
     if (!this.state.done) return <SplashScreen />;
@@ -240,9 +240,10 @@ export default class CardDetailScreen extends React.Component {
                   <FastImage source={{ uri: value.url }}
                     style={{
                       width: Metrics.images.itemWidth,
-                      height: Metrics.images.itemWidth * this.state.imgHeight / this.state.imgWidth,
+                      // eslint-disable-next-line max-len
+                      height: (Metrics.images.itemWidth * this.state.imgHeight) / this.state.imgWidth,
                     }}
-                    onLoad={e => this.onLoadFastImage(e)} />
+                    onLoad={(e) => this.onLoadFastImage(e)} />
                 </TouchableOpacity>)}
               </View>
 

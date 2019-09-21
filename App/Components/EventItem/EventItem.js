@@ -74,7 +74,7 @@ export default class EventItem extends Component {
     const styleImage = {
       alignSelf: 'center',
       width: Metrics.widthBanner,
-      height: Metrics.widthBanner * imgHeight / imgWidth,
+      height: (Metrics.widthBanner * imgHeight) / imgWidth,
     };
     return (
       <ElevatedView elevation={5} style={[styles.container, { backgroundColor: color }]}>

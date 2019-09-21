@@ -48,7 +48,7 @@ export default class SongItem extends Component {
       borderTopLeftRadius: 5,
       borderTopRightRadius: 5,
       width: itemWidth,
-      height: itemWidth * imgHeight / imgWidth,
+      height: (itemWidth * imgHeight) / imgWidth,
     };
     return (
       <ElevatedView elevation={5} style={[

@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import MainScreen from './Main';
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   isConnected: state.network.isConnected,
   cachedData: state.reducer.cachedData,
   cachedDataErrorMessage: state.reducer.error,

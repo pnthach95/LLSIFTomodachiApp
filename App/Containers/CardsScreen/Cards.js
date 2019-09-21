@@ -138,7 +138,7 @@ export default class CardsScreen extends React.PureComponent {
     this.focusListener = this.props.navigation.addListener('didFocus', () => {
       if (this.state.list.length === 0) {
         loadSettings()
-          .then(res => this.setState({
+          .then((res) => this.setState({
             japan_only: res.worldwide_only ? 'False' : '',
             isLoading: true,
           }, () => this.getCards()));
@@ -155,7 +155,7 @@ export default class CardsScreen extends React.PureComponent {
    *
    * @memberof CardsScreen
    */
-  keyExtractor = item => `card ${item.id}`;
+  keyExtractor = (item) => `card ${item.id}`;
 
   /**
    * Render item in FlatList
@@ -196,7 +196,7 @@ export default class CardsScreen extends React.PureComponent {
    * @param {Object} item Card's information
    * @memberof CardsScreen
    */
-  navigateToCardDetail = item => () => {
+  navigateToCardDetail = (item) => () => {
     if (this.props.isConnected) {
       this.props.navigation.navigate('CardDetailScreen', { item });
     }
@@ -239,7 +239,7 @@ export default class CardsScreen extends React.PureComponent {
         this.setState({ stopSearch: true });
       } else {
         let x = [...this.state.list, ...result];
-        x = x.filter((thing, index, self) => index === self.findIndex(t => t.id === thing.id));
+        x = x.filter((thing, index, self) => index === self.findIndex((t) => t.id === thing.id));
         this.setState({
           list: x,
           isLoading: false,
@@ -307,7 +307,7 @@ export default class CardsScreen extends React.PureComponent {
    * @param {String} value
    * @memberof CardsScreen
    */
-  selectPromo = value => () => this.setState({ is_promo: value });
+  selectPromo = (value) => () => this.setState({ is_promo: value });
 
   /**
    * Save is_special
@@ -315,7 +315,7 @@ export default class CardsScreen extends React.PureComponent {
    * @param {String} value
    * @memberof CardsScreen
    */
-  selectSpecial = value => () => this.setState({ is_special: value });
+  selectSpecial = (value) => () => this.setState({ is_special: value });
 
   /**
    * Save is_event
@@ -323,7 +323,7 @@ export default class CardsScreen extends React.PureComponent {
    * @param {String} value
    * @memberof CardsScreen
    */
-  selectEvent = value => () => this.setState({ is_event: value });
+  selectEvent = (value) => () => this.setState({ is_event: value });
 
   /**
    * Save idol_main_unit
@@ -331,7 +331,7 @@ export default class CardsScreen extends React.PureComponent {
    * @param {String} value
    * @memberof CardsScreen
    */
-  selectMainUnit = value => () => this.setState({ idol_main_unit: value });
+  selectMainUnit = (value) => () => this.setState({ idol_main_unit: value });
 
   /**
    * Save rarity
@@ -339,7 +339,7 @@ export default class CardsScreen extends React.PureComponent {
    * @param {String} value
    * @memberof CardsScreen
    */
-  selectRarity = value => () => this.setState({ rarity: value });
+  selectRarity = (value) => () => this.setState({ rarity: value });
 
   /**
    * Save attribute
@@ -347,7 +347,7 @@ export default class CardsScreen extends React.PureComponent {
    * @param {String} value
    * @memberof CardsScreen
    */
-  selectAttribute = value => () => this.setState({ attribute: value });
+  selectAttribute = (value) => () => this.setState({ attribute: value });
 
   /**
    * Save idol_year
@@ -355,7 +355,7 @@ export default class CardsScreen extends React.PureComponent {
    * @param {String} value
    * @memberof CardsScreen
    */
-  selectYear = value => () => this.setState({ idol_year: value });
+  selectYear = (value) => () => this.setState({ idol_year: value });
 
   /**
    * Save region
@@ -363,7 +363,7 @@ export default class CardsScreen extends React.PureComponent {
    * @param {String} value
    * @memberof CardsScreen
    */
-  selectRegion = value => () => this.setState({ japan_only: value });
+  selectRegion = (value) => () => this.setState({ japan_only: value });
 
   /**
    * Save idol_sub_unit
@@ -372,7 +372,7 @@ export default class CardsScreen extends React.PureComponent {
    * @param {String} itemIndex unused
    * @memberof CardsScreen
    */
-  selectSubUnit = itemValue => this.setState({ idol_sub_unit: itemValue });
+  selectSubUnit = (itemValue) => this.setState({ idol_sub_unit: itemValue });
 
   /**
    * Save idol name
@@ -381,7 +381,7 @@ export default class CardsScreen extends React.PureComponent {
    * @param {String} itemIndex unused
    * @memberof CardsScreen
    */
-  selectIdol = itemValue => this.setState({ name: itemValue });
+  selectIdol = (itemValue) => this.setState({ name: itemValue });
 
   /**
    * Save school
@@ -390,7 +390,7 @@ export default class CardsScreen extends React.PureComponent {
    * @param {String} itemIndex unused
    * @memberof CardsScreen
    */
-  selectSchool = itemValue => this.setState({ idol_school: itemValue });
+  selectSchool = (itemValue) => this.setState({ idol_school: itemValue });
 
   /**
    * Save skill
@@ -399,7 +399,7 @@ export default class CardsScreen extends React.PureComponent {
    * @param {String} itemIndex unused
    * @memberof CardsScreen
    */
-  selectSkill = itemValue => this.setState({ skill: itemValue });
+  selectSkill = (itemValue) => this.setState({ skill: itemValue });
 
   /**
    * Save ordering
@@ -408,7 +408,7 @@ export default class CardsScreen extends React.PureComponent {
    * @param {String} itemIndex unused
    * @memberof CardsScreen
    */
-  selectOrdering = itemValue => this.setState({ selectedOrdering: itemValue });
+  selectOrdering = (itemValue) => this.setState({ selectedOrdering: itemValue });
 
   /**
    * Reset filter variables
@@ -462,7 +462,7 @@ export default class CardsScreen extends React.PureComponent {
             <SquareButton name={'ios-menu'} onPress={this.openDrawer} />
             <View style={ApplicationStyles.searchHeader}>
               <TextInput value={this.state.search}
-                onChangeText={text => this.setState({ search: text })}
+                onChangeText={(text) => this.setState({ search: text })}
                 onSubmitEditing={this.onSearch}
                 placeholder={'Search card...'}
                 style={ApplicationStyles.searchInput} />

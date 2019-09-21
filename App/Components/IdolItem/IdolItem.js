@@ -46,7 +46,7 @@ export default class IdolItem extends Component {
     const styleImage = {
       marginTop: 10,
       width: Metrics.images.smallItemWidth,
-      height: Metrics.images.smallItemWidth * imgHeight / imgWidth,
+      height: (Metrics.images.smallItemWidth * imgHeight) / imgWidth,
     };
     return (
       <ElevatedView elevation={5} style={[

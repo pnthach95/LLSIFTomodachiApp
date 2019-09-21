@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 import { fetchCachedData } from '~/redux/actions/cachedDataActions';
 import LoadingScreen from './LoadingScreen';
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   cachedData: state.reducer.cachedData,
   error: state.reducer.error,
 });

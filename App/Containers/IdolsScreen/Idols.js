@@ -75,7 +75,7 @@ export default class IdolsScreen extends React.Component {
             data: [
               {
                 key: school,
-                list: res.filter(value => value.school === school),
+                list: res.filter((value) => value.school === school),
               },
             ],
           };
@@ -86,7 +86,7 @@ export default class IdolsScreen extends React.Component {
           data: [
             {
               key: 'Other',
-              list: res.filter(value => value.school === null),
+              list: res.filter((value) => value.school === null),
             },
           ],
         };
@@ -105,7 +105,7 @@ export default class IdolsScreen extends React.Component {
    * @param {String} name
    * @memberof IdolsScreen
    */
-  navigateToIdolDetail = name => () => {
+  navigateToIdolDetail = (name) => () => {
     if (this.props.isConnected) {
       this.props.navigation.navigate('IdolDetailScreen', { name });
     }
@@ -116,7 +116,7 @@ export default class IdolsScreen extends React.Component {
    *
    * @memberof IdolsScreen
    */
-  keyExtractor = item => `idol${item.name}`;
+  keyExtractor = (item) => `idol${item.name}`;
 
   /**
    * Render item in FlatList

@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import SongsScreen from './Songs';
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   isConnected: state.network.isConnected,
 });
 

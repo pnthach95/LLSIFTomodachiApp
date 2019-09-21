@@ -128,7 +128,7 @@ export default class Drawer extends Component {
    * @param {Object} item Card's information
    * @memberof Drawer
    */
-  navigateToCardDetail = item => () => {
+  navigateToCardDetail = (item) => () => {
     this.setState({ visible: true });
     if (this.props.isConnected) {
       this.props.navigation.navigate('CardDetailScreen', { item });

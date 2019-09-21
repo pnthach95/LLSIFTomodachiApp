@@ -113,7 +113,7 @@ export default class EventsScreen extends React.Component {
    *
    * @memberof EventsScreen
    */
-  keyExtractor = item => `event ${item.japanese_name}`;
+  keyExtractor = (item) => `event ${item.japanese_name}`;
 
   /**
    * Render item in FlatList
@@ -128,7 +128,7 @@ export default class EventsScreen extends React.Component {
    * @param {Object} item
    * @memberof EventsScreen
    */
-  navigateToEventDetail = item => () => {
+  navigateToEventDetail = (item) => () => {
     if (this.props.isConnected) {
       this.props.navigation.navigate('EventDetailScreen', { eventName: item.japanese_name });
     }
@@ -181,7 +181,7 @@ export default class EventsScreen extends React.Component {
       } else {
         let x = [...this.state.list, ...result];
         // eslint-disable-next-line max-len
-        x = x.filter((thing, index, self) => index === self.findIndex(t => t.japanese_name === thing.japanese_name));
+        x = x.filter((thing, index, self) => index === self.findIndex((t) => t.japanese_name === thing.japanese_name));
         this.setState({
           list: x,
           isLoading: false,
@@ -246,7 +246,7 @@ export default class EventsScreen extends React.Component {
    * @param {String} value
    * @memberof EventsScreen
    */
-  selectAttribute = value => () => this.setState({ attribute: value });
+  selectAttribute = (value) => () => this.setState({ attribute: value });
 
   /**
    * Save `main_unit`
@@ -254,7 +254,7 @@ export default class EventsScreen extends React.Component {
    * @param {String} value
    * @memberof EventsScreen
    */
-  selectMainUnit = value => () => this.setState({ main_unit: value });
+  selectMainUnit = (value) => () => this.setState({ main_unit: value });
 
   /**
    * Save `is_english`
@@ -262,7 +262,7 @@ export default class EventsScreen extends React.Component {
    * @param {String} value
    * @memberof EventsScreen
    */
-  selectRegion = value => () => this.setState({ is_english: value });
+  selectRegion = (value) => () => this.setState({ is_english: value });
 
   /**
    * Save `skill`
@@ -271,7 +271,7 @@ export default class EventsScreen extends React.Component {
    * @param {String} itemIndex unused
    * @memberof EventsScreen
    */
-  selectSkill = itemValue => this.setState({ skill: itemValue });
+  selectSkill = (itemValue) => this.setState({ skill: itemValue });
 
   /**
    * Save `idol`
@@ -280,7 +280,7 @@ export default class EventsScreen extends React.Component {
    * @param {String} itemIndex unused
    * @memberof EventsScreen
    */
-  selectIdol = itemValue => this.setState({ idol: itemValue });
+  selectIdol = (itemValue) => this.setState({ idol: itemValue });
 
   /**
    * Render footer of FlatList
@@ -309,7 +309,7 @@ export default class EventsScreen extends React.Component {
             <SquareButton name={'ios-menu'} onPress={this.openDrawer} />
             <View style={ApplicationStyles.searchHeader}>
               <TextInput value={this.state.search}
-                onChangeText={text => this.setState({ search: text })}
+                onChangeText={(text) => this.setState({ search: text })}
                 onSubmitEditing={this.onSearch}
                 placeholder={'Search event...'}
                 style={ApplicationStyles.searchInput} />

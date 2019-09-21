@@ -81,7 +81,7 @@ export default class Information extends React.PureComponent {
     const styleFastImage = {
       alignSelf: 'center',
       width: Metrics.widthBanner,
-      height: Metrics.widthBanner * this.state.imgHeight / this.state.imgWidth,
+      height: (Metrics.widthBanner * this.state.imgHeight) / this.state.imgWidth,
     };
     return (
       <View style={styles.container}>
@@ -163,9 +163,10 @@ export default class Information extends React.PureComponent {
               onPress={this.navigateTo('CardDetailScreen', item)}
               style={styles.card}>
               <View style={styles.cardImage}>
-                <FastImage source={{ uri: AddHTTPS(item.round_card_image) }}
-                  style={styles.roundImage} />
-                <View style={styles.width5} />
+                {item.round_card_image !== null
+                  && <FastImage source={{ uri: AddHTTPS(item.round_card_image) }}
+                    style={styles.roundImage} />}
+                {item.round_card_image !== null && <View style={styles.width5} />}
                 <FastImage source={{ uri: AddHTTPS(item.round_card_idolized_image) }}
                   style={styles.roundImage} />
               </View>

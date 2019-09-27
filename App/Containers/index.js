@@ -10,8 +10,9 @@ import {
 } from 'react-navigation';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
-import firebase from 'react-native-firebase';
-import { Sentry } from 'react-native-sentry';
+import firebase from '@react-native-firebase/app';
+import '@react-native-firebase/messaging';
+import * as Sentry from '@sentry/react-native';
 
 import StatusBarBackground from '~/Components/StatusBarBackground/StatusBar';
 import { ApplicationStyles } from '~/Theme';
@@ -34,7 +35,7 @@ import IdolDetailScreen from './IdolDetailScreen/IdolDetail';
 import SongDetailScreen from './SongDetailScreen';
 import ImageViewer from './ImageViewer/ImageViewer';
 
-Sentry.config('https://ac9aa894ab9341fba115b29731378b6b@sentry.io/1330276').install();
+Sentry.init({ dsn: 'https://ac9aa894ab9341fba115b29731378b6b@sentry.io/1330276' });
 const store = ConfigureStore;
 
 const LLSIFTab = createBottomTabNavigator(

@@ -1,6 +1,0 @@
-framework module Pods_LLSIFTomodachi_tvOSTests {
-  umbrella header "Pods-LLSIFTomodachi-tvOSTests-umbrella.h"
-
-  export *
-  module * { export * }
-}

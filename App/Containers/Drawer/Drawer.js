@@ -6,7 +6,8 @@ import {
 } from 'react-native';
 import PropTypes from 'prop-types';
 import { SafeAreaView } from 'react-navigation';
-import firebase from 'react-native-firebase';
+import firebase from '@react-native-firebase/app';
+import '@react-native-firebase/messaging';
 import Icon from 'react-native-vector-icons/Ionicons';
 import VersionNumber from 'react-native-version-number';
 
@@ -41,7 +42,7 @@ export default class Drawer extends Component {
     isConnected: PropTypes.bool,
     bgImage: PropTypes.string,
     randomCard: PropTypes.any,
-  }
+  };
 
   componentDidMount() {
     loadSettings().then((res) => {
@@ -73,7 +74,7 @@ export default class Drawer extends Component {
     };
     this.setState({ worldwide_only: !this.state.worldwide_only });
     saveSettings(settings);
-  }
+  };
 
   /**
    * Toggle receiving worldwide event notification option
@@ -93,7 +94,7 @@ export default class Drawer extends Component {
     }
     this.setState({ ww_event: !this.state.ww_event });
     saveSettings(settings);
-  }
+  };
 
   /**
    * Collapse content group
@@ -120,7 +121,7 @@ export default class Drawer extends Component {
     }
     this.setState({ jp_event: !this.state.jp_event });
     saveSettings(settings);
-  }
+  };
 
   /**
    * Navigate to Card Detail Screen

@@ -14,8 +14,7 @@
     "start": "react-native start",
     "lint": "eslint .",
     "rename": "react-native-rename",
-    "android:build": "cd android && ./gradlew assembleRelease",
-    "android:install": "cd android && ./gradlew assembleRelease && ./gradlew installRelease",
+    "android:build": "cd android && ./gradlew bundleRelease",
     "version:up": "node ./node_modules/react-native-version-up/index.js"
   },
   "dependencies": {
@@ -45,7 +44,7 @@
     "react-native-pure-chart": "0.0.24",
     "react-native-segmented-control-tab": "^3.4.1",
     "react-native-table-component": "^1.2.1",
-    "react-native-vector-icons": "6.6.0",
+    "react-native-vector-icons": "^6.6.0",
     "react-native-version-number": "^0.3.6",
     "react-native-version-up": "^1.0.9",
     "react-navigation": "^3.13.0",

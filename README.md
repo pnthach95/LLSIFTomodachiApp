@@ -9,24 +9,25 @@ This project is a Love Live School Idol Festival app using data from [School Ido
 
 The project contains:
 
-- [React Native](https://facebook.github.io/react-native/) (v0.59.10) (in "[ejected](https://github.com/react-community/create-react-native-app/blob/master/EJECTING.md)" mode)
-- [Redux](https://redux.js.org/) (v4.0.3)
-- [Redux Saga](https://redux-saga.js.org) (v1.0.5)
+- [React Native](https://facebook.github.io/react-native/) (v0.61.1)
+- [Redux](https://redux.js.org/) (v4.0.4)
+- [Redux Saga](https://redux-saga.js.org) (v1.1.1)
 - [Redux Saga Thunk](https://github.com/diegohaz/redux-saga-thunk) (v0.7.3)
-- [React Navigation](https://reactnavigation.org/) (v3.11.0)
-- [apisauce](https://github.com/infinitered/apisauce) (v1.0.3)
-- [React Native Firebase](http://rnfirebase.io) (v5.1.1, for push notification)
-- [React Native Fast Image](https://github.com/DylanVann/react-native-fast-image) (v6.1.1)
+- [React Navigation](https://reactnavigation.org/) (v3.13.0)
+- [apisauce](https://github.com/infinitered/apisauce) (v1.1.1)
+- [React Native Firebase](http://rnfirebase.io) (v6.0.0, for push notification)
+- [React Native Fast Image](https://github.com/DylanVann/react-native-fast-image) (v7.0.2)
 - [React Native Image Gallery](https://github.com/archriss/react-native-image-gallery) (v2.1.5)
-- [React Native Picker Select](https://github.com/lawnstarter/react-native-picker-select) (v5.2.0)
-- [React Native Sentry](https://sentry.io) (v0.40.2)
-- [React Native Linear Gradienet](https://github.com/react-native-community/react-native-linear-gradient) (v2.5.4)
-- [React Native Offline](https://github.com/rgommezz/react-native-offline) (v4.3.1)
-- [React Native Indicators](https://github.com/n4kz/react-native-indicators) (v0.13.0)
+- [React Native Picker Select](https://github.com/lawnstarter/react-native-picker-select) (v6.3.3)
+- [React Native Sentry](https://sentry.io) (v1.0.6)
+- [React Native Linear Gradienet](https://github.com/react-native-community/react-native-linear-gradient) (v2.5.6)
+- [React Native Offline](https://github.com/rgommezz/react-native-offline) (v5.1.0)
+- [React Native Indicators](https://github.com/n4kz/react-native-indicators) (v0.14.0)
 - [Moment](https://momentjs.com/) (v2.24.0)
 - [React Native Vector Icons](https://github.com/oblador/react-native-vector-icons) (v6.6.0)
 - [React Native Version Number](https://github.com/APSL/react-native-version-number) (v0.3.6)
-- [async-storage](https://github.com/react-native-community/react-native-async-storage) (v1.5.1)
+- [async-storage](https://github.com/react-native-community/react-native-async-storage) (v1.6.2)
+- And more...
 
 ## Directory layout
 

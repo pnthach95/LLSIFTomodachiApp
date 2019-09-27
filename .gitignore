@@ -69,8 +69,5 @@ android/.project
 android/.settings/
 android/app/.classpath
 
-# Security
-android/gradle.properties
-
 # CocoaPods
 /ios/Pods/

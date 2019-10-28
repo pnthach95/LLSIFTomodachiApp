@@ -1,6 +1,6 @@
 {
   "name": "LLSIFTomodachi",
-  "version": "0.3.0",
+  "version": "0.3.2",
   "author": "Pham Ngoc Thach <thachxyz123@gmail.com>",
   "homepage": "https://github.com/pnthach95/LLSIFTomodachiApp",
   "bugs": {
@@ -14,6 +14,7 @@
     "start": "react-native start",
     "lint": "eslint .",
     "rename": "react-native-rename",
+    "android:apk": "cd android && ./gradlew assembleRelease",
     "android:build": "cd android && ./gradlew bundleRelease",
     "version:up": "node ./node_modules/react-native-version-up/index.js"
   },

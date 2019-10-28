@@ -2,16 +2,15 @@
 import React, { Component } from 'react';
 import { View, SafeAreaView, Alert } from 'react-native';
 import {
-  createStackNavigator,
-  createBottomTabNavigator,
-  createDrawerNavigator,
   createSwitchNavigator,
   createAppContainer,
 } from 'react-navigation';
+import { createDrawerNavigator } from 'react-navigation-drawer';
+import { createStackNavigator } from 'react-navigation-stack';
+import { createBottomTabNavigator } from 'react-navigation-tabs';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
-import firebase from '@react-native-firebase/app';
-import '@react-native-firebase/messaging';
+import firebase from 'react-native-firebase';
 import * as Sentry from '@sentry/react-native';
 
 import StatusBarBackground from '~/Components/StatusBarBackground/StatusBar';
@@ -103,7 +102,7 @@ export default class MainContainer extends Component {
         }
       });
 
-    const channel = new firebase.notifications.Android.Channel('notifications', 'Default channel', firebase.notifications.Android.Importance.Max).enableLights(false);
+    const channel = new firebase.notifications.Android.Channel('notifications', 'Default channel', firebase.notifications.Android.Importance.High).enableLights(false);
     firebase.notifications().android.createChannel(channel);
     this.notificationDisplayedListener = firebase.notifications()
       .onNotificationDisplayed((notification) => {

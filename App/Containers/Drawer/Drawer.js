@@ -6,8 +6,7 @@ import {
 } from 'react-native';
 import PropTypes from 'prop-types';
 import { SafeAreaView } from 'react-navigation';
-import firebase from '@react-native-firebase/app';
-import '@react-native-firebase/messaging';
+import firebase from 'react-native-firebase';
 import Icon from 'react-native-vector-icons/Ionicons';
 import VersionNumber from 'react-native-version-number';
 

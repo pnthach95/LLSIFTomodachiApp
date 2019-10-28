@@ -49,6 +49,9 @@ Press Version to view background.
 
 Change log:
 
+- Version 0.3.2:
+  • Fix Worldwide event banner in home.
+
 - Version 0.3.1:
   • Fix notification for Android O and above.
   • Fix layout for Shadowverse event, because there is no normal round card image.

@@ -185,8 +185,7 @@ export default class MainScreen extends React.Component {
             <View style={styles.textbox}>
               <Text style={styles.title}>{ENEvent.english_name}</Text>
             </View>
-            <FastImage source={{ uri: 'https://i.schoolido.lu/events/EN/Round%207%20COMPANION%20MATCH87J5zL3BNgnZb20A.png' }}
-              // <FastImage source={{ uri: AddHTTPS(ENEvent.english_image) }}
+            <FastImage source={{ uri: AddHTTPS(ENEvent.english_image) }}
               onLoad={this.onLoadFastImage}
               style={{
                 width: Metrics.widthBanner,

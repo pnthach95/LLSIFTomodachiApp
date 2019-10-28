@@ -49,4 +49,5 @@
     "background": "blue",
     "iconColour": "green"
   },
+  "java.configuration.updateBuildConfiguration": "automatic",
 }

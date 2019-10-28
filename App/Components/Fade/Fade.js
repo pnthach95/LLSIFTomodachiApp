@@ -16,6 +16,7 @@ export default class Fade extends Component {
   constructor(props) {
     super(props);
     this.state = { visible: props.visible };
+    this.visibility = new Animated.Value(this.props.visible ? 1 : 0);
   }
 
   static propTypes = {
@@ -24,20 +25,16 @@ export default class Fade extends Component {
     children: PropTypes.any,
   };
 
-  componentWillMount() {
-    this.visibility = new Animated.Value(this.props.visible ? 1 : 0);
+  static getDerivedStateFromProps(nextProps) {
+    return { visible: nextProps.visible };
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.visible) {
-      this.setState({ visible: true });
-    }
+  // eslint-disable-next-line no-unused-vars
+  componentDidUpdate(prevProps, prevState) {
     Animated.timing(this.visibility, {
-      toValue: nextProps.visible ? 1 : 0,
+      toValue: this.state.visible ? 1 : 0,
       duration: 500,
-    }).start(() => {
-      this.setState({ visible: nextProps.visible });
-    });
+    }).start();
   }
 
   render() {

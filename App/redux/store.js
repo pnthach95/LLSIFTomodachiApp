@@ -23,6 +23,10 @@ const rootReducer = combineReducers({
 });
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 const middlewares = [networkMiddleware, thunkMiddleware, sagaMiddleware, logger];
+// eslint-disable-next-line no-undef
+if (__DEV__) {
+  middlewares.push(logger);
+}
 const store = createStore(persistedReducer, applyMiddleware(...middlewares));
 
 sagaMiddleware.run(rootSaga);

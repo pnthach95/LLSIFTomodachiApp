@@ -1,6 +1,8 @@
 import { StyleSheet } from 'react-native';
 import { Metrics, Colors, Fonts } from '~/Theme';
 
+const heightText = (Metrics.navBarHeight / 3) + 6;
+
 export default StyleSheet.create({
   banner: {
     height: 100,
@@ -40,7 +42,7 @@ export default StyleSheet.create({
     flexDirection: 'row',
   },
   marginRight10: {
-    marginRight: 10,
+    marginRight: Metrics.baseMargin,
   },
   progressRow: {
     alignItems: 'center',
@@ -70,6 +72,36 @@ export default StyleSheet.create({
   },
   scrollView: {
     paddingBottom: Metrics.doubleBaseMargin,
+  },
+  skCard: {
+    height: 300,
+    width: (Metrics.screenWidth - Metrics.baseMargin * 3) / 2,
+  },
+  skFlexStart: {
+    justifyContent: 'flex-start',
+  },
+  skNavIcon: {
+    height: Metrics.navBarHeight - 14,
+    marginLeft: Metrics.baseMargin,
+    width: Metrics.navBarHeight - 14,
+  },
+  skNavName: {
+    height: heightText,
+    width: Metrics.screenWidth / 3,
+  },
+  skNavNameContainer: {
+    height: heightText,
+    width: Metrics.screenWidth / 3,
+  },
+  skText1: {
+    height: heightText,
+    marginTop: Metrics.baseMargin,
+    width: Metrics.screenWidth / 2,
+  },
+  skText2: {
+    height: heightText,
+    marginTop: Metrics.baseMargin,
+    width: (2 * Metrics.screenWidth) / 3,
   },
   subtitleText: {
     fontSize: Fonts.size.medium,

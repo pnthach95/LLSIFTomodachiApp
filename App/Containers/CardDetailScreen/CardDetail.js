@@ -7,10 +7,10 @@ import PropTypes from 'prop-types';
 import ElevatedView from 'react-native-elevated-view';
 import FastImage from 'react-native-fast-image';
 import LinearGradient from 'react-native-linear-gradient';
+import SkeletonContent from 'react-native-skeleton-content-nonexpo';
 import Icon from 'react-native-vector-icons/Ionicons';
 import moment from 'moment';
 
-import SplashScreen from '../SplashScreen/SplashScreen';
 import TextRow from '~/Components/TextRow/TextRow';
 import Seperator from '~/Components/Seperator/Seperator';
 import ProgressBar from '~/Components/ProgressBar/ProgressBar';
@@ -205,7 +205,6 @@ export default class CardDetailScreen extends React.Component {
   navigateToImageViewerScreen = (index) => () => this.props.navigation.navigate('ImageViewerScreen', { index, images: this.state.images });
 
   render() {
-    if (!this.state.done) return <SplashScreen />;
     const { item } = this.state;
     return (
       <View style={ApplicationStyles.screen}>
@@ -216,16 +215,22 @@ export default class CardDetailScreen extends React.Component {
         ]}>
           <View style={styles.leftRow}>
             <SquareButton name={'ios-arrow-back'} onPress={() => this.props.navigation.goBack()} />
-            <TouchableOpacity onPress={this.navigateToIdolDetail(item.idol.name)}>
-              <Text style={Fonts.style.normal}>{item.idol.name}</Text>
-            </TouchableOpacity>
+            <SkeletonContent isLoading={!this.state.done}
+              containerStyle={styles.skFlexStart}
+              layout={[styles.skNavName]}>
+              <TouchableOpacity onPress={this.navigateToIdolDetail(item.idol.name)}>
+                <Text style={Fonts.style.normal}>{item.idol.name}</Text>
+              </TouchableOpacity>
+            </SkeletonContent>
           </View>
-          <View style={styles.rightRow}>
+          <SkeletonContent isLoading={!this.state.done}
+            containerStyle={styles.rightRow}
+            layout={[styles.skNavIcon, styles.skNavIcon]}>
             <Image source={findMainUnit(item.idol.main_unit)}
               style={styles.rightHeaderImage} />
             <Image source={findSubUnit(item.idol.sub_unit)}
               style={styles.rightHeaderImage} />
-          </View>
+          </SkeletonContent>
         </ElevatedView>
         <View style={ApplicationStyles.screen}>
           {/* MAIN VIEW */}
@@ -234,7 +239,9 @@ export default class CardDetailScreen extends React.Component {
             <ScrollView showsVerticalScrollIndicator={false}
               style={styles.scrollView}>
               {/* CARD IMAGES */}
-              <View style={styles.imageRow}>
+              <SkeletonContent isLoading={!this.state.done}
+                containerStyle={styles.imageRow}
+                layout={[styles.skCard, styles.skCard]}>
                 {this.state.images.map((value, index) => <TouchableOpacity key={index}
                   onPress={this.navigateToImageViewerScreen(index)}>
                   <FastImage source={{ uri: value.url }}
@@ -245,17 +252,21 @@ export default class CardDetailScreen extends React.Component {
                     }}
                     onLoad={(e) => this.onLoadFastImage(e)} />
                 </TouchableOpacity>)}
-              </View>
+              </SkeletonContent>
 
               {/* INFORMATION */}
               <View style={styles.informationBlock}>
-                <TextRow item1={{ flex: 1, text: 'Card ID' }}
-                  item2={{ flex: 2, text: item.game_id }} />
-                <TextRow item1={{ flex: 1, text: 'Release date' }}
-                  item2={{
-                    flex: 2,
-                    text: moment(item.release_date).format(Config.DATE_FORMAT_OUTPUT),
-                  }} />
+                <SkeletonContent isLoading={!this.state.done}
+                  containerStyle={styles.skFlexStart}
+                  layout={[styles.skText1, styles.skText2]}>
+                  <TextRow item1={{ flex: 1, text: 'Card ID' }}
+                    item2={{ flex: 2, text: item.game_id }} />
+                  <TextRow item1={{ flex: 1, text: 'Release date' }}
+                    item2={{
+                      flex: 2,
+                      text: moment(item.release_date).format(Config.DATE_FORMAT_OUTPUT),
+                    }} />
+                </SkeletonContent>
                 {this.state.propertyLine.length > 0 && <Text>{this.state.propertyLine}</Text>}
 
                 {(item.skill !== null && item.skill.length !== 0)
@@ -324,7 +335,7 @@ export default class CardDetailScreen extends React.Component {
                       </View>}
                   </View>}
 
-                {item.hp !== 0
+                {item.hp !== 0 && this.state.done
                   && <View>
                     <Seperator />
                     <View style={ApplicationStyles.row}>
@@ -335,7 +346,7 @@ export default class CardDetailScreen extends React.Component {
               </View>
 
               {/* STATS */}
-              {item.hp !== 0
+              {item.hp !== 0 && this.state.done
                 && <View>
                   <View style={styles.buttonRow}>
                     {this.statButton(0, 'Level 1', this.state.minStats, styles.leftRadius)}

@@ -9,26 +9,6 @@
   "editor.formatOnPaste": true,
   "files.eol": "\n",
   "files.insertFinalNewline": true,
-  "todo-tree.defaultHighlight": {
-    "icon": "dash",
-    "type": "text",
-    "opacity": 50,
-    "foreground": "white",
-    "background": "blue",
-    "iconColour": "green"
-  },
-  "todo-tree.customHighlight": {
-    "TODO": {
-      "icon": "check",
-      "type": "line",
-      "background": "green",
-    },
-    "FIXME": {
-      "icon": "tools",
-      "background": "yellow",
-      "iconColour": "yellow"
-    }
-  },
   "todo-tree.highlights.customHighlight": {
     "TODO": {
       "icon": "check",
@@ -49,5 +29,4 @@
     "background": "blue",
     "iconColour": "green"
   },
-  "java.configuration.updateBuildConfiguration": "automatic",
 }

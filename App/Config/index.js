@@ -49,6 +49,9 @@ Press Version to view background.
 
 Change log:
 
+- Version 0.3.3:
+  • Small bugfix.
+
 - Version 0.3.2:
   • Fix Worldwide event banner in home.
 

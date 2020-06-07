@@ -1,5 +1,4 @@
 {
-  "eslint.autoFixOnSave": true,
   "editor.tabSize": 2,
   "editor.detectIndentation": false,
   "editor.rulers": [
@@ -28,5 +27,8 @@
     "foreground": "white",
     "background": "blue",
     "iconColour": "green"
+  },
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
   },
 }

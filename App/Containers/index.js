@@ -21,7 +21,7 @@ import MainScreen from './MainScreen';
 import CardsScreen from './CardsScreen';
 import IdolsScreen from './IdolsScreen';
 import EventsScreen from './EventsScreen';
-// import SongsScreen from './SongsScreen';
+import SongsScreen from './SongsScreen';
 import DrawerScreen from './Drawer';
 
 // import CardDetailScreen from './CardDetailScreen';
@@ -69,7 +69,13 @@ function LLSIFTab() {
           color={focused ? Colors.pink : Colors.inactive} />,
         tabBarLabel: 'Events',
       }} />
-    {/* <Tab.Screen name='SongsScreen' component={SongsScreen} /> */}
+    <Tab.Screen name='SongsScreen'
+      component={SongsScreen}
+      options={{
+        tabBarIcon: ({ focused }) => <Ionicons name='ios-musical-notes' size={30}
+          color={focused ? Colors.pink : Colors.inactive} />,
+        tabBarLabel: 'Songs',
+      }} />
   </Tab.Navigator >;
 }
 

@@ -34,6 +34,7 @@ export default class Fade extends Component {
     Animated.timing(this.visibility, {
       toValue: this.state.visible ? 1 : 0,
       duration: 500,
+      useNativeDriver: true,
     }).start();
   }
 

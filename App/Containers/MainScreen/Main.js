@@ -42,8 +42,8 @@ function MainScreen({ navigation }) {
     width: 1,
     height: 0,
   });
-  const [ENEvent, setENEvent] = useState(state.cachedData.current_event_en);
-  const [JPEvent, setJPEvent] = useState(state.cachedData.current_event_jp);
+  const [ENEvent, setENEvent] = useState(state.cachedData.ENEvent);
+  const [JPEvent, setJPEvent] = useState(state.cachedData.JPEvent);
   const [currentContests, setCurrentContests] = useState(state.cachedData.current_contests);
 
   useEffect(() => {

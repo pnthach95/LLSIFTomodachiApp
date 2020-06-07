@@ -3,6 +3,7 @@ import {
   View, Text, TouchableOpacity,
 } from 'react-native';
 import LLSIFService from '~/Services/LLSIFService';
+import LLSIFdotnetService from '~/Services/LLSIFdotnetService';
 import SplashScreen from '../SplashScreen/SplashScreen';
 import UserContext from '~/Context/UserContext';
 import { actions } from '~/Context/Reducer';
@@ -23,13 +24,41 @@ function LoadingScreen() {
   }, []);
 
   const loadCachedData = async () => {
-    const cachedData = await LLSIFService.fetchCachedData();
-    if (cachedData) {
+    try {
+      const data = await LLSIFService.fetchCachedData();
+      const eventEN = await LLSIFService.fetchEventList({
+        ordering: '-english_beginning',
+        page_size: 1,
+      });
+      const eventJP = await LLSIFService.fetchEventList(
+        {
+          ordering: '-beginning',
+          page_size: 1,
+        },
+      );
+      const [eventEN0] = eventEN;
+      const [eventJP0] = eventJP;
+      data.ENEvent = eventEN0;
+      data.JPEvent = eventJP0;
+      const randomCard = await LLSIFService.fetchRandomCard();
+      const r = Math.floor(Math.random() * 10);
+      let bgImage = '';
+      if (randomCard.clean_ur !== null && r < 6) {
+        bgImage = randomCard.clean_ur;
+      } else {
+        bgImage = randomCard.clean_ur_idolized;
+      }
+      data.randomCard = randomCard;
+      data.bgImage = bgImage;
+      const eventInfo = await LLSIFdotnetService.fetchEventInfo();
+      data.eventInfo = eventInfo;
       dispatch({
         type: actions.DONE_LOADING,
-        data: cachedData,
+        data,
       });
-    } else { setError(true); }
+    } catch (e) {
+      setError(true);
+    }
   };
 
   if (error) {

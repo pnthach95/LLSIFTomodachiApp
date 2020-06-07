@@ -24,7 +24,7 @@ import EventsScreen from './EventsScreen';
 import SongsScreen from './SongsScreen';
 import DrawerScreen from './Drawer';
 
-// import CardDetailScreen from './CardDetailScreen';
+import CardDetailScreen from './CardDetailScreen';
 // import EventDetailScreen from './EventDetailScreen';
 // import IdolDetailScreen from './IdolDetailScreen/IdolDetail';
 // import SongDetailScreen from './SongDetailScreen';
@@ -188,21 +188,17 @@ function MainContainer() {
   return <NetworkProvider>
     <UserContext.Provider value={userReducer}>
       <NavigationContainer>
-        <Stack.Navigator>
+        <Stack.Navigator screenOptions={{
+          headerShown: false,
+        }}>
           {state.loading ? (
             <Stack.Screen name='LoadingScreen'
-              component={LoadingScreen}
-              options={{
-                headerShown: false,
-              }} />
+              component={LoadingScreen} />
           ) : <>
               <Stack.Screen name='DrawerScreen'
-                component={LLSIFDrawer}
-                options={{
-                  headerShown: false,
-                }} />
-              {/* <Stack.Screen name='CardDetailScreen' component={CardDetailScreen} />
-            <Stack.Screen name='EventDetailScreen' component={EventDetailScreen} />
+                component={LLSIFDrawer} />
+              <Stack.Screen name='CardDetailScreen' component={CardDetailScreen} />
+              {/* <Stack.Screen name='EventDetailScreen' component={EventDetailScreen} />
             <Stack.Screen name='IdolDetailScreen' component={IdolDetailScreen} />
             <Stack.Screen name='SongDetailScreen' component={SongDetailScreen} />
             <Stack.Screen name='ImageViewerScreen' component={ImageViewer} /> */}

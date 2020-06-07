@@ -60,6 +60,8 @@ function LoadingScreen() {
         value,
       }));
       cachedData.schools = schools;
+      const maxStats = cardsInfo.max_stats;
+      cachedData.maxStats = maxStats;
 
       const [eventEN0] = eventEN;
       const [eventJP0] = eventJP;

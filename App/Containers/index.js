@@ -20,7 +20,7 @@ import LoadingScreen from './LoadingScreen';
 import MainScreen from './MainScreen';
 import CardsScreen from './CardsScreen';
 import IdolsScreen from './IdolsScreen';
-// import EventsScreen from './EventsScreen';
+import EventsScreen from './EventsScreen';
 // import SongsScreen from './SongsScreen';
 import DrawerScreen from './Drawer';
 
@@ -62,8 +62,14 @@ function LLSIFTab() {
         ),
         tabBarLabel: 'Idols',
       }} />
-    {/* <Tab.Screen name='EventsScreen' component={EventsScreen} />
-    <Tab.Screen name='SongsScreen' component={SongsScreen} /> */}
+    <Tab.Screen name='EventsScreen'
+      component={EventsScreen}
+      options={{
+        tabBarIcon: ({ focused }) => <Ionicons name='md-calendar' size={30}
+          color={focused ? Colors.pink : Colors.inactive} />,
+        tabBarLabel: 'Events',
+      }} />
+    {/* <Tab.Screen name='SongsScreen' component={SongsScreen} /> */}
   </Tab.Navigator >;
 }
 

@@ -25,7 +25,7 @@ import SongsScreen from './SongsScreen';
 import DrawerScreen from './Drawer';
 
 import CardDetailScreen from './CardDetailScreen';
-// import EventDetailScreen from './EventDetailScreen';
+import EventDetailScreen from './EventDetailScreen';
 // import IdolDetailScreen from './IdolDetailScreen/IdolDetail';
 // import SongDetailScreen from './SongDetailScreen';
 // import ImageViewer from './ImageViewer/ImageViewer';
@@ -197,9 +197,11 @@ function MainContainer() {
           ) : <>
               <Stack.Screen name='DrawerScreen'
                 component={LLSIFDrawer} />
-              <Stack.Screen name='CardDetailScreen' component={CardDetailScreen} />
-              {/* <Stack.Screen name='EventDetailScreen' component={EventDetailScreen} />
-            <Stack.Screen name='IdolDetailScreen' component={IdolDetailScreen} />
+              <Stack.Screen name='CardDetailScreen'
+                component={CardDetailScreen} />
+              <Stack.Screen name='EventDetailScreen'
+                component={EventDetailScreen} />
+              {/* <Stack.Screen name='IdolDetailScreen' component={IdolDetailScreen} />
             <Stack.Screen name='SongDetailScreen' component={SongDetailScreen} />
             <Stack.Screen name='ImageViewerScreen' component={ImageViewer} /> */}
             </>}

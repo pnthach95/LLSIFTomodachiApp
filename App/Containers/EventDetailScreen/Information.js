@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
-  Text, View, ScrollView,
-  TouchableOpacity, Image,
+  Text, View, ScrollView, TouchableOpacity, Image,
 } from 'react-native';
 import PropTypes from 'prop-types';
+import { useNavigation } from '@react-navigation/native';
 import FastImage from 'react-native-fast-image';
 import moment from 'moment';
 
@@ -14,169 +14,159 @@ import { Config, EventStatus } from '~/Config';
 import { Metrics, ApplicationStyles, Fonts } from '~/Theme';
 import styles from './styles';
 
-export default class Information extends React.PureComponent {
-  constructor(props) {
-    super(props);
-    this.state = {
-      item: this.props.item,
-      imgWidth: 1,
-      imgHeight: 0,
-      WWEventStart: this.props.WWEventStart,
-      WWEventEnd: this.props.WWEventEnd,
-      JPEventStart: this.props.JPEventStart,
-      JPEventEnd: this.props.JPEventEnd,
-      cards: this.props.cards,
-      songs: this.props.songs,
-    };
-  }
-
-  static propTypes = {
-    isConnected: PropTypes.bool,
-    item: PropTypes.object,
-    WWEventStart: PropTypes.object,
-    WWEventEnd: PropTypes.object,
-    JPEventStart: PropTypes.object,
-    JPEventEnd: PropTypes.object,
-    cards: PropTypes.any,
-    songs: PropTypes.any,
-  }
+function Information({
+  item, WWEventStart, WWEventEnd, JPEventStart, JPEventEnd, cards, songs,
+}) {
+  const navigation = useNavigation();
+  const [imgSize, setImgSize] = useState({
+    width: 1,
+    height: 0,
+  });
 
   /**
    * Get width, height of image in FastImage
    *
-   * @param {*} e
-   * @memberof EventDetailScreen
    */
-  onLoadFastImage(e) {
+  function onLoadFastImage(e) {
     const { width, height } = e.nativeEvent;
-    this.setState({ imgWidth: width, imgHeight: height });
+    setImgSize({ width, height });
   }
 
   /**
    * Navigate to destination screen
    *
-   * @param {String} destination destination screen
-   * @param {Object} item Card object
-   * @memberof EventDetailScreen
    */
-  navigateTo = (destination, item) => () => {
-    if (this.props.isConnected) {
-      this.props.navigation.navigate(destination, { item });
-    }
-  }
+  const navigateTo = (destination, item0) => () => {
+    navigation.navigate(destination, { item: item0 });
+  };
 
   /**
    * Countdown timer for ongoing event
    *
-   * @param {Number} time Remaining time (miliseconds)
-   * @returns
-   * @memberof Information
    */
-  timer(time) {
+  function timer(time) {
     return <TimerCountdown initialSecondsRemaining={time}
       allowFontScaling={true} />;
   }
 
-  render() {
-    const styleFastImage = {
-      alignSelf: 'center',
-      width: Metrics.widthBanner,
-      height: (Metrics.widthBanner * this.state.imgHeight) / this.state.imgWidth,
-    };
-    return (
-      <View style={styles.container}>
-        <ScrollView showsVerticalScrollIndicator={false}
-          style={ApplicationStyles.screen}
-          contentContainerStyle={styles.content}>
-          {/* ENGLISH BLOCK */}
-          {this.state.item.english_name !== null
-            && <View>
-              <Text style={styles.whiteCenter}>Worldwide</Text>
-              <Text style={[styles.text, styles.title, styles.whiteCenter]}>
-                {this.state.item.english_name.length === 0
-                  ? this.state.item.romaji_name : this.state.item.english_name}
-              </Text>
-              <FastImage source={{ uri: AddHTTPS(this.state.item.english_image) }}
-                resizeMode={FastImage.resizeMode.contain}
-                onLoad={(e) => this.onLoadFastImage(e)}
-                style={styleFastImage} />
-              <Text style={[styles.text, styles.whiteCenter]}>
-                {`Start: ${this.state.WWEventStart.format(Config.DATETIME_FORMAT_OUTPUT)}\nEnd: ${this.state.WWEventEnd.format(Config.DATETIME_FORMAT_OUTPUT)}`}
-              </Text>
-              {this.state.item.world_current
-                && <Text style={[styles.text, styles.whiteCenter]}>
-                  {this.timer(this.state.WWEventEnd.diff(moment()))}{' left'}
-                </Text>}
-              {this.state.item.english_status === EventStatus.ANNOUNCED
-                && <Text style={[styles.text, styles.whiteCenter]}>
-                  {'Starts in '}{this.timer(this.state.WWEventStart.diff(moment()))}
-                </Text>}
-            </View>}
-          {this.state.item.english_name !== null
-            && <Seperator style={styles.whiteLine} />}
+  const styleFastImage = {
+    alignSelf: 'center',
+    width: Metrics.widthBanner,
+    height: (Metrics.widthBanner * imgSize.height) / imgSize.width,
+  };
 
-          {/* JAPANESE BLOCK */}
-          <Text style={styles.whiteCenter}>Japanese</Text>
+  return <View style={styles.container}>
+    <ScrollView showsVerticalScrollIndicator={false}
+      style={ApplicationStyles.screen}
+      contentContainerStyle={styles.content}>
+      {/* ENGLISH BLOCK */}
+      {item.english_name !== null
+        && <View>
+          <Text style={styles.whiteCenter}>Worldwide</Text>
           <Text style={[styles.text, styles.title, styles.whiteCenter]}>
-            {this.state.item.romaji_name}
+            {item.english_name.length === 0
+              ? item.romaji_name : item.english_name}
           </Text>
-          <FastImage source={{ uri: AddHTTPS(this.state.item.image) }}
+          <FastImage source={{ uri: AddHTTPS(item.english_image) }}
             resizeMode={FastImage.resizeMode.contain}
-            onLoad={(e) => this.onLoadFastImage(e)}
+            onLoad={(e) => onLoadFastImage(e)}
             style={styleFastImage} />
           <Text style={[styles.text, styles.whiteCenter]}>
-            {`Start: ${this.state.JPEventStart.format(Config.DATETIME_FORMAT_OUTPUT)}\nEnd: ${this.state.JPEventEnd.format(Config.DATETIME_FORMAT_OUTPUT)}`}
+            {`Start: ${WWEventStart.format(Config.DATETIME_FORMAT_OUTPUT)}\nEnd: ${WWEventEnd.format(Config.DATETIME_FORMAT_OUTPUT)}`}
           </Text>
-          {this.state.item.japan_current
+          {item.world_current
             && <Text style={[styles.text, styles.whiteCenter]}>
-              {this.timer(this.state.JPEventEnd.diff(moment()))}{' left'}
+              {timer(WWEventEnd.diff(moment()))}{' left'}
             </Text>}
-          {this.state.item.japan_status === EventStatus.ANNOUNCED
+          {item.english_status === EventStatus.ANNOUNCED
             && <Text style={[styles.text, styles.whiteCenter]}>
-              {'Starts in '}{this.timer(this.state.JPEventStart.diff(moment()))}
+              {'Starts in '}{timer(WWEventStart.diff(moment()))}
             </Text>}
-          {this.state.songs.length !== 0
-            && <Seperator style={styles.whiteLine} />}
-          {/* SONGS */}
-          {this.state.songs.length !== 0
-            && <View>
-              <Text style={styles.whiteCenter}>Song</Text>
-              <View style={styles.cardList}>
-                {this.state.songs.map((item, index) => <TouchableOpacity key={`song${index}`}
-                  onPress={this.navigateTo('SongDetailScreen', item)}
-                  style={styles.card}>
-                  <FastImage source={{ uri: AddHTTPS(item.image) }} style={styles.song} />
-                  <View style={styles.songInfo}>
-                    <Image source={findAttribute(item.attribute)} style={styles.attributeIcon} />
-                    <Text style={styles.whiteCenter}>
-                      {`${item.name}${item.romaji_name !== null ? `\n${item.romaji_name}` : ''}`}
-                    </Text>
-                  </View>
-                </TouchableOpacity>)}
-              </View>
-            </View>}
-          <Seperator style={styles.whiteLine} />
-          <Text style={styles.whiteCenter}>Rewards</Text>
-          {/* CARDS */}
+        </View>}
+      {item.english_name !== null
+        && <Seperator style={styles.whiteLine} />}
+
+      {/* JAPANESE BLOCK */}
+      <Text style={styles.whiteCenter}>Japanese</Text>
+      <Text style={[styles.text, styles.title, styles.whiteCenter]}>
+        {item.romaji_name}
+      </Text>
+      <FastImage source={{ uri: AddHTTPS(item.image) }}
+        resizeMode={FastImage.resizeMode.contain}
+        onLoad={(e) => onLoadFastImage(e)}
+        style={styleFastImage} />
+      <Text style={[styles.text, styles.whiteCenter]}>
+        {`Start: ${JPEventStart.format(Config.DATETIME_FORMAT_OUTPUT)}\nEnd: ${JPEventEnd.format(Config.DATETIME_FORMAT_OUTPUT)}`}
+      </Text>
+      {item.japan_current
+        && <Text style={[styles.text, styles.whiteCenter]}>
+          {timer(JPEventEnd.diff(moment()))}{' left'}
+        </Text>}
+      {item.japan_status === EventStatus.ANNOUNCED
+        && <Text style={[styles.text, styles.whiteCenter]}>
+          {'Starts in '}{timer(JPEventStart.diff(moment()))}
+        </Text>}
+      {songs.length !== 0
+        && <Seperator style={styles.whiteLine} />}
+      {/* SONGS */}
+      {songs.length !== 0
+        && <View>
+          <Text style={styles.whiteCenter}>Song</Text>
           <View style={styles.cardList}>
-            {this.state.cards.map((item, index) => <TouchableOpacity key={`card${index}`}
-              onPress={this.navigateTo('CardDetailScreen', item)}
+            {songs.map((songItem, index) => <TouchableOpacity key={`song${index}`}
+              onPress={navigateTo('SongDetailScreen', songItem)}
               style={styles.card}>
-              <View style={styles.cardImage}>
-                {item.round_card_image !== null
-                  && <FastImage source={{ uri: AddHTTPS(item.round_card_image) }}
-                    style={styles.roundImage} />}
-                {item.round_card_image !== null && <View style={styles.width5} />}
-                <FastImage source={{ uri: AddHTTPS(item.round_card_idolized_image) }}
-                  style={styles.roundImage} />
+              <FastImage source={{ uri: AddHTTPS(songItem.image) }} style={styles.song} />
+              <View style={styles.songInfo}>
+                <Image source={findAttribute(songItem.attribute)} style={styles.attributeIcon} />
+                <Text style={styles.whiteCenter}>
+                  {`${songItem.name}${songItem.romaji_name !== null ? `\n${songItem.romaji_name}` : ''}`}
+                </Text>
               </View>
-              <Text style={Fonts.style.white}>{item.idol.name}</Text>
-              {item.other_event !== null
-                && <Text style={Fonts.style.white}>{'(Worldwide only)'}</Text>}
             </TouchableOpacity>)}
           </View>
-        </ScrollView>
+        </View>}
+      <Seperator style={styles.whiteLine} />
+      <Text style={styles.whiteCenter}>Rewards</Text>
+      {/* CARDS */}
+      <View style={styles.cardList}>
+        {cards.map((cardItem, index) => <TouchableOpacity key={`card${index}`}
+          onPress={navigateTo('CardDetailScreen', cardItem)}
+          style={styles.card}>
+          <View style={styles.cardImage}>
+            {cardItem.round_card_image !== null
+              && <FastImage source={{ uri: AddHTTPS(cardItem.round_card_image) }}
+                style={styles.roundImage} />}
+            {cardItem.round_card_image !== null && <View style={styles.width5} />}
+            <FastImage source={{ uri: AddHTTPS(cardItem.round_card_idolized_image) }}
+              style={styles.roundImage} />
+          </View>
+          <Text style={Fonts.style.white}>{cardItem.idol.name}</Text>
+          {cardItem.other_event !== null
+            && <Text style={Fonts.style.white}>{'(Worldwide only)'}</Text>}
+        </TouchableOpacity>)}
       </View>
-    );
-  }
+    </ScrollView>
+  </View>;
 }
+
+Information.propTypes = {
+  item: PropTypes.shape({
+    english_name: PropTypes.string,
+    english_image: PropTypes.string,
+    romaji_name: PropTypes.string,
+    world_current: PropTypes.any,
+    english_status: PropTypes.any,
+    image: PropTypes.string,
+    japan_current: PropTypes.any,
+    japan_status: PropTypes.any,
+  }),
+  WWEventStart: PropTypes.any,
+  WWEventEnd: PropTypes.any,
+  JPEventStart: PropTypes.any,
+  JPEventEnd: PropTypes.any,
+  cards: PropTypes.array,
+  songs: PropTypes.array,
+};
+
+export default Information;

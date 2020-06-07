@@ -19,7 +19,7 @@ import { Colors } from '~/Theme';
 import LoadingScreen from './LoadingScreen';
 import MainScreen from './MainScreen';
 import CardsScreen from './CardsScreen';
-// import IdolsScreen from './IdolsScreen';
+import IdolsScreen from './IdolsScreen';
 // import EventsScreen from './EventsScreen';
 // import SongsScreen from './SongsScreen';
 import DrawerScreen from './Drawer';
@@ -52,8 +52,17 @@ function LLSIFTab() {
           color={focused ? Colors.pink : Colors.inactive} />,
         tabBarLabel: 'Cards',
       }} />
-    {/* <Tab.Screen name='IdolsScreen' component={IdolsScreen} />
-    <Tab.Screen name='EventsScreen' component={EventsScreen} />
+    <Tab.Screen name='IdolsScreen'
+      component={IdolsScreen}
+      options={{
+        tabBarIcon: ({ focused }) => (
+          focused
+            ? <Ionicons name='ios-star' size={30} color={Colors.pink} />
+            : <Ionicons name='ios-star-outline' size={30} color={Colors.inactive} />
+        ),
+        tabBarLabel: 'Idols',
+      }} />
+    {/* <Tab.Screen name='EventsScreen' component={EventsScreen} />
     <Tab.Screen name='SongsScreen' component={SongsScreen} /> */}
   </Tab.Navigator >;
 }

@@ -1,14 +1,13 @@
-import React from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import {
   View, Text, SectionList,
   FlatList, Image, Alert,
 } from 'react-native';
 import PropTypes from 'prop-types';
 import ElevatedView from 'react-native-elevated-view';
-import Icon from 'react-native-vector-icons/Ionicons';
 
+import UserContext from '~/Context/UserContext';
 import ConnectStatus from '~/Components/ConnectStatus';
-import Fade from '~/Components/Fade/Fade';
 import IdolItem from '~/Components/IdolItem/IdolItem';
 import Seperator from '~/Components/Seperator/Seperator';
 import SquareButton from '~/Components/SquareButton/SquareButton';
@@ -24,58 +23,29 @@ import styles from './styles';
  * - isLoading: Loading state
  * - list: Data for FlatList
  *
- * @class IdolsScreen
- * @extends {React.Component}
  */
-export default class IdolsScreen extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      isLoading: true,
-      list: [],
-    };
-  }
+function IdolsScreen({ navigation }) {
+  const { state } = useContext(UserContext);
+  const [isLoading, setIsLoading] = useState(true);
+  const [list, setList] = useState([]);
 
-  static propTypes = {
-    isConnected: PropTypes.bool,
-    schools: PropTypes.array,
-  }
+  useEffect(() => {
+    loadData();
+  }, []);
 
-  static navigationOptions = {
-    tabBarIcon: ({ focused }) => (
-      focused
-        ? <Icon name='ios-star' size={30} color={Colors.pink} />
-        : <Icon name='ios-star-outline' size={30} color={Colors.inactive} />
-    ),
-    tabBarLabel: 'Idols',
-    tabBarOptions: {
-      activeTintColor: Colors.pink,
-      inactiveTintColor: Colors.inactive,
-    },
-  }
-
-  componentDidMount() {
-    this.focusListener = this.props.navigation.addListener('didFocus', () => {
-      if (this.state.list.length === 0) this.setState({ isLoading: true }, () => this.loadData());
-    });
-  }
-
-  componentWillUnmount() {
-    this.focusListener.remove();
-  }
-
-  loadData() {
-    const { schools } = this.props;
-    LLSIFService.fetchIdolList(schools)
+  function loadData() {
+    const { schools } = state.cachedData;
+    const schoolName = schools.map((value) => value.label);
+    LLSIFService.fetchIdolList(schoolName)
       .then((res) => {
         const array = [];
         schools.forEach((school) => {
           const item = {
-            title: school,
+            title: school.label,
             data: [
               {
-                key: school,
-                list: res.filter((value) => value.school === school),
+                key: school.label,
+                list: res.filter((value) => value.school === school.label),
               },
             ],
           };
@@ -91,95 +61,102 @@ export default class IdolsScreen extends React.Component {
           ],
         };
         if (item.data[0].list.length !== 0) array.push(item);
-        this.setState({ isLoading: false, list: array });
+        setList(array);
       })
       .catch((e) => {
-        this.setState({ isLoading: false });
         Alert.alert('Error', e.message);
+      }).finally(() => {
+        setIsLoading(false);
       });
-  }
-
-  /**
-   * Navigate to Idol Detail Screen
-   *
-   * @param {String} name
-   * @memberof IdolsScreen
-   */
-  navigateToIdolDetail = (name) => () => {
-    if (this.props.isConnected) {
-      this.props.navigation.navigate('IdolDetailScreen', { name });
-    }
   }
 
   /**
    * Key extractor for FlatList
    *
-   * @memberof IdolsScreen
    */
-  keyExtractor = (item) => `idol${item.name}`;
+  const keyExtractor = (item) => `idol${item.name}`;
 
   /**
    * Render item in FlatList
    *
-   * @param {Object} item
-   * @memberof IdolsScreen
    */
-  renderItem = ({ item }) => <IdolItem item={item}
-    onPress={this.navigateToIdolDetail(item.name)} />;
+  const renderItem = ({ item }) => {
+    /**
+     * Navigate to Idol Detail Screen
+     *
+     */
+    const navigateToIdolDetail = () => {
+      navigation.navigate('IdolDetailScreen', { name: item.name });
+    };
+
+    return <IdolItem item={item}
+      onPress={navigateToIdolDetail} />;
+  };
+  renderItem.propTypes = {
+    item: PropTypes.shape({
+      name: PropTypes.string.isRequired,
+    }),
+  };
 
   /**
    * Open drawer
    *
-   * @memberof IdolsScreen
    */
-  openDrawer = () => this.props.navigation.openDrawer();
+  const openDrawer = () => navigation.openDrawer();
 
-  render() {
-    return (
-      <View style={[ApplicationStyles.screen, styles.container]}>
-        <Fade visible={this.state.isLoading}
-          style={[ApplicationStyles.screen, ApplicationStyles.absolute]}>
-          <SplashScreen bgColor={Colors.blue} />
-        </Fade>
-        <Fade visible={!this.state.isLoading}
-          style={[ApplicationStyles.screen, ApplicationStyles.absolute]}>
-          {/* HEADER */}
-          <ElevatedView elevation={5}
-            style={[ApplicationStyles.header, styles.container]}>
-            <SquareButton name={'ios-menu'} onPress={this.openDrawer} color={'white'} />
-            <Image source={Images.logo} style={ApplicationStyles.imageHeader} />
-            <View style={styles.hole} />
-          </ElevatedView>
-          <ConnectStatus />
-          {/* BODY */}
-          <SectionList sections={this.state.list}
-            initialNumToRender={9}
-            keyExtractor={(item, index) => `School${index}`}
-            style={styles.list}
-            renderSectionHeader={({ section: { title } }) => (
-              <Text style={styles.sectionText}>{title}</Text>
-            )}
-            stickySectionHeadersEnabled={false}
-            ListHeaderComponent={<View style={styles.height10} />}
-            ListFooterComponent={<View style={styles.height10} />}
-            SectionSeparatorComponent={(data) => {
-              if (data.leadingItem && data.leadingItem.key === 'Other') return null;
-              const styleSeperator = {
-                backgroundColor: 'white',
-                marginBottom: data.leadingItem ? 20 : 0,
-              };
-              return <Seperator style={styleSeperator} />;
-            }}
-            renderItem={({ item }) => <FlatList
-              numColumns={3}
-              data={item.list}
-              initialNumToRender={9}
-              renderItem={this.renderItem}
-              keyExtractor={this.keyExtractor}
-            />}
-          />
-        </Fade>
-      </View>
-    );
+  const renderFlatList = ({ item }) => <FlatList numColumns={3}
+    data={item.list}
+    initialNumToRender={9}
+    renderItem={renderItem}
+    keyExtractor={keyExtractor} />;
+  renderFlatList.propTypes = {
+    item: PropTypes.shape({
+      list: PropTypes.object,
+    }),
+  };
+
+  const sectionKeyExtractor = (item, index) => `School${index}`;
+  const renderSectionHeader = ({ section: { title } }) => (
+    <Text style={styles.sectionText}>{title}</Text>
+  );
+  renderSectionHeader.propTypes = {
+    section: PropTypes.shape({
+      title: PropTypes.string.isRequired,
+    }),
+  };
+
+  if (isLoading) {
+    return <SplashScreen bgColor={Colors.blue} />;
   }
+
+  return <View style={[ApplicationStyles.screen, styles.container]}>
+    {/* HEADER */}
+    <ElevatedView elevation={5}
+      style={[ApplicationStyles.header, styles.container]}>
+      <SquareButton name={'ios-menu'} onPress={openDrawer} color={'white'} />
+      <Image source={Images.logo} style={ApplicationStyles.imageHeader} />
+      <View style={styles.hole} />
+    </ElevatedView>
+    <ConnectStatus />
+    {/* BODY */}
+    <SectionList sections={list}
+      initialNumToRender={9}
+      keyExtractor={sectionKeyExtractor}
+      style={styles.list}
+      renderSectionHeader={renderSectionHeader}
+      stickySectionHeadersEnabled={false}
+      ListHeaderComponent={<View style={styles.height10} />}
+      ListFooterComponent={<View style={styles.height10} />}
+      SectionSeparatorComponent={(data) => {
+        if (data.leadingItem && data.leadingItem.key === 'Other') return null;
+        const styleSeperator = {
+          backgroundColor: 'white',
+          marginBottom: data.leadingItem ? 20 : 0,
+        };
+        return <Seperator style={styleSeperator} />;
+      }}
+      renderItem={renderFlatList} />
+  </View>;
 }
+
+export default IdolsScreen;

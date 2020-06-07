@@ -1,85 +1,66 @@
-/* eslint-disable no-unused-vars */
-import React, { Component } from 'react';
-import { View, SafeAreaView, Alert } from 'react-native';
-import {
-  createSwitchNavigator,
-  createAppContainer,
-} from 'react-navigation';
-import { createDrawerNavigator } from 'react-navigation-drawer';
-import { createStackNavigator } from 'react-navigation-stack';
-import { createBottomTabNavigator } from 'react-navigation-tabs';
-import { Provider } from 'react-redux';
-import { PersistGate } from 'redux-persist/integration/react';
+import React, { useEffect, useMemo, useReducer } from 'react';
+import { Alert } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import { createDrawerNavigator } from '@react-navigation/drawer';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { NetworkProvider } from 'react-native-offline';
+import Icon from 'react-native-vector-icons/SimpleLineIcons';
 import firebase from 'react-native-firebase';
 import * as Sentry from '@sentry/react-native';
 
-import StatusBarBackground from '~/Components/StatusBarBackground/StatusBar';
-import { ApplicationStyles } from '~/Theme';
 import { loadSettings } from '~/Utils';
-import NavigationService from '~/Services/NavigationService';
 import { FirebaseTopic } from '~/Config';
-import ConfigureStore, { persistor } from '~/redux/store';
+import UserContext from '~/Context/UserContext';
+import reducer, { initState } from '~/Context/Reducer';
+import { Colors } from '~/Theme';
 
 import LoadingScreen from './LoadingScreen';
 import MainScreen from './MainScreen';
-import CardsScreen from './CardsScreen';
-import IdolsScreen from './IdolsScreen';
-import EventsScreen from './EventsScreen';
-import SongsScreen from './SongsScreen';
-import Drawer from './Drawer';
+// import CardsScreen from './CardsScreen';
+// import IdolsScreen from './IdolsScreen';
+// import EventsScreen from './EventsScreen';
+// import SongsScreen from './SongsScreen';
+import DrawerScreen from './Drawer';
 
-import CardDetailScreen from './CardDetailScreen';
-import EventDetailScreen from './EventDetailScreen';
-import IdolDetailScreen from './IdolDetailScreen/IdolDetail';
-import SongDetailScreen from './SongDetailScreen';
-import ImageViewer from './ImageViewer/ImageViewer';
+// import CardDetailScreen from './CardDetailScreen';
+// import EventDetailScreen from './EventDetailScreen';
+// import IdolDetailScreen from './IdolDetailScreen/IdolDetail';
+// import SongDetailScreen from './SongDetailScreen';
+// import ImageViewer from './ImageViewer/ImageViewer';
 
 Sentry.init({ dsn: 'https://ac9aa894ab9341fba115b29731378b6b@sentry.io/1330276' });
-const store = ConfigureStore;
 
-const LLSIFTab = createBottomTabNavigator(
-  {
-    MainScreen,
-    CardsScreen,
-    IdolsScreen,
-    EventsScreen,
-    SongsScreen,
-  },
-  {
-    initialRouteName: 'MainScreen',
-    navigationOptions: {
-      header: null,
-    },
-  },
-);
+const Tab = createBottomTabNavigator();
+const Stack = createStackNavigator();
+const Drawer = createDrawerNavigator();
 
-const Stack = createStackNavigator(
-  {
-    LLSIFScreen: LLSIFTab,
-    CardDetailScreen,
-    EventDetailScreen,
-    IdolDetailScreen,
-    SongDetailScreen,
-    ImageViewerScreen: ImageViewer,
-  },
-  {
-    initialRouteName: 'LLSIFScreen',
-    headerMode: 'none',
-  },
-);
+function LLSIFTab() {
+  return <Tab.Navigator>
+    <Tab.Screen name='MainScreen'
+      component={MainScreen}
+      options={{
+        tabBarIcon: ({ focused }) => <Icon name='home' size={25}
+          color={focused ? Colors.pink : Colors.inactive} />,
+        tabBarLabel: 'Home',
+      }} />
+    {/* <Tab.Screen name='CardsScreen' component={CardsScreen} />
+    <Tab.Screen name='IdolsScreen' component={IdolsScreen} />
+    <Tab.Screen name='EventsScreen' component={EventsScreen} />
+    <Tab.Screen name='SongsScreen' component={SongsScreen} /> */}
+  </Tab.Navigator >;
+}
 
-const AppStack = createDrawerNavigator({ Stack }, { contentComponent: Drawer });
+function LLSIFDrawer() {
+  return <Drawer.Navigator drawerContent={() => <DrawerScreen />}>
+    <Drawer.Screen name='Main' component={LLSIFTab} />
+  </Drawer.Navigator>;
+}
 
-const SwitchNavigator = createSwitchNavigator({
-  Loading: LoadingScreen,
-  AppStack,
-});
-
-const AppContainer = createAppContainer(SwitchNavigator);
-
-export default class MainContainer extends Component {
-  componentDidMount() {
-    // eslint-disable-next-line no-undef
+function MainContainer() {
+  const [state, dispatch] = useReducer(reducer, initState);
+  const userReducer = useMemo(() => ({ state, dispatch }), [state, dispatch]);
+  useEffect(() => {
     if (__DEV__) {
       // console.clear();
       // eslint-disable-next-line no-console
@@ -96,6 +77,7 @@ export default class MainContainer extends Component {
             .then(() => {
               // console.log('User has authorised');
             })
+            // eslint-disable-next-line no-unused-vars
             .catch((error) => {
               // console.log('User has rejected permissions');
             });
@@ -104,7 +86,8 @@ export default class MainContainer extends Component {
 
     const channel = new firebase.notifications.Android.Channel('notifications', 'Default channel', firebase.notifications.Android.Importance.High).enableLights(false);
     firebase.notifications().android.createChannel(channel);
-    this.notificationDisplayedListener = firebase.notifications()
+    const notificationDisplayedListener = firebase.notifications()
+      // eslint-disable-next-line no-unused-vars
       .onNotificationDisplayed((notification) => {
         // Process your notification as required
         // ANDROID: Remote notifications do not contain the channel ID.
@@ -112,17 +95,19 @@ export default class MainContainer extends Component {
         // console.log('notificationDisplayedListener', notification);
       });
 
-    this.notificationListener = firebase.notifications().onNotification((notification) => {
+    // eslint-disable-next-line no-unused-vars
+    const notificationListener = firebase.notifications().onNotification((notification) => {
       // Process your notification as required
       // console.log('notificationListener', notification);
     });
 
-    this.messageListener = firebase.messaging().onMessage((message) => {
+    // eslint-disable-next-line no-unused-vars
+    const messageListener = firebase.messaging().onMessage((message) => {
       // Process your message as required
       // console.log('messageListener', message);
     });
 
-    this.notificationOpenedListener = firebase.notifications()
+    const notificationOpenedListener = firebase.notifications()
       .onNotificationOpened((notificationOpen) => {
         // Get the action triggered by the notification being opened
         // Get information about the notification that was opened
@@ -137,10 +122,11 @@ export default class MainContainer extends Component {
           // App was opened by a notification
           // Get the action triggered by the notification being opened
           // Get information about the notification that was opened
+          // eslint-disable-next-line no-unused-vars
           const { action, notification } = notificationOpen;
           // console.log('firebase.notifications().getInitialNotification()', action, notification);
           if (notification.data.event !== undefined) {
-            NavigationService.navigate('EventDetailScreen', { eventName: notification.data.event });
+            //
           }
           if (notification.data.message !== undefined) {
             Alert.alert('Message', notification.data.message);
@@ -161,27 +147,42 @@ export default class MainContainer extends Component {
       }
     });
     firebase.messaging().subscribeToTopic(FirebaseTopic.MESSAGE);
-  }
 
-  componentWillUnmount() {
-    this.notificationDisplayedListener();
-    this.notificationListener();
-    this.notificationOpenedListener();
-    this.messageListener();
-  }
+    return () => {
+      notificationDisplayedListener();
+      notificationListener();
+      notificationOpenedListener();
+      messageListener();
+    };
+  }, []);
 
-  render() {
-    return (
-      <Provider store={store}>
-        <PersistGate persistor={persistor} loading={null}>
-          <SafeAreaView style={ApplicationStyles.screen}>
-            <View style={ApplicationStyles.screen}>
-              <StatusBarBackground />
-              <AppContainer />
-            </View>
-          </SafeAreaView>
-        </PersistGate>
-      </Provider>
-    );
-  }
+  console.log('state', state);
+  return <NetworkProvider>
+    <UserContext.Provider value={userReducer}>
+      <NavigationContainer>
+        <Stack.Navigator>
+          {state.loading ? (
+            <Stack.Screen name='LoadingScreen'
+              component={LoadingScreen}
+              options={{
+                headerShown: false,
+              }} />
+          ) : <>
+              <Stack.Screen name='DrawerScreen'
+                component={LLSIFDrawer}
+                options={{
+                  headerShown: false,
+                }} />
+              {/* <Stack.Screen name='CardDetailScreen' component={CardDetailScreen} />
+            <Stack.Screen name='EventDetailScreen' component={EventDetailScreen} />
+            <Stack.Screen name='IdolDetailScreen' component={IdolDetailScreen} />
+            <Stack.Screen name='SongDetailScreen' component={SongDetailScreen} />
+            <Stack.Screen name='ImageViewerScreen' component={ImageViewer} /> */}
+            </>}
+        </Stack.Navigator>
+      </NavigationContainer>
+    </UserContext.Provider>
+  </NetworkProvider>;
 }
+
+export default MainContainer;

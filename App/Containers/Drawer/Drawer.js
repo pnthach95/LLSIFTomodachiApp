@@ -5,7 +5,6 @@ import {
   Switch, ScrollView,
 } from 'react-native';
 import PropTypes from 'prop-types';
-import { SafeAreaView } from 'react-navigation';
 import firebase from 'react-native-firebase';
 import Icon from 'react-native-vector-icons/Ionicons';
 import VersionNumber from 'react-native-version-number';
@@ -133,104 +132,100 @@ export default class Drawer extends Component {
     if (this.props.isConnected) {
       this.props.navigation.navigate('CardDetailScreen', { item });
     }
-  }
+  };
 
   toggleExpanded = () => this.setState({ collapsed: !this.state.collapsed });
 
   render() {
-    return (
-      <SafeAreaView>
-        <ImageBackground source={{ uri: AddHTTPS(this.props.bgImage) }}
-          style={styles.fullscreen}>
-          <View style={ApplicationStyles.screen}>
-            <Fade visible={this.state.visible} style={styles.container}>
-              <View style={[ApplicationStyles.center, styles.header]}>
-                <Image source={Images.logo} style={styles.logo} resizeMode={'contain'} />
-              </View>
-              <View style={ApplicationStyles.screen}>
-                <TouchableOpacity onPress={this.groupToggle}>
-                  <View style={styles.group}>
-                    <Text style={Fonts.style.black}>OPTIONS</Text>
-                    <Icon name={this.state.isCollapsed ? 'ios-arrow-up' : 'ios-arrow-down'} size={20} />
-                  </View>
-                </TouchableOpacity>
-                {this.state.isCollapsed && <View style={styles.body}>
-                  <ScrollView bounces={false}>
-                    <View style={styles.settingRow}>
-                      <Text style={Fonts.style.black}>Search Worldwide only</Text>
-                      <Switch value={this.state.worldwide_only}
-                        onValueChange={this.worldwideToggle} />
-                    </View>
-                    <View style={styles.settingRow}>
-                      <Text style={Fonts.style.black}>Notify WW event</Text>
-                      <Switch value={this.state.ww_event}
-                        onValueChange={this.wwEventToggle} />
-                    </View>
-                    <View style={styles.settingRow}>
-                      <Text style={Fonts.style.black}>Notify JP event</Text>
-                      <Switch value={this.state.jp_event}
-                        onValueChange={this.jpEventToggle} />
-                    </View>
-                  </ScrollView>
-                </View>}
-                <TouchableOpacity onPress={this.groupToggle}>
-                  <View style={styles.group}>
-                    <Text style={Fonts.style.black}>ABOUT ME</Text>
-                    <Icon name={!this.state.isCollapsed ? 'ios-arrow-up' : 'ios-arrow-down'} size={20} />
-                  </View>
-                </TouchableOpacity>
-                {!this.state.isCollapsed && <View style={ApplicationStyles.screen}>
-                  <ScrollView bounces={false}
-                    contentContainerStyle={styles.textBlock}>
-                    <Text style={Fonts.style.black}>{RELEASE_NOTE}</Text>
-                  </ScrollView>
-                </View>}
-              </View>
-              <View style={[ApplicationStyles.center, styles.footer]}>
-                <View style={styles.footerBlock}>
-                  <Text style={styles.versionText}>
-                    {'Powered by '}
-                    {<Text onPress={() => openLink(Config.SCHOOLIDO)}
-                      style={[styles.versionText, styles.textUnderline]}>
-                      {'School Idol Tomodachi'}
-                    </Text>}
-                    {', '}
-                    {<Text onPress={() => openLink(Config.LLSIFNET)}
-                      style={[styles.versionText, styles.textUnderline]}>
-                      {'llsif.net'}
-                    </Text>}
-                  </Text>
-                </View>
-                <View style={styles.footerBlock}>
-                  <TouchableHighlight onPress={() => openLink(Config.GITHUB_PROJECT)}
-                    underlayColor={'#0000'}
-                    style={ApplicationStyles.center}>
-                    <View style={ApplicationStyles.center}>
-                      <Icon name={'logo-github'} size={50} />
-                      <Text style={Fonts.style.black}>Project</Text>
-                    </View>
-                  </TouchableHighlight>
-                </View>
-              </View>
-            </Fade>
-
-            <Fade visible={!this.state.visible}
-              style={[styles.container, styles.transparent]}>
-              <TouchableHighlight onPress={this.navigateToCardDetail(this.props.randomCard)}
-                underlayColor={'#fffa'}
-                style={[ApplicationStyles.center, styles.viewMore]}>
-                <Text style={styles.versionText}>View card info</Text>
-              </TouchableHighlight>
-            </Fade>
-
-            <TouchableHighlight onPress={this.visibleToggle}
-              underlayColor={'#fff'}
-              style={[ApplicationStyles.center, styles.versionContainer]}>
-              <Text style={styles.versionText}>Version {VersionNumber.appVersion}</Text>
-            </TouchableHighlight>
+    return <ImageBackground source={{ uri: AddHTTPS(this.props.bgImage) }}
+      style={styles.fullscreen}>
+      <View style={ApplicationStyles.screen}>
+        <Fade visible={this.state.visible} style={styles.container}>
+          <View style={[ApplicationStyles.center, styles.header]}>
+            <Image source={Images.logo} style={styles.logo} resizeMode={'contain'} />
           </View>
-        </ImageBackground>
-      </SafeAreaView>
-    );
+          <View style={ApplicationStyles.screen}>
+            <TouchableOpacity onPress={this.groupToggle}>
+              <View style={styles.group}>
+                <Text style={Fonts.style.black}>OPTIONS</Text>
+                <Icon name={this.state.isCollapsed ? 'ios-arrow-up' : 'ios-arrow-down'} size={20} />
+              </View>
+            </TouchableOpacity>
+            {this.state.isCollapsed && <View style={styles.body}>
+              <ScrollView bounces={false}>
+                <View style={styles.settingRow}>
+                  <Text style={Fonts.style.black}>Search Worldwide only</Text>
+                  <Switch value={this.state.worldwide_only}
+                    onValueChange={this.worldwideToggle} />
+                </View>
+                <View style={styles.settingRow}>
+                  <Text style={Fonts.style.black}>Notify WW event</Text>
+                  <Switch value={this.state.ww_event}
+                    onValueChange={this.wwEventToggle} />
+                </View>
+                <View style={styles.settingRow}>
+                  <Text style={Fonts.style.black}>Notify JP event</Text>
+                  <Switch value={this.state.jp_event}
+                    onValueChange={this.jpEventToggle} />
+                </View>
+              </ScrollView>
+            </View>}
+            <TouchableOpacity onPress={this.groupToggle}>
+              <View style={styles.group}>
+                <Text style={Fonts.style.black}>ABOUT ME</Text>
+                <Icon name={!this.state.isCollapsed ? 'ios-arrow-up' : 'ios-arrow-down'} size={20} />
+              </View>
+            </TouchableOpacity>
+            {!this.state.isCollapsed && <View style={ApplicationStyles.screen}>
+              <ScrollView bounces={false}
+                contentContainerStyle={styles.textBlock}>
+                <Text style={Fonts.style.black}>{RELEASE_NOTE}</Text>
+              </ScrollView>
+            </View>}
+          </View>
+          <View style={[ApplicationStyles.center, styles.footer]}>
+            <View style={styles.footerBlock}>
+              <Text style={styles.versionText}>
+                {'Powered by '}
+                {<Text onPress={() => openLink(Config.SCHOOLIDO)}
+                  style={[styles.versionText, styles.textUnderline]}>
+                  {'School Idol Tomodachi'}
+                </Text>}
+                {', '}
+                {<Text onPress={() => openLink(Config.LLSIFNET)}
+                  style={[styles.versionText, styles.textUnderline]}>
+                  {'llsif.net'}
+                </Text>}
+              </Text>
+            </View>
+            <View style={styles.footerBlock}>
+              <TouchableHighlight onPress={() => openLink(Config.GITHUB_PROJECT)}
+                underlayColor={'#0000'}
+                style={ApplicationStyles.center}>
+                <View style={ApplicationStyles.center}>
+                  <Icon name={'logo-github'} size={50} />
+                  <Text style={Fonts.style.black}>Project</Text>
+                </View>
+              </TouchableHighlight>
+            </View>
+          </View>
+        </Fade>
+
+        <Fade visible={!this.state.visible}
+          style={[styles.container, styles.transparent]}>
+          <TouchableHighlight onPress={this.navigateToCardDetail(this.props.randomCard)}
+            underlayColor={'#fffa'}
+            style={[ApplicationStyles.center, styles.viewMore]}>
+            <Text style={styles.versionText}>View card info</Text>
+          </TouchableHighlight>
+        </Fade>
+
+        <TouchableHighlight onPress={this.visibleToggle}
+          underlayColor={'#fff'}
+          style={[ApplicationStyles.center, styles.versionContainer]}>
+          <Text style={styles.versionText}>Version {VersionNumber.appVersion}</Text>
+        </TouchableHighlight>
+      </View>
+    </ImageBackground>;
   }
 }

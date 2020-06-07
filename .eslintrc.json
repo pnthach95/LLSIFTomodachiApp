@@ -8,9 +8,11 @@
   },
   "plugins": [
     "react",
+    "react-hooks",
     "react-native",
     "react-redux",
     "redux-saga",
+    "jsdoc",
     "import"
   ],
   "extends": [
@@ -54,6 +56,10 @@
     }
   },
   "env": {
-    "jest": true
+    "jest": true,
+    "browser": true
+  },
+  "globals": {
+    "__DEV__": true
   }
 }

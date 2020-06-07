@@ -4,7 +4,6 @@ import { Config } from '../Config';
 
 const LLSIFApiClient = create({
   baseURL: Config.API_URL,
-  timeout: 10000,
 });
 
 /**

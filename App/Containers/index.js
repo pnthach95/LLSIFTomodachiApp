@@ -6,6 +6,7 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NetworkProvider } from 'react-native-offline';
 import Icon from 'react-native-vector-icons/SimpleLineIcons';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import firebase from 'react-native-firebase';
 import * as Sentry from '@sentry/react-native';
 
@@ -17,7 +18,7 @@ import { Colors } from '~/Theme';
 
 import LoadingScreen from './LoadingScreen';
 import MainScreen from './MainScreen';
-// import CardsScreen from './CardsScreen';
+import CardsScreen from './CardsScreen';
 // import IdolsScreen from './IdolsScreen';
 // import EventsScreen from './EventsScreen';
 // import SongsScreen from './SongsScreen';
@@ -44,8 +45,14 @@ function LLSIFTab() {
           color={focused ? Colors.pink : Colors.inactive} />,
         tabBarLabel: 'Home',
       }} />
-    {/* <Tab.Screen name='CardsScreen' component={CardsScreen} />
-    <Tab.Screen name='IdolsScreen' component={IdolsScreen} />
+    <Tab.Screen name='CardsScreen'
+      component={CardsScreen}
+      options={{
+        tabBarIcon: ({ focused }) => <Ionicons name='ios-photos' size={30}
+          color={focused ? Colors.pink : Colors.inactive} />,
+        tabBarLabel: 'Cards',
+      }} />
+    {/* <Tab.Screen name='IdolsScreen' component={IdolsScreen} />
     <Tab.Screen name='EventsScreen' component={EventsScreen} />
     <Tab.Screen name='SongsScreen' component={SongsScreen} /> */}
   </Tab.Navigator >;
@@ -156,7 +163,7 @@ function MainContainer() {
     };
   }, []);
 
-  console.log('state', state);
+  // console.log('state', state);
   return <NetworkProvider>
     <UserContext.Provider value={userReducer}>
       <NavigationContainer>

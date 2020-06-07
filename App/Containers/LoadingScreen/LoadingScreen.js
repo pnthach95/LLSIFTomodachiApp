@@ -24,7 +24,9 @@ function LoadingScreen() {
   }, []);
 
   const loadCachedData = async () => {
+    setError(false);
     try {
+      const cachedData = {};
       const data = await LLSIFService.fetchCachedData();
       const eventEN = await LLSIFService.fetchEventList({
         ordering: '-english_beginning',
@@ -36,10 +38,33 @@ function LoadingScreen() {
           page_size: 1,
         },
       );
+
+      const cardsInfo = data.cards_info;
+      const idols = cardsInfo.idols.map((value) => ({
+        label: value.name,
+        value: value.name,
+      }));
+      cachedData.idols = idols;
+      const skills = cardsInfo.skills.map((value) => ({
+        label: value.skill,
+        value: value.skill,
+      }));
+      cachedData.skills = skills;
+      const subUnits = cardsInfo.sub_units.map((value) => ({
+        label: value,
+        value,
+      }));
+      cachedData.subUnits = subUnits;
+      const schools = cardsInfo.schools.map((value) => ({
+        label: value,
+        value,
+      }));
+      cachedData.schools = schools;
+
       const [eventEN0] = eventEN;
       const [eventJP0] = eventJP;
-      data.ENEvent = eventEN0;
-      data.JPEvent = eventJP0;
+      cachedData.ENEvent = eventEN0;
+      cachedData.JPEvent = eventJP0;
       const randomCard = await LLSIFService.fetchRandomCard();
       const r = Math.floor(Math.random() * 10);
       let bgImage = '';
@@ -48,13 +73,13 @@ function LoadingScreen() {
       } else {
         bgImage = randomCard.clean_ur_idolized;
       }
-      data.randomCard = randomCard;
-      data.bgImage = bgImage;
+      cachedData.randomCard = randomCard;
+      cachedData.bgImage = bgImage;
       const eventInfo = await LLSIFdotnetService.fetchEventInfo();
-      data.eventInfo = eventInfo;
+      cachedData.eventInfo = eventInfo;
       dispatch({
         type: actions.DONE_LOADING,
-        data,
+        data: cachedData,
       });
     } catch (e) {
       setError(true);

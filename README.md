@@ -10,9 +10,6 @@ This project is a Love Live School Idol Festival app using data from [School Ido
 The project contains:
 
 - [React Native](https://facebook.github.io/react-native/) (v0.61.2)
-- [Redux](https://redux.js.org/) (v4.0.4)
-- [Redux Saga](https://redux-saga.js.org) (v1.1.1)
-- [Redux Saga Thunk](https://github.com/diegohaz/redux-saga-thunk) (v0.7.3)
 - [React Navigation](https://reactnavigation.org/) (v4.0.10)
 - [apisauce](https://github.com/infinitered/apisauce) (v1.1.1)
 - [React Native Firebase](http://rnfirebase.io) (v5.5.6, for push notification)
@@ -37,7 +34,6 @@ The project contains:
 - [`App/Images`](App/Images): images used by the application
 - [`App/Sagas`](App/Sagas): redux sagas
 - [`App/Services`](App/Services): application services, e.g. API clients
-- [`App/Stores`](App/Stores): redux [actions, reducers and stores](https://redux.js.org/basics)
 - [`App/Theme`](App/Theme): base styles for the application
 - [`App/Utils`](App/Utils): some utility tools
 

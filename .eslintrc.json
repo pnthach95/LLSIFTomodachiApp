@@ -10,8 +10,6 @@
     "react",
     "react-hooks",
     "react-native",
-    "react-redux",
-    "redux-saga",
     "jsdoc",
     "import"
   ],
@@ -21,8 +19,6 @@
     "plugin:import/warnings",
     "plugin:react/recommended",
     "plugin:react-native/all",
-    "plugin:react-redux/recommended",
-    "plugin:redux-saga/recommended",
     "airbnb-base"
   ],
   "rules": {

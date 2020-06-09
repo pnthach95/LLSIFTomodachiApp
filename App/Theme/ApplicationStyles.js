@@ -28,7 +28,6 @@ export default {
   mediumIcon: {
     width: Metrics.icons.medium,
     height: Metrics.icons.medium,
-    resizeMode: 'contain',
   },
   largeIcon: {
     width: Metrics.icons.large,

@@ -47,8 +47,7 @@ export default StyleSheet.create({
   },
   rightHeaderImage: {
     height: Metrics.navBarHeight,
-    resizeMode: 'contain',
-    width: Metrics.screenWidth * 0.17,
+    width: Metrics.navBarHeight,
   },
   rightRadius: {
     borderBottomRightRadius: Metrics.baseMargin,

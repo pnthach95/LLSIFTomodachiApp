@@ -274,7 +274,7 @@ SongDetailScreen.propTypes = {
         expert_random_difficulty: PropTypes.any,
         image: PropTypes.string,
         rank: PropTypes.string,
-        event: PropTypes.string,
+        event: PropTypes.object,
         BPM: PropTypes.number,
         time: PropTypes.number,
         daily_rotation: PropTypes.string,

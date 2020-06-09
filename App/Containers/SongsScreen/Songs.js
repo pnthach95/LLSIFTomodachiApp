@@ -7,6 +7,7 @@ import PropTypes from 'prop-types';
 import ElevatedView from 'react-native-elevated-view';
 import _ from 'lodash';
 
+import useStatusBar from '~/hooks/useStatusBar';
 import ConnectStatus from '~/Components/ConnectStatus';
 import EventRow from '~/Components/EventRow/EventRow';
 import SongItem from '~/Components/SongItem/SongItem';
@@ -18,7 +19,7 @@ import SquareButton from '~/Components/SquareButton/SquareButton';
 import SplashScreen from '../SplashScreen/SplashScreen';
 import LLSIFService from '~/Services/LLSIFService';
 import {
-  ApplicationStyles, Images, Fonts,
+  ApplicationStyles, Images, Fonts, Colors,
 } from '~/Theme';
 import { OrderingGroup } from '~/Config';
 import styles from './styles';
@@ -59,6 +60,7 @@ const defaultFilter = {
  *
  */
 function SongsScreen({ navigation }) {
+  useStatusBar('dark-content', Colors.white);
   const [isLoading, setIsLoading] = useState(true);
   const [list, setList] = useState([]);
   const [isFilter, setIsFilter] = useState(false);

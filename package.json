@@ -49,6 +49,7 @@
     "react-native-picker-select": "^7.0.0",
     "react-native-pure-chart": "0.0.24",
     "react-native-reanimated": "^1.9.0",
+    "react-native-responsive-dimensions": "^3.1.1",
     "react-native-safe-area-context": "^3.0.2",
     "react-native-screens": "^2.8.0",
     "react-native-segmented-control-tab": "^3.4.1",

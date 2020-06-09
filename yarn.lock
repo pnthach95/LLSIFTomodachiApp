@@ -1061,10 +1061,10 @@
   dependencies:
     nanoid "^3.1.5"
 
-"@react-navigation/stack@^5.4.2":
-  version "5.4.2"
-  resolved "https://registry.yarnpkg.com/@react-navigation/stack/-/stack-5.4.2.tgz#ca4e77e8ab55b446e44f656068702825ec3b29d3"
-  integrity sha512-EG8DqHsfg257XeNaO6MIeAnPClekmr8po3PYikezyXon02rJUmHU4px25/PWOvh1hTFiH40W4WYBKzrzMBFaOQ==
+"@react-navigation/stack@^5.5.1":
+  version "5.5.1"
+  resolved "https://registry.yarnpkg.com/@react-navigation/stack/-/stack-5.5.1.tgz#95efa28edbfd1323e5ad9f01f539d43ffad8decc"
+  integrity sha512-oU2FEm+Ba6jMd5VA2WnuNfCO2HlZmGhrEX9yjBCyFj7fFCG1SB7WJdKLhZShtx3KxG/qWKphICeTLlYvkHdSpQ==
   dependencies:
     color "^3.1.2"
     react-native-iphone-x-helper "^1.2.1"
@@ -1172,10 +1172,10 @@
     "@sentry/types" "5.16.1"
     tslib "^1.9.3"
 
-"@sentry/react-native@^1.4.4":
-  version "1.4.4"
-  resolved "https://registry.yarnpkg.com/@sentry/react-native/-/react-native-1.4.4.tgz#b5be33d3766a69bcc722b37ec6a1c9080ab0c64e"
-  integrity sha512-PIhq7RGuUTPwxf+33jNHpvv9YZYFih7AtMJeytErgUJghHc4hbI2FztA+mpsjAN0PDcHJPMaul8Ka8HZmA4Log==
+"@sentry/react-native@^1.4.5":
+  version "1.4.5"
+  resolved "https://registry.yarnpkg.com/@sentry/react-native/-/react-native-1.4.5.tgz#bbbd431604e8436309c3b385904856708768cb52"
+  integrity sha512-Ruh3992WsaNSDwwV8b3KFyus6INK45ZwG1TvpvJLh/Dsq7YfWcSymdJXPqEI+xSgDSft1qlIbwptyVvLCHMWlA==
   dependencies:
     "@sentry/browser" "^5.16.1"
     "@sentry/core" "^5.16.1"
@@ -5879,6 +5879,11 @@ react-native-image-gallery@^2.1.5:
     prop-types "^15.6.0"
     react-mixin "^3.0.5"
     react-timer-mixin "^0.13.3"
+
+react-native-image-viewing@^0.2.0:
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/react-native-image-viewing/-/react-native-image-viewing-0.2.0.tgz#3c0bc67cfb9aa7607cec632139d7ef4c45e07e4e"
+  integrity sha512-j2JXv86WRXGNme4LPsNCJ/2MgX+oVbmJ5ZLbGrYbKXcCPe9OshqlQI5L3SdbAxWu/F5pubcMaXp0zoYNaZVuzA==
 
 react-native-indicators@^0.17.0:
   version "0.17.0"

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import {
   Text, View, FlatList, TextInput,
   TouchableNativeFeedback, Alert, ScrollView,
@@ -8,6 +8,7 @@ import PropTypes from 'prop-types';
 import ElevatedView from 'react-native-elevated-view';
 import _ from 'lodash';
 
+import useStatusBar from '~/hooks/useStatusBar';
 import ConnectStatus from '~/Components/ConnectStatus';
 import YearRow from '~/Components/YearRow/YearRow';
 import CardItem from '~/Components/CardItem/CardItem';
@@ -61,6 +62,7 @@ import { OrderingGroup } from '~/Config';
  *
  */
 function CardsScreen({ navigation }) {
+  useStatusBar('dark-content', Colors.white);
   const defaultFilter = {
     search: '',
     selectedOrdering: OrderingGroup.CARD[0].value,
@@ -162,7 +164,7 @@ function CardsScreen({ navigation }) {
    * Get card list
    *
    */
-  function getCards() {
+  async function getCards() {
     const ordering = (searchOptions.isReverse ? '-' : '') + searchOptions.selectedOrdering;
     const theFilter = {
       ordering,
@@ -182,8 +184,9 @@ function CardsScreen({ navigation }) {
     if (searchOptions.is_special !== '') theFilter.is_special = searchOptions.is_special;
     if (searchOptions.rarity !== '') theFilter.rarity = searchOptions.rarity;
     if (searchOptions.search !== '') theFilter.search = searchOptions.search;
-    console.log(`Cards.getCards: ${JSON.stringify(theFilter)}`);
-    LLSIFService.fetchCardList(theFilter).then((result) => {
+    // console.log(`Cards.getCards: ${JSON.stringify(theFilter)}`);
+    try {
+      const result = await LLSIFService.fetchCardList(theFilter);
       if (result === 404) {
         // console.log('LLSIFService.fetchCardList 404');
         setStopSearch(true);
@@ -192,25 +195,20 @@ function CardsScreen({ navigation }) {
         x = x.filter((thing, index, self) => index === self.findIndex((t) => t.id === thing.id));
         setList(x);
       }
-    }).catch((err) => {
+    } catch (err) {
       Alert.alert('Error', 'Error when get cards',
         [{ text: 'OK', onPress: () => console.log(`OK Pressed, ${err}`) }]);
-    }).finally(() => {
+    } finally {
       setIsLoading(false);
-    });
+    }
   }
 
-  /**
-   * Open drawer
-   *
-   * @memberof CardsScreen
-   */
-  const openDrawer = () => navigation.openDrawer();
+  /** Open drawer */
+  const openDrawer = useCallback(() => navigation.openDrawer(), []);
 
   /**
    * Call when pressing search button
    *
-   * @memberof CardsScreen
    */
   const onSearch = () => {
     setList([]);
@@ -223,7 +221,6 @@ function CardsScreen({ navigation }) {
    * Call when scrolling to the end of list.
    * stopSearch prevents calling getCards when no card was found (404).
    *
-   * @memberof CardsScreen
    */
   function onEndReaching() {
     if (stopSearch) return;
@@ -358,7 +355,6 @@ function CardsScreen({ navigation }) {
    * Save idol_sub_unit
    *
    * @param {String} itemValue
-   * @memberof CardsScreen
    */
   const selectSubUnit = (itemValue) => {
     setSearchOptions({
@@ -371,7 +367,6 @@ function CardsScreen({ navigation }) {
    * Save idol name
    *
    * @param {String} itemValue
-   * @memberof CardsScreen
    */
   const selectIdol = (itemValue) => {
     setSearchOptions({
@@ -384,7 +379,6 @@ function CardsScreen({ navigation }) {
    * Save school
    *
    * @param {String} itemValue
-   * @memberof CardsScreen
    */
   const selectSchool = (itemValue) => {
     setSearchOptions({
@@ -397,7 +391,6 @@ function CardsScreen({ navigation }) {
    * Save skill
    *
    * @param {String} itemValue
-   * @memberof CardsScreen
    */
   const selectSkill = (itemValue) => {
     setSearchOptions({
@@ -410,7 +403,6 @@ function CardsScreen({ navigation }) {
    * Save ordering
    *
    * @param {String} itemValue
-   * @memberof CardsScreen
    */
   const selectOrdering = (itemValue) => {
     setSearchOptions({
@@ -422,7 +414,6 @@ function CardsScreen({ navigation }) {
   /**
    * Reset filter variables
    *
-   * @memberof CardsScreen
    */
   const resetFilter = () => {
     setSearchOptions(defaultFilter);
@@ -431,7 +422,6 @@ function CardsScreen({ navigation }) {
   /**
    * Render footer of FlatList
    *
-   * @memberof CardsScreen
    */
   const renderFooter = <View style={[ApplicationStyles.center, styles.flatListElement]}>
     <Image source={Images.alpaca} />

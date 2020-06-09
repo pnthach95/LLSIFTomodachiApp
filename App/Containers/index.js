@@ -37,39 +37,36 @@ const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
 
 function LLSIFTab() {
-  const homeIcon = ({ focused }) => <Icon name='home'
-    size={25}
-    color={focused ? Colors.pink : Colors.inactive} />;
+  const homeIcon = ({ color }) => <Icon name='home'
+    size={25} color={color} />;
   homeIcon.propTypes = {
-    focused: PropTypes.bool,
+    color: PropTypes.string,
   };
 
-  const cardIcon = ({ focused }) => <Ionicons name='ios-photos'
-    size={30}
-    color={focused ? Colors.pink : Colors.inactive} />;
+  const cardIcon = ({ color }) => <Ionicons name='ios-photos'
+    size={30} color={color} />;
   cardIcon.propTypes = {
-    focused: PropTypes.bool,
+    color: PropTypes.string,
   };
 
-  const idolIcon = ({ focused }) => <Ionicons size={30}
+  const idolIcon = ({ focused, color }) => <Ionicons size={30}
     name={focused ? 'ios-star' : 'ios-star-outline'}
-    color={focused ? Colors.pink : Colors.inactive} />;
+    color={color} />;
   idolIcon.propTypes = {
     focused: PropTypes.bool,
+    color: PropTypes.string,
   };
 
-  const eventIcon = ({ focused }) => <Ionicons name='md-calendar'
-    size={30}
-    color={focused ? Colors.pink : Colors.inactive} />;
+  const eventIcon = ({ color }) => <Ionicons name='md-calendar'
+    size={30} color={color} />;
   eventIcon.propTypes = {
-    focused: PropTypes.bool,
+    color: PropTypes.string,
   };
 
-  const songIcon = ({ focused }) => <Ionicons name='ios-musical-notes'
-    size={30}
-    color={focused ? Colors.pink : Colors.inactive} />;
+  const songIcon = ({ color }) => <Ionicons name='ios-musical-notes'
+    size={30} color={color} />;
   songIcon.propTypes = {
-    focused: PropTypes.bool,
+    color: PropTypes.string,
   };
 
   return <Tab.Navigator tabBarOptions={{
@@ -219,13 +216,12 @@ function MainContainer() {
     <UserContext.Provider value={userReducer}>
       <NavigationContainer>
         <Stack.Navigator>
-          {state.loading ? (
-            <Stack.Screen name='LoadingScreen'
-              component={LoadingScreen}
-              options={{
-                headerShown: false,
-              }} />
-          ) : <>
+          {state.loading ? <Stack.Screen name='LoadingScreen'
+            component={LoadingScreen}
+            options={{
+              headerShown: false,
+            }} />
+            : <>
               <Stack.Screen name='DrawerScreen'
                 component={LLSIFDrawer}
                 options={{
@@ -235,8 +231,10 @@ function MainContainer() {
                 component={CardDetailScreen} />
               <Stack.Screen name='EventDetailScreen'
                 component={EventDetailScreen} />
-              <Stack.Screen name='IdolDetailScreen' component={IdolDetailScreen} />
-              <Stack.Screen name='SongDetailScreen' component={SongDetailScreen} />
+              <Stack.Screen name='IdolDetailScreen'
+                component={IdolDetailScreen} />
+              <Stack.Screen name='SongDetailScreen'
+                component={SongDetailScreen} />
             </>}
         </Stack.Navigator>
       </NavigationContainer>

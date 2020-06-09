@@ -1,16 +1,15 @@
 import React, { useContext, useEffect, useState } from 'react';
 import {
-  View, Text, ImageBackground,
-  TouchableHighlight, TouchableOpacity, Image,
-  Switch, ScrollView,
+  View, Text, ImageBackground, TouchableHighlight,
+  TouchableOpacity, Switch, ScrollView,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import firebase from 'react-native-firebase';
+import FastImage from 'react-native-fast-image';
 import Icon from 'react-native-vector-icons/Ionicons';
 import VersionNumber from 'react-native-version-number';
 
 import UserContext from '~/Context/UserContext';
-import Fade from '~/Components/Fade/Fade';
 import styles from './styles';
 import { Images, ApplicationStyles, Fonts } from '~/Theme';
 import { Config, RELEASE_NOTE } from '~/Config';
@@ -125,9 +124,11 @@ function Drawer() {
   return <ImageBackground source={{ uri: AddHTTPS(state.cachedData.bgImage) }}
     style={styles.fullscreen}>
     <View style={ApplicationStyles.screen}>
-      <Fade visible={options.visible} style={styles.container}>
+      {options.visible ? <View style={styles.container}>
         <View style={[ApplicationStyles.center, styles.header]}>
-          <Image source={Images.logo} style={styles.logo} resizeMode={'contain'} />
+          <FastImage source={Images.logo}
+            style={styles.logo}
+            resizeMode='contain' />
         </View>
         <View style={ApplicationStyles.screen}>
           <TouchableOpacity onPress={groupToggle}>
@@ -194,16 +195,14 @@ function Drawer() {
             </TouchableHighlight>
           </View>
         </View>
-      </Fade>
-
-      <Fade visible={!options.visible}
-        style={[styles.container, styles.transparent]}>
-        <TouchableHighlight onPress={navigateToCardDetail}
-          underlayColor={'#fffa'}
-          style={[ApplicationStyles.center, styles.viewMore]}>
-          <Text style={styles.versionText}>View card info</Text>
-        </TouchableHighlight>
-      </Fade>
+      </View>
+        : <View style={[styles.container, styles.transparent]}>
+          <TouchableHighlight onPress={navigateToCardDetail}
+            underlayColor={'#fffa'}
+            style={[ApplicationStyles.center, styles.viewMore]}>
+            <Text style={styles.versionText}>View card info</Text>
+          </TouchableHighlight>
+        </View>}
 
       <TouchableHighlight onPress={visibleToggle}
         underlayColor={'#fff'}

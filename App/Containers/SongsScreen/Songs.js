@@ -105,7 +105,10 @@ function SongsScreen({ navigation }) {
    */
   function onEndReaching() {
     if (stopSearch) return;
-    getSongs();
+    setSearchOptions({
+      ...searchOptions,
+      page: searchOptions.page + 1,
+    });
   }
 
   /**

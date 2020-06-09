@@ -60,8 +60,8 @@ function LoadingScreen() {
         value,
       }));
       cachedData.schools = schools;
-      const maxStats = cardsInfo.max_stats;
-      cachedData.maxStats = maxStats;
+      cachedData.maxStats = cardsInfo.max_stats;
+      cachedData.songsMaxStats = cardsInfo.songs_max_stats;
 
       const [eventEN0] = eventEN;
       const [eventJP0] = eventJP;

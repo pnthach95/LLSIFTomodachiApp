@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useReducer } from 'react';
+import PropTypes from 'prop-types';
 import { Alert } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -36,43 +37,73 @@ const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
 
 function LLSIFTab() {
-  return <Tab.Navigator>
+  const homeIcon = ({ focused }) => <Icon name='home'
+    size={25}
+    color={focused ? Colors.pink : Colors.inactive} />;
+  homeIcon.propTypes = {
+    focused: PropTypes.bool,
+  };
+
+  const cardIcon = ({ focused }) => <Ionicons name='ios-photos'
+    size={30}
+    color={focused ? Colors.pink : Colors.inactive} />;
+  cardIcon.propTypes = {
+    focused: PropTypes.bool,
+  };
+
+  const idolIcon = ({ focused }) => <Ionicons size={30}
+    name={focused ? 'ios-star' : 'ios-star-outline'}
+    color={focused ? Colors.pink : Colors.inactive} />;
+  idolIcon.propTypes = {
+    focused: PropTypes.bool,
+  };
+
+  const eventIcon = ({ focused }) => <Ionicons name='md-calendar'
+    size={30}
+    color={focused ? Colors.pink : Colors.inactive} />;
+  eventIcon.propTypes = {
+    focused: PropTypes.bool,
+  };
+
+  const songIcon = ({ focused }) => <Ionicons name='ios-musical-notes'
+    size={30}
+    color={focused ? Colors.pink : Colors.inactive} />;
+  songIcon.propTypes = {
+    focused: PropTypes.bool,
+  };
+
+  return <Tab.Navigator tabBarOptions={{
+    activeTintColor: Colors.pink,
+    inactiveTintColor: Colors.inactive,
+  }}>
     <Tab.Screen name='MainScreen'
       component={MainScreen}
       options={{
-        tabBarIcon: ({ focused }) => <Icon name='home' size={25}
-          color={focused ? Colors.pink : Colors.inactive} />,
+        tabBarIcon: homeIcon,
         tabBarLabel: 'Home',
       }} />
     <Tab.Screen name='CardsScreen'
       component={CardsScreen}
       options={{
-        tabBarIcon: ({ focused }) => <Ionicons name='ios-photos' size={30}
-          color={focused ? Colors.pink : Colors.inactive} />,
+        tabBarIcon: cardIcon,
         tabBarLabel: 'Cards',
       }} />
     <Tab.Screen name='IdolsScreen'
       component={IdolsScreen}
       options={{
-        tabBarIcon: ({ focused }) => (
-          focused
-            ? <Ionicons name='ios-star' size={30} color={Colors.pink} />
-            : <Ionicons name='ios-star-outline' size={30} color={Colors.inactive} />
-        ),
+        tabBarIcon: idolIcon,
         tabBarLabel: 'Idols',
       }} />
     <Tab.Screen name='EventsScreen'
       component={EventsScreen}
       options={{
-        tabBarIcon: ({ focused }) => <Ionicons name='md-calendar' size={30}
-          color={focused ? Colors.pink : Colors.inactive} />,
+        tabBarIcon: eventIcon,
         tabBarLabel: 'Events',
       }} />
     <Tab.Screen name='SongsScreen'
       component={SongsScreen}
       options={{
-        tabBarIcon: ({ focused }) => <Ionicons name='ios-musical-notes' size={30}
-          color={focused ? Colors.pink : Colors.inactive} />,
+        tabBarIcon: songIcon,
         tabBarLabel: 'Songs',
       }} />
   </Tab.Navigator >;
@@ -187,15 +218,16 @@ function MainContainer() {
   return <NetworkProvider>
     <UserContext.Provider value={userReducer}>
       <NavigationContainer>
-        <Stack.Navigator screenOptions={{
-          headerShown: false,
-        }}>
+        <Stack.Navigator>
           {state.loading ? (
             <Stack.Screen name='LoadingScreen'
               component={LoadingScreen} />
           ) : <>
               <Stack.Screen name='DrawerScreen'
-                component={LLSIFDrawer} />
+                component={LLSIFDrawer}
+                options={{
+                  headerShown: false,
+                }} />
               <Stack.Screen name='CardDetailScreen'
                 component={CardDetailScreen} />
               <Stack.Screen name='EventDetailScreen'

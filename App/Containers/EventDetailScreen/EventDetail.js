@@ -1,14 +1,13 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { View } from 'react-native';
 import PropTypes from 'prop-types';
-import ElevatedView from 'react-native-elevated-view';
 import SegmentedControlTab from 'react-native-segmented-control-tab';
 import moment from 'moment';
 
 import Information from './Information';
 import Tracker from './Tracker';
 import UserContext from '~/Context/UserContext';
-import SquareButton from '~/Components/SquareButton/SquareButton';
+import useStatusBar from '~/hooks/useStatusBar';
 import SplashScreen from '../SplashScreen/SplashScreen';
 import LLSIFService from '~/Services/LLSIFService';
 import LLSIFdotnetService from '~/Services/LLSIFdotnetService';
@@ -40,6 +39,8 @@ import styles from './styles';
  *
  */
 function EventDetailScreen({ navigation, route }) {
+  useStatusBar('dark-content', Colors.lightViolet);
+
   const { state } = useContext(UserContext);
   const wwEventInfo = state.cachedData.eventInfo.ww;
   const jpEventInfo = state.cachedData.eventInfo.jp;
@@ -56,11 +57,23 @@ function EventDetailScreen({ navigation, route }) {
   let jpTracker = null;
 
   useEffect(() => {
+    const customHeader = () => <SegmentedControlTab
+      values={['Information', 'Tier cutoff']}
+      selectedIndex={selectedTab}
+      onTabPress={onTabPress} />;
+
+    const blankView = () => <View />;
+
+    navigation.setOptions({
+      headerStyle: styles.header,
+      headerTitle: customHeader,
+      headerRight: blankView,
+    });
+  }, []);
+
+  useEffect(() => {
     if (route.params.eventName) {
-      const name = ReplaceQuestionMark(route.params.eventName);
-      LLSIFService.fetchEventData(name).then((res) => {
-        setItem(res);
-      });
+      getItem();
     }
   }, [route.params.eventName]);
 
@@ -69,6 +82,12 @@ function EventDetailScreen({ navigation, route }) {
       loadData();
     }
   }, [item]);
+
+  async function getItem() {
+    const name = ReplaceQuestionMark(route.params.eventName);
+    const res = await LLSIFService.fetchEventData(name);
+    setItem(res);
+  }
 
   function parseEventTracker(data) {
     const result = [];
@@ -88,7 +107,7 @@ function EventDetailScreen({ navigation, route }) {
    * Load card list, song list in event
    *
    */
-  function loadData() {
+  async function loadData() {
     setWWEventStart(moment(item.english_beginning));
     setWWEventEnd(moment(item.english_end));
     setJPEventStart(moment(item.beginning, Config.DATETIME_FORMAT_INPUT));
@@ -96,29 +115,29 @@ function EventDetailScreen({ navigation, route }) {
     const wwEvent = wwEventInfo.filter((value) => value.start_date === WWEventStart.unix());
     const jpEvent = jpEventInfo.filter((value) => value.start_date === JPEventStart.unix());
     if (wwEvent.length > 0) {
-      LLSIFdotnetService.fetchEventData({ svr: 'EN', eid: wwEvent[0].event_id, cname: 'en' })
-        .then((res) => {
-          const data = parseEventTracker(res);
-          wwTracker = data;
-        });
+      const res = await LLSIFdotnetService.fetchEventData({
+        svr: 'EN',
+        eid: wwEvent[0].event_id,
+        cname: 'en',
+      });
+      const data = parseEventTracker(res);
+      wwTracker = data;
     }
     if (jpEvent.length > 0) {
-      LLSIFdotnetService.fetchEventData({ svr: 'JP', eid: jpEvent[0].event_id, cname: 'jp' })
-        .then((res) => {
-          const data = parseEventTracker(res);
-          jpTracker = data;
-        });
-    }
-    LLSIFService.fetchCardList({ event_japanese_name: item.japanese_name })
-      .then((resCard) => {
-        LLSIFService.fetchSongList({ event: item.japanese_name })
-          .then((resSong) => {
-            setCards(resCard);
-            setSongs(resSong);
-            // eslint-disable-next-line no-console
-            console.log(`EventDetail ${item.japanese_name}`);
-          });
+      const res = await LLSIFdotnetService.fetchEventData({
+        svr: 'JP',
+        eid: jpEvent[0].event_id,
+        cname: 'jp',
       });
+      const data = parseEventTracker(res);
+      jpTracker = data;
+    }
+    const [resCard, resSong] = await Promise.all([
+      LLSIFService.fetchCardList({ event_japanese_name: item.japanese_name }),
+      LLSIFService.fetchSongList({ event: item.japanese_name }),
+    ]);
+    setCards(resCard);
+    setSongs(resSong);
     setIsLoading(false);
   }
 
@@ -126,32 +145,18 @@ function EventDetailScreen({ navigation, route }) {
     if (!isLoading) setSelectedTab(index);
   };
 
-  return <View style={styles.container}>
-    <ElevatedView elevation={5} style={[ApplicationStyles.header, styles.header]}>
-      <SquareButton name={'ios-arrow-back'} color={'white'}
-        onPress={() => navigation.goBack()} />
-      <View style={styles.flex2}>
-        <SegmentedControlTab values={['Information', 'Tier cutoff']}
-          selectedIndex={selectedTab}
-          onTabPress={onTabPress} />
-      </View>
-      <SquareButton name={'ios-arrow-back'} color={Colors.lightViolet} />
-    </ElevatedView>
-    {isLoading ? <SplashScreen bgColor={Colors.violet} />
-      : <View style={ApplicationStyles.screen}>
-        <View style={ApplicationStyles.screen}>
-          {selectedTab === 0
-            ? <Information item={item}
-              cards={cards}
-              songs={songs}
-              WWEventStart={WWEventStart}
-              WWEventEnd={WWEventEnd}
-              JPEventStart={JPEventStart}
-              JPEventEnd={JPEventEnd} />
-            : <Tracker jpTracker={jpTracker}
-              wwTracker={wwTracker} />}
-        </View>
-      </View>}
+  if (isLoading) return <SplashScreen bgColor={Colors.violet} />;
+  return <View style={ApplicationStyles.screen}>
+    {selectedTab === 0
+      ? <Information item={item}
+        cards={cards}
+        songs={songs}
+        WWEventStart={WWEventStart}
+        WWEventEnd={WWEventEnd}
+        JPEventStart={JPEventStart}
+        JPEventEnd={JPEventEnd} />
+      : <Tracker jpTracker={jpTracker}
+        wwTracker={wwTracker} />}
   </View>;
 }
 

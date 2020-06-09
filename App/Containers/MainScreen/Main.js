@@ -1,9 +1,9 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, {
+  useContext, useState, useEffect, useCallback,
+} from 'react';
 import {
-  Text, View, Image, ScrollView,
-  TouchableNativeFeedback, Platform,
+  Text, View, ScrollView, TouchableNativeFeedback, Platform,
 } from 'react-native';
-import PropTypes from 'prop-types';
 import FastImage from 'react-native-fast-image';
 import VersionNumber from 'react-native-version-number';
 import moment from 'moment';
@@ -35,31 +35,41 @@ import styles from './styles';
  *
  */
 function MainScreen({ navigation }) {
-  useStatusBar('dark-content');
+  useStatusBar('light-content', Colors.pink);
   const { state } = useContext(UserContext);
+  const { ENEvent, JPEvent } = state.cachedData;
   const [version, setVersion] = useState(null);
   const [imgSize, setImgSize] = useState({
     width: 1,
     height: 0,
   });
-  const [ENEvent, setENEvent] = useState(state.cachedData.ENEvent);
-  const [JPEvent, setJPEvent] = useState(state.cachedData.JPEvent);
-  const [currentContests, setCurrentContests] = useState(state.cachedData.current_contests);
+
+  /** Start time of Worldwide event */
+  const ENEventStart = moment(ENEvent.english_beginning);
+  /** End time of Worldwide event */
+  const ENEventEnd = moment(ENEvent.english_end);
+  /** Start time of Japanese event */
+  const JPEventStart = moment(JPEvent.beginning, Config.DATETIME_FORMAT_INPUT);
+  /** End time of Japanese event */
+  const JPEventEnd = moment(JPEvent.end, Config.DATETIME_FORMAT_INPUT);
 
   useEffect(() => {
     if (Platform.OS === 'android') {
-      GithubService.fetchLatestVersion().then((result) => {
-        // console.log('github', result);
-        if (compareVersion(VersionNumber.appVersion, result.tag_name)) {
-          setVersion({
-            tag: result.tag_name,
-            filename: result.assets[0].name,
-            link: result.assets[0].browser_download_url,
-          });
-        }
-      });
+      checkVersion();
     }
   }, []);
+
+  async function checkVersion() {
+    const result = await GithubService.fetchLatestVersion();
+    // console.log('github', result);
+    if (compareVersion(VersionNumber.appVersion, result.tag_name)) {
+      setVersion({
+        tag: result.tag_name,
+        filename: result.assets[0].name,
+        link: result.assets[0].browser_download_url,
+      });
+    }
+  }
 
   function compareVersion(appVersion, gitVersion) {
     const appVersionArr = appVersion.split(/\D|[a-zA-Z]/);
@@ -110,28 +120,20 @@ function MainScreen({ navigation }) {
     navigation.navigate('EventDetailScreen', { event });
   }
 
-  const openDrawer = () => navigation.openDrawer();
+  const openDrawer = useCallback(() => navigation.openDrawer(), []);
 
   const data = state.cachedData;
   if (data === null) {
     return <View style={styles.blank} />;
   }
 
-  // const currentContests = data.current_contests;
-  /** Start time of Worldwide event */
-  const ENEventStart = moment(ENEvent.english_beginning);
-  /** End time of Worldwide event */
-  const ENEventEnd = moment(ENEvent.english_end);
-  /** Start time of Japanese event */
-  const JPEventStart = moment(JPEvent.beginning, Config.DATETIME_FORMAT_INPUT);
-  /** End time of Japanese event */
-  const JPEventEnd = moment(JPEvent.end, Config.DATETIME_FORMAT_INPUT);
-
   return <View style={styles.container}>
     {/* HEADER */}
     <View style={ApplicationStyles.header}>
       <SquareButton name={'ios-menu'} onPress={openDrawer} color={'white'} />
-      <Image source={Images.logo} style={ApplicationStyles.imageHeader} />
+      <FastImage source={Images.logo}
+        resizeMode='contain'
+        style={ApplicationStyles.imageHeader} />
       <SquareButton name={'ios-menu'} color={Colors.pink} />
     </View>
     {version !== null
@@ -216,21 +218,6 @@ function MainScreen({ navigation }) {
             </Text>
           </View>}
       </Touchable>
-      {/* <Seperator style={{ backgroundColor: 'white' }} /> */}
-
-      {/* CONTEST BLOCK */}
-      {/* {currentContests.map((item, id) => (
-            <View key={'contest' + id}>
-              <Text style={styles.text}>{item.name}</Text>
-              <FastImage source={{ uri: AddHTTPS(item.image)) }}
-                resizeMode={FastImage.resizeMode.contain}
-                style={{
-                  width: Metrics.widthBanner,
-                  height: Metrics.widthBanner / 3,
-                  alignSelf: 'center',
-                }} />
-            </View>
-          ))} */}
     </ScrollView>
   </View>;
 }

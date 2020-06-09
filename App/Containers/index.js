@@ -28,7 +28,6 @@ import CardDetailScreen from './CardDetailScreen';
 import EventDetailScreen from './EventDetailScreen';
 // import IdolDetailScreen from './IdolDetailScreen/IdolDetail';
 // import SongDetailScreen from './SongDetailScreen';
-// import ImageViewer from './ImageViewer/ImageViewer';
 
 Sentry.init({ dsn: 'https://ac9aa894ab9341fba115b29731378b6b@sentry.io/1330276' });
 
@@ -202,8 +201,7 @@ function MainContainer() {
               <Stack.Screen name='EventDetailScreen'
                 component={EventDetailScreen} />
               {/* <Stack.Screen name='IdolDetailScreen' component={IdolDetailScreen} />
-            <Stack.Screen name='SongDetailScreen' component={SongDetailScreen} />
-            <Stack.Screen name='ImageViewerScreen' component={ImageViewer} /> */}
+            <Stack.Screen name='SongDetailScreen' component={SongDetailScreen} /> */}
             </>}
         </Stack.Navigator>
       </NavigationContainer>

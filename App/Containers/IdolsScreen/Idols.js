@@ -1,11 +1,12 @@
 import React, { useState, useContext, useEffect } from 'react';
 import {
-  View, Text, SectionList,
-  FlatList, Image, Alert,
+  View, Text, SectionList, FlatList, Alert,
 } from 'react-native';
 import PropTypes from 'prop-types';
 import ElevatedView from 'react-native-elevated-view';
+import FastImage from 'react-native-fast-image';
 
+import useStatusBar from '~/hooks/useStatusBar';
 import UserContext from '~/Context/UserContext';
 import ConnectStatus from '~/Components/ConnectStatus';
 import IdolItem from '~/Components/IdolItem/IdolItem';
@@ -25,6 +26,7 @@ import styles from './styles';
  *
  */
 function IdolsScreen({ navigation }) {
+  useStatusBar('light-content', Colors.blue);
   const { state } = useContext(UserContext);
   const [isLoading, setIsLoading] = useState(true);
   const [list, setList] = useState([]);
@@ -33,41 +35,40 @@ function IdolsScreen({ navigation }) {
     loadData();
   }, []);
 
-  function loadData() {
+  async function loadData() {
     const { schools } = state.cachedData;
     const schoolName = schools.map((value) => value.label);
-    LLSIFService.fetchIdolList(schoolName)
-      .then((res) => {
-        const array = [];
-        schools.forEach((school) => {
-          const item = {
-            title: school.label,
-            data: [
-              {
-                key: school.label,
-                list: res.filter((value) => value.school === school.label),
-              },
-            ],
-          };
-          if (item.data[0].list.length !== 0) array.push(item);
-        });
+    try {
+      const res = await LLSIFService.fetchIdolList(schoolName);
+      const array = [];
+      schools.forEach((school) => {
         const item = {
-          title: 'Other',
+          title: school.label,
           data: [
             {
-              key: 'Other',
-              list: res.filter((value) => value.school === null),
+              key: school.label,
+              list: res.filter((value) => value.school === school.label),
             },
           ],
         };
         if (item.data[0].list.length !== 0) array.push(item);
-        setList(array);
-      })
-      .catch((e) => {
-        Alert.alert('Error', e.message);
-      }).finally(() => {
-        setIsLoading(false);
       });
+      const item = {
+        title: 'Other',
+        data: [
+          {
+            key: 'Other',
+            list: res.filter((value) => value.school === null),
+          },
+        ],
+      };
+      if (item.data[0].list.length !== 0) array.push(item);
+      setList(array);
+    } catch (e) {
+      Alert.alert('Error', e.message);
+    } finally {
+      setIsLoading(false);
+    }
   }
 
   /**
@@ -134,7 +135,9 @@ function IdolsScreen({ navigation }) {
     <ElevatedView elevation={5}
       style={[ApplicationStyles.header, styles.container]}>
       <SquareButton name={'ios-menu'} onPress={openDrawer} color={'white'} />
-      <Image source={Images.logo} style={ApplicationStyles.imageHeader} />
+      <FastImage source={Images.logo}
+        resizeMode='contain'
+        style={ApplicationStyles.imageHeader} />
       <View style={styles.hole} />
     </ElevatedView>
     <ConnectStatus />

@@ -2,6 +2,8 @@ import React, { useState, useEffect, useContext } from 'react';
 import {
   View, Text, TouchableOpacity,
 } from 'react-native';
+
+import useStatusBar from '~/hooks/useStatusBar';
 import LLSIFService from '~/Services/LLSIFService';
 import LLSIFdotnetService from '~/Services/LLSIFdotnetService';
 import SplashScreen from '../SplashScreen/SplashScreen';
@@ -16,6 +18,7 @@ import styles from './styles';
  * @returns
  */
 function LoadingScreen() {
+  useStatusBar('light-content', Colors.pink);
   const { dispatch } = useContext(UserContext);
   const [error, setError] = useState(false);
 
@@ -89,24 +92,22 @@ function LoadingScreen() {
   };
 
   if (error) {
-    return (
-      <View style={[
-        ApplicationStyles.screen,
-        ApplicationStyles.center,
-        styles.bg,
-      ]}>
-        <View style={styles.textBox}>
-          <Text style={styles.text}>
-            {'Can\'t get data.\nCheck internet connection and retry.'}
-          </Text>
-        </View>
-        <TouchableOpacity onPress={loadCachedData}>
-          <View style={styles.button}>
-            <Text style={Fonts.style.normal}>Retry</Text>
-          </View>
-        </TouchableOpacity>
+    return <View style={[
+      ApplicationStyles.screen,
+      ApplicationStyles.center,
+      styles.bg,
+    ]}>
+      <View style={styles.textBox}>
+        <Text style={styles.text}>
+          {'Can\'t get data.\nCheck internet connection and retry.'}
+        </Text>
       </View>
-    );
+      <TouchableOpacity onPress={loadCachedData}>
+        <View style={styles.button}>
+          <Text style={Fonts.style.normal}>Retry</Text>
+        </View>
+      </TouchableOpacity>
+    </View>;
   }
   return <SplashScreen bgColor={Colors.pink} />;
 }

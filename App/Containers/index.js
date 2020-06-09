@@ -221,7 +221,10 @@ function MainContainer() {
         <Stack.Navigator>
           {state.loading ? (
             <Stack.Screen name='LoadingScreen'
-              component={LoadingScreen} />
+              component={LoadingScreen}
+              options={{
+                headerShown: false,
+              }} />
           ) : <>
               <Stack.Screen name='DrawerScreen'
                 component={LLSIFDrawer}

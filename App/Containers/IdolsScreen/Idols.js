@@ -1,4 +1,6 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, {
+  useState, useContext, useEffect, useCallback,
+} from 'react';
 import {
   View, Text, SectionList, FlatList, Alert,
 } from 'react-native';
@@ -72,12 +74,6 @@ function IdolsScreen({ navigation }) {
   }
 
   /**
-   * Key extractor for FlatList
-   *
-   */
-  const keyExtractor = (item) => `idol${item.name}`;
-
-  /**
    * Render item in FlatList
    *
    */
@@ -99,17 +95,23 @@ function IdolsScreen({ navigation }) {
     }),
   };
 
-  /**
-   * Open drawer
-   *
-   */
-  const openDrawer = () => navigation.openDrawer();
+  /** Open drawer */
+  const openDrawer = useCallback(() => navigation.openDrawer(), []);
 
-  const renderFlatList = ({ item }) => <FlatList numColumns={3}
-    data={item.list}
-    initialNumToRender={9}
-    renderItem={renderItem}
-    keyExtractor={keyExtractor} />;
+  const renderFlatList = ({ item }) => {
+    /**
+     * Key extractor for FlatList
+     *
+     */
+    const keyExtractor = (fItem) => `idol${fItem.name}`;
+
+    return <FlatList numColumns={3}
+      data={item.list}
+      initialNumToRender={9}
+      renderItem={renderItem}
+      keyExtractor={keyExtractor} />;
+  };
+
   renderFlatList.propTypes = {
     item: PropTypes.shape({
       list: PropTypes.object,

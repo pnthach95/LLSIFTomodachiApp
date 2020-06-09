@@ -17,9 +17,8 @@ export default StyleSheet.create({
     marginRight: Metrics.baseMargin,
   },
   rightHeaderImage: {
-    height: Metrics.navBarHeight,
-    resizeMode: 'contain',
-    width: Metrics.screenWidth * 0.17,
+    height: 70,
+    width: 70,
   },
   scrollView: {
     margin: Metrics.doubleBaseMargin,

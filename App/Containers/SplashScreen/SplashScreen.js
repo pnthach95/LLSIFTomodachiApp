@@ -17,22 +17,20 @@ import { Images, ApplicationStyles } from '~/Theme';
 export default class SplashScreen extends React.Component {
   static defaultProps = {
     bgColor: '#D2CAC6',
-  }
+  };
 
   static propTypes = {
     bgColor: PropTypes.string,
-  }
+  };
 
   render() {
-    return (
-      <View style={[
-        ApplicationStyles.screen,
-        ApplicationStyles.center,
-        { backgroundColor: this.props.bgColor }]}>
-        <Image source={Images.logo} style={styles.logo} />
-        <BarIndicator count={9} color={'white'} />
-      </View>
-    );
+    return <View style={[
+      ApplicationStyles.screen,
+      ApplicationStyles.center,
+      { backgroundColor: this.props.bgColor }]}>
+      <Image source={Images.logo} style={styles.logo} />
+      <BarIndicator count={9} color={'white'} />
+    </View>;
   }
 }
 

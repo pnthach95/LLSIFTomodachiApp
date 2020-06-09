@@ -1,10 +1,13 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, {
+  useContext, useState, useEffect, useCallback,
+} from 'react';
 import {
   Text, View, ScrollView, TouchableOpacity, Image,
 } from 'react-native';
 import PropTypes from 'prop-types';
 import ElevatedView from 'react-native-elevated-view';
 import FastImage from 'react-native-fast-image';
+import ImageView from 'react-native-image-viewing';
 import LinearGradient from 'react-native-linear-gradient';
 import SkeletonContent from 'react-native-skeleton-content-nonexpo';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -32,6 +35,10 @@ function CardDetailScreen({ navigation, route }) {
   const { item } = route.params;
   const { state } = useContext(UserContext);
   const [done, setDone] = useState(false);
+  const [imgViewer, setImgViewer] = useState({
+    visible: false,
+    index: 0,
+  });
   const [propertyLine, setPropertyLine] = useState('');
   const [images, setImages] = useState([]);
   const [buttonID, setButtonID] = useState(0);
@@ -69,9 +76,9 @@ function CardDetailScreen({ navigation, route }) {
   useEffect(() => {
     const tmpImages = [];
     if (item.card_image !== null) {
-      tmpImages.push({ url: AddHTTPS(item.card_image) });
+      tmpImages.push({ uri: AddHTTPS(item.card_image) });
     }
-    tmpImages.push({ url: AddHTTPS(item.card_idolized_image) });
+    tmpImages.push({ uri: AddHTTPS(item.card_idolized_image) });
     setImages(tmpImages);
     const tmp = [];
     if (item.is_promo) tmp.push('Promo card');
@@ -170,10 +177,10 @@ function CardDetailScreen({ navigation, route }) {
   };
 
   function renderImage(index, value) {
-    const navigateToImageViewerScreen = () => navigation.navigate('ImageViewerScreen', { index, images });
+    const onPressImg = () => setImgViewer({ visible: true, index });
 
-    return <TouchableOpacity key={index} onPress={navigateToImageViewerScreen}>
-      <FastImage source={{ uri: value.url }}
+    return <TouchableOpacity key={index} onPress={onPressImg}>
+      <FastImage source={{ uri: value.uri }}
         style={{
           width: Metrics.images.itemWidth,
           height: (Metrics.images.itemWidth * imgSize.height) / imgSize.width,
@@ -181,6 +188,11 @@ function CardDetailScreen({ navigation, route }) {
         onLoad={(e) => onLoadFastImage(e)} />
     </TouchableOpacity>;
   }
+
+  const closeImgViewer = useCallback(() => setImgViewer({
+    ...imgViewer,
+    visible: false,
+  }), []);
 
   if (!done) {
     return <View />;
@@ -331,6 +343,11 @@ function CardDetailScreen({ navigation, route }) {
         </ScrollView>
       </LinearGradient>
     </View>
+    <ImageView
+      images={images}
+      imageIndex={imgViewer.index}
+      visible={imgViewer.visible}
+      onRequestClose={closeImgViewer} />
   </View>;
 }
 

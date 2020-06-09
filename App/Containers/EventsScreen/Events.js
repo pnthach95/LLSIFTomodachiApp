@@ -7,6 +7,7 @@ import PropTypes from 'prop-types';
 import ElevatedView from 'react-native-elevated-view';
 import _ from 'lodash';
 
+import useStatusBar from '~/hooks/useStatusBar';
 import ConnectStatus from '~/Components/ConnectStatus';
 import SkillRow from '~/Components/SkillRow';
 import EventItem from '~/Components/EventItem/EventItem';
@@ -42,6 +43,7 @@ import { loadSettings } from '~/Utils';
  *
  */
 function EventsScreen({ navigation }) {
+  useStatusBar('dark-content', Colors.white);
   const defaultFilter = {
     ordering: '-beginning',
     page_size: 30,

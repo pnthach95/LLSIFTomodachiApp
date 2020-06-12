@@ -46,8 +46,7 @@ async function getIdols(school) {
 
 async function fetchIdolListBySchool(schools) {
   const data = [];
-  // eslint-disable-next-line no-plusplus
-  for (let i = 0; i < schools.length; i++) {
+  for (let i = 0; i < schools.length; i += 1) {
     const school = schools[i];
     const response = getIdols(school);
     data.push(response);

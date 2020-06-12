@@ -30,17 +30,21 @@ function LoadingScreen() {
     setError(false);
     try {
       const cachedData = {};
-      const data = await LLSIFService.fetchCachedData();
-      const eventEN = await LLSIFService.fetchEventList({
+      const enParams = {
         ordering: '-english_beginning',
         page_size: 1,
-      });
-      const eventJP = await LLSIFService.fetchEventList(
-        {
-          ordering: '-beginning',
-          page_size: 1,
-        },
-      );
+      };
+      const jpParams = {
+        ordering: '-beginning',
+        page_size: 1,
+      };
+      const [data, eventEN, eventJP, randomCard, eventInfo] = await Promise.all([
+        LLSIFService.fetchCachedData(),
+        LLSIFService.fetchEventList(enParams),
+        LLSIFService.fetchEventList(jpParams),
+        LLSIFService.fetchRandomCard(),
+        LLSIFdotnetService.fetchEventInfo(),
+      ]);
 
       const cardsInfo = data.cards_info;
       const idols = cardsInfo.idols.map((value) => ({
@@ -70,7 +74,6 @@ function LoadingScreen() {
       const [eventJP0] = eventJP;
       cachedData.ENEvent = eventEN0;
       cachedData.JPEvent = eventJP0;
-      const randomCard = await LLSIFService.fetchRandomCard();
       const r = Math.floor(Math.random() * 10);
       let bgImage = '';
       if (randomCard.clean_ur !== null && r < 6) {
@@ -80,7 +83,6 @@ function LoadingScreen() {
       }
       cachedData.randomCard = randomCard;
       cachedData.bgImage = bgImage;
-      const eventInfo = await LLSIFdotnetService.fetchEventInfo();
       cachedData.eventInfo = eventInfo;
       dispatch({
         type: actions.DONE_LOADING,

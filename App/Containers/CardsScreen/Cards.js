@@ -65,7 +65,7 @@ function CardsScreen({ navigation }) {
   useStatusBar('dark-content', Colors.white);
   const defaultFilter = {
     search: '',
-    selectedOrdering: OrderingGroup.CARD[0].value,
+    selectedOrdering: OrderingGroup.CARD[1].value,
     isReverse: true,
     page_size: 30,
     page: 1,

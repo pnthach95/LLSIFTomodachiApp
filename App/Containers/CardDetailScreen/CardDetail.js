@@ -200,6 +200,7 @@ function CardDetailScreen({ navigation, route }) {
 
     return <TouchableOpacity key={index} onPress={onPressImg}>
       <FastImage source={{ uri: value.uri }}
+        resizeMode='contain'
         style={{
           width: Metrics.images.itemWidth,
           height: (Metrics.images.itemWidth * imgSize.height) / imgSize.width,

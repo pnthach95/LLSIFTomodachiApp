@@ -180,6 +180,7 @@ function SongDetailScreen({ route, navigation }) {
       style={ApplicationStyles.screen}>
       <FastImage source={{ uri: AddHTTPS(item.image) }}
         onLoad={onLoadFastImage}
+        resizeMode='contain'
         style={{
           width: Metrics.screenWidth / 2,
           height: ((Metrics.screenWidth / 2) * imgSize.height) / imgSize.width,

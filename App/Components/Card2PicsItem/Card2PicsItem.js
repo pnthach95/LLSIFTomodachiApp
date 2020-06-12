@@ -56,13 +56,13 @@ export default class Card2PicsItem extends Component {
         <Touchable onPress={this.props.onPress} useForeground
           background={TouchableNativeFeedback.Ripple(this.state.colors[0], false)}>
           <View style={styles.row}>
-            {this.state.images.map((value, index) => <FastImage
-              key={index}
+            {this.state.images.map((value, index) => <FastImage key={index}
               source={{ uri: value }}
               onLoad={(e) => {
                 const { width, height } = e.nativeEvent;
                 this.setState({ imgWidth: width, imgHeight: height });
               }}
+              resizeMode='contain'
               style={{
                 width: Metrics.images.itemWidth,
                 height: (Metrics.images.itemWidth * this.state.imgHeight) / this.state.imgWidth,

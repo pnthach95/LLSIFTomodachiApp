@@ -160,6 +160,7 @@ function MainScreen({ navigation }) {
         </View>
         <FastImage source={{ uri: AddHTTPS(ENEvent.english_image) }}
           onLoad={onLoadFastImage}
+          resizeMode='contain'
           style={{
             width: Metrics.widthBanner,
             height: (Metrics.widthBanner * imgSize.height) / imgSize.width,
@@ -196,6 +197,7 @@ function MainScreen({ navigation }) {
         </View>
         <FastImage source={{ uri: AddHTTPS(JPEvent.image) }}
           onLoad={onLoadFastImage}
+          resizeMode='contain'
           style={{
             width: Metrics.widthBanner,
             height: (Metrics.widthBanner * imgSize.height) / imgSize.width,

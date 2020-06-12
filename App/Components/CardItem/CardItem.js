@@ -58,6 +58,7 @@ export default class CardItem extends Component {
               const { width, height } = e.nativeEvent;
               this.setState({ imgWidth: width, imgHeight: height });
             }}
+            resizeMode='contain'
             style={[
               styles.topRadius,
               {

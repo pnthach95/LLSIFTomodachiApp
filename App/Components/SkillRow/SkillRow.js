@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Text, View } from 'react-native';
 import RNPickerSelect from 'react-native-picker-select';
 import PropTypes from 'prop-types';
+
+import UserContext from '~/Context/UserContext';
 import styles from '~/Theme/RowStyles';
 
 /**
@@ -13,33 +15,29 @@ import styles from '~/Theme/RowStyles';
  * - `selectSkill`: Save `skill` state
  * - `skill`: state from parent
  *
- * @export
- * @class SkillRow
- * @extends {React.Component}
  */
-export default class SkillRow extends React.Component {
-  static propTypes = {
-    skill: PropTypes.string.isRequired,
-    selectSkill: PropTypes.func.isRequired,
-    skills: PropTypes.any,
-  };
+function SkillRow({ skill, selectSkill }) {
+  const { state } = useContext(UserContext);
 
-  render() {
-    return (
-      <View style={styles.pickerRow}>
-        <View style={styles.leftView}>
-          <Text>Skill</Text>
-        </View>
-        <View style={styles.flex2}>
-          <RNPickerSelect onValueChange={this.props.selectSkill}
-            items={this.props.skills}
-            hideIcon={true}
-            style={{ inputIOS: styles.picker, inputAndroid: styles.picker }}
-            placeholderTextColor={'black'}
-            placeholder={{ label: 'All', value: 'All' }}
-            value={this.props.skill} />
-        </View>
-      </View>
-    );
-  }
+  return <View style={styles.pickerRow}>
+    <View style={styles.leftView}>
+      <Text>Skill</Text>
+    </View>
+    <View style={styles.flex2}>
+      <RNPickerSelect onValueChange={selectSkill}
+        items={state.cachedData.skills}
+        hideIcon={true}
+        style={{ inputIOS: styles.picker, inputAndroid: styles.picker }}
+        placeholderTextColor={'black'}
+        placeholder={{ label: 'All', value: 'All' }}
+        value={skill} />
+    </View>
+  </View>;
 }
+
+SkillRow.propTypes = {
+  skill: PropTypes.string.isRequired,
+  selectSkill: PropTypes.func.isRequired,
+};
+
+export default SkillRow;

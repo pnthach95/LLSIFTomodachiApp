@@ -1,14 +1,13 @@
-import React from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { View } from 'react-native';
 import PropTypes from 'prop-types';
-import ElevatedView from 'react-native-elevated-view';
 import SegmentedControlTab from 'react-native-segmented-control-tab';
 import moment from 'moment';
 
 import Information from './Information';
 import Tracker from './Tracker';
-import Fade from '~/Components/Fade/Fade';
-import SquareButton from '~/Components/SquareButton/SquareButton';
+import UserContext from '~/Context/UserContext';
+import useStatusBar from '~/hooks/useStatusBar';
 import SplashScreen from '../SplashScreen/SplashScreen';
 import LLSIFService from '~/Services/LLSIFService';
 import LLSIFdotnetService from '~/Services/LLSIFdotnetService';
@@ -38,45 +37,59 @@ import styles from './styles';
  *
  * Event object: https://github.com/MagiCircles/SchoolIdolAPI/wiki/API-Events#objects
  *
- * @class EventDetailScreen
- * @extends {React.PureComponent}
  */
-export default class EventDetailScreen extends React.PureComponent {
-  constructor(props) {
-    super(props);
-    this.state = {
-      isLoading: true,
-      item: this.props.navigation.getParam('event'),
-      WWEventStart: null,
-      WWEventEnd: null,
-      JPEventStart: null,
-      JPEventEnd: null,
-      wwTracker: null,
-      jpTracker: null,
-      selectedTab: 0,
-      cards: [],
-      songs: [],
-    };
-  }
+function EventDetailScreen({ navigation, route }) {
+  useStatusBar('dark-content', Colors.lightViolet);
 
-  static propTypes = {
-    isConnected: PropTypes.bool,
-    wwEventInfo: PropTypes.any,
-    jpEventInfo: PropTypes.any,
-  }
+  const { state } = useContext(UserContext);
+  const wwEventInfo = state.cachedData.eventInfo.ww;
+  const jpEventInfo = state.cachedData.eventInfo.jp;
+  const [item, setItem] = useState(route.params.event);
+  const [isLoading, setIsLoading] = useState(true);
+  const [selectedTab, setSelectedTab] = useState(0);
+  const [cards, setCards] = useState([]);
+  const [songs, setSongs] = useState([]);
+  const [WWEventStart, setWWEventStart] = useState(moment());
+  const [WWEventEnd, setWWEventEnd] = useState(moment());
+  const [JPEventStart, setJPEventStart] = useState(moment());
+  const [JPEventEnd, setJPEventEnd] = useState(moment());
+  let wwTracker = null;
+  let jpTracker = null;
 
-  componentDidMount() {
-    if (this.state.item) {
-      this.loadData();
-    } else {
-      const name = ReplaceQuestionMark(this.props.navigation.getParam('eventName'));
-      LLSIFService.fetchEventData(name).then((res) => {
-        this.setState({ item: res }, () => this.loadData());
-      });
+  useEffect(() => {
+    const customHeader = () => <SegmentedControlTab
+      values={['Information', 'Tier cutoff']}
+      selectedIndex={selectedTab}
+      onTabPress={onTabPress} />;
+
+    const blankView = () => <View />;
+
+    navigation.setOptions({
+      headerStyle: styles.header,
+      headerTitle: customHeader,
+      headerRight: blankView,
+    });
+  }, []);
+
+  useEffect(() => {
+    if (route.params.eventName) {
+      getItem();
     }
+  }, [route.params.eventName]);
+
+  useEffect(() => {
+    if (item) {
+      loadData();
+    }
+  }, [item]);
+
+  async function getItem() {
+    const name = ReplaceQuestionMark(route.params.eventName);
+    const res = await LLSIFService.fetchEventData(name);
+    setItem(res);
   }
 
-  parseEventTracker(data) {
+  function parseEventTracker(data) {
     const result = [];
     const rows = data.split('\n');
     rows.forEach((row) => {
@@ -93,90 +106,67 @@ export default class EventDetailScreen extends React.PureComponent {
   /**
    * Load card list, song list in event
    *
-   * @memberof EventDetailScreen
    */
-  loadData() {
-    const WWEventStart = moment(this.state.item.english_beginning);
-    const JPEventStart = moment(this.state.item.beginning, Config.DATETIME_FORMAT_INPUT);
-    const wwEvent = this.props.wwEventInfo
-      .filter((value) => value.start_date === WWEventStart.unix());
-    const jpEvent = this.props.jpEventInfo
-      .filter((value) => value.start_date === JPEventStart.unix());
+  async function loadData() {
+    setWWEventStart(moment(item.english_beginning));
+    setWWEventEnd(moment(item.english_end));
+    setJPEventStart(moment(item.beginning, Config.DATETIME_FORMAT_INPUT));
+    setJPEventEnd(moment(item.end, Config.DATETIME_FORMAT_INPUT));
+    const wwEvent = wwEventInfo.filter((value) => value.start_date === WWEventStart.unix());
+    const jpEvent = jpEventInfo.filter((value) => value.start_date === JPEventStart.unix());
     if (wwEvent.length > 0) {
-      LLSIFdotnetService.fetchEventData({ svr: 'EN', eid: wwEvent[0].event_id, cname: 'en' })
-        .then((res) => {
-          const data = this.parseEventTracker(res);
-          this.setState({ wwTracker: data });
-        });
+      const res = await LLSIFdotnetService.fetchEventData({
+        svr: 'EN',
+        eid: wwEvent[0].event_id,
+        cname: 'en',
+      });
+      const data = parseEventTracker(res);
+      wwTracker = data;
     }
     if (jpEvent.length > 0) {
-      LLSIFdotnetService.fetchEventData({ svr: 'JP', eid: jpEvent[0].event_id, cname: 'jp' })
-        .then((res) => {
-          const data = this.parseEventTracker(res);
-          this.setState({ jpTracker: data });
-        });
-    }
-    LLSIFService.fetchCardList({ event_japanese_name: this.state.item.japanese_name })
-      .then((resCard) => {
-        LLSIFService.fetchSongList({ event: this.state.item.japanese_name })
-          .then((resSong) => {
-            this.setState({
-              WWEventStart,
-              WWEventEnd: moment(this.state.item.english_end),
-              JPEventStart,
-              JPEventEnd: moment(this.state.item.end, Config.DATETIME_FORMAT_INPUT),
-              isLoading: false,
-              cards: resCard,
-              songs: resSong,
-            });
-            // eslint-disable-next-line no-console
-            console.log(`EventDetail ${this.state.item.japanese_name}`);
-          });
+      const res = await LLSIFdotnetService.fetchEventData({
+        svr: 'JP',
+        eid: jpEvent[0].event_id,
+        cname: 'jp',
       });
+      const data = parseEventTracker(res);
+      jpTracker = data;
+    }
+    const [resCard, resSong] = await Promise.all([
+      LLSIFService.fetchCardList({ event_japanese_name: item.japanese_name }),
+      LLSIFService.fetchSongList({ event: item.japanese_name }),
+    ]);
+    setCards(resCard);
+    setSongs(resSong);
+    setIsLoading(false);
   }
 
-  onTabPress = (index) => {
-    if (!this.state.isLoading) this.setState({ selectedTab: index });
-  }
+  const onTabPress = (index) => {
+    if (!isLoading) setSelectedTab(index);
+  };
 
-  render() {
-    return (
-      <View style={styles.container}>
-        <ElevatedView elevation={5} style={[ApplicationStyles.header, styles.header]}>
-          <SquareButton name={'ios-arrow-back'} color={'white'}
-            onPress={() => this.props.navigation.goBack()} />
-          <View style={styles.flex2}>
-            <SegmentedControlTab values={['Information', 'Tier cutoff']}
-              selectedIndex={this.state.selectedTab}
-              onTabPress={this.onTabPress} />
-          </View>
-          <SquareButton name={'ios-arrow-back'} color={Colors.lightViolet} />
-        </ElevatedView>
-        <View style={ApplicationStyles.screen}>
-          <Fade visible={this.state.isLoading}
-            style={[ApplicationStyles.screen, ApplicationStyles.absolute]}>
-            <SplashScreen bgColor={Colors.violet} />
-          </Fade>
-          <Fade visible={!this.state.isLoading}
-            style={[ApplicationStyles.screen, ApplicationStyles.absolute]}>
-            {!this.state.isLoading
-              && <View style={ApplicationStyles.screen}>
-                {this.state.selectedTab === 0
-                  ? <Information navigation={this.props.navigation}
-                    isConnected={this.props.isConnected}
-                    item={this.state.item}
-                    cards={this.state.cards}
-                    songs={this.state.songs}
-                    WWEventStart={this.state.WWEventStart}
-                    WWEventEnd={this.state.WWEventEnd}
-                    JPEventStart={this.state.JPEventStart}
-                    JPEventEnd={this.state.JPEventEnd} />
-                  : <Tracker jpTracker={this.state.jpTracker}
-                    wwTracker={this.state.wwTracker} />}
-              </View>}
-          </Fade>
-        </View>
-      </View>
-    );
-  }
+  if (isLoading) return <SplashScreen bgColor={Colors.violet} />;
+  return <View style={ApplicationStyles.screen}>
+    {selectedTab === 0
+      ? <Information item={item}
+        cards={cards}
+        songs={songs}
+        WWEventStart={WWEventStart}
+        WWEventEnd={WWEventEnd}
+        JPEventStart={JPEventStart}
+        JPEventEnd={JPEventEnd} />
+      : <Tracker jpTracker={jpTracker}
+        wwTracker={wwTracker} />}
+  </View>;
 }
+
+EventDetailScreen.propTypes = {
+  route: PropTypes.shape({
+    params: PropTypes.shape({
+      event: PropTypes.object,
+      eventName: PropTypes.string,
+    }),
+  }),
+};
+
+export default EventDetailScreen;

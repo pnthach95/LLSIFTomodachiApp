@@ -48,6 +48,8 @@ export const RELEASE_NOTE = `This app is free and open-source.
 Press Version to view background.
 
 Change log:
+- Version 0.3.4:
+  • Small bugfix.
 
 - Version 0.3.3:
   • Small bugfix.

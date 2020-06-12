@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Text, View } from 'react-native';
 import RNPickerSelect from 'react-native-picker-select';
 import PropTypes from 'prop-types';
+
+import UserContext from '~/Context/UserContext';
 import styles from '~/Theme/RowStyles';
 
 /**
@@ -13,33 +15,29 @@ import styles from '~/Theme/RowStyles';
  * - `selectSubUnit`: Save `idolSubUnit` state
  * - `idolSubUnit`: state from parent
  *
- * @export
- * @class SubUnitRow
- * @extends {React.Component}
  */
-export default class SubUnitRow extends React.Component {
-  static propTypes = {
-    idolSubUnit: PropTypes.string.isRequired,
-    selectSubUnit: PropTypes.func.isRequired,
-    subUnits: PropTypes.any,
-  };
+function SubUnitRow({ idolSubUnit, selectSubUnit }) {
+  const { state } = useContext(UserContext);
 
-  render() {
-    return (
-      <View style={styles.pickerRow}>
-        <View style={styles.leftView}>
-          <Text>Sub unit</Text>
-        </View>
-        <View style={styles.flex2}>
-          <RNPickerSelect onValueChange={this.props.selectSubUnit}
-            items={this.props.subUnits}
-            hideIcon={true}
-            style={{ inputIOS: styles.picker, inputAndroid: styles.picker }}
-            placeholderTextColor={'black'}
-            placeholder={{ label: 'All', value: 'All' }}
-            value={this.props.idolSubUnit} />
-        </View>
-      </View>
-    );
-  }
+  return <View style={styles.pickerRow}>
+    <View style={styles.leftView}>
+      <Text>Sub unit</Text>
+    </View>
+    <View style={styles.flex2}>
+      <RNPickerSelect onValueChange={selectSubUnit}
+        items={state.cachedData.subUnits}
+        hideIcon={true}
+        style={{ inputIOS: styles.picker, inputAndroid: styles.picker }}
+        placeholderTextColor={'black'}
+        placeholder={{ label: 'All', value: 'All' }}
+        value={idolSubUnit} />
+    </View>
+  </View>;
 }
+
+SubUnitRow.propTypes = {
+  idolSubUnit: PropTypes.string.isRequired,
+  selectSubUnit: PropTypes.func.isRequired,
+};
+
+export default SubUnitRow;

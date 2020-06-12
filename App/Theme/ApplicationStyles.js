@@ -24,12 +24,10 @@ export default {
   imageHeader: {
     width: '60%',
     height: Metrics.navBarHeight,
-    resizeMode: 'contain',
   },
   mediumIcon: {
     width: Metrics.icons.medium,
     height: Metrics.icons.medium,
-    resizeMode: 'contain',
   },
   largeIcon: {
     width: Metrics.icons.large,

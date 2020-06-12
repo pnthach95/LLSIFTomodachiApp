@@ -1,11 +1,10 @@
-import React from 'react';
+import React, {
+  useContext, useState, useEffect, useCallback,
+} from 'react';
 import {
-  Text, View, Image, ScrollView,
-  TouchableNativeFeedback, Alert, Platform,
+  Text, View, ScrollView, TouchableNativeFeedback, Platform,
 } from 'react-native';
-import PropTypes from 'prop-types';
 import FastImage from 'react-native-fast-image';
-import Icon from 'react-native-vector-icons/SimpleLineIcons';
 import VersionNumber from 'react-native-version-number';
 import moment from 'moment';
 
@@ -14,12 +13,14 @@ import Seperator from '~/Components/Seperator/Seperator';
 import Touchable from '~/Components/Touchable/Touchable';
 import SquareButton from '~/Components/SquareButton/SquareButton';
 import TimerCountdown from '~/Components/TimerCountdown/Timer';
+import useStatusBar from '~/hooks/useStatusBar';
 import { AddHTTPS, openLink } from '~/Utils';
 import { Config, EventStatus } from '~/Config';
 import GithubService from '~/Services/GithubService';
 import {
   Metrics, Colors, Images, ApplicationStyles,
 } from '~/Theme';
+import UserContext from '~/Context/UserContext';
 import styles from './styles';
 
 /**
@@ -32,56 +33,45 @@ import styles from './styles';
  * - `JPEvent`: Japanese event
  * - `currentContests`: Contest array
  *
- * @class MainScreen
- * @extends {React.Component}
  */
-export default class MainScreen extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      version: null,
-      imgWidth: 1,
-      imgHeight: 0,
-      ENEvent: null,
-      JPEvent: null,
-      currentContests: [],
-    };
-  }
+function MainScreen({ navigation }) {
+  useStatusBar('light-content', Colors.pink);
+  const { state } = useContext(UserContext);
+  const { ENEvent, JPEvent } = state.cachedData;
+  const [version, setVersion] = useState(null);
+  const [imgSize, setImgSize] = useState({
+    width: 1,
+    height: 0,
+  });
 
-  static propTypes = {
-    isConnected: PropTypes.bool,
-    cachedData: PropTypes.object,
-    cachedDataErrorMessage: PropTypes.string,
-  }
+  /** Start time of Worldwide event */
+  const ENEventStart = moment(ENEvent.english_beginning);
+  /** End time of Worldwide event */
+  const ENEventEnd = moment(ENEvent.english_end);
+  /** Start time of Japanese event */
+  const JPEventStart = moment(JPEvent.beginning, Config.DATETIME_FORMAT_INPUT);
+  /** End time of Japanese event */
+  const JPEventEnd = moment(JPEvent.end, Config.DATETIME_FORMAT_INPUT);
 
-  static navigationOptions = {
-    tabBarIcon: ({ focused }) => <Icon name='home' size={25}
-      color={focused ? Colors.pink : Colors.inactive} />,
-    tabBarLabel: 'Home',
-    tabBarOptions: {
-      activeTintColor: Colors.pink,
-      inactiveTintColor: Colors.inactive,
-    },
-  }
-
-  componentDidMount() {
+  useEffect(() => {
     if (Platform.OS === 'android') {
-      GithubService.fetchLatestVersion().then((result) => {
-        // console.log('github', result);
-        if (this.compareVersion(VersionNumber.appVersion, result.tag_name)) {
-          this.setState({
-            version: {
-              tag: result.tag_name,
-              filename: result.assets[0].name,
-              link: result.assets[0].browser_download_url,
-            },
-          });
-        }
+      checkVersion();
+    }
+  }, []);
+
+  async function checkVersion() {
+    const result = await GithubService.fetchLatestVersion();
+    // console.log('github', result);
+    if (compareVersion(VersionNumber.appVersion, result.tag_name)) {
+      setVersion({
+        tag: result.tag_name,
+        filename: result.assets[0].name,
+        link: result.assets[0].browser_download_url,
       });
     }
   }
 
-  compareVersion(appVersion, gitVersion) {
+  function compareVersion(appVersion, gitVersion) {
     const appVersionArr = appVersion.split(/\D|[a-zA-Z]/);
     const gitVersionArr = gitVersion.split(/\./);
     if (appVersionArr[0] < gitVersionArr[0]) {
@@ -104,7 +94,7 @@ export default class MainScreen extends React.Component {
    * @returns
    * @memberof MainScreen
    */
-  timer(time) {
+  function timer(time) {
     return <TimerCountdown initialSecondsRemaining={time}
       allowFontScaling={true} style={styles.text} />;
   }
@@ -115,10 +105,10 @@ export default class MainScreen extends React.Component {
    * @param {*} e
    * @memberof MainScreen
    */
-  onLoadFastImage = (e) => {
+  const onLoadFastImage = (e) => {
     const { width, height } = e.nativeEvent;
-    this.setState({ imgWidth: width, imgHeight: height });
-  }
+    setImgSize({ width, height });
+  };
 
   /**
    * Navigate to Event Detail Screen
@@ -126,142 +116,112 @@ export default class MainScreen extends React.Component {
    * @param {Object} event Event object
    * @memberof MainScreen
    */
-  navigateToEventDetail(event) {
-    if (this.props.isConnected) {
-      this.props.navigation.navigate('EventDetailScreen', { event });
-    }
+  function navigateToEventDetail(event) {
+    navigation.navigate('EventDetailScreen', { event });
   }
 
-  openDrawer = () => this.props.navigation.openDrawer();
+  const openDrawer = useCallback(() => navigation.openDrawer(), []);
 
-  render() {
-    const data = this.props.cachedData;
-    if (data === null) {
-      if (this.props.cachedDataErrorMessage) {
-        Alert.alert('Error', this.props.cachedDataErrorMessage);
-      }
-      return <View style={styles.blank} />;
-    }
-    // eslint-disable-next-line no-unused-vars
-    // const currentContests = data.current_contests;
-    /** Japanese event, Worldwide event */
-    const { JPEvent, ENEvent } = data;
-    /** Start time of Worldwide event */
-    const ENEventStart = moment(ENEvent.english_beginning);
-    /** End time of Worldwide event */
-    const ENEventEnd = moment(ENEvent.english_end);
-    /** Start time of Japanese event */
-    const JPEventStart = moment(JPEvent.beginning, Config.DATETIME_FORMAT_INPUT);
-    /** End time of Japanese event */
-    const JPEventEnd = moment(JPEvent.end, Config.DATETIME_FORMAT_INPUT);
+  const data = state.cachedData;
+  if (data === null) {
+    return <View style={styles.blank} />;
+  }
 
-    return (
-      <View style={styles.container}>
-        {/* HEADER */}
-        <View style={ApplicationStyles.header}>
-          <SquareButton name={'ios-menu'} onPress={this.openDrawer} color={'white'} />
-          <Image source={Images.logo} style={ApplicationStyles.imageHeader} />
-          <SquareButton name={'ios-menu'} color={Colors.pink} />
+  return <View style={styles.container}>
+    {/* HEADER */}
+    <View style={ApplicationStyles.header}>
+      <SquareButton name={'ios-menu'} onPress={openDrawer} color={'white'} />
+      <FastImage source={Images.logo}
+        resizeMode='contain'
+        style={ApplicationStyles.imageHeader} />
+      <SquareButton name={'ios-menu'} color={Colors.pink} />
+    </View>
+    {version !== null
+      && <Touchable useForeground style={styles.update}
+        background={TouchableNativeFeedback.Ripple('white', false)}
+        onLongPress={() => { }}
+        onPress={() => openLink(version.link)}>
+        <Text>{`Download new version ${version.tag} on Github!`}</Text>
+      </Touchable>}
+    <ConnectStatus />
+    {/* BODY */}
+    <ScrollView showsVerticalScrollIndicator={false}
+      contentContainerStyle={styles.content}>
+      {/* ENGLISH BLOCK */}
+      <Touchable useForeground style={styles.block}
+        background={TouchableNativeFeedback.Ripple('white', false)}
+        onLongPress={() => { }}
+        onPress={() => navigateToEventDetail(ENEvent)}>
+        <Text style={styles.text}>
+          {`Worldwide Event: ${ENEvent.english_status}`}
+        </Text>
+        <View style={styles.textbox}>
+          <Text style={styles.title}>{ENEvent.english_name}</Text>
         </View>
-        {this.state.version !== null
-          && <Touchable useForeground style={styles.update}
-            background={TouchableNativeFeedback.Ripple('white', false)}
-            onLongPress={() => { }}
-            onPress={() => openLink(this.state.version.link)}>
-            <Text>{`Download new version ${this.state.version.tag} on Github!`}</Text>
-          </Touchable>}
-        <ConnectStatus />
-        {/* BODY */}
-        <ScrollView showsVerticalScrollIndicator={false}
-          contentContainerStyle={styles.content}>
-          {/* ENGLISH BLOCK */}
-          <Touchable useForeground style={styles.block}
-            background={TouchableNativeFeedback.Ripple('white', false)}
-            onLongPress={() => { }}
-            onPress={() => this.navigateToEventDetail(ENEvent)}>
+        <FastImage source={{ uri: AddHTTPS(ENEvent.english_image) }}
+          onLoad={onLoadFastImage}
+          resizeMode='contain'
+          style={{
+            width: Metrics.widthBanner,
+            height: (Metrics.widthBanner * imgSize.height) / imgSize.width,
+          }} />
+        <View style={styles.textbox}>
+          <Text style={styles.text}>
+            {`Start: ${ENEventStart.format(Config.DATETIME_FORMAT_OUTPUT)}\nEnd: ${ENEventEnd.format(Config.DATETIME_FORMAT_OUTPUT)}`}
+          </Text>
+        </View>
+        {ENEvent.world_current
+          && <View style={styles.textbox}>
             <Text style={styles.text}>
-              {`Worldwide Event: ${ENEvent.english_status}`}
+              {timer(ENEventEnd.diff(moment()))}{' left'}
             </Text>
-            <View style={styles.textbox}>
-              <Text style={styles.title}>{ENEvent.english_name}</Text>
-            </View>
-            <FastImage source={{ uri: AddHTTPS(ENEvent.english_image) }}
-              onLoad={this.onLoadFastImage}
-              style={{
-                width: Metrics.widthBanner,
-                height: (Metrics.widthBanner * this.state.imgHeight) / this.state.imgWidth,
-              }} />
-            <View style={styles.textbox}>
-              <Text style={styles.text}>
-                {`Start: ${ENEventStart.format(Config.DATETIME_FORMAT_OUTPUT)}\nEnd: ${ENEventEnd.format(Config.DATETIME_FORMAT_OUTPUT)}`}
-              </Text>
-            </View>
-            {ENEvent.world_current
-              && <View style={styles.textbox}>
-                <Text style={styles.text}>
-                  {this.timer(ENEventEnd.diff(moment()))}{' left'}
-                </Text>
-              </View>}
-            {ENEvent.english_status === EventStatus.ANNOUNCED
-              && <View style={styles.textbox}>
-                <Text style={styles.text}>
-                  {'Starts in '}{this.timer(ENEventStart.diff(moment()))}
-                </Text>
-              </View>}
-          </Touchable>
-          <Seperator style={styles.bgWhite} />
-          {/* JAPANESE BLOCK */}
-          <Touchable useForeground style={styles.block}
-            background={TouchableNativeFeedback.Ripple('white', false)}
-            onLongPress={() => { }}
-            onPress={() => this.navigateToEventDetail(JPEvent)}>
+          </View>}
+        {ENEvent.english_status === EventStatus.ANNOUNCED
+          && <View style={styles.textbox}>
             <Text style={styles.text}>
-              {`Japanese Event: ${JPEvent.japan_status}`}
+              {'Starts in '}{timer(ENEventStart.diff(moment()))}
             </Text>
-            <View style={styles.textbox}>
-              <Text style={styles.title}>{JPEvent.romaji_name}</Text>
-            </View>
-            <FastImage source={{ uri: AddHTTPS(JPEvent.image) }}
-              onLoad={this.onLoadFastImage}
-              style={{
-                width: Metrics.widthBanner,
-                height: (Metrics.widthBanner * this.state.imgHeight) / this.state.imgWidth,
-              }} />
-            <View style={styles.textbox}>
-              <Text style={styles.text}>
-                {`Start: ${JPEventStart.format(Config.DATETIME_FORMAT_OUTPUT)}\nEnd: ${JPEventEnd.format(Config.DATETIME_FORMAT_OUTPUT)}`}
-              </Text>
-            </View>
-            {JPEvent.japan_current
-              && <View style={styles.textbox}>
-                <Text style={styles.text}>
-                  {this.timer(JPEventEnd.diff(moment()))}{' left'}
-                </Text>
-              </View>}
-            {JPEvent.japan_status === EventStatus.ANNOUNCED
-              && <View style={styles.textbox}>
-                <Text style={styles.text}>
-                  {'Starts in '}{this.timer(JPEventStart.diff(moment()))}
-                </Text>
-              </View>}
-          </Touchable>
-          {/* <Seperator style={{ backgroundColor: 'white' }} /> */}
-
-          {/* CONTEST BLOCK */}
-          {/* {currentContests.map((item, id) => (
-            <View key={'contest' + id}>
-              <Text style={styles.text}>{item.name}</Text>
-              <FastImage source={{ uri: AddHTTPS(item.image)) }}
-                resizeMode={FastImage.resizeMode.contain}
-                style={{
-                  width: Metrics.widthBanner,
-                  height: Metrics.widthBanner / 3,
-                  alignSelf: 'center',
-                }} />
-            </View>
-          ))} */}
-        </ScrollView>
-      </View>
-    );
-  }
+          </View>}
+      </Touchable>
+      <Seperator style={styles.bgWhite} />
+      {/* JAPANESE BLOCK */}
+      <Touchable useForeground style={styles.block}
+        background={TouchableNativeFeedback.Ripple('white', false)}
+        onLongPress={() => { }}
+        onPress={() => navigateToEventDetail(JPEvent)}>
+        <Text style={styles.text}>
+          {`Japanese Event: ${JPEvent.japan_status}`}
+        </Text>
+        <View style={styles.textbox}>
+          <Text style={styles.title}>{JPEvent.romaji_name}</Text>
+        </View>
+        <FastImage source={{ uri: AddHTTPS(JPEvent.image) }}
+          onLoad={onLoadFastImage}
+          resizeMode='contain'
+          style={{
+            width: Metrics.widthBanner,
+            height: (Metrics.widthBanner * imgSize.height) / imgSize.width,
+          }} />
+        <View style={styles.textbox}>
+          <Text style={styles.text}>
+            {`Start: ${JPEventStart.format(Config.DATETIME_FORMAT_OUTPUT)}\nEnd: ${JPEventEnd.format(Config.DATETIME_FORMAT_OUTPUT)}`}
+          </Text>
+        </View>
+        {JPEvent.japan_current
+          && <View style={styles.textbox}>
+            <Text style={styles.text}>
+              {timer(JPEventEnd.diff(moment()))}{' left'}
+            </Text>
+          </View>}
+        {JPEvent.japan_status === EventStatus.ANNOUNCED
+          && <View style={styles.textbox}>
+            <Text style={styles.text}>
+              {'Starts in '}{timer(JPEventStart.diff(moment()))}
+            </Text>
+          </View>}
+      </Touchable>
+    </ScrollView>
+  </View>;
 }
+
+export default MainScreen;

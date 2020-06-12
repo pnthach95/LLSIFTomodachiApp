@@ -64,6 +64,7 @@ export default class IdolItem extends Component {
               const { width, height } = e.nativeEvent;
               this.setState({ imgWidth: width, imgHeight: height });
             }}
+            resizeMode='contain'
             style={styleImage} />
           <View style={styles.info}>
             <Text style={Fonts.style.center}>{this.props.item.name}</Text>

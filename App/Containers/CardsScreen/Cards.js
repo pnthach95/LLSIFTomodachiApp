@@ -1,18 +1,15 @@
-/* eslint-disable no-unused-expressions */
-/* eslint-disable no-console */
-import React from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import {
   Text, View, FlatList, TextInput,
   TouchableNativeFeedback, Alert, ScrollView,
-  Image, LayoutAnimation, UIManager,
+  Image, LayoutAnimation,
 } from 'react-native';
 import PropTypes from 'prop-types';
 import ElevatedView from 'react-native-elevated-view';
-import Icon from 'react-native-vector-icons/Ionicons';
 import _ from 'lodash';
 
+import useStatusBar from '~/hooks/useStatusBar';
 import ConnectStatus from '~/Components/ConnectStatus';
-import Fade from '~/Components/Fade/Fade';
 import YearRow from '~/Components/YearRow/YearRow';
 import CardItem from '~/Components/CardItem/CardItem';
 import EventRow from '~/Components/EventRow/EventRow';
@@ -63,110 +60,83 @@ import { OrderingGroup } from '~/Config';
  * - `idol_school`: School name
  * - `idol_year`: Year (None, First, Second, Third)
  *
- * @class CardsScreen
- * @extends {React.PureComponent}
  */
-export default class CardsScreen extends React.PureComponent {
-  constructor(props) {
-    super(props);
-    this.defaultFilter = {
-      search: '',
-      selectedOrdering: OrderingGroup.CARD[0].value,
-      isReverse: true,
-      page_size: 30,
-      page: 1,
-      name: 'All',
-      rarity: '',
-      attribute: '',
-      japan_only: '',
-      is_promo: '',
-      is_special: '',
-      is_event: '',
-      skill: 'All',
-      idol_main_unit: '',
-      idol_sub_unit: 'All',
-      idol_school: 'All',
-      idol_year: '',
-    };
+function CardsScreen({ navigation }) {
+  useStatusBar('dark-content', Colors.white);
+  const defaultFilter = {
+    search: '',
+    selectedOrdering: OrderingGroup.CARD[1].value,
+    isReverse: true,
+    page_size: 30,
+    page: 1,
+    name: 'All',
+    rarity: '',
+    attribute: '',
+    japan_only: '',
+    is_promo: '',
+    is_special: '',
+    is_event: '',
+    skill: 'All',
+    idol_main_unit: '',
+    idol_sub_unit: 'All',
+    idol_school: 'All',
+    idol_year: '',
+  };
+  const [isLoading, setIsLoading] = useState(true);
+  const [searchOptions, setSearchOptions] = useState(defaultFilter);
+  const [column, setColumn] = useState(2);
+  const [isActionButtonVisible, setIsActionButtonVisible] = useState(true);
+  const [list, setList] = useState([]);
+  const [isFilter, setIsFilter] = useState(false);
+  const [stopSearch, setStopSearch] = useState(false);
+  const onEndReached = _.debounce(onEndReaching, 1000);
+  let listViewOffset = 0;
 
-    this.state = {
-      isLoading: true,
-      column: 2,
-      isActionButtonVisible: true,
-      list: [],
-      isFilter: false,
-      stopSearch: false,
-      search: '',
-      selectedOrdering: OrderingGroup.CARD[1].value,
-      isReverse: true,
-      page_size: 30,
-      page: 1,
-      name: 'All',
-      rarity: '',
-      attribute: '',
-      japan_only: '',
-      is_promo: '',
-      is_special: '',
-      is_event: '',
-      skill: 'All',
-      idol_main_unit: '',
-      idol_sub_unit: 'All',
-      idol_school: 'All',
-      idol_year: '',
-    };
-    this.onEndReached = _.debounce(this.onEndReached, 1000);
-    this.listViewOffset = 0;
-    UIManager.setLayoutAnimationEnabledExperimental
-      && UIManager.setLayoutAnimationEnabledExperimental(true);
-  }
+  useEffect(() => {
+    loadSettings()
+      .then((res) => {
+        setSearchOptions({
+          ...searchOptions,
+          japan_only: res.worldwide_only ? 'False' : '',
+        });
+      });
+  }, []);
 
-  static propTypes = {
-    isConnected: PropTypes.bool,
-  }
-
-  static navigationOptions = {
-    tabBarIcon: ({ focused }) => <Icon name='ios-photos' size={30}
-      color={focused ? Colors.pink : Colors.inactive} />,
-    tabBarLabel: 'Cards',
-    tabBarOptions: {
-      activeTintColor: Colors.pink,
-      inactiveTintColor: Colors.inactive,
-    },
-  }
-
-  componentDidMount() {
-    this.focusListener = this.props.navigation.addListener('didFocus', () => {
-      if (this.state.list.length === 0) {
-        loadSettings()
-          .then((res) => this.setState({
-            japan_only: res.worldwide_only ? 'False' : '',
-            isLoading: true,
-          }, () => this.getCards()));
-      }
-    });
-  }
-
-  componentWillUnmount() {
-    this.focusListener.remove();
-  }
+  useEffect(() => {
+    getCards();
+  }, [searchOptions.page]);
 
   /**
    * Key extractor in FlatList
    *
    * @memberof CardsScreen
    */
-  keyExtractor = (item) => `card ${item.id}`;
+  const keyExtractor = (item) => `card ${item.id}`;
 
   /**
    * Render item in FlatList
    *
    * @memberof CardsScreen
    */
-  renderItem = ({ item }) => (this.state.column === 1
-    ? <Card2PicsItem item={item} onPress={this.navigateToCardDetail(item)} />
-    : <CardItem item={item} onPress={this.navigateToCardDetail(item)} />);
+  const renderItem = ({ item }) => {
+    /**
+     * Navigate to Card Detail Screen
+     */
+    const navigateToCardDetail = () => {
+      navigation.navigate('CardDetailScreen', { item });
+    };
 
-  onScroll = (event) => {
+    if (column === 1) {
+      return <Card2PicsItem item={item} onPress={navigateToCardDetail} />;
+    }
+    return <CardItem item={item} onPress={navigateToCardDetail} />;
+  };
+
+  renderItem.propTypes = {
+    item: PropTypes.object.isRequired,
+  };
+
+  const onScroll = (event) => {
     // Simple fade-in / fade-out animation
     const CustomLayoutLinear = {
       duration: 100,
@@ -177,358 +147,369 @@ export default class CardsScreen extends React.PureComponent {
     // Check if the user is scrolling up or down
     // by confronting the new scroll position with your own one
     const currentOffset = event.nativeEvent.contentOffset.y;
-    const direction = (currentOffset > 0 && currentOffset > this.listViewOffset)
+    const direction = (currentOffset > 0 && currentOffset > listViewOffset)
       ? 'down'
       : 'up';
     // If the user is scrolling down (and the action-button is still visible) hide it
-    const isActionButtonVisible = direction === 'up';
-    if (isActionButtonVisible !== this.state.isActionButtonVisible) {
+    const isActionButtonVisibleTmp = direction === 'up';
+    if (isActionButtonVisibleTmp !== isActionButtonVisible) {
       LayoutAnimation.configureNext(CustomLayoutLinear);
-      this.setState({ isActionButtonVisible });
+      setIsActionButtonVisible(isActionButtonVisibleTmp);
     }
     // Update your scroll position
-    this.listViewOffset = currentOffset;
-  }
-
-  /**
-   * Navigate to Card Detail Screen
-   *
-   * @param {Object} item Card's information
-   * @memberof CardsScreen
-   */
-  navigateToCardDetail = (item) => () => {
-    if (this.props.isConnected) {
-      this.props.navigation.navigate('CardDetailScreen', { item });
-    }
-  }
+    listViewOffset = currentOffset;
+  };
 
   /**
    * Get card list
    *
-   * @param {Number} [page=this.state.page] Page number
-   * @memberof CardsScreen
    */
-  getCards(page = this.state.page) {
-    if (this.props.isConnected === false) {
-      this.setState({ isLoading: false });
-      return;
-    }
-    const ordering = (this.state.isReverse ? '-' : '') + this.state.selectedOrdering;
+  async function getCards() {
+    const ordering = (searchOptions.isReverse ? '-' : '') + searchOptions.selectedOrdering;
     const theFilter = {
       ordering,
-      page_size: this.state.page_size,
-      page,
+      page_size: searchOptions.page_size,
+      page: searchOptions.page,
     };
-    if (this.state.attribute !== '') theFilter.attribute = this.state.attribute;
-    if (this.state.idol_main_unit !== '') theFilter.idol_main_unit = this.state.idol_main_unit;
-    if (this.state.idol_sub_unit !== 'All') theFilter.idol_sub_unit = this.state.idol_sub_unit;
-    if (this.state.idol_school !== 'All') theFilter.idol_school = this.state.idol_school;
-    if (this.state.name !== 'All') theFilter.name = this.state.name;
-    if (this.state.skill !== 'All') theFilter.skill = this.state.skill;
-    if (this.state.is_event !== '') theFilter.is_event = this.state.is_event;
-    if (this.state.is_promo !== '') theFilter.is_promo = this.state.is_promo;
-    if (this.state.japan_only !== '') theFilter.japan_only = this.state.japan_only;
-    if (this.state.idol_year !== '') theFilter.idol_year = this.state.idol_year;
-    if (this.state.is_special !== '') theFilter.is_special = this.state.is_special;
-    if (this.state.rarity !== '') theFilter.rarity = this.state.rarity;
-    if (this.state.search !== '') theFilter.search = this.state.search;
-    console.log(`Cards.getCards: ${JSON.stringify(theFilter)}`);
-    LLSIFService.fetchCardList(theFilter).then((result) => {
+    if (searchOptions.attribute !== '') theFilter.attribute = searchOptions.attribute;
+    if (searchOptions.idol_main_unit !== '') theFilter.idol_main_unit = searchOptions.idol_main_unit;
+    if (searchOptions.idol_sub_unit !== 'All') theFilter.idol_sub_unit = searchOptions.idol_sub_unit;
+    if (searchOptions.idol_school !== 'All') theFilter.idol_school = searchOptions.idol_school;
+    if (searchOptions.name !== 'All') theFilter.name = searchOptions.name;
+    if (searchOptions.skill !== 'All') theFilter.skill = searchOptions.skill;
+    if (searchOptions.is_event !== '') theFilter.is_event = searchOptions.is_event;
+    if (searchOptions.is_promo !== '') theFilter.is_promo = searchOptions.is_promo;
+    if (searchOptions.japan_only !== '') theFilter.japan_only = searchOptions.japan_only;
+    if (searchOptions.idol_year !== '') theFilter.idol_year = searchOptions.idol_year;
+    if (searchOptions.is_special !== '') theFilter.is_special = searchOptions.is_special;
+    if (searchOptions.rarity !== '') theFilter.rarity = searchOptions.rarity;
+    if (searchOptions.search !== '') theFilter.search = searchOptions.search;
+    // console.log(`Cards.getCards: ${JSON.stringify(theFilter)}`);
+    try {
+      const result = await LLSIFService.fetchCardList(theFilter);
       if (result === 404) {
         // console.log('LLSIFService.fetchCardList 404');
-        this.setState({ stopSearch: true });
+        setStopSearch(true);
       } else {
-        let x = [...this.state.list, ...result];
+        let x = [...list, ...result];
         x = x.filter((thing, index, self) => index === self.findIndex((t) => t.id === thing.id));
-        this.setState({
-          list: x,
-          isLoading: false,
-          page: page + 1,
-        });
+        setList(x);
       }
-    }).catch((err) => {
+    } catch (err) {
       Alert.alert('Error', 'Error when get cards',
         [{ text: 'OK', onPress: () => console.log(`OK Pressed, ${err}`) }]);
-    });
+    } finally {
+      setIsLoading(false);
+    }
   }
 
-  /**
-   * Open drawer
-   *
-   * @memberof CardsScreen
-   */
-  openDrawer = () => this.props.navigation.openDrawer();
+  /** Open drawer */
+  const openDrawer = useCallback(() => navigation.openDrawer(), []);
 
   /**
    * Call when pressing search button
    *
-   * @memberof CardsScreen
    */
-  onSearch = () => {
-    this.setState({ list: [], isFilter: false, stopSearch: false });
-    this.getCards(1);
-  }
+  const onSearch = () => {
+    setList([]);
+    setIsFilter(false);
+    setStopSearch(false);
+    getCards();
+  };
 
   /**
    * Call when scrolling to the end of list.
    * stopSearch prevents calling getCards when no card was found (404).
    *
-   * @memberof CardsScreen
    */
-  onEndReached = () => {
-    if (this.state.stopSearch) return;
-    this.getCards();
+  function onEndReaching() {
+    if (stopSearch) return;
+    setSearchOptions({
+      ...searchOptions,
+      page: searchOptions.page + 1,
+    });
   }
 
   /**
    * Filter on/off
    *
-   * @memberof CardsScreen
    */
-  toggleFilter = () => this.setState({ isFilter: !this.state.isFilter });
+  const toggleFilter = () => {
+    setIsFilter(!isFilter);
+  };
 
   /**
    * Reverse search on/off
    *
-   * @memberof CardsScreen
    */
-  toggleReverse = () => this.setState({ isReverse: !this.state.isReverse });
+  const toggleReverse = () => {
+    setSearchOptions({
+      ...searchOptions,
+      isReverse: !searchOptions.isReverse,
+    });
+  };
 
   /**
    * Switch 1 column and 2 columns
    *
-   * @memberof CardsScreen
    */
-  switchColumn = () => this.setState({ column: this.state.column === 1 ? 2 : 1 });
+  const switchColumn = () => {
+    setColumn(column === 1 ? 2 : 1);
+  };
 
   /**
    * Save is_promo
    *
    * @param {String} value
-   * @memberof CardsScreen
    */
-  selectPromo = (value) => () => this.setState({ is_promo: value });
+  const selectPromo = (value) => () => {
+    setSearchOptions({
+      ...searchOptions,
+      is_promo: value,
+    });
+  };
 
   /**
    * Save is_special
    *
    * @param {String} value
-   * @memberof CardsScreen
    */
-  selectSpecial = (value) => () => this.setState({ is_special: value });
+  const selectSpecial = (value) => () => {
+    setSearchOptions({
+      ...searchOptions,
+      is_special: value,
+    });
+  };
 
   /**
    * Save is_event
    *
-   * @param {String} value
-   * @memberof CardsScreen
+   * @param {String} itemValue
    */
-  selectEvent = (value) => () => this.setState({ is_event: value });
+  const selectEvent = (value) => () => {
+    setSearchOptions({
+      ...searchOptions,
+      is_event: value,
+    });
+  };
 
   /**
    * Save idol_main_unit
    *
    * @param {String} value
-   * @memberof CardsScreen
    */
-  selectMainUnit = (value) => () => this.setState({ idol_main_unit: value });
+  const selectMainUnit = (value) => () => {
+    setSearchOptions({
+      ...searchOptions,
+      idol_main_unit: value,
+    });
+  };
 
   /**
    * Save rarity
    *
    * @param {String} value
-   * @memberof CardsScreen
    */
-  selectRarity = (value) => () => this.setState({ rarity: value });
+  const selectRarity = (value) => () => {
+    setSearchOptions({
+      ...searchOptions,
+      rarity: value,
+    });
+  };
 
   /**
    * Save attribute
    *
    * @param {String} value
-   * @memberof CardsScreen
    */
-  selectAttribute = (value) => () => this.setState({ attribute: value });
+  const selectAttribute = (value) => () => {
+    setSearchOptions({
+      ...searchOptions,
+      attribute: value,
+    });
+  };
 
   /**
    * Save idol_year
    *
    * @param {String} value
-   * @memberof CardsScreen
    */
-  selectYear = (value) => () => this.setState({ idol_year: value });
+  const selectYear = (value) => () => setSearchOptions({
+    ...searchOptions,
+    idol_year: value,
+  });
 
   /**
    * Save region
    *
    * @param {String} value
-   * @memberof CardsScreen
    */
-  selectRegion = (value) => () => this.setState({ japan_only: value });
+  const selectRegion = (value) => () => {
+    setSearchOptions({
+      ...searchOptions,
+      japan_only: value,
+    });
+  };
 
   /**
    * Save idol_sub_unit
    *
    * @param {String} itemValue
-   * @param {String} itemIndex unused
-   * @memberof CardsScreen
    */
-  selectSubUnit = (itemValue) => this.setState({ idol_sub_unit: itemValue });
+  const selectSubUnit = (itemValue) => {
+    setSearchOptions({
+      ...searchOptions,
+      idol_sub_unit: itemValue,
+    });
+  };
 
   /**
    * Save idol name
    *
    * @param {String} itemValue
-   * @param {String} itemIndex unused
-   * @memberof CardsScreen
    */
-  selectIdol = (itemValue) => this.setState({ name: itemValue });
+  const selectIdol = (itemValue) => {
+    setSearchOptions({
+      ...searchOptions,
+      name: itemValue,
+    });
+  };
 
   /**
    * Save school
    *
    * @param {String} itemValue
-   * @param {String} itemIndex unused
-   * @memberof CardsScreen
    */
-  selectSchool = (itemValue) => this.setState({ idol_school: itemValue });
+  const selectSchool = (itemValue) => {
+    setSearchOptions({
+      ...searchOptions,
+      idol_school: itemValue,
+    });
+  };
 
   /**
    * Save skill
    *
    * @param {String} itemValue
-   * @param {String} itemIndex unused
-   * @memberof CardsScreen
    */
-  selectSkill = (itemValue) => this.setState({ skill: itemValue });
+  const selectSkill = (itemValue) => {
+    setSearchOptions({
+      ...searchOptions,
+      skill: itemValue,
+    });
+  };
 
   /**
    * Save ordering
    *
    * @param {String} itemValue
-   * @param {String} itemIndex unused
-   * @memberof CardsScreen
    */
-  selectOrdering = (itemValue) => this.setState({ selectedOrdering: itemValue });
+  const selectOrdering = (itemValue) => {
+    setSearchOptions({
+      ...searchOptions,
+      selectedOrdering: itemValue,
+    });
+  };
 
   /**
    * Reset filter variables
    *
-   * @memberof CardsScreen
    */
-  resetFilter = () => {
-    this.setState({
-      name: this.defaultFilter.name,
-      rarity: this.defaultFilter.rarity,
-      attribute: this.defaultFilter.attribute,
-      japan_only: this.defaultFilter.japan_only,
-      is_promo: this.defaultFilter.is_promo,
-      is_special: this.defaultFilter.is_special,
-      is_event: this.defaultFilter.is_event,
-      skill: this.defaultFilter.skill,
-      idol_main_unit: this.defaultFilter.idol_main_unit,
-      idol_sub_unit: this.defaultFilter.idol_sub_unit,
-      idol_school: this.defaultFilter.idol_school,
-      idol_year: this.defaultFilter.idol_year,
-      selectedOrdering: this.defaultFilter.selectedOrdering,
-      isReverse: this.defaultFilter.isReverse,
-      search: '',
-    });
-  }
+  const resetFilter = () => {
+    setSearchOptions(defaultFilter);
+  };
 
   /**
    * Render footer of FlatList
    *
-   * @memberof CardsScreen
    */
-  renderFooter = <View style={[ApplicationStyles.center, styles.flatListElement]}>
+  const renderFooter = <View style={[ApplicationStyles.center, styles.flatListElement]}>
     <Image source={Images.alpaca} />
-  </View>
+  </View>;
 
-  renderEmpty = <View style={styles.flatListElement}>
+  const renderEmpty = <View style={styles.flatListElement}>
     <Text style={styles.resetText}>No result</Text>
-  </View>
+  </View>;
 
-  render() {
-    return (
-      <View style={styles.container}>
-        <Fade visible={this.state.isLoading}
-          style={[ApplicationStyles.screen, ApplicationStyles.absolute]}>
-          <SplashScreen bgColor={Colors.green} />
-        </Fade>
-        <Fade visible={!this.state.isLoading}
-          style={[ApplicationStyles.screen, ApplicationStyles.absolute]}>
-          {/* HEADER */}
-          <ElevatedView elevation={5} style={[ApplicationStyles.header, styles.header]}>
-            <SquareButton name={'ios-menu'} onPress={this.openDrawer} />
-            <View style={ApplicationStyles.searchHeader}>
-              <TextInput value={this.state.search}
-                onChangeText={(text) => this.setState({ search: text })}
-                onSubmitEditing={this.onSearch}
-                placeholder={'Search card...'}
-                style={ApplicationStyles.searchInput} />
-              <SquareButton name={'ios-search'} onPress={this.onSearch}
-                style={ApplicationStyles.searchButton} />
-            </View>
-            <SquareButton name={'ios-more'} onPress={this.toggleFilter} />
-          </ElevatedView>
-
-          {/* FILTER */}
-          {this.state.isFilter
-            && <ElevatedView elevation={5} style={styles.filterContainer}>
-              <ScrollView contentContainerStyle={styles.contentContainer}>
-                <IdolNameRow name={this.state.name} selectIdol={this.selectIdol} />
-                <RarityRow rarity={this.state.rarity} selectRarity={this.selectRarity} />
-                <AttributeRow attribute={this.state.attribute}
-                  selectAttribute={this.selectAttribute} />
-                <RegionRow japanOnly={this.state.japan_only} selectRegion={this.selectRegion} />
-                <PromoCardRow isPromo={this.state.is_promo} selectPromo={this.selectPromo} />
-                <SpecialCardRow isSpecial={this.state.is_special}
-                  selectSpecial={this.selectSpecial} />
-                <EventRow isEvent={this.state.is_event} selectEvent={this.selectEvent} />
-                <SkillRow skill={this.state.skill} selectSkill={this.selectSkill} />
-                <MainUnitRow mainUnit={this.state.idol_main_unit}
-                  selectMainUnit={this.selectMainUnit} />
-                <SubUnitRow idolSubUnit={this.state.idol_sub_unit}
-                  selectSubUnit={this.selectSubUnit} />
-                <SchoolRow idolSchool={this.state.idol_school} selectSchool={this.selectSchool} />
-                <YearRow idolYear={this.state.idol_year} selectYear={this.selectYear} />
-                <OrderingRow orderingItem={OrderingGroup.CARD}
-                  selectedOrdering={this.state.selectedOrdering}
-                  selectOrdering={this.selectOrdering}
-                  isReverse={this.state.isReverse}
-                  toggleReverse={this.toggleReverse} />
-
-                {/* RESET BUTTON */}
-                <Touchable onPress={this.resetFilter} useForeground
-                  style={styles.resetView}>
-                  <Text style={styles.resetText}>RESET</Text>
-                </Touchable>
-              </ScrollView>
-            </ElevatedView>}
-          <ConnectStatus />
-          {/* LIST */}
-          <FlatList data={this.state.list}
-            key={`${this.state.column}c`}
-            showsVerticalScrollIndicator={false}
-            numColumns={this.state.column}
-            initialNumToRender={8}
-            keyExtractor={this.keyExtractor}
-            onEndReached={this.onEndReached}
-            style={styles.list}
-            onScroll={this.onScroll}
-            ListEmptyComponent={this.renderEmpty}
-            ListFooterComponent={this.renderFooter}
-            renderItem={this.renderItem} />
-          {this.state.isActionButtonVisible
-            && <View style={[styles.floatButton, ApplicationStyles.center]}>
-              <Touchable onPress={this.switchColumn}
-                background={TouchableNativeFeedback.Ripple(Colors.green, true)}>
-                <Image source={Images.column[this.state.column - 1]}
-                  style={styles.floatButtonSize} />
-              </Touchable>
-            </View>}
-        </Fade>
-      </View>
-    );
+  if (isLoading) {
+    return <SplashScreen bgColor={Colors.green} />;
   }
+
+  return <View style={styles.container}>
+    {/* HEADER */}
+    <ElevatedView elevation={5} style={[ApplicationStyles.header, styles.header]}>
+      <SquareButton name={'ios-menu'} onPress={openDrawer} />
+      <View style={ApplicationStyles.searchHeader}>
+        <TextInput
+          onChangeText={(text) => setSearchOptions({
+            ...searchOptions,
+            search: text,
+          })}
+          onSubmitEditing={onSearch}
+          placeholder={'Search card...'}
+          style={ApplicationStyles.searchInput} />
+        <SquareButton name={'ios-search'} onPress={onSearch}
+          style={ApplicationStyles.searchButton} />
+      </View>
+      <SquareButton name={'ios-more'} onPress={toggleFilter} />
+    </ElevatedView>
+
+    {/* FILTER */}
+    {isFilter
+      && <ElevatedView elevation={5} style={styles.filterContainer}>
+        <ScrollView contentContainerStyle={styles.contentContainer}>
+          <IdolNameRow name={searchOptions.name} selectIdol={selectIdol} />
+          <RarityRow rarity={searchOptions.rarity} selectRarity={selectRarity} />
+          <AttributeRow attribute={searchOptions.attribute}
+            selectAttribute={selectAttribute} />
+          <RegionRow japanOnly={searchOptions.japan_only} selectRegion={selectRegion} />
+          <PromoCardRow isPromo={searchOptions.is_promo} selectPromo={selectPromo} />
+          <SpecialCardRow isSpecial={searchOptions.is_special}
+            selectSpecial={selectSpecial} />
+          <EventRow isEvent={searchOptions.is_event} selectEvent={selectEvent} />
+          <SkillRow skill={searchOptions.skill} selectSkill={selectSkill} />
+          <MainUnitRow mainUnit={searchOptions.idol_main_unit}
+            selectMainUnit={selectMainUnit} />
+          <SubUnitRow idolSubUnit={searchOptions.idol_sub_unit}
+            selectSubUnit={selectSubUnit} />
+          <SchoolRow idolSchool={searchOptions.idol_school} selectSchool={selectSchool} />
+          <YearRow idolYear={searchOptions.idol_year} selectYear={selectYear} />
+          <OrderingRow orderingItem={OrderingGroup.CARD}
+            selectedOrdering={searchOptions.selectedOrdering}
+            selectOrdering={selectOrdering}
+            isReverse={searchOptions.isReverse}
+            toggleReverse={toggleReverse} />
+
+          {/* RESET BUTTON */}
+          <Touchable onPress={resetFilter} useForeground
+            style={styles.resetView}>
+            <Text style={styles.resetText}>RESET</Text>
+          </Touchable>
+        </ScrollView>
+      </ElevatedView>}
+    <ConnectStatus />
+    {/* LIST */}
+    <FlatList data={list}
+      key={`${column}c`}
+      showsVerticalScrollIndicator={false}
+      numColumns={column}
+      initialNumToRender={8}
+      keyExtractor={keyExtractor}
+      onEndReached={onEndReached}
+      style={styles.list}
+      onScroll={onScroll}
+      ListEmptyComponent={renderEmpty}
+      ListFooterComponent={renderFooter}
+      renderItem={renderItem} />
+    {isActionButtonVisible
+      && <View style={[styles.floatButton, ApplicationStyles.center]}>
+        <Touchable onPress={switchColumn}
+          background={TouchableNativeFeedback.Ripple(Colors.green, true)}>
+          <Image source={Images.column[column - 1]}
+            style={styles.floatButtonSize} />
+        </Touchable>
+      </View>}
+  </View>;
 }
+
+export default CardsScreen;

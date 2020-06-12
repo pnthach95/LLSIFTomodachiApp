@@ -1,93 +1,117 @@
-import React from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import {
   View, Text, TouchableOpacity,
-  StyleSheet,
 } from 'react-native';
-import PropTypes from 'prop-types';
+
+import useStatusBar from '~/hooks/useStatusBar';
+import LLSIFService from '~/Services/LLSIFService';
+import LLSIFdotnetService from '~/Services/LLSIFdotnetService';
 import SplashScreen from '../SplashScreen/SplashScreen';
+import UserContext from '~/Context/UserContext';
+import { actions } from '~/Context/Reducer';
 import { Colors, ApplicationStyles, Fonts } from '~/Theme';
+import styles from './styles';
 
 /**
  * Loading Screen
  *
- * @export
- * @class LoadingScreen
- * @extends {React.Component}
+ * @returns
  */
-export default class LoadingScreen extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      error: false,
-    };
-  }
+function LoadingScreen() {
+  useStatusBar('light-content', Colors.pink);
+  const { dispatch } = useContext(UserContext);
+  const [error, setError] = useState(false);
 
-  static propTypes = {
-    fetchCachedData: PropTypes.func,
-    cachedData: PropTypes.object,
-  }
+  useEffect(() => {
+    loadCachedData();
+  }, []);
 
-  componentDidMount() {
-    this.loadCachedData();
-  }
+  const loadCachedData = async () => {
+    setError(false);
+    try {
+      const cachedData = {};
+      const enParams = {
+        ordering: '-english_beginning',
+        page_size: 1,
+      };
+      const jpParams = {
+        ordering: '-beginning',
+        page_size: 1,
+      };
+      const [data, eventEN, eventJP, randomCard, eventInfo] = await Promise.all([
+        LLSIFService.fetchCachedData(),
+        LLSIFService.fetchEventList(enParams),
+        LLSIFService.fetchEventList(jpParams),
+        LLSIFService.fetchRandomCard(),
+        LLSIFdotnetService.fetchEventInfo(),
+      ]);
 
-  loadCachedData = () => {
-    this.setState({ error: false });
-    this.props.fetchCachedData()
-      .then(() => {
-        this.props.navigation.navigate('AppStack');
-      })
-      .catch((error) => {
-        // eslint-disable-next-line no-console
-        console.log(error);
-        if (this.props.cachedData === null) {
-          this.setState({ error: true });
-        } else {
-          this.props.navigation.navigate('AppStack');
-        }
+      const cardsInfo = data.cards_info;
+      const idols = cardsInfo.idols.map((value) => ({
+        label: value.name,
+        value: value.name,
+      }));
+      cachedData.idols = idols;
+      const skills = cardsInfo.skills.map((value) => ({
+        label: value.skill,
+        value: value.skill,
+      }));
+      cachedData.skills = skills;
+      const subUnits = cardsInfo.sub_units.map((value) => ({
+        label: value,
+        value,
+      }));
+      cachedData.subUnits = subUnits;
+      const schools = cardsInfo.schools.map((value) => ({
+        label: value,
+        value,
+      }));
+      cachedData.schools = schools;
+      cachedData.maxStats = cardsInfo.max_stats;
+      cachedData.songsMaxStats = cardsInfo.songs_max_stats;
+
+      const [eventEN0] = eventEN;
+      const [eventJP0] = eventJP;
+      cachedData.ENEvent = eventEN0;
+      cachedData.JPEvent = eventJP0;
+      const r = Math.floor(Math.random() * 10);
+      let bgImage = '';
+      if (randomCard.clean_ur !== null && r < 6) {
+        bgImage = randomCard.clean_ur;
+      } else {
+        bgImage = randomCard.clean_ur_idolized;
+      }
+      cachedData.randomCard = randomCard;
+      cachedData.bgImage = bgImage;
+      cachedData.eventInfo = eventInfo;
+      dispatch({
+        type: actions.DONE_LOADING,
+        data: cachedData,
       });
-  }
-
-  render() {
-    if (this.state.error) {
-      return (
-        <View style={[
-          ApplicationStyles.screen,
-          ApplicationStyles.center,
-          styles.bg,
-        ]}>
-          <View style={styles.textBox}>
-            <Text style={styles.text}>
-              {'Can\'t get data.\nCheck internet connection and retry.'}
-            </Text>
-          </View>
-          <TouchableOpacity onPress={this.loadCachedData}>
-            <View style={styles.button}>
-              <Text style={Fonts.style.normal}>Retry</Text>
-            </View>
-          </TouchableOpacity>
-        </View>
-      );
+    } catch (e) {
+      setError(true);
     }
-    return <SplashScreen bgColor={Colors.pink} />;
+  };
+
+  if (error) {
+    return <View style={[
+      ApplicationStyles.screen,
+      ApplicationStyles.center,
+      styles.bg,
+    ]}>
+      <View style={styles.textBox}>
+        <Text style={styles.text}>
+          {'Can\'t get data.\nCheck internet connection and retry.'}
+        </Text>
+      </View>
+      <TouchableOpacity onPress={loadCachedData}>
+        <View style={styles.button}>
+          <Text style={Fonts.style.normal}>Retry</Text>
+        </View>
+      </TouchableOpacity>
+    </View>;
   }
+  return <SplashScreen bgColor={Colors.pink} />;
 }
 
-const styles = StyleSheet.create({
-  bg: {
-    backgroundColor: Colors.pink,
-  },
-  button: {
-    backgroundColor: Colors.white,
-    margin: 10,
-    padding: 10,
-  },
-  text: {
-    ...Fonts.style.normal,
-    ...Fonts.style.white,
-    ...Fonts.style.center,
-  },
-  textBox: {
-    marginHorizontal: 10,
-  },
-});
+export default LoadingScreen;

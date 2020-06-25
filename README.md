@@ -17,7 +17,7 @@ The project contains:
 - [React Native Image Gallery](https://github.com/archriss/react-native-image-gallery) (v2.1.5)
 - [React Native Picker Select](https://github.com/lawnstarter/react-native-picker-select) (v7.0.0)
 - [React Native Sentry](https://sentry.io) (v1.4.5)
-- [React Native Linear Gradienet](https://github.com/react-native-community/react-native-linear-gradient) (v2.5.6)
+- [React Native Linear Gradient](https://github.com/react-native-community/react-native-linear-gradient) (v2.5.6)
 - [React Native Offline](https://github.com/rgommezz/react-native-offline) (v5.7.0)
 - [React Native Indicators](https://github.com/n4kz/react-native-indicators) (v0.17.0)
 - [Moment](https://momentjs.com/) (v2.26.0)

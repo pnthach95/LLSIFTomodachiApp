@@ -17,18 +17,18 @@ import UserContext from '~/Context/UserContext';
 import reducer, { initState } from '~/Context/Reducer';
 import { Colors } from '~/Theme';
 
-import LoadingScreen from './LoadingScreen';
-import MainScreen from './MainScreen';
-import CardsScreen from './CardsScreen';
-import IdolsScreen from './IdolsScreen';
-import EventsScreen from './EventsScreen';
-import SongsScreen from './SongsScreen';
-import DrawerScreen from './Drawer';
+import LoadingScreen from './LoadingScreen/LoadingScreen';
+import MainScreen from './MainScreen/Main';
+import CardsScreen from './CardsScreen/Cards';
+import IdolsScreen from './IdolsScreen/Idols';
+import EventsScreen from './EventsScreen/Events';
+import SongsScreen from './SongsScreen/Songs';
+import DrawerScreen from './Drawer/Drawer';
 
-import CardDetailScreen from './CardDetailScreen';
-import EventDetailScreen from './EventDetailScreen';
+import CardDetailScreen from './CardDetailScreen/CardDetail';
+import EventDetailScreen from './EventDetailScreen/EventDetail';
 import IdolDetailScreen from './IdolDetailScreen/IdolDetail';
-import SongDetailScreen from './SongDetailScreen';
+import SongDetailScreen from './SongDetailScreen/SongDetail';
 
 Sentry.init({ dsn: 'https://ac9aa894ab9341fba115b29731378b6b@sentry.io/1330276' });
 

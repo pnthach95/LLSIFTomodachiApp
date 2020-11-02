@@ -10,7 +10,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import firebase from 'react-native-firebase';
 import * as Sentry from '@sentry/react-native';
 
-import { bottomTabList, iconComponent } from '~/Utils/type';
+import { BottomTabList, IconComponent, RootStackParamList } from '~/Utils/type';
 import { loadSettings } from '~/Utils';
 import { FirebaseTopic } from '~/Config';
 import UserContext from '~/Context/UserContext';
@@ -32,25 +32,25 @@ import SongDetailScreen from './SongDetail';
 
 Sentry.init({ dsn: 'https://ac9aa894ab9341fba115b29731378b6b@sentry.io/1330276' });
 
-const Tab = createBottomTabNavigator();
-const Stack = createStackNavigator();
+const Tab = createBottomTabNavigator<BottomTabList>();
+const Stack = createStackNavigator<RootStackParamList>();
 const Drawer = createDrawerNavigator();
 
-const LLSIFTab: React.FC<BottomTabNavigationProp<bottomTabList>> = () => {
-  const homeIcon: iconComponent = ({ color }) => <Icon name='home'
+const LLSIFTab: React.FC<BottomTabNavigationProp<BottomTabList>> = () => {
+  const homeIcon: IconComponent = ({ color }) => <Icon name='home'
     size={25} color={color} />;
 
-  const cardIcon: iconComponent = ({ color }) => <Ionicons name='ios-photos'
+  const cardIcon: IconComponent = ({ color }) => <Ionicons name='ios-photos'
     size={30} color={color} />;
 
-  const idolIcon: iconComponent = ({ focused, color }) => <Ionicons size={30}
+  const idolIcon: IconComponent = ({ focused, color }) => <Ionicons size={30}
     name={focused ? 'ios-star' : 'ios-star-outline'}
     color={color} />;
 
-  const eventIcon: iconComponent = ({ color }) => <Ionicons name='md-calendar'
+  const eventIcon: IconComponent = ({ color }) => <Ionicons name='md-calendar'
     size={30} color={color} />;
 
-  const songIcon: iconComponent = ({ color }) => <Ionicons name='ios-musical-notes'
+  const songIcon: IconComponent = ({ color }) => <Ionicons name='ios-musical-notes'
     size={30} color={color} />;
 
   return <Tab.Navigator tabBarOptions={{

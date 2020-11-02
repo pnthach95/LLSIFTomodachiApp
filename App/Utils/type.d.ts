@@ -4,7 +4,7 @@
  * Created Date: Monday, 02/11/2020, 4:38:28 pm
  * Author: Pham Ngoc Thach
  * -----
- * Last Modified: Monday, 02/11/2020, 11:19:18 pm
+ * Last Modified: Monday, 02/11/2020, 11:53:20 pm
  * Modified By: Pham Ngoc Thach (thachpn@honeynet.vn)
  * -----
  * Copyright © 2020 HONEYNET
@@ -17,12 +17,12 @@ type ActionType =
   | { type: 'LOADING'; }
   | { type: 'DONE_LOADING'; data: object };
 
-type iconComponent = React.FC<{
+type IconComponent = React.FC<{
   focused?: boolean;
   color: string;
 }>;
 
-type bottomTabList = {
+type BottomTabList = {
   MainScreen: undefined;
   CardsScreen: undefined;
   IdolsScreen: undefined;
@@ -31,11 +31,12 @@ type bottomTabList = {
 };
 
 type RootStackParamList = {
-  DrawerScreen: undefined,
-  CardDetailScreen: undefined,
-  EventDetailScreen: undefined,
-  IdolDetailScreen: undefined,
-  SongDetailScreen: undefined,
+  LoadingScreen: undefined;
+  DrawerScreen: undefined;
+  CardDetailScreen: { item: CardObject; };
+  EventDetailScreen: undefined;
+  IdolDetailScreen: { name: string };
+  SongDetailScreen: undefined;
 };
 
 type DrawerScreenProps = StackScreenProps<RootStackParamList, 'DrawerScreen'>;
@@ -87,7 +88,7 @@ type CardObject = {
   japanese_center_skill?: string
   japanese_center_skill_details?: string
   card_image?: string
-  card_idolized_image?: string
+  card_idolized_image: string
   round_card_image?: string
   round_card_idolized_image?: string
   video_story?: string

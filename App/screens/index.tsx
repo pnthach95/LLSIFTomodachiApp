@@ -1,16 +1,16 @@
 import React, { useEffect, useMemo, useReducer } from 'react';
-import PropTypes from 'prop-types';
 import { Alert } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createBottomTabNavigator, BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
 import { NetworkProvider } from 'react-native-offline';
 import Icon from 'react-native-vector-icons/SimpleLineIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import firebase from 'react-native-firebase';
 import * as Sentry from '@sentry/react-native';
 
+import { bottomTabList, iconComponent } from '~/Utils/type';
 import { loadSettings } from '~/Utils';
 import { FirebaseTopic } from '~/Config';
 import UserContext from '~/Context/UserContext';
@@ -36,38 +36,22 @@ const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
 
-function LLSIFTab() {
-  const homeIcon = ({ color }) => <Icon name='home'
+const LLSIFTab: React.FC<BottomTabNavigationProp<bottomTabList>> = () => {
+  const homeIcon: iconComponent = ({ color }) => <Icon name='home'
     size={25} color={color} />;
-  homeIcon.propTypes = {
-    color: PropTypes.string,
-  };
 
-  const cardIcon = ({ color }) => <Ionicons name='ios-photos'
+  const cardIcon: iconComponent = ({ color }) => <Ionicons name='ios-photos'
     size={30} color={color} />;
-  cardIcon.propTypes = {
-    color: PropTypes.string,
-  };
 
-  const idolIcon = ({ focused, color }) => <Ionicons size={30}
+  const idolIcon: iconComponent = ({ focused, color }) => <Ionicons size={30}
     name={focused ? 'ios-star' : 'ios-star-outline'}
     color={color} />;
-  idolIcon.propTypes = {
-    focused: PropTypes.bool,
-    color: PropTypes.string,
-  };
 
-  const eventIcon = ({ color }) => <Ionicons name='md-calendar'
+  const eventIcon: iconComponent = ({ color }) => <Ionicons name='md-calendar'
     size={30} color={color} />;
-  eventIcon.propTypes = {
-    color: PropTypes.string,
-  };
 
-  const songIcon = ({ color }) => <Ionicons name='ios-musical-notes'
+  const songIcon: iconComponent = ({ color }) => <Ionicons name='ios-musical-notes'
     size={30} color={color} />;
-  songIcon.propTypes = {
-    color: PropTypes.string,
-  };
 
   return <Tab.Navigator tabBarOptions={{
     activeTintColor: Colors.pink,
@@ -104,15 +88,15 @@ function LLSIFTab() {
         tabBarLabel: 'Songs',
       }} />
   </Tab.Navigator >;
-}
+};
 
-function LLSIFDrawer() {
+const LLSIFDrawer = () => {
   return <Drawer.Navigator drawerContent={() => <DrawerScreen />}>
     <Drawer.Screen name='Main' component={LLSIFTab} />
   </Drawer.Navigator>;
-}
+};
 
-function MainContainer() {
+const MainContainer: React.FC<{}> = () => {
   const [state, dispatch] = useReducer(reducer, initState);
   const userReducer = useMemo(() => ({ state, dispatch }), [state, dispatch]);
   useEffect(() => {
@@ -240,6 +224,6 @@ function MainContainer() {
       </NavigationContainer>
     </UserContext.Provider>
   </NetworkProvider>;
-}
+};
 
 export default MainContainer;

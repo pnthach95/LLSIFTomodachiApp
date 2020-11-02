@@ -1,3 +1,5 @@
+import { StyleSheet } from 'react-native';
+
 const size = {
   h1: 38,
   h2: 34,
@@ -8,7 +10,7 @@ const size = {
   small: 12,
 };
 
-const style = {
+const style = StyleSheet.create({
   center: {
     textAlign: 'center',
   },
@@ -30,6 +32,6 @@ const style = {
   white: {
     color: 'white',
   },
-};
+});
 
 export default { size, style };

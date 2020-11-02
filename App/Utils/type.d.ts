@@ -4,7 +4,7 @@
  * Created Date: Monday, 02/11/2020, 4:38:28 pm
  * Author: Pham Ngoc Thach
  * -----
- * Last Modified: Monday, 02/11/2020, 8:15:58 pm
+ * Last Modified: Monday, 02/11/2020, 9:07:34 pm
  * Modified By: Pham Ngoc Thach (thachpn@honeynet.vn)
  * -----
  * Copyright © 2020 HONEYNET
@@ -131,4 +131,31 @@ type URPairObject = {
   }
   reverse_display_idolized?: string
   reverse_display?: string
+}
+
+type EventObject = {
+  japanese_name: string
+  romaji_name?: string
+  english_name?: string
+  translated_name?: string
+  image: string
+  english_image?: string
+  beginning?: string
+  end?: string
+  english_beginning?: string
+  english_end?: string
+  japan_current?: boolean
+  world_current?: boolean
+  english_status?: string
+  japan_status?: string
+  japanese_t1_points?: number
+  japanese_t1_rank?: number
+  japanese_t2_points?: number
+  japanese_t2_rank?: number
+  english_t1_points?: number
+  english_t1_rank?: number
+  english_t2_points?: number
+  english_t2_rank?: number
+  note?: string
+  website_url: string
 }

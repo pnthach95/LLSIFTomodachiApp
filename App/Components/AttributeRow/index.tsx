@@ -1,14 +1,15 @@
 import React from 'react';
 import {
-  Text, View, TouchableOpacity, Image, ScrollView, StyleSheet,
+  View, TouchableOpacity, Image, ScrollView, StyleSheet,
 } from 'react-native';
+import { Text } from 'react-native-paper';
 import { Images, ApplicationStyles } from '~/Theme';
 import rowStyles from '~/Theme/RowStyles';
-import type { attributes } from '~/Utils/type';
+import type { AttributeType } from '~/Utils/type';
 
 type AttributeRowType = {
-  attribute: attributes;
-  selectAttribute: (attribute: attributes) => void;
+  attribute: AttributeType;
+  selectAttribute: (attribute: AttributeType) => void;
 };
 
 /**

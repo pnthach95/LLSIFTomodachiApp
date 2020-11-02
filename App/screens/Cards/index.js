@@ -11,7 +11,7 @@ import _ from 'lodash';
 import useStatusBar from '~/hooks/useStatusBar';
 import ConnectStatus from '~/Components/ConnectStatus';
 import YearRow from '~/Components/YearRow/YearRow';
-import CardItem from '~/Components/CardItem/CardItem';
+import CardItem from '~/Components/CardItem';
 import EventRow from '~/Components/EventRow/EventRow';
 import SkillRow from '~/Components/SkillRow';
 import RarityRow from '~/Components/RarityRow/RarityRow';

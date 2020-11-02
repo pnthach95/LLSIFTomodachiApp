@@ -11,7 +11,7 @@ import UserContext from '~/Context/UserContext';
 import StarBar from '~/Components/StarBar/StarBar';
 import ProgressBar from '~/Components/ProgressBar/ProgressBar';
 import TextRow from '~/Components/TextRow/TextRow';
-import SplashScreen from '../SplashScreen/SplashScreen';
+import SplashScreen from '../Splash';
 import { findColorByAttribute, AddHTTPS, findMainUnit } from '~/Utils';
 import { Metrics, ApplicationStyles, Colors } from '~/Theme';
 import styles from './styles';

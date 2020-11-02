@@ -17,7 +17,7 @@ import IdolNameRow from '~/Components/IdolNameRow';
 import MainUnitRow from '~/Components/MainUnitRow/MainUnitRow';
 import AttributeRow from '~/Components/AttributeRow/AttributeRow';
 import SquareButton from '~/Components/SquareButton/SquareButton';
-import SplashScreen from '../SplashScreen/SplashScreen';
+import SplashScreen from '../Splash';
 import { Colors, ApplicationStyles, Images } from '~/Theme';
 import styles from './styles';
 import LLSIFService from '~/Services/LLSIFService';

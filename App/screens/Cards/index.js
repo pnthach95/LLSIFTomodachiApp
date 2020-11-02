@@ -28,7 +28,7 @@ import SquareButton from '~/Components/SquareButton/SquareButton';
 import Card2PicsItem from '~/Components/Card2PicsItem/Card2PicsItem';
 import SpecialCardRow from '~/Components/SpecialCardRow/SpecialCardRow';
 import LLSIFService from '~/Services/LLSIFService';
-import SplashScreen from '../SplashScreen/SplashScreen';
+import SplashScreen from '../Splash';
 import { Colors, ApplicationStyles, Images } from '~/Theme';
 import styles from './styles';
 import { loadSettings } from '~/Utils';

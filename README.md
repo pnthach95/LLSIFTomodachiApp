@@ -30,7 +30,7 @@ The project contains:
 
 - [`App/Components`](App/Components): presentational components
 - [`App/Config`](App/Config): configuration of the application
-- [`App/Containers`](App/Containers): container components, i.e. the application's screens
+- [`App/screens`](App/screens): application's screens
 - [`App/Context`](App/Context): react context
 - [`App/hooks`](App/hooks): custom react hooks
 - [`App/Images`](App/Images): images used by the application

@@ -7,7 +7,7 @@ import FastImage from 'react-native-fast-image';
 import LinearGradient from 'react-native-linear-gradient';
 import moment from 'moment';
 
-import SplashScreen from '../SplashScreen/SplashScreen';
+import SplashScreen from '../Splash';
 import InfoLine from '~/Components/InfoLine/InfoLine';
 import LLSIFService from '~/Services/LLSIFService';
 import {

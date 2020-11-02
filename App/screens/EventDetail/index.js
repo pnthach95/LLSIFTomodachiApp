@@ -8,7 +8,7 @@ import Information from './Information';
 import Tracker from './Tracker';
 import UserContext from '~/Context/UserContext';
 import useStatusBar from '~/hooks/useStatusBar';
-import SplashScreen from '../SplashScreen/SplashScreen';
+import SplashScreen from '../Splash';
 import LLSIFService from '~/Services/LLSIFService';
 import LLSIFdotnetService from '~/Services/LLSIFdotnetService';
 import { Config } from '~/Config';

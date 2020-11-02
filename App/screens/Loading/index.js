@@ -6,7 +6,7 @@ import {
 import useStatusBar from '~/hooks/useStatusBar';
 import LLSIFService from '~/Services/LLSIFService';
 import LLSIFdotnetService from '~/Services/LLSIFdotnetService';
-import SplashScreen from '../SplashScreen/SplashScreen';
+import SplashScreen from '../Splash';
 import UserContext from '~/Context/UserContext';
 import { actions } from '~/Context/Reducer';
 import { Colors, ApplicationStyles, Fonts } from '~/Theme';

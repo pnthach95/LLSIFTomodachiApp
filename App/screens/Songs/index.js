@@ -16,7 +16,7 @@ import MainUnitRow from '~/Components/MainUnitRow/MainUnitRow';
 import OrderingRow from '~/Components/OrderingRow/OrderingRow';
 import AttributeRow from '~/Components/AttributeRow/AttributeRow';
 import SquareButton from '~/Components/SquareButton/SquareButton';
-import SplashScreen from '../SplashScreen/SplashScreen';
+import SplashScreen from '../Splash';
 import LLSIFService from '~/Services/LLSIFService';
 import {
   ApplicationStyles, Images, Fonts, Colors,

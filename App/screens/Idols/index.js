@@ -15,7 +15,7 @@ import IdolItem from '~/Components/IdolItem/IdolItem';
 import Seperator from '~/Components/Seperator/Seperator';
 import SquareButton from '~/Components/SquareButton/SquareButton';
 import LLSIFService from '~/Services/LLSIFService';
-import SplashScreen from '../SplashScreen/SplashScreen';
+import SplashScreen from '../Splash';
 import { Colors, ApplicationStyles, Images } from '~/Theme';
 import styles from './styles';
 

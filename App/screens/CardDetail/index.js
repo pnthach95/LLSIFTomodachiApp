@@ -14,9 +14,9 @@ import moment from 'moment';
 
 import useStatusBar from '~/hooks/useStatusBar';
 import UserContext from '~/Context/UserContext';
-import TextRow from '~/Components/TextRow/TextRow';
+import TextRow from '~/Components/TextRow';
 import Seperator from '~/Components/Seperator/Seperator';
-import ProgressBar from '~/Components/ProgressBar/ProgressBar';
+import ProgressBar from '~/Components/ProgressBar';
 import {
   findColorByAttribute, AddHTTPS, findMainUnit, findSubUnit,
 } from '~/Utils';

@@ -1,21 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import {
-  View, FlatList, TextInput,
-  Alert, Text, Image,
+  View, FlatList, TextInput, Alert, Text, Image,
 } from 'react-native';
+import { IconButton } from 'react-native-paper';
 import PropTypes from 'prop-types';
 import ElevatedView from 'react-native-elevated-view';
 import _ from 'lodash';
 
 import useStatusBar from '~/hooks/useStatusBar';
 import ConnectStatus from '~/Components/ConnectStatus';
-import EventRow from '~/Components/EventRow/EventRow';
-import SongItem from '~/Components/SongItem/SongItem';
+import EventRow from '~/Components/EventRow';
+import SongItem from '~/Components/SongItem';
 import Touchable from '~/Components/Touchable/Touchable';
-import MainUnitRow from '~/Components/MainUnitRow/MainUnitRow';
-import OrderingRow from '~/Components/OrderingRow/OrderingRow';
+import MainUnitRow from '~/Components/MainUnitRow';
+import OrderingRow from '~/Components/OrderingRow';
 import AttributeRow from '~/Components/AttributeRow';
-import SquareButton from '~/Components/SquareButton/SquareButton';
 import SplashScreen from '../Splash';
 import LLSIFService from '~/Services/LLSIFService';
 import {
@@ -246,7 +245,7 @@ function SongsScreen({ navigation }) {
 
     {/* HEADER */}
     <ElevatedView elevation={5} style={[ApplicationStyles.header, styles.header]}>
-      <SquareButton name={'ios-menu'} onPress={openDrawer} />
+      <IconButton icon={'ios-menu'} onPress={openDrawer} />
       <View style={ApplicationStyles.searchHeader}>
         <TextInput style={ApplicationStyles.searchInput}
           onChangeText={(text) => setSearchOptions({
@@ -255,10 +254,10 @@ function SongsScreen({ navigation }) {
           })}
           onSubmitEditing={onSearch}
           placeholder={'Search song...'} />
-        <SquareButton name={'ios-search'} onPress={onSearch}
+        <IconButton icon={'ios-search'} onPress={onSearch}
           style={ApplicationStyles.searchButton} />
       </View>
-      <SquareButton name={'ios-more'} onPress={toggleFilter} />
+      <IconButton icon={'ios-more'} onPress={toggleFilter} />
     </ElevatedView>
     {/* FILTER */}
     {isFilter

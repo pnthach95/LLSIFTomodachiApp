@@ -4,29 +4,29 @@ import {
   TouchableNativeFeedback, Alert, ScrollView,
   Image, LayoutAnimation,
 } from 'react-native';
+import { IconButton } from 'react-native-paper';
 import PropTypes from 'prop-types';
 import ElevatedView from 'react-native-elevated-view';
 import _ from 'lodash';
 
 import useStatusBar from '~/hooks/useStatusBar';
 import ConnectStatus from '~/Components/ConnectStatus';
-import YearRow from '~/Components/YearRow/YearRow';
+import YearRow from '~/Components/YearRow';
 import CardItem from '~/Components/CardItem';
-import EventRow from '~/Components/EventRow/EventRow';
+import EventRow from '~/Components/EventRow';
 import SkillRow from '~/Components/SkillRow';
-import RarityRow from '~/Components/RarityRow/RarityRow';
-import RegionRow from '~/Components/RegionRow/RegionRow';
+import RarityRow from '~/Components/RarityRow';
+import RegionRow from '~/Components/RegionRow';
 import SchoolRow from '~/Components/SchoolRow';
 import Touchable from '~/Components/Touchable/Touchable';
 import SubUnitRow from '~/Components/SubUnitRow';
 import IdolNameRow from '~/Components/IdolNameRow';
-import MainUnitRow from '~/Components/MainUnitRow/MainUnitRow';
-import OrderingRow from '~/Components/OrderingRow/OrderingRow';
+import MainUnitRow from '~/Components/MainUnitRow';
+import OrderingRow from '~/Components/OrderingRow';
 import AttributeRow from '~/Components/AttributeRow';
-import PromoCardRow from '~/Components/PromoCardRow/PromoCardRow';
-import SquareButton from '~/Components/SquareButton/SquareButton';
+import PromoCardRow from '~/Components/PromoCardRow';
 import Card2PicsItem from '~/Components/Card2PicsItem';
-import SpecialCardRow from '~/Components/SpecialCardRow/SpecialCardRow';
+import SpecialCardRow from '~/Components/SpecialCardRow';
 import LLSIFService from '~/Services/LLSIFService';
 import SplashScreen from '../Splash';
 import { Colors, ApplicationStyles, Images } from '~/Theme';
@@ -438,7 +438,7 @@ function CardsScreen({ navigation }) {
   return <View style={styles.container}>
     {/* HEADER */}
     <ElevatedView elevation={5} style={[ApplicationStyles.header, styles.header]}>
-      <SquareButton name={'ios-menu'} onPress={openDrawer} />
+      <IconButton icon={'ios-menu'} onPress={openDrawer} />
       <View style={ApplicationStyles.searchHeader}>
         <TextInput
           onChangeText={(text) => setSearchOptions({
@@ -448,10 +448,10 @@ function CardsScreen({ navigation }) {
           onSubmitEditing={onSearch}
           placeholder={'Search card...'}
           style={ApplicationStyles.searchInput} />
-        <SquareButton name={'ios-search'} onPress={onSearch}
+        <IconButton icon={'ios-search'} onPress={onSearch}
           style={ApplicationStyles.searchButton} />
       </View>
-      <SquareButton name={'ios-more'} onPress={toggleFilter} />
+      <IconButton icon={'ios-more'} onPress={toggleFilter} />
     </ElevatedView>
 
     {/* FILTER */}

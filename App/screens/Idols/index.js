@@ -4,6 +4,7 @@ import React, {
 import {
   View, Text, SectionList, FlatList, Alert,
 } from 'react-native';
+import { IconButton } from 'react-native-paper';
 import PropTypes from 'prop-types';
 import ElevatedView from 'react-native-elevated-view';
 import FastImage from 'react-native-fast-image';
@@ -11,9 +12,8 @@ import FastImage from 'react-native-fast-image';
 import useStatusBar from '~/hooks/useStatusBar';
 import UserContext from '~/Context/UserContext';
 import ConnectStatus from '~/Components/ConnectStatus';
-import IdolItem from '~/Components/IdolItem/IdolItem';
+import IdolItem from '~/Components/IdolItem';
 import Seperator from '~/Components/Seperator/Seperator';
-import SquareButton from '~/Components/SquareButton/SquareButton';
 import LLSIFService from '~/Services/LLSIFService';
 import SplashScreen from '../Splash';
 import { Colors, ApplicationStyles, Images } from '~/Theme';
@@ -136,7 +136,7 @@ function IdolsScreen({ navigation }) {
     {/* HEADER */}
     <ElevatedView elevation={5}
       style={[ApplicationStyles.header, styles.container]}>
-      <SquareButton name={'ios-menu'} onPress={openDrawer} color={'white'} />
+      <IconButton icon={'ios-menu'} onPress={openDrawer} color={'white'} />
       <FastImage source={Images.logo}
         resizeMode='contain'
         style={ApplicationStyles.imageHeader} />

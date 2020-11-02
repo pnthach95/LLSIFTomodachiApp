@@ -8,7 +8,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import moment from 'moment';
 
 import SplashScreen from '../Splash';
-import InfoLine from '~/Components/InfoLine/InfoLine';
+import InfoLine from '~/Components/InfoLine';
 import LLSIFService from '~/Services/LLSIFService';
 import {
   findColorByAttribute, AddHTTPS, findMainUnit, findSubUnit,

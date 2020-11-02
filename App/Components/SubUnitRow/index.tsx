@@ -1,43 +1,40 @@
 import React, { useContext } from 'react';
 import { Text, View } from 'react-native';
 import RNPickerSelect from 'react-native-picker-select';
-import PropTypes from 'prop-types';
 
 import UserContext from '~/Context/UserContext';
 import styles from '~/Theme/RowStyles';
 
+type SubUnitRowType = {
+  idolSubUnit: string,
+  selectSubUnit: (idolSubUnit: string) => void,
+};
+
 /**
- * Idol Name Row.
+ * Sub Unit Row.
  *
- * Idol list in `this.props.idols`.
+ * Sub Unit list in `this.props.subUnits`.
  *
  * Prop:
- * - `selectIdol`: Save `name` state
- * - `name`: state from parent
+ * - `selectSubUnit`: Save `idolSubUnit` state
+ * - `idolSubUnit`: state from parent
  *
  */
-function IdolNameRow({ name, selectIdol }) {
+const SubUnitRow: React.FC<SubUnitRowType> = ({ idolSubUnit, selectSubUnit }) => {
   const { state } = useContext(UserContext);
 
   return <View style={styles.pickerRow}>
     <View style={styles.leftView}>
-      <Text>Idol</Text>
+      <Text>Sub unit</Text>
     </View>
     <View style={styles.flex2}>
-      <RNPickerSelect onValueChange={selectIdol}
-        items={state.cachedData.idols}
-        hideIcon={true}
+      <RNPickerSelect onValueChange={selectSubUnit}
+        items={state.cachedData.subUnits}
         style={{ inputIOS: styles.picker, inputAndroid: styles.picker }}
-        placeholderTextColor={'black'}
         placeholder={{ label: 'All', value: 'All' }}
-        value={name} />
+        value={idolSubUnit} />
     </View>
   </View>;
-}
-
-IdolNameRow.propTypes = {
-  name: PropTypes.string.isRequired,
-  selectIdol: PropTypes.func.isRequired,
 };
 
-export default IdolNameRow;
+export default SubUnitRow;

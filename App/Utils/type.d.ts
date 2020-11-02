@@ -4,7 +4,7 @@
  * Created Date: Monday, 02/11/2020, 4:38:28 pm
  * Author: Pham Ngoc Thach
  * -----
- * Last Modified: Monday, 02/11/2020, 9:07:34 pm
+ * Last Modified: Monday, 02/11/2020, 11:08:22 pm
  * Modified By: Pham Ngoc Thach (thachpn@honeynet.vn)
  * -----
  * Copyright © 2020 HONEYNET
@@ -40,8 +40,11 @@ type EventDetailScreenProps = StackScreenProps<RootStackParamList, 'EventDetailS
 type IdolDetailScreenProps = StackScreenProps<RootStackParamList, 'IdolDetailScreen'>;
 type SongDetailScreenProps = StackScreenProps<RootStackParamList, 'SongDetailScreen'>;
 
+type YearType = 'First' | 'Second' | 'Third' | '';
+type MainUnitNames = `μ's` | 'Aqours' | '';
+type BooleanOrEmpty = 'True' | 'False' | '';
 type AttributeType = 'Smile' | 'Pure' | 'Cool' | 'All' | '';
-type RarityType = 'N' | 'R' | 'SR' | 'SSR' | 'UR';
+type RarityType = 'N' | 'R' | 'SR' | 'SSR' | 'UR' | '';
 type SkillType = 'Score Up' | 'Healer' | 'Perfect Lock' | 'Perfect Charm'
   | 'Rhythmical Charm' | 'Timer Yell' | 'Timer Charm' | 'Rhythmical Yell'
   | 'Total Charm' | 'Total Trick' | 'Perfect Yell' | 'Total Yell' | 'Timer Trick';
@@ -158,4 +161,69 @@ type EventObject = {
   english_t2_rank?: number
   note?: string
   website_url: string
+}
+
+type IdolObject = {
+  name: string
+  japanese_name?: string
+  main?: boolean
+  age?: number
+  school?: string
+  birthday?: string
+  astrological_sign?: string
+  blood?: string
+  height?: number
+  measurements?: string
+  favorite_food?: string
+  least_favorite_food?: string
+  hobbies?: string
+  attribute?: AttributeType
+  year?: string
+  main_unit?: string
+  sub_unit?: string
+  cv?: CVObject
+  summary?: string
+  website_url: string
+  wiki_url?: string
+  wikia_url?: string
+  official_url?: string
+  chibi?: string
+  chibi_small?: string
+}
+
+type CVObject = {
+  name: string
+  nickname: string
+  url: string
+  twitter?: string
+  instagram?: string
+}
+
+type SongObject = {
+  name: string
+  romaji_name?: string
+  translated_name?: string
+  attribute?: AttributeType
+  main_unit?: string
+  BPM?: number
+  time?: number
+  event?: string
+  rank?: number
+  daily_rotation?: string
+  daily_rotation_position?: number
+  image: string
+  easy_difficulty?: number
+  easy_notes?: number
+  normal_difficulty?: number
+  normal_notes?: number
+  hard_difficulty?: number
+  hard_notes?: number
+  expert_difficulty?: number
+  expert_random_difficulty?: number
+  expert_notes?: number
+  master_difficulty?: number
+  master_notes?: number
+  available?: boolean
+  itunes_id?: number
+  website_url?: string
 }

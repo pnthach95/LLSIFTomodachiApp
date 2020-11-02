@@ -19,10 +19,6 @@ type EventItemType = {
  * - `item`: [Event object](https://github.com/MagiCircles/SchoolIdolAPI/wiki/API-Events#objects)
  * - `onPress`: onPress function
  *
- * State:
- * - `imgWidth`: Image width
- * - `imgHeight`: Image height
- *
  */
 const EventItem: React.FC<EventItemType> = ({ item, onPress }) => {
   const [imgSize, setImgSize] = useState({

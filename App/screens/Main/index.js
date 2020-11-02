@@ -4,6 +4,7 @@ import React, {
 import {
   Text, View, ScrollView, TouchableNativeFeedback, Platform,
 } from 'react-native';
+import { IconButton } from 'react-native-paper';
 import FastImage from 'react-native-fast-image';
 import VersionNumber from 'react-native-version-number';
 import moment from 'moment';
@@ -11,7 +12,6 @@ import moment from 'moment';
 import ConnectStatus from '~/Components/ConnectStatus';
 import Seperator from '~/Components/Seperator/Seperator';
 import Touchable from '~/Components/Touchable/Touchable';
-import SquareButton from '~/Components/SquareButton/SquareButton';
 import TimerCountdown from '~/Components/TimerCountdown/Timer';
 import useStatusBar from '~/hooks/useStatusBar';
 import { AddHTTPS, openLink } from '~/Utils';
@@ -130,11 +130,11 @@ function MainScreen({ navigation }) {
   return <View style={styles.container}>
     {/* HEADER */}
     <View style={ApplicationStyles.header}>
-      <SquareButton name={'ios-menu'} onPress={openDrawer} color={'white'} />
+      <IconButton icon={'ios-menu'} onPress={openDrawer} color={'white'} />
       <FastImage source={Images.logo}
         resizeMode='contain'
         style={ApplicationStyles.imageHeader} />
-      <SquareButton name={'ios-menu'} color={Colors.pink} />
+      <IconButton icon={'ios-menu'} color={Colors.pink} />
     </View>
     {version !== null
       && <Touchable useForeground style={styles.update}

@@ -8,9 +8,9 @@ import LinearGradient from 'react-native-linear-gradient';
 
 import useStatusBar from '~/hooks/useStatusBar';
 import UserContext from '~/Context/UserContext';
-import StarBar from '~/Components/StarBar/StarBar';
-import ProgressBar from '~/Components/ProgressBar/ProgressBar';
-import TextRow from '~/Components/TextRow/TextRow';
+import StarBar from '~/Components/StarBar';
+import ProgressBar from '~/Components/ProgressBar';
+import TextRow from '~/Components/TextRow';
 import SplashScreen from '../Splash';
 import { findColorByAttribute, AddHTTPS, findMainUnit } from '~/Utils';
 import { Metrics, ApplicationStyles, Colors } from '~/Theme';

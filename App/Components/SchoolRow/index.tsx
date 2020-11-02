@@ -1,10 +1,15 @@
 import React, { useContext } from 'react';
-import { Text, View } from 'react-native';
+import { View } from 'react-native';
+import { Text } from 'react-native-paper';
 import RNPickerSelect from 'react-native-picker-select';
-import PropTypes from 'prop-types';
 
 import UserContext from '~/Context/UserContext';
 import styles from '~/Theme/RowStyles';
+
+type SchoolRowType = {
+  idolSchool: string,
+  selectSchool: () => void,
+};
 
 /**
  * School Row.
@@ -16,7 +21,7 @@ import styles from '~/Theme/RowStyles';
  * - `idolSchool`: state from parent
  *
  */
-function SchoolRow({ idolSchool, selectSchool }) {
+const SchoolRow: React.FC<SchoolRowType> = ({ idolSchool, selectSchool }) => {
   const { state } = useContext(UserContext);
 
   return <View style={styles.pickerRow}>
@@ -26,18 +31,11 @@ function SchoolRow({ idolSchool, selectSchool }) {
     <View style={styles.flex2}>
       <RNPickerSelect onValueChange={selectSchool}
         items={state.cachedData.schools}
-        hideIcon={true}
         style={{ inputIOS: styles.picker, inputAndroid: styles.picker }}
-        placeholderTextColor={'black'}
         placeholder={{ label: 'All', value: 'All' }}
         value={idolSchool} />
     </View>
   </View>;
-}
-
-SchoolRow.propTypes = {
-  idolSchool: PropTypes.string.isRequired,
-  selectSchool: PropTypes.func.isRequired,
 };
 
 export default SchoolRow;

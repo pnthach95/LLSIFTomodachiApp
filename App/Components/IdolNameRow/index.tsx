@@ -1,43 +1,40 @@
 import React, { useContext } from 'react';
 import { Text, View } from 'react-native';
 import RNPickerSelect from 'react-native-picker-select';
-import PropTypes from 'prop-types';
 
 import UserContext from '~/Context/UserContext';
 import styles from '~/Theme/RowStyles';
 
+type IdolNameRow = {
+  name: string,
+  selectIdol: () => void;
+};
+
 /**
- * Skill Row.
+ * Idol Name Row.
  *
- * Skill list in `this.props.skills`.
+ * Idol list in `this.props.idols`.
  *
  * Prop:
- * - `selectSkill`: Save `skill` state
- * - `skill`: state from parent
+ * - `selectIdol`: Save `name` state
+ * - `name`: state from parent
  *
  */
-function SkillRow({ skill, selectSkill }) {
+const IdolNameRow: React.FC<IdolNameRow> = ({ name, selectIdol }) => {
   const { state } = useContext(UserContext);
 
   return <View style={styles.pickerRow}>
     <View style={styles.leftView}>
-      <Text>Skill</Text>
+      <Text>Idol</Text>
     </View>
     <View style={styles.flex2}>
-      <RNPickerSelect onValueChange={selectSkill}
-        items={state.cachedData.skills}
-        hideIcon={true}
+      <RNPickerSelect onValueChange={selectIdol}
+        items={state.cachedData.idols}
         style={{ inputIOS: styles.picker, inputAndroid: styles.picker }}
-        placeholderTextColor={'black'}
         placeholder={{ label: 'All', value: 'All' }}
-        value={skill} />
+        value={name} />
     </View>
   </View>;
-}
-
-SkillRow.propTypes = {
-  skill: PropTypes.string.isRequired,
-  selectSkill: PropTypes.func.isRequired,
 };
 
-export default SkillRow;
+export default IdolNameRow;

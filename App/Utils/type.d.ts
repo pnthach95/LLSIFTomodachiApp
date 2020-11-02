@@ -4,7 +4,7 @@
  * Created Date: Monday, 02/11/2020, 4:38:28 pm
  * Author: Pham Ngoc Thach
  * -----
- * Last Modified: Monday, 02/11/2020, 11:08:22 pm
+ * Last Modified: Monday, 02/11/2020, 11:19:18 pm
  * Modified By: Pham Ngoc Thach (thachpn@honeynet.vn)
  * -----
  * Copyright © 2020 HONEYNET
@@ -12,6 +12,10 @@
  */
 
 import { StackScreenProps } from '@react-navigation/stack';
+
+type ActionType =
+  | { type: 'LOADING'; }
+  | { type: 'DONE_LOADING'; data: object };
 
 type iconComponent = React.FC<{
   focused?: boolean;

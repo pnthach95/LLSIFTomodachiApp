@@ -1,4 +1,3 @@
-/* eslint-disable no-undef */
 export const Config = {
   DATETIME_FORMAT_OUTPUT: 'HH:mm MMM Do YYYY',
   DATE_FORMAT_OUTPUT: 'MMM Do YYYY',

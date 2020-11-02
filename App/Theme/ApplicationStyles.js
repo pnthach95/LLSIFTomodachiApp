@@ -1,6 +1,8 @@
+import { StyleSheet } from 'react-native';
+
 import Metrics from './Metrics';
 
-export default {
+export default StyleSheet.create({
   screen: {
     flex: 1,
   },
@@ -56,4 +58,4 @@ export default {
     height: Metrics.navBarHeight - 10,
     marginRight: 6,
   },
-};
+});

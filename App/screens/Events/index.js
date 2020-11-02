@@ -15,7 +15,7 @@ import RegionRow from '~/Components/RegionRow/RegionRow';
 import Touchable from '~/Components/Touchable/Touchable';
 import IdolNameRow from '~/Components/IdolNameRow';
 import MainUnitRow from '~/Components/MainUnitRow/MainUnitRow';
-import AttributeRow from '~/Components/AttributeRow/AttributeRow';
+import AttributeRow from '~/Components/AttributeRow';
 import SquareButton from '~/Components/SquareButton/SquareButton';
 import SplashScreen from '../Splash';
 import { Colors, ApplicationStyles, Images } from '~/Theme';

@@ -4,7 +4,7 @@
  * Created Date: Monday, 02/11/2020, 4:38:28 pm
  * Author: Pham Ngoc Thach
  * -----
- * Last Modified: Monday, 02/11/2020, 4:44:07 pm
+ * Last Modified: Monday, 02/11/2020, 4:57:42 pm
  * Modified By: Pham Ngoc Thach (thachpn@honeynet.vn)
  * -----
  * Copyright © 2020 HONEYNET
@@ -12,6 +12,8 @@
  */
 
 import { StackScreenProps } from '@react-navigation/stack';
+
+type attributes = 'Smile' | 'Pure' | 'Cool' | 'All' | '';
 
 type iconComponent = React.FC<{
   focused?: boolean;

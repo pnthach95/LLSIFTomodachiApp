@@ -14,7 +14,7 @@ import SongItem from '~/Components/SongItem/SongItem';
 import Touchable from '~/Components/Touchable/Touchable';
 import MainUnitRow from '~/Components/MainUnitRow/MainUnitRow';
 import OrderingRow from '~/Components/OrderingRow/OrderingRow';
-import AttributeRow from '~/Components/AttributeRow/AttributeRow';
+import AttributeRow from '~/Components/AttributeRow';
 import SquareButton from '~/Components/SquareButton/SquareButton';
 import SplashScreen from '../Splash';
 import LLSIFService from '~/Services/LLSIFService';

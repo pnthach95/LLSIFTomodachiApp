@@ -2,13 +2,33 @@
   "editor.tabSize": 2,
   "editor.detectIndentation": false,
   "editor.rulers": [
-    120
+    80
   ],
   "editor.formatOnSave": true,
   "editor.formatOnPaste": true,
   "files.eol": "\n",
   "files.insertFinalNewline": true,
+  "todo-tree.general.tags": [
+    "BUG",
+    "HACK",
+    "FIXME",
+    "TODO",
+    "XXX",
+    "START:",
+    "END:"
+  ],
+  "todo-tree.general.tagGroups": {
+    "PROJECT": [
+      "START:",
+      "END:"
+    ]
+  },
   "todo-tree.highlights.customHighlight": {
+    "PROJECT": {
+      "background": "cyan",
+      "type": "text-and-comment",
+      "hideFromTree": true
+    },
     "TODO": {
       "icon": "check",
       "type": "line",
@@ -30,5 +50,5 @@
   },
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": true
-  },
+  }
 }

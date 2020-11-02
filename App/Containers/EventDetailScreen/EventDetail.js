@@ -13,7 +13,6 @@ import LLSIFService from '~/Services/LLSIFService';
 import LLSIFdotnetService from '~/Services/LLSIFdotnetService';
 import { Config } from '~/Config';
 import { ApplicationStyles, Colors } from '~/Theme';
-import { ReplaceQuestionMark } from '~/Utils';
 import styles from './styles';
 
 /**
@@ -84,8 +83,7 @@ function EventDetailScreen({ navigation, route }) {
   }, [item]);
 
   async function getItem() {
-    const name = ReplaceQuestionMark(route.params.eventName);
-    const res = await LLSIFService.fetchEventData(name);
+    const res = await LLSIFService.fetchEventData(encodeURIComponent(route.params.eventName));
     setItem(res);
   }
 

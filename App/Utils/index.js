@@ -11,13 +11,6 @@ import { Colors, Images } from '../Theme';
 export const AddHTTPS = (link) => `https:${link}`;
 
 /**
- * Replace question mark to %3F
- *
- * @param {String} key
- */
-export const ReplaceQuestionMark = (key) => key.replace('?', '%3F');
-
-/**
  * Find color by attribute
  *
  * @param {String} key Smile || Pure || Cool || null

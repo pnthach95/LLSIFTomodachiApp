@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, ViewProps } from 'react-native';
+import { View, TextStyle } from 'react-native';
 import { Text } from 'react-native-paper';
 import { Fonts, ApplicationStyles } from '~/Theme';
 
@@ -7,13 +7,13 @@ type TextRowType = {
   item1: {
     flex: number;
     text: string;
-    textStyle: ViewProps;
+    textStyle?: TextStyle;
   };
   item2: {
     flex: number;
     text: string;
-    textStyle: ViewProps;
-    onPress: () => void;
+    textStyle?: TextStyle;
+    onPress?: () => void;
   };
 };
 

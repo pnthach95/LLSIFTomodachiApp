@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import { Colors } from '~/Theme';
 
 type ProgressBarType = {
-  backgroundStyle: ViewStyle,
+  backgroundStyle?: ViewStyle,
   fillStyle: ViewStyle,
   progress: number,
   number: number,

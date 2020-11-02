@@ -1,11 +1,9 @@
 import React, {
   useContext, useState, useEffect, useCallback,
 } from 'react';
-import {
-  Text, View, ScrollView, TouchableOpacity,
-} from 'react-native';
-import PropTypes from 'prop-types';
-import FastImage from 'react-native-fast-image';
+import { View, ScrollView, TouchableOpacity, ViewStyle } from 'react-native';
+import { Text, Divider } from 'react-native-paper';
+import FastImage, { OnLoadEvent } from 'react-native-fast-image';
 import ImageView from 'react-native-image-viewing';
 import LinearGradient from 'react-native-linear-gradient';
 import SkeletonContent from 'react-native-skeleton-content-nonexpo';
@@ -15,7 +13,6 @@ import moment from 'moment';
 import useStatusBar from '~/hooks/useStatusBar';
 import UserContext from '~/Context/UserContext';
 import TextRow from '~/Components/TextRow';
-import Seperator from '~/Components/Seperator/Seperator';
 import ProgressBar from '~/Components/ProgressBar';
 import {
   findColorByAttribute, AddHTTPS, findMainUnit, findSubUnit,
@@ -25,33 +22,34 @@ import {
 } from '~/Theme';
 import { Config } from '~/Config';
 import styles from './styles';
+import { CardDetailScreenProps } from '~/Utils/type';
 
 /**
  * Card detail screen
  *
  */
-function CardDetailScreen({ navigation, route }) {
+const CardDetailScreen: React.FC<CardDetailScreenProps> = ({ navigation, route }) => {
   const { item } = route.params;
   const { state } = useContext(UserContext);
   const minStats = [
-    item.minimum_statistics_smile,
-    item.minimum_statistics_pure,
-    item.minimum_statistics_cool,
+    item.minimum_statistics_smile || 0,
+    item.minimum_statistics_pure || 0,
+    item.minimum_statistics_cool || 0,
   ];
   const nonIdolMaxStats = [
-    item.non_idolized_maximum_statistics_smile,
-    item.non_idolized_maximum_statistics_pure,
-    item.non_idolized_maximum_statistics_cool,
+    item.non_idolized_maximum_statistics_smile || 0,
+    item.non_idolized_maximum_statistics_pure || 0,
+    item.non_idolized_maximum_statistics_cool || 0,
   ];
   const idolMaxStats = [
-    item.idolized_maximum_statistics_smile,
-    item.idolized_maximum_statistics_pure,
-    item.idolized_maximum_statistics_cool,
+    item.idolized_maximum_statistics_smile || 0,
+    item.idolized_maximum_statistics_pure || 0,
+    item.idolized_maximum_statistics_cool || 0,
   ];
   const maxStats = [
-    state.cachedData.maxStats.Smile,
-    state.cachedData.maxStats.Pure,
-    state.cachedData.maxStats.Cool,
+    state.cachedData?.maxStats?.Smile || 0,
+    state.cachedData?.maxStats?.Pure || 0,
+    state.cachedData?.maxStats?.Cool || 0,
   ];
   const [done, setDone] = useState(false);
   const [imgViewer, setImgViewer] = useState({
@@ -59,7 +57,7 @@ function CardDetailScreen({ navigation, route }) {
     index: 0,
   });
   const [propertyLine, setPropertyLine] = useState('');
-  const [images, setImages] = useState([]);
+  const [images, setImages] = useState<{ uri: string; }[]>([]);
   const [buttonID, setButtonID] = useState(0);
   const [currentStats, setCurrentStats] = useState(minStats);
   const [imgSize, setImgSize] = useState({
@@ -71,7 +69,7 @@ function CardDetailScreen({ navigation, route }) {
 
   useEffect(() => {
     const tmpImages = [];
-    if (item.card_image !== null) {
+    if (!!item.card_image) {
       tmpImages.push({ uri: AddHTTPS(item.card_image) });
     }
     tmpImages.push({ uri: AddHTTPS(item.card_idolized_image) });
@@ -81,8 +79,8 @@ function CardDetailScreen({ navigation, route }) {
     if (item.japan_only) tmp.push('Japan only');
     setPropertyLine(tmp.join(' - '));
 
-    const mainUnit = findMainUnit(item.idol.main_unit);
-    const subUnit = findSubUnit(item.idol.sub_unit);
+    const mainUnit = findMainUnit(item.idol.main_unit || '');
+    const subUnit = findSubUnit(item.idol.sub_unit || '');
 
     const headerTitle = () => <TouchableOpacity onPress={navigateToIdolDetail}>
       <Text style={Fonts.style.normal}>{item.idol.name}</Text>
@@ -105,19 +103,19 @@ function CardDetailScreen({ navigation, route }) {
     setDone(true);
   }, []);
 
-  function progressSmile(stat) {
+  function progressSmile(stat: number) {
     return (100 * stat) / maxStats[0];
   }
 
-  function progressPure(stat) {
+  function progressPure(stat: number) {
     return (100 * stat) / maxStats[1];
   }
 
-  function progressCool(stat) {
+  function progressCool(stat: number) {
     return (100 * stat) / maxStats[2];
   }
 
-  function progressUnit(text, stat, color) {
+  function progressUnit(text: string, stat: number, color: string) {
     let icon = 2;
     let progress = 0;
     switch (text) {
@@ -134,22 +132,20 @@ function CardDetailScreen({ navigation, route }) {
         progress = progressCool(stat);
         break;
     }
-    return (
-      <View style={{ width: Metrics.screenWidth }}>
-        <Text style={[Fonts.style.normal, styles.progressText]}>{text}</Text>
-        <View style={styles.progressRow}>
-          <FastImage source={Images.attribute[icon]}
-            resizeMode='contain'
-            style={[ApplicationStyles.mediumIcon, styles.marginRight10]} />
-          <ProgressBar number={stat}
-            progress={progress}
-            fillStyle={{ backgroundColor: color }} />
-        </View>
+    return <View style={{ width: Metrics.screenWidth }}>
+      <Text style={[Fonts.style.normal, styles.progressText]}>{text}</Text>
+      <View style={styles.progressRow}>
+        <FastImage source={Images.attribute[icon]}
+          resizeMode='contain'
+          style={[ApplicationStyles.mediumIcon, styles.marginRight10]} />
+        <ProgressBar number={stat}
+          progress={progress}
+          fillStyle={{ backgroundColor: color }} />
       </View>
-    );
+    </View>;
   }
 
-  function progressView(stats) {
+  function progressView(stats: number[]) {
     return <View>
       {progressUnit('Smile', stats[0], Colors.pink)}
       {progressUnit('Pure', stats[1], Colors.green)}
@@ -157,7 +153,7 @@ function CardDetailScreen({ navigation, route }) {
     </View>;
   }
 
-  function statButton(id, text, stats, style) {
+  function statButton(id: number, text: string, stats: number[], style?: ViewStyle) {
     const white = { color: 'white' };
 
     const saveStat = () => {
@@ -174,7 +170,7 @@ function CardDetailScreen({ navigation, route }) {
     </TouchableOpacity>;
   }
 
-  function onLoadFastImage(e) {
+  function onLoadFastImage(e: OnLoadEvent) {
     const { width, height } = e.nativeEvent;
     setImgSize({ width, height });
   }
@@ -183,7 +179,7 @@ function CardDetailScreen({ navigation, route }) {
    * Navigate to Event Detail Screen
    *
    */
-  const navigateToEventDetail = (name) => () => {
+  const navigateToEventDetail = (name: string) => () => {
     navigation.navigate('EventDetailScreen', { eventName: name });
   };
 
@@ -195,7 +191,7 @@ function CardDetailScreen({ navigation, route }) {
     navigation.navigate('IdolDetailScreen', { name: item.idol.name });
   };
 
-  function renderImage(index, value) {
+  function renderImage(index: number, value: { uri: string; }) {
     const onPressImg = () => setImgViewer({ visible: true, index });
 
     return <TouchableOpacity key={index} onPress={onPressImg}>
@@ -214,7 +210,7 @@ function CardDetailScreen({ navigation, route }) {
     visible: false,
   }), []);
 
-  if (!done) {
+  if (done) {
     return <View />;
   }
 
@@ -245,75 +241,71 @@ function CardDetailScreen({ navigation, route }) {
           </SkeletonContent>
           {Boolean(propertyLine) && <Text>{propertyLine}</Text>}
 
-          {(item.skill !== null && item.skill.length !== 0)
-            && <View>
-              <Seperator />
-              <TextRow item1={{ flex: 1, text: 'Skill' }}
-                item2={{ flex: 2, text: item.skill }} />
-              <TextRow item1={{ flex: 1, text: '' }}
-                item2={{
-                  flex: 2,
-                  text: item.skill_details,
-                  textStyle: styles.subtitleText,
-                }} />
-            </View>}
+          {!!item.skill && <View>
+            <Divider />
+            <TextRow item1={{ flex: 1, text: 'Skill' }}
+              item2={{ flex: 2, text: item.skill }} />
+            <TextRow item1={{ flex: 1, text: '' }}
+              item2={{
+                flex: 2,
+                text: item.skill_details || '',
+                textStyle: styles.subtitleText,
+              }} />
+          </View>}
 
-          {(item.center_skill !== null
-            && item.center_skill.length !== 0)
-            && <View>
-              <Seperator />
-              <TextRow item1={{ flex: 1, text: 'Center skill' }}
-                item2={{ flex: 2, text: item.center_skill }} />
-              <TextRow item1={{ flex: 1, text: '' }}
-                item2={{
-                  flex: 2,
-                  text: item.center_skill_details,
-                  textStyle: styles.subtitleText,
-                }} />
-            </View>}
+          {!!item.center_skill && <View>
+            <Divider />
+            <TextRow item1={{ flex: 1, text: 'Center skill' }}
+              item2={{ flex: 2, text: item.center_skill }} />
+            <TextRow item1={{ flex: 1, text: '' }}
+              item2={{
+                flex: 2,
+                text: item.center_skill_details || '',
+                textStyle: styles.subtitleText,
+              }} />
+          </View>}
 
-          {item.event !== null
-            && <View>
-              <Seperator />
-              <TextRow item1={{ text: 'Event', flex: 1, textStyle: Fonts.style.normal }}
+          {!!item.event && <View>
+            <Divider />
+            <TextRow item1={{ text: 'Event', flex: 1, textStyle: Fonts.style.normal }}
+              item2={{
+                text: item.event.japanese_name,
+                flex: 4,
+                textStyle: Fonts.style.normal,
+              }} />
+            {item.event.english_name !== null
+              && <TextRow item1={{ text: '', flex: 1, textStyle: Fonts.style.normal }}
                 item2={{
-                  text: item.event.japanese_name,
+                  text: item.event.english_name || '',
                   flex: 4,
                   textStyle: Fonts.style.normal,
-                }} />
-              {item.event.english_name !== null
-                && <TextRow item1={{ text: '', flex: 1, textStyle: Fonts.style.normal }}
+                }} />}
+            <TouchableOpacity style={ApplicationStyles.center}
+              onPress={navigateToEventDetail(item.event.japanese_name)}>
+              <FastImage source={{ uri: AddHTTPS(item.event.image) }}
+                style={styles.banner}
+                resizeMode={FastImage.resizeMode.contain} />
+            </TouchableOpacity>
+            {!!item.other_event
+              && <View>
+                <TextRow item1={{ text: '', flex: 1, textStyle: Fonts.style.normal }}
                   item2={{
-                    text: item.event.english_name,
+                    text: item.other_event.english_name || '',
                     flex: 4,
                     textStyle: Fonts.style.normal,
-                  }} />}
-              <TouchableOpacity style={ApplicationStyles.center}
-                onPress={navigateToEventDetail(item.event.japanese_name)}>
-                <FastImage source={{ uri: AddHTTPS(item.event.image) }}
-                  style={styles.banner}
-                  resizeMode={FastImage.resizeMode.contain} />
-              </TouchableOpacity>
-              {item.other_event !== null
-                && <View>
-                  <TextRow item1={{ text: '', flex: 1, textStyle: Fonts.style.normal }}
-                    item2={{
-                      text: item.other_event.english_name,
-                      flex: 4,
-                      textStyle: Fonts.style.normal,
-                    }} />
-                  <TouchableOpacity style={ApplicationStyles.center}
-                    onPress={navigateToEventDetail(item.other_event.japanese_name)}>
-                    <FastImage source={{ uri: AddHTTPS(item.other_event.image) }}
-                      style={styles.banner}
-                      resizeMode={FastImage.resizeMode.contain} />
-                  </TouchableOpacity>
-                </View>}
-            </View>}
+                  }} />
+                <TouchableOpacity style={ApplicationStyles.center}
+                  onPress={navigateToEventDetail(item.other_event.japanese_name)}>
+                  <FastImage source={{ uri: AddHTTPS(item.other_event.image) }}
+                    style={styles.banner}
+                    resizeMode={FastImage.resizeMode.contain} />
+                </TouchableOpacity>
+              </View>}
+          </View>}
 
           {item.hp !== 0 && done
             && <View>
-              <Seperator />
+              <Divider />
               <View style={ApplicationStyles.row}>
                 <Icon name='ios-heart' size={Metrics.icons.medium} color={'red'} />
                 <Text style={Fonts.style.normal}> : {item.hp}</Text>
@@ -342,53 +334,6 @@ function CardDetailScreen({ navigation, route }) {
       visible={imgViewer.visible}
       onRequestClose={closeImgViewer} />
   </>;
-}
-
-CardDetailScreen.propTypes = {
-  route: PropTypes.shape({
-    params: PropTypes.shape({
-      item: PropTypes.shape({
-        attribute: PropTypes.any,
-        card_image: PropTypes.string,
-        card_idolized_image: PropTypes.string,
-        is_promo: PropTypes.bool,
-        japan_only: PropTypes.bool,
-        minimum_statistics_smile: PropTypes.any,
-        minimum_statistics_pure: PropTypes.any,
-        minimum_statistics_cool: PropTypes.any,
-        non_idolized_maximum_statistics_smile: PropTypes.any,
-        non_idolized_maximum_statistics_pure: PropTypes.any,
-        non_idolized_maximum_statistics_cool: PropTypes.any,
-        idolized_maximum_statistics_smile: PropTypes.any,
-        idolized_maximum_statistics_pure: PropTypes.any,
-        idolized_maximum_statistics_cool: PropTypes.any,
-        idol: PropTypes.shape({
-          name: PropTypes.string,
-          main_unit: PropTypes.string,
-          sub_unit: PropTypes.string,
-        }),
-        game_id: PropTypes.any,
-        release_date: PropTypes.any,
-        skill: PropTypes.any,
-        skill_details: PropTypes.any,
-        center_skill: PropTypes.any,
-        center_skill_details: PropTypes.any,
-        event: PropTypes.shape({
-          japanese_name: PropTypes.string,
-          english_name: PropTypes.string,
-          image: PropTypes.string,
-        }),
-        other_event: PropTypes.shape({
-          japanese_name: PropTypes.string,
-          english_name: PropTypes.string,
-          image: PropTypes.string,
-        }),
-        hp: PropTypes.any,
-        non_idolized_max_level: PropTypes.any,
-        idolized_max_level: PropTypes.any,
-      }),
-    }),
-  }),
 };
 
 export default CardDetailScreen;

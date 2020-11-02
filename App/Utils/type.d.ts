@@ -4,7 +4,7 @@
  * Created Date: Monday, 02/11/2020, 4:38:28 pm
  * Author: Pham Ngoc Thach
  * -----
- * Last Modified: Monday, 02/11/2020, 11:53:20 pm
+ * Last Modified: Tuesday, 03/11/2020, 12:20:36 am
  * Modified By: Pham Ngoc Thach (thachpn@honeynet.vn)
  * -----
  * Copyright © 2020 HONEYNET
@@ -33,8 +33,8 @@ type BottomTabList = {
 type RootStackParamList = {
   LoadingScreen: undefined;
   DrawerScreen: undefined;
-  CardDetailScreen: { item: CardObject; };
-  EventDetailScreen: undefined;
+  CardDetailScreen: { item: CardObject };
+  EventDetailScreen: { eventName: string };
   IdolDetailScreen: { name: string };
   SongDetailScreen: undefined;
 };
@@ -56,6 +56,7 @@ type SkillType = 'Score Up' | 'Healer' | 'Perfect Lock' | 'Perfect Charm'
 
 type CardObject = {
   id: number
+  game_id: string,
   idol: MiniIdolObject
   rarity: RarityType
   attribute: AttributeType
@@ -68,17 +69,18 @@ type CardObject = {
   release_date?: string
   japan_only?: boolean
   event?: MiniEventObject
+  other_event?: MiniEventObject
   is_special?: boolean
   hp?: number
-  minimum_statistics_smile?: string
-  minimum_statistics_pure?: string
-  minimum_statistics_cool?: string
-  non_idolized_maximum_statistics_smile?: string
-  non_idolized_maximum_statistics_pure?: string
-  non_idolized_maximum_statistics_cool?: string
-  idolized_maximum_statistics_smile?: string
-  idolized_maximum_statistics_pure?: string
-  idolized_maximum_statistics_cool?: string
+  minimum_statistics_smile?: number
+  minimum_statistics_pure?: number
+  minimum_statistics_cool?: number
+  non_idolized_maximum_statistics_smile?: number
+  non_idolized_maximum_statistics_pure?: number
+  non_idolized_maximum_statistics_cool?: number
+  idolized_maximum_statistics_smile?: number
+  idolized_maximum_statistics_pure?: number
+  idolized_maximum_statistics_cool?: number
   skill?: SkillType
   japanese_skill?: string
   skill_details?: string
@@ -122,7 +124,7 @@ type MiniEventObject = {
   japanese_name: string
   english_name?: string
   translated_name?: string
-  image?: string
+  image: string
 }
 
 type TinyCardForSkillUpObject = {

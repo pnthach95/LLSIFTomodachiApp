@@ -37,6 +37,7 @@ module.exports = {
         packageDir: './'
       }
     ],
+    '@typescript-eslint/no-unsafe-assignment': 'off',
     'import/extensions': 0,
     'class-methods-use-this': 'off',
     'no-use-before-define': 'off',

@@ -140,7 +140,7 @@ const MainScreen: React.FC<MainScreenProps> = ({ navigation }) => {
           onPress={() => navigateToEventDetail(ENEvent)}>
           <>
             <Text style={styles.text}>
-              {`Worldwide Event: ${ENEvent.english_status}`}
+              {`Worldwide Event: ${ENEvent.english_status || ''}`}
             </Text>
             <View style={styles.textbox}>
               <Text style={styles.title}>{ENEvent.english_name}</Text>
@@ -186,7 +186,7 @@ const MainScreen: React.FC<MainScreenProps> = ({ navigation }) => {
           onPress={() => navigateToEventDetail(JPEvent)}>
           <>
             <Text style={styles.text}>
-              {`Japanese Event: ${JPEvent.japan_status}`}
+              {`Japanese Event: ${JPEvent.japan_status || ''}`}
             </Text>
             <View style={styles.textbox}>
               <Text style={styles.title}>{JPEvent.romaji_name}</Text>

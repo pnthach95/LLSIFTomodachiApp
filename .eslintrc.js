@@ -21,7 +21,7 @@ module.exports = {
     'plugin:react/recommended',
     'plugin:@typescript-eslint/eslint-recommended',
     'plugin:@typescript-eslint/recommended',
-    'plugin:@typescript-eslint/recommended-requiring-type-checking'
+    'plugin:@typescript-eslint/recommended-requiring-type-checking',
   ],
   rules: {
     'react/prop-types': [
@@ -47,9 +47,11 @@ module.exports = {
       version: 'detect'
     },
     'import/resolver': {
-      'babel-plugin-root-import': {
-        rootPathPrefix: '~',
-        rootPathSuffix: 'App'
+      'babel-module': {
+        alias: {
+          map: [['~', './App/']],
+          extensions: ['.ts', '.js', '.tsx'],
+        },
       }
     }
   },
@@ -60,5 +62,6 @@ module.exports = {
   },
   globals: {
     __DEV__: true
-  }
+  },
+  ignorePatterns: ['/*.*']
 };

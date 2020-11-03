@@ -41,19 +41,23 @@ const MainScreen: React.FC<MainScreenProps> = ({ navigation }) => {
 
   useEffect(() => {
     if (Platform.OS === 'android') {
-      checkVersion();
+      void checkVersion();
     }
   }, []);
 
   const checkVersion = async () => {
-    const result = await GithubService.fetchLatestVersion();
-    // console.log('github', result);
-    if (compareVersion(VersionNumber.appVersion, result.tag_name)) {
-      setVersion({
-        tag: result.tag_name,
-        filename: result.assets[0].name,
-        link: result.assets[0].browser_download_url
-      });
+    try {
+      const result = await GithubService.fetchLatestVersion();
+      // console.log('github', result);
+      if (compareVersion(VersionNumber.appVersion, result.tag_name)) {
+        setVersion({
+          tag: result.tag_name,
+          filename: result.assets[0].name,
+          link: result.assets[0].browser_download_url
+        });
+      }
+    } catch (error) {
+      //
     }
   };
 
@@ -111,16 +115,17 @@ const MainScreen: React.FC<MainScreenProps> = ({ navigation }) => {
   return (
     <View style={styles.container}>
       {/* HEADER */}
-      <FastImage
-        source={Images.logo}
-        resizeMode="contain"
-        style={AppStyles.imageHeader}
-      />
+      <View style={{ alignItems: 'center' }}>
+        <FastImage
+          source={Images.logo}
+          resizeMode='contain'
+          style={AppStyles.imageHeader}
+        />
+      </View>
       {version !== null && (
         <TouchableRipple
           style={styles.update}
-          onPress={() => openLink(version.link)}
-        >
+          onPress={() => openLink(version.link)}>
           <Text>{`Download new version ${version.tag} on Github!`}</Text>
         </TouchableRipple>
       )}
@@ -128,13 +133,11 @@ const MainScreen: React.FC<MainScreenProps> = ({ navigation }) => {
       {/* BODY */}
       <ScrollView
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={styles.content}
-      >
+        contentContainerStyle={styles.content}>
         {/* ENGLISH BLOCK */}
         <TouchableRipple
           style={styles.block}
-          onPress={() => navigateToEventDetail(ENEvent)}
-        >
+          onPress={() => navigateToEventDetail(ENEvent)}>
           <>
             <Text style={styles.text}>
               {`Worldwide Event: ${ENEvent.english_status}`}
@@ -145,7 +148,7 @@ const MainScreen: React.FC<MainScreenProps> = ({ navigation }) => {
             <FastImage
               source={{ uri: AddHTTPS(ENEvent.english_image || '') }}
               onLoad={onLoadFastImage}
-              resizeMode="contain"
+              resizeMode='contain'
               style={{
                 width: Metrics.widthBanner,
                 height: (Metrics.widthBanner * imgSize.height) / imgSize.width
@@ -180,8 +183,7 @@ const MainScreen: React.FC<MainScreenProps> = ({ navigation }) => {
         {/* JAPANESE BLOCK */}
         <TouchableRipple
           style={styles.block}
-          onPress={() => navigateToEventDetail(JPEvent)}
-        >
+          onPress={() => navigateToEventDetail(JPEvent)}>
           <>
             <Text style={styles.text}>
               {`Japanese Event: ${JPEvent.japan_status}`}
@@ -192,7 +194,7 @@ const MainScreen: React.FC<MainScreenProps> = ({ navigation }) => {
             <FastImage
               source={{ uri: AddHTTPS(JPEvent.image) }}
               onLoad={onLoadFastImage}
-              resizeMode="contain"
+              resizeMode='contain'
               style={{
                 width: Metrics.widthBanner,
                 height: (Metrics.widthBanner * imgSize.height) / imgSize.width

@@ -9,7 +9,11 @@ type ContextProps = {
 
 const UserContext = React.createContext({} as ContextProps);
 
-export const UserProvider = ({ children }: { children: JSX.Element }) => {
+export const UserProvider = ({
+  children
+}: {
+  children: JSX.Element;
+}): JSX.Element => {
   const [state, dispatch] = useReducer(reducer, initState);
   const userReducer = useMemo<ContextProps>(
     () => ({

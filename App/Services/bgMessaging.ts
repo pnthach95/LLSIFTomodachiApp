@@ -3,6 +3,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import firebase from 'react-native-firebase';
 
-export default async (message) =>
+export default async (message: string) =>
   // console.log('bgMessaging', message);
   Promise.resolve();

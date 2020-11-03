@@ -4,7 +4,7 @@
  * Created Date: Monday, 02/11/2020, 4:38:28 pm
  * Author: Pham Ngoc Thach
  * -----
- * Last Modified: Tuesday, 03/11/2020, 4:25:02 pm
+ * Last Modified: Tuesday, 03/11/2020, 5:09:23 pm
  * Modified By: Pham Ngoc Thach (thachpn@honeynet.vn)
  * -----
  * Copyright © 2020 HONEYNET
@@ -100,7 +100,7 @@ type SkillType =
 type CachedDataObject = {
   idols: { label: string; value: string }[];
   skills: { label: string; value: string }[];
-  subUnits: string[];
+  subUnits: { label: string; value: string }[];
   schools: { label: string; value: string }[];
   maxStats: {
     Smile: number;
@@ -365,4 +365,58 @@ type GithubRepoType = {
   tarball_url: string;
   zipball_url: string;
   body: string;
+};
+
+type LLSIFCacheData = {
+  current_event_en: {
+    image: string;
+    japanese_name: string;
+  };
+  current_event_jp: {
+    image: string;
+    japanese_name: string;
+  };
+  current_contests: {
+    url: string;
+    image: string;
+    homepage_image: string;
+    name: string | null;
+  }[];
+  cards_info: {
+    max_stats: {
+      Smile: number;
+      Pure: number;
+      Cool: number;
+    };
+    en_cards: number[];
+    years: string[];
+    schools: string[];
+    songs_max_stats: number;
+    idols: {
+      total: number;
+      name: string;
+      idol__japanese_name: string;
+    }[];
+    sub_units: string[];
+    total_cards: number;
+    translated_collections: {
+      total: number;
+      translated_collection: string;
+    }[];
+    skills: {
+      skill: string;
+      total: number;
+    }[];
+    collections: {
+      total: number;
+      japanese_collection: string;
+    }[];
+  };
+};
+
+type CardSearchParams = {
+  search?: string;
+  name?: string;
+  rarity?: string;
+  attribute?: string;
 };

@@ -1,6 +1,14 @@
 import { create } from 'apisauce';
 import _ from 'lodash/array';
 import { Config } from '../Config';
+import type {
+  CardObject,
+  CardSearchParams,
+  EventObject,
+  IdolObject,
+  LLSIFCacheData,
+  SongObject
+} from '~/Utils/type';
 
 const LLSIFApiClient = create({
   baseURL: Config.API_URL
@@ -8,43 +16,46 @@ const LLSIFApiClient = create({
 
 /**
  * [Fetch cached data](https://github.com/MagiCircles/SchoolIdolAPI/wiki/API-Cached-data)
- *
- * @returns
  */
-async function fetchCachedData() {
-  const response = await LLSIFApiClient.get(Config.CACHED_DATA);
-  if (response.ok) {
+const fetchCachedData = async (): Promise<LLSIFCacheData | null> => {
+  const response = await LLSIFApiClient.get<LLSIFCacheData>(Config.CACHED_DATA);
+  if (response.ok && response.data) {
     return response.data;
   }
   return null;
-}
+};
 
 /**
  * [Fetch card list](https://github.com/MagiCircles/SchoolIdolAPI/wiki/API-Cards)
- *
- * @param {Object} filter [Filter](https://github.com/MagiCircles/SchoolIdolAPI/wiki/API-Cards#objects)
- * @returns
  */
-async function fetchCardList(filter) {
-  const response = await LLSIFApiClient.get(Config.CARDS, filter);
-  if (response.ok) {
+const fetchCardList = async (
+  filter: CardSearchParams
+): Promise<number | CardObject[] | null> => {
+  const response = await LLSIFApiClient.get<{ results: CardObject[] }>(
+    Config.CARDS,
+    filter
+  );
+  if (response.ok && response.data) {
     return response.data.results;
   }
   if (response.status === 404) {
     return 404;
   }
   return null;
-}
+};
 
-async function getIdols(school) {
-  const response = await LLSIFApiClient.get(Config.IDOLS, { school });
-  if (response.ok) {
+const getIdols = async (school): Promise<IdolObject[]> => {
+  const response = await LLSIFApiClient.get<{ results: IdolObject[] }>(
+    Config.IDOLS,
+    { school }
+  );
+  if (response.ok && response.data) {
     return response.data.results;
   }
   return [];
-}
+};
 
-async function fetchIdolListBySchool(schools) {
+const fetchIdolListBySchool = async (schools: any[]): Promise<IdolObject[]> => {
   const data = [];
   for (let i = 0; i < schools.length; i += 1) {
     const school = schools[i];
@@ -54,31 +65,35 @@ async function fetchIdolListBySchool(schools) {
   const result = await Promise.all(data);
   const final = _.flattenDeep(result);
   return final;
-}
+};
 
-async function fetchIdolListByPageSize() {
-  const response1 = await LLSIFApiClient.get(Config.IDOLS, { page_size: 100 });
-  const response2 = await LLSIFApiClient.get(Config.IDOLS, {
-    page_size: 100,
-    page: 2
-  });
+const fetchIdolListByPageSize = async () => {
+  const response1 = await LLSIFApiClient.get<{ results: IdolObject[] }>(
+    Config.IDOLS,
+    { page_size: 100 }
+  );
+  const response2 = await LLSIFApiClient.get<{ results: IdolObject[] }>(
+    Config.IDOLS,
+    {
+      page_size: 100,
+      page: 2
+    }
+  );
   let data1 = [];
   let data2 = [];
-  if (response1.ok) {
+  if (response1.ok && response1.data) {
     data1 = response1.data.results;
   } else return null;
-  if (response2.ok) {
+  if (response2.ok && response2.data) {
     data2 = response2.data.results;
   } else return null;
   return [...data1, ...data2];
-}
+};
 
 /**
  * [Fetch idol list](https://github.com/MagiCircles/SchoolIdolAPI/wiki/API-Idols#get-the-list-of-idols)
- *
- * @returns
  */
-function fetchIdolList(schools = null) {
+const fetchIdolList = (schools = null) => {
   return new Promise((resolve, reject) => {
     if (schools === null) {
       fetchIdolListByPageSize().then((res) => {
@@ -92,85 +107,66 @@ function fetchIdolList(schools = null) {
       });
     }
   });
-}
+};
 
 /**
  * [Fetch idol](https://github.com/MagiCircles/SchoolIdolAPI/wiki/API-Idols#get-an-idol-by-name)
- *
- * @param {String} name English idol name
- * @returns
  */
-async function fetchIdol(name) {
-  const response = await LLSIFApiClient.get(Config.IDOLS + name);
-  if (response.ok) {
+const fetchIdol = async (name: string): Promise<IdolObject | null> => {
+  const response = await LLSIFApiClient.get<IdolObject>(Config.IDOLS + name);
+  if (response.ok && response.data) {
     return response.data;
   }
   return null;
-}
+};
 
 /**
  * [Fetch song list](https://github.com/MagiCircles/SchoolIdolAPI/wiki/API-Songs#get-the-list-of-songs)
- *
- * @param {Object} filter
- * @returns
  */
-async function fetchSongList(filter) {
-  // eslint-disable-next-line no-param-reassign
-  filter.expand_event = '';
-  const response = await LLSIFApiClient.get(Config.SONGS, filter);
-  if (response.ok) {
+const fetchSongList = async (filter): Promise<SongObject[] | number | null> => {
+  const newFilter = { ...filter, expand_event: '' };
+  const response = await LLSIFApiClient.get<{ results: SongObject[] }>(
+    Config.SONGS,
+    newFilter
+  );
+  if (response.ok && response.data) {
     return response.data.results;
   }
   if (response.status === 404) {
     return 404;
   }
   return null;
-}
+};
 
 /**
  * [Fetch event list](https://github.com/MagiCircles/SchoolIdolAPI/wiki/API-Events)
- *
- * @param {Object} filter
- * @returns
  */
-async function fetchEventList(filter) {
-  const response = await LLSIFApiClient.get(Config.EVENTS, filter);
-  if (response.ok) {
+const fetchEventList = async (
+  filter
+): Promise<EventObject[] | number | null> => {
+  const response = await LLSIFApiClient.get<{ results: EventObject[] }>(
+    Config.EVENTS,
+    filter
+  );
+  if (response.ok && response.data) {
     return response.data.results;
   }
   if (response.status === 404) {
     return 404;
   }
   return null;
-}
+};
 
 /**
  * [Fetch event information](https://github.com/MagiCircles/SchoolIdolAPI/wiki/API-Events#get-an-event-by-japanese-name)
- *
- * @param {*} name Japanese event name
- * @returns
  */
-async function fetchEventData(name) {
-  const response = await LLSIFApiClient.get(Config.EVENTS + name);
-  if (response.ok) {
+const fetchEventData = async (name: string): Promise<EventObject | null> => {
+  const response = await LLSIFApiClient.get<EventObject>(Config.EVENTS + name);
+  if (response.ok && response.data) {
     return response.data;
   }
   return null;
-}
-
-async function fetchRandomCard() {
-  const filter = {
-    ordering: 'random',
-    page_size: 1,
-    rarity: 'SSR,UR',
-    idol_main_unit: "μ's,Aqours"
-  };
-  const response = await LLSIFApiClient.get(Config.CARDS, filter);
-  if (response.ok) {
-    return response.data.results[0];
-  }
-  return null;
-}
+};
 
 export default {
   fetchCachedData,
@@ -179,6 +175,5 @@ export default {
   fetchIdol,
   fetchSongList,
   fetchEventList,
-  fetchEventData,
-  fetchRandomCard
+  fetchEventData
 };

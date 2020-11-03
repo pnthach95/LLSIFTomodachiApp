@@ -5,7 +5,6 @@ import { Text, Button } from 'react-native-paper';
 import useStatusBar from '~/hooks/useStatusBar';
 import { initCachedData } from '~/Context/Reducer';
 import LLSIFService from '~/Services/LLSIFService';
-import LLSIFdotnetService from '~/Services/LLSIFdotnetService';
 import SplashScreen from '../Splash';
 import UserContext from '~/Context/UserContext';
 import { Colors, AppStyles, Fonts } from '~/Theme';
@@ -42,46 +41,49 @@ const LoadingScreen: React.FC<LoadingScreenProps> = () => {
         ordering: '-beginning',
         page_size: 1
       };
-      const [data, eventEN, eventJP, eventInfo] = await Promise.all([
+      const [data, eventEN, eventJP] = await Promise.all([
         LLSIFService.fetchCachedData(),
         LLSIFService.fetchEventList(enParams),
-        LLSIFService.fetchEventList(jpParams),
-        LLSIFdotnetService.fetchEventInfo()
+        LLSIFService.fetchEventList(jpParams)
       ]);
+      if (data) {
+        const cardsInfo = data.cards_info;
+        const idols = cardsInfo.idols.map((value: { name: string }) => ({
+          label: value.name,
+          value: value.name
+        }));
+        cachedData.idols = idols;
+        const skills = cardsInfo.skills.map((value: { skill: string }) => ({
+          label: value.skill,
+          value: value.skill
+        }));
+        cachedData.skills = skills;
+        const subUnits = cardsInfo.sub_units.map((value: string) => ({
+          label: value,
+          value
+        }));
+        cachedData.subUnits = subUnits;
+        const schools = cardsInfo.schools.map((value: string) => ({
+          label: value,
+          value
+        }));
+        cachedData.schools = schools;
+        cachedData.maxStats = cardsInfo.max_stats;
+        cachedData.songsMaxStats = cardsInfo.songs_max_stats;
 
-      const cardsInfo = data.cards_info;
-      const idols = cardsInfo.idols.map((value: { name: string }) => ({
-        label: value.name,
-        value: value.name
-      }));
-      cachedData.idols = idols;
-      const skills = cardsInfo.skills.map((value: { skill: string }) => ({
-        label: value.skill,
-        value: value.skill
-      }));
-      cachedData.skills = skills;
-      const subUnits = cardsInfo.sub_units.map((value: string) => ({
-        label: value,
-        value
-      }));
-      cachedData.subUnits = subUnits;
-      const schools = cardsInfo.schools.map((value: string) => ({
-        label: value,
-        value
-      }));
-      cachedData.schools = schools;
-      cachedData.maxStats = cardsInfo.max_stats;
-      cachedData.songsMaxStats = cardsInfo.songs_max_stats;
-
-      const [eventEN0] = eventEN;
-      const [eventJP0] = eventJP;
-      cachedData.ENEvent = eventEN0;
-      cachedData.JPEvent = eventJP0;
-      cachedData.eventInfo = eventInfo;
-      dispatch({
-        type: 'DONE_LOADING',
-        data: cachedData
-      });
+        if (Array.isArray(eventEN)) {
+          cachedData.ENEvent = eventEN[0];
+        }
+        if (Array.isArray(eventJP)) {
+          cachedData.JPEvent = eventJP[0];
+        }
+        dispatch({
+          type: 'DONE_LOADING',
+          data: cachedData
+        });
+      } else {
+        throw Error('data = null');
+      }
     } catch (e) {
       console.log(e);
       setError(true);

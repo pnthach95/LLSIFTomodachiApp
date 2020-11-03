@@ -4,21 +4,19 @@ import React, {
 import {
   Text, View, ScrollView, TouchableNativeFeedback, Platform,
 } from 'react-native';
-import { IconButton } from 'react-native-paper';
+import { IconButton, Divider, TouchableRipple } from 'react-native-paper';
 import FastImage from 'react-native-fast-image';
 import VersionNumber from 'react-native-version-number';
 import moment from 'moment';
 
 import ConnectStatus from '~/Components/ConnectStatus';
-import Seperator from '~/Components/Seperator/Seperator';
-import Touchable from '~/Components/Touchable/Touchable';
 import TimerCountdown from '~/Components/TimerCountdown/Timer';
 import useStatusBar from '~/hooks/useStatusBar';
 import { AddHTTPS, openLink } from '~/Utils';
 import { Config, EventStatus } from '~/Config';
 import GithubService from '~/Services/GithubService';
 import {
-  Metrics, Colors, Images, ApplicationStyles,
+  Metrics, Colors, Images, AppStyles,
 } from '~/Theme';
 import UserContext from '~/Context/UserContext';
 import styles from './styles';
@@ -129,97 +127,101 @@ function MainScreen({ navigation }) {
 
   return <View style={styles.container}>
     {/* HEADER */}
-    <View style={ApplicationStyles.header}>
-      <IconButton icon={'ios-menu'} onPress={openDrawer} color={'white'} />
+    <View style={AppStyles.header}>
+      <IconButton icon={'menu'} onPress={openDrawer} color={'white'} />
       <FastImage source={Images.logo}
         resizeMode='contain'
-        style={ApplicationStyles.imageHeader} />
-      <IconButton icon={'ios-menu'} color={Colors.pink} />
+        style={AppStyles.imageHeader} />
+      <IconButton icon={'menu'} color={Colors.pink} />
     </View>
     {version !== null
-      && <Touchable useForeground style={styles.update}
+      && <TouchableRipple style={styles.update}
         background={TouchableNativeFeedback.Ripple('white', false)}
         onLongPress={() => { }}
         onPress={() => openLink(version.link)}>
         <Text>{`Download new version ${version.tag} on Github!`}</Text>
-      </Touchable>}
+      </TouchableRipple>}
     <ConnectStatus />
     {/* BODY */}
     <ScrollView showsVerticalScrollIndicator={false}
       contentContainerStyle={styles.content}>
       {/* ENGLISH BLOCK */}
-      <Touchable useForeground style={styles.block}
+      <TouchableRipple style={styles.block}
         background={TouchableNativeFeedback.Ripple('white', false)}
         onLongPress={() => { }}
         onPress={() => navigateToEventDetail(ENEvent)}>
-        <Text style={styles.text}>
-          {`Worldwide Event: ${ENEvent.english_status}`}
-        </Text>
-        <View style={styles.textbox}>
-          <Text style={styles.title}>{ENEvent.english_name}</Text>
-        </View>
-        <FastImage source={{ uri: AddHTTPS(ENEvent.english_image) }}
-          onLoad={onLoadFastImage}
-          resizeMode='contain'
-          style={{
-            width: Metrics.widthBanner,
-            height: (Metrics.widthBanner * imgSize.height) / imgSize.width,
-          }} />
-        <View style={styles.textbox}>
+        <>
           <Text style={styles.text}>
-            {`Start: ${ENEventStart.format(Config.DATETIME_FORMAT_OUTPUT)}\nEnd: ${ENEventEnd.format(Config.DATETIME_FORMAT_OUTPUT)}`}
+            {`Worldwide Event: ${ENEvent.english_status}`}
           </Text>
-        </View>
-        {ENEvent.world_current
-          && <View style={styles.textbox}>
+          <View style={styles.textbox}>
+            <Text style={styles.title}>{ENEvent.english_name}</Text>
+          </View>
+          <FastImage source={{ uri: AddHTTPS(ENEvent.english_image) }}
+            onLoad={onLoadFastImage}
+            resizeMode='contain'
+            style={{
+              width: Metrics.widthBanner,
+              height: (Metrics.widthBanner * imgSize.height) / imgSize.width,
+            }} />
+          <View style={styles.textbox}>
             <Text style={styles.text}>
-              {timer(ENEventEnd.diff(moment()))}{' left'}
+              {`Start: ${ENEventStart.format(Config.DATETIME_FORMAT_OUTPUT)}\nEnd: ${ENEventEnd.format(Config.DATETIME_FORMAT_OUTPUT)}`}
             </Text>
-          </View>}
-        {ENEvent.english_status === EventStatus.ANNOUNCED
-          && <View style={styles.textbox}>
-            <Text style={styles.text}>
-              {'Starts in '}{timer(ENEventStart.diff(moment()))}
-            </Text>
-          </View>}
-      </Touchable>
-      <Seperator style={styles.bgWhite} />
+          </View>
+          {ENEvent.world_current
+            && <View style={styles.textbox}>
+              <Text style={styles.text}>
+                {timer(ENEventEnd.diff(moment()))}{' left'}
+              </Text>
+            </View>}
+          {ENEvent.english_status === EventStatus.ANNOUNCED
+            && <View style={styles.textbox}>
+              <Text style={styles.text}>
+                {'Starts in '}{timer(ENEventStart.diff(moment()))}
+              </Text>
+            </View>}
+        </>
+      </TouchableRipple>
+      <Divider style={styles.bgWhite} />
       {/* JAPANESE BLOCK */}
-      <Touchable useForeground style={styles.block}
+      <TouchableRipple style={styles.block}
         background={TouchableNativeFeedback.Ripple('white', false)}
         onLongPress={() => { }}
         onPress={() => navigateToEventDetail(JPEvent)}>
-        <Text style={styles.text}>
-          {`Japanese Event: ${JPEvent.japan_status}`}
-        </Text>
-        <View style={styles.textbox}>
-          <Text style={styles.title}>{JPEvent.romaji_name}</Text>
-        </View>
-        <FastImage source={{ uri: AddHTTPS(JPEvent.image) }}
-          onLoad={onLoadFastImage}
-          resizeMode='contain'
-          style={{
-            width: Metrics.widthBanner,
-            height: (Metrics.widthBanner * imgSize.height) / imgSize.width,
-          }} />
-        <View style={styles.textbox}>
+        <>
           <Text style={styles.text}>
-            {`Start: ${JPEventStart.format(Config.DATETIME_FORMAT_OUTPUT)}\nEnd: ${JPEventEnd.format(Config.DATETIME_FORMAT_OUTPUT)}`}
+            {`Japanese Event: ${JPEvent.japan_status}`}
           </Text>
-        </View>
-        {JPEvent.japan_current
-          && <View style={styles.textbox}>
+          <View style={styles.textbox}>
+            <Text style={styles.title}>{JPEvent.romaji_name}</Text>
+          </View>
+          <FastImage source={{ uri: AddHTTPS(JPEvent.image) }}
+            onLoad={onLoadFastImage}
+            resizeMode='contain'
+            style={{
+              width: Metrics.widthBanner,
+              height: (Metrics.widthBanner * imgSize.height) / imgSize.width,
+            }} />
+          <View style={styles.textbox}>
             <Text style={styles.text}>
-              {timer(JPEventEnd.diff(moment()))}{' left'}
+              {`Start: ${JPEventStart.format(Config.DATETIME_FORMAT_OUTPUT)}\nEnd: ${JPEventEnd.format(Config.DATETIME_FORMAT_OUTPUT)}`}
             </Text>
-          </View>}
-        {JPEvent.japan_status === EventStatus.ANNOUNCED
-          && <View style={styles.textbox}>
-            <Text style={styles.text}>
-              {'Starts in '}{timer(JPEventStart.diff(moment()))}
-            </Text>
-          </View>}
-      </Touchable>
+          </View>
+          {JPEvent.japan_current
+            && <View style={styles.textbox}>
+              <Text style={styles.text}>
+                {timer(JPEventEnd.diff(moment()))}{' left'}
+              </Text>
+            </View>}
+          {JPEvent.japan_status === EventStatus.ANNOUNCED
+            && <View style={styles.textbox}>
+              <Text style={styles.text}>
+                {'Starts in '}{timer(JPEventStart.diff(moment()))}
+              </Text>
+            </View>}
+        </>
+      </TouchableRipple>
     </ScrollView>
   </View>;
 }

@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, TextStyle } from 'react-native';
 import { Text } from 'react-native-paper';
-import { Fonts, ApplicationStyles } from '~/Theme';
+import { Fonts, AppStyles } from '~/Theme';
 
 type TextRowType = {
   item1: {
@@ -26,19 +26,21 @@ type TextRowType = {
  *
  */
 const TextRow: React.FC<TextRowType> = ({ item1, item2 }) => {
-  return <View style={ApplicationStyles.row}>
-    <View style={{ flex: item1.flex }}>
-      <Text style={[Fonts.style.normal, item1.textStyle]}>
-        {item1.text}
-      </Text>
+  return (
+    <View style={AppStyles.row}>
+      <View style={{ flex: item1.flex }}>
+        <Text style={[Fonts.style.normal, item1.textStyle]}>{item1.text}</Text>
+      </View>
+      <View style={{ flex: item2.flex }}>
+        <Text
+          onPress={item2.onPress}
+          style={[Fonts.style.normal, item2.textStyle]}
+        >
+          {item2.text}
+        </Text>
+      </View>
     </View>
-    <View style={{ flex: item2.flex }}>
-      <Text onPress={item2.onPress}
-        style={[Fonts.style.normal, item2.textStyle]}>
-        {item2.text}
-      </Text>
-    </View>
-  </View>;
+  );
 };
 
 export default TextRow;

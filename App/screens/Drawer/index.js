@@ -11,7 +11,7 @@ import VersionNumber from 'react-native-version-number';
 
 import UserContext from '~/Context/UserContext';
 import styles from './styles';
-import { Images, ApplicationStyles, Fonts } from '~/Theme';
+import { Images, AppStyles, Fonts } from '~/Theme';
 import { Config, RELEASE_NOTE } from '~/Config';
 import {
   AddHTTPS, loadSettings, saveSettings, openLink,
@@ -123,14 +123,14 @@ function Drawer() {
 
   return <ImageBackground source={{ uri: AddHTTPS(state.cachedData.bgImage) }}
     style={styles.fullscreen}>
-    <View style={ApplicationStyles.screen}>
+    <View style={AppStyles.screen}>
       {options.visible ? <View style={styles.container}>
-        <View style={[ApplicationStyles.center, styles.header]}>
+        <View style={[AppStyles.center, styles.header]}>
           <FastImage source={Images.logo}
             style={styles.logo}
             resizeMode='contain' />
         </View>
-        <View style={ApplicationStyles.screen}>
+        <View style={AppStyles.screen}>
           <TouchableOpacity onPress={groupToggle}>
             <View style={styles.group}>
               <Text style={Fonts.style.black}>OPTIONS</Text>
@@ -162,14 +162,14 @@ function Drawer() {
               <Icon name={!options.isCollapsed ? 'ios-arrow-up' : 'ios-arrow-down'} size={20} />
             </View>
           </TouchableOpacity>
-          {!options.isCollapsed && <View style={ApplicationStyles.screen}>
+          {!options.isCollapsed && <View style={AppStyles.screen}>
             <ScrollView bounces={false}
               contentContainerStyle={styles.textBlock}>
               <Text style={Fonts.style.black}>{RELEASE_NOTE}</Text>
             </ScrollView>
           </View>}
         </View>
-        <View style={[ApplicationStyles.center, styles.footer]}>
+        <View style={[AppStyles.center, styles.footer]}>
           <View style={styles.footerBlock}>
             <Text style={styles.versionText}>
               {'Powered by '}
@@ -187,8 +187,8 @@ function Drawer() {
           <View style={styles.footerBlock}>
             <TouchableHighlight onPress={() => openLink(Config.GITHUB_PROJECT)}
               underlayColor={'#0000'}
-              style={ApplicationStyles.center}>
-              <View style={ApplicationStyles.center}>
+              style={AppStyles.center}>
+              <View style={AppStyles.center}>
                 <Icon name={'logo-github'} size={50} />
                 <Text style={Fonts.style.black}>Project</Text>
               </View>
@@ -199,14 +199,14 @@ function Drawer() {
         : <View style={[styles.container, styles.transparent]}>
           <TouchableHighlight onPress={navigateToCardDetail}
             underlayColor={'#fffa'}
-            style={[ApplicationStyles.center, styles.viewMore]}>
+            style={[AppStyles.center, styles.viewMore]}>
             <Text style={styles.versionText}>View card info</Text>
           </TouchableHighlight>
         </View>}
 
       <TouchableHighlight onPress={visibleToggle}
         underlayColor={'#fff'}
-        style={[ApplicationStyles.center, styles.versionContainer]}>
+        style={[AppStyles.center, styles.versionContainer]}>
         <Text style={styles.versionText}>Version {VersionNumber.appVersion}</Text>
       </TouchableHighlight>
     </View>

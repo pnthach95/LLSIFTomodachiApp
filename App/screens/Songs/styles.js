@@ -4,6 +4,7 @@ import { Metrics, Colors, Fonts } from '~/Theme';
 export default StyleSheet.create({
   filterContainer: {
     backgroundColor: Colors.white,
+    elevation: 5,
     padding: 10,
   },
   flatListElement: {
@@ -11,6 +12,7 @@ export default StyleSheet.create({
   },
   header: {
     backgroundColor: Colors.white,
+    elevation: 5
   },
   list: {
     padding: Metrics.smallMargin,

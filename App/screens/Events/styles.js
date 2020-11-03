@@ -15,6 +15,7 @@ export default StyleSheet.create({
   },
   header: {
     backgroundColor: Colors.white,
+    elevation: 5,
   },
   list: {
     padding: Metrics.smallMargin,

@@ -2,21 +2,21 @@ import React, {
   useState, useContext, useEffect, useCallback,
 } from 'react';
 import {
-  View, Text, SectionList, FlatList, Alert,
+  View, SectionList, FlatList, Alert,
 } from 'react-native';
-import { IconButton } from 'react-native-paper';
+import {
+  IconButton, Surface, Text, Divider,
+} from 'react-native-paper';
 import PropTypes from 'prop-types';
-import ElevatedView from 'react-native-elevated-view';
 import FastImage from 'react-native-fast-image';
 
 import useStatusBar from '~/hooks/useStatusBar';
 import UserContext from '~/Context/UserContext';
 import ConnectStatus from '~/Components/ConnectStatus';
 import IdolItem from '~/Components/IdolItem';
-import Seperator from '~/Components/Seperator/Seperator';
 import LLSIFService from '~/Services/LLSIFService';
 import SplashScreen from '../Splash';
-import { Colors, ApplicationStyles, Images } from '~/Theme';
+import { Colors, AppStyles, Images } from '~/Theme';
 import styles from './styles';
 
 /**
@@ -132,16 +132,15 @@ function IdolsScreen({ navigation }) {
     return <SplashScreen bgColor={Colors.blue} />;
   }
 
-  return <View style={[ApplicationStyles.screen, styles.container]}>
+  return <View style={[AppStyles.screen, styles.container]}>
     {/* HEADER */}
-    <ElevatedView elevation={5}
-      style={[ApplicationStyles.header, styles.container]}>
-      <IconButton icon={'ios-menu'} onPress={openDrawer} color={'white'} />
+    <Surface style={[AppStyles.header, styles.container]}>
+      <IconButton icon={'menu'} onPress={openDrawer} color={'white'} />
       <FastImage source={Images.logo}
         resizeMode='contain'
-        style={ApplicationStyles.imageHeader} />
+        style={AppStyles.imageHeader} />
       <View style={styles.hole} />
-    </ElevatedView>
+    </Surface>
     <ConnectStatus />
     {/* BODY */}
     <SectionList sections={list}
@@ -158,7 +157,7 @@ function IdolsScreen({ navigation }) {
           backgroundColor: 'white',
           marginBottom: data.leadingItem ? 20 : 0,
         };
-        return <Seperator style={styleSeperator} />;
+        return <Divider style={styleSeperator} />;
       }}
       renderItem={renderFlatList} />
   </View>;

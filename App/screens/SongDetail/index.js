@@ -13,7 +13,7 @@ import ProgressBar from '~/Components/ProgressBar';
 import TextRow from '~/Components/TextRow';
 import SplashScreen from '../Splash';
 import { findColorByAttribute, AddHTTPS, findMainUnit } from '~/Utils';
-import { Metrics, ApplicationStyles, Colors } from '~/Theme';
+import { Metrics, AppStyles, Colors } from '~/Theme';
 import styles from './styles';
 
 /**
@@ -177,7 +177,7 @@ function SongDetailScreen({ route, navigation }) {
     style={styles.content}>
     <ScrollView showsVerticalScrollIndicator={false}
       contentContainerStyle={styles.scrollViewContainer}
-      style={ApplicationStyles.screen}>
+      style={AppStyles.screen}>
       <FastImage source={{ uri: AddHTTPS(item.image) }}
         onLoad={onLoadFastImage}
         resizeMode='contain'

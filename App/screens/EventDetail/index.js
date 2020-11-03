@@ -12,7 +12,7 @@ import SplashScreen from '../Splash';
 import LLSIFService from '~/Services/LLSIFService';
 import LLSIFdotnetService from '~/Services/LLSIFdotnetService';
 import { Config } from '~/Config';
-import { ApplicationStyles, Colors } from '~/Theme';
+import { AppStyles, Colors } from '~/Theme';
 import styles from './styles';
 
 /**
@@ -144,7 +144,7 @@ function EventDetailScreen({ navigation, route }) {
   };
 
   if (isLoading) return <SplashScreen bgColor={Colors.violet} />;
-  return <View style={ApplicationStyles.screen}>
+  return <View style={AppStyles.screen}>
     {selectedTab === 0
       ? <Information item={item}
         cards={cards}

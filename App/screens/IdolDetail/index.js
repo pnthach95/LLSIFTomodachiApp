@@ -13,7 +13,7 @@ import LLSIFService from '~/Services/LLSIFService';
 import {
   findColorByAttribute, AddHTTPS, findMainUnit, findSubUnit,
 } from '~/Utils';
-import { Metrics, ApplicationStyles, Colors } from '~/Theme';
+import { Metrics, AppStyles, Colors } from '~/Theme';
 import styles from './styles';
 
 /**
@@ -52,7 +52,7 @@ function IdolDetailScreen({ route, navigation }) {
           && <Text>{item.japanese_name}</Text>}
       </View>;
 
-      const headerRight = () => <View style={ApplicationStyles.row}>
+      const headerRight = () => <View style={AppStyles.row}>
         <FastImage source={findMainUnit(item.main_unit)}
           resizeMode='contain'
           style={styles.rightHeaderImage} />
@@ -97,7 +97,7 @@ function IdolDetailScreen({ route, navigation }) {
   };
 
   if (isLoading) return <SplashScreen bgColor={Colors.blue} />;
-  return <LinearGradient style={ApplicationStyles.screen}
+  return <LinearGradient style={AppStyles.screen}
     colors={[colors[1], colors[0]]}>
     <ScrollView showsVerticalScrollIndicator={false}>
       <View style={styles.imageRow}>

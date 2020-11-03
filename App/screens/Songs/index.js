@@ -1,24 +1,24 @@
 import React, { useState, useEffect } from 'react';
 import {
-  View, FlatList, TextInput, Alert, Text, Image,
+  View, FlatList, TextInput, Alert, Image,
 } from 'react-native';
-import { IconButton } from 'react-native-paper';
+import {
+  IconButton, Surface, Text, TouchableRipple,
+} from 'react-native-paper';
 import PropTypes from 'prop-types';
-import ElevatedView from 'react-native-elevated-view';
 import _ from 'lodash';
 
 import useStatusBar from '~/hooks/useStatusBar';
 import ConnectStatus from '~/Components/ConnectStatus';
 import EventRow from '~/Components/EventRow';
 import SongItem from '~/Components/SongItem';
-import Touchable from '~/Components/Touchable/Touchable';
 import MainUnitRow from '~/Components/MainUnitRow';
 import OrderingRow from '~/Components/OrderingRow';
 import AttributeRow from '~/Components/AttributeRow';
 import SplashScreen from '../Splash';
 import LLSIFService from '~/Services/LLSIFService';
 import {
-  ApplicationStyles, Images, Fonts, Colors,
+  AppStyles, Images, Fonts, Colors,
 } from '~/Theme';
 import { OrderingGroup } from '~/Config';
 import styles from './styles';
@@ -230,7 +230,7 @@ function SongsScreen({ navigation }) {
   /**
    * Render footer in FlatList
    */
-  const renderFooter = <View style={[ApplicationStyles.center, styles.flatListElement]}>
+  const renderFooter = <View style={[AppStyles.center, styles.flatListElement]}>
     <Image source={Images.alpaca} />
   </View>;
 
@@ -241,13 +241,13 @@ function SongsScreen({ navigation }) {
   if (isLoading) {
     return <SplashScreen />;
   }
-  return <View style={ApplicationStyles.screen}>
+  return <View style={AppStyles.screen}>
 
     {/* HEADER */}
-    <ElevatedView elevation={5} style={[ApplicationStyles.header, styles.header]}>
-      <IconButton icon={'ios-menu'} onPress={openDrawer} />
-      <View style={ApplicationStyles.searchHeader}>
-        <TextInput style={ApplicationStyles.searchInput}
+    <Surface style={[AppStyles.header, styles.header]}>
+      <IconButton icon={'menu'} onPress={openDrawer} />
+      <View style={AppStyles.searchHeader}>
+        <TextInput style={AppStyles.searchInput}
           onChangeText={(text) => setSearchOptions({
             ...searchOptions,
             search: text,
@@ -255,13 +255,13 @@ function SongsScreen({ navigation }) {
           onSubmitEditing={onSearch}
           placeholder={'Search song...'} />
         <IconButton icon={'ios-search'} onPress={onSearch}
-          style={ApplicationStyles.searchButton} />
+          style={AppStyles.searchButton} />
       </View>
       <IconButton icon={'ios-more'} onPress={toggleFilter} />
-    </ElevatedView>
+    </Surface>
     {/* FILTER */}
     {isFilter
-      && <ElevatedView elevation={5} style={styles.filterContainer}>
+      && <Surface style={styles.filterContainer}>
         <AttributeRow attribute={searchOptions.attribute}
           selectAttribute={selectAttribute} />
         <EventRow isEvent={searchOptions.is_event} selectEvent={selectEvent} />
@@ -271,11 +271,11 @@ function SongsScreen({ navigation }) {
           selectOrdering={selectOrdering}
           isReverse={searchOptions.isReverse}
           toggleReverse={toggleReverse} />
-        <Touchable onPress={resetFilter} useForeground
+        <TouchableRipple onPress={resetFilter}
           style={styles.resetView}>
           <Text style={styles.resetText}>RESET</Text>
-        </Touchable>
-      </ElevatedView>}
+        </TouchableRipple>
+      </Surface>}
     <ConnectStatus />
     {/* LIST */}
     <FlatList data={list}

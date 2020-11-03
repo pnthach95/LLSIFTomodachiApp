@@ -4,6 +4,7 @@ import { Metrics, Colors } from '~/Theme';
 export default StyleSheet.create({
   container: {
     backgroundColor: Colors.blue,
+    elevation: 5,
   },
   height10: {
     height: 10,

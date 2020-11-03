@@ -7,7 +7,7 @@ import PureChart from 'react-native-pure-chart';
 import SegmentedControlTab from 'react-native-segmented-control-tab';
 import { Row } from 'react-native-table-component';
 
-import { ApplicationStyles, Metrics } from '~/Theme';
+import { AppStyles, Metrics } from '~/Theme';
 import styles from './styles';
 
 export default class Tracker extends React.PureComponent {
@@ -25,7 +25,7 @@ export default class Tracker extends React.PureComponent {
   static propTypes = {
     wwTracker: PropTypes.any,
     jpTracker: PropTypes.any,
-  }
+  };
 
   componentDidMount() {
     this.setState({
@@ -84,7 +84,7 @@ export default class Tracker extends React.PureComponent {
       result.push({ x: last[0], y: Number(last[position]) });
     }
     return result;
-  }
+  };
 
   onTabPress = (index) => this.setState({ selectedTab: index });
 
@@ -93,10 +93,10 @@ export default class Tracker extends React.PureComponent {
   renderItem = ({ item }) => <Row data={item}
     widthArr={this.state.widCell}
     style={styles.trackerCell}
-    textStyle={styles.trackerText} />
+    textStyle={styles.trackerText} />;
 
   renderGroup = (data) => (data.table !== null
-    ? <View style={ApplicationStyles.screen}>
+    ? <View style={AppStyles.screen}>
       {data.chart !== undefined
         && <PureChart data={data.chart} type='line'
           height={Metrics.screenHeight / 4} />}
@@ -115,11 +115,11 @@ export default class Tracker extends React.PureComponent {
         </View>
       </ScrollView>
     </View>
-    : <Text style={styles.whiteCenter}>No data</Text>)
+    : <Text style={styles.whiteCenter}>No data</Text>);
 
   render() {
     return <View style={styles.container}>
-      <View style={[ApplicationStyles.center, styles.trackerRegion]}>
+      <View style={[AppStyles.center, styles.trackerRegion]}>
         <SegmentedControlTab values={['Japanese', 'Worldwide']}
           selectedIndex={this.state.selectedTab}
           onTabPress={this.onTabPress} />

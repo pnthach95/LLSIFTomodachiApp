@@ -2,12 +2,12 @@ import React from 'react';
 import { View, TouchableOpacity } from 'react-native';
 import { Text } from 'react-native-paper';
 import styles from '~/Theme/RowStyles';
-import { ApplicationStyles } from '~/Theme';
+import { AppStyles } from '~/Theme';
 import { BooleanOrEmpty } from '~/Utils/type';
 
 type RegionRowType = {
-  japanOnly: BooleanOrEmpty,
-  selectRegion: (japanOnly: BooleanOrEmpty) => void,
+  japanOnly: BooleanOrEmpty;
+  selectRegion: (japanOnly: BooleanOrEmpty) => void;
 };
 
 /**
@@ -18,37 +18,45 @@ type RegionRowType = {
  *
  */
 const RegionRow: React.FC<RegionRowType> = ({ japanOnly, selectRegion }) => {
-  return <View style={ApplicationStyles.row}>
-    <View style={styles.leftView}>
-      <Text>Region</Text>
+  return (
+    <View style={AppStyles.row}>
+      <View style={styles.leftView}>
+        <Text>Region</Text>
+      </View>
+      <View style={styles.rightView}>
+        <TouchableOpacity
+          onPress={() => selectRegion('')}
+          style={[
+            styles.textButton,
+            styles.standardButton,
+            japanOnly === '' && styles.selectedValue
+          ]}
+        >
+          <Text style={styles.buttonText}>All</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => selectRegion('False')}
+          style={[
+            styles.textButton,
+            styles.standardButton,
+            japanOnly === 'False' && styles.selectedValue
+          ]}
+        >
+          <Text style={styles.buttonText}>EN Only</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => selectRegion('True')}
+          style={[
+            styles.textButton,
+            styles.standardButton,
+            japanOnly === 'True' && styles.selectedValue
+          ]}
+        >
+          <Text style={styles.buttonText}>JP Only</Text>
+        </TouchableOpacity>
+      </View>
     </View>
-    <View style={styles.rightView}>
-      <TouchableOpacity onPress={() => selectRegion('')}
-        style={[
-          styles.textButton,
-          styles.standardButton,
-          japanOnly === '' && styles.selectedValue,
-        ]}>
-        <Text style={styles.buttonText}>All</Text>
-      </TouchableOpacity>
-      <TouchableOpacity onPress={() => selectRegion('False')}
-        style={[
-          styles.textButton,
-          styles.standardButton,
-          japanOnly === 'False' && styles.selectedValue,
-        ]}>
-        <Text style={styles.buttonText}>EN Only</Text>
-      </TouchableOpacity>
-      <TouchableOpacity onPress={() => selectRegion('True')}
-        style={[
-          styles.textButton,
-          styles.standardButton,
-          japanOnly === 'True' && styles.selectedValue,
-        ]}>
-        <Text style={styles.buttonText}>JP Only</Text>
-      </TouchableOpacity>
-    </View>
-  </View>;
+  );
 };
 
 export default RegionRow;

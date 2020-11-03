@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import FastImage from 'react-native-fast-image';
 import { BarIndicator } from 'react-native-indicators';
 import { responsiveScreenWidth } from 'react-native-responsive-dimensions';
-import { Images, ApplicationStyles } from '~/Theme';
+import { Images, AppStyles } from '~/Theme';
 
 /**
  * Splash Screen
@@ -27,8 +27,8 @@ export default class SplashScreen extends React.Component {
 
   render() {
     return <View style={[
-      ApplicationStyles.screen,
-      ApplicationStyles.center,
+      AppStyles.screen,
+      AppStyles.center,
       { backgroundColor: this.props.bgColor }]}>
       <FastImage source={Images.logo}
         resizeMode='contain'

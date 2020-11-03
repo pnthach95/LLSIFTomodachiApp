@@ -2,22 +2,20 @@ import React, { useState, useEffect } from 'react';
 import {
   View, FlatList, Text, TextInput, Alert, Image,
 } from 'react-native';
-import { IconButton } from 'react-native-paper';
+import { IconButton, Surface, TouchableRipple } from 'react-native-paper';
 import PropTypes from 'prop-types';
-import ElevatedView from 'react-native-elevated-view';
 import _ from 'lodash';
 
 import useStatusBar from '~/hooks/useStatusBar';
 import ConnectStatus from '~/Components/ConnectStatus';
 import SkillRow from '~/Components/SkillRow';
-import EventItem from '~/Components/EventItem/EventItem';
+import EventItem from '~/Components/EventItem';
 import RegionRow from '~/Components/RegionRow';
-import Touchable from '~/Components/Touchable/Touchable';
 import IdolNameRow from '~/Components/IdolNameRow';
 import MainUnitRow from '~/Components/MainUnitRow';
 import AttributeRow from '~/Components/AttributeRow';
 import SplashScreen from '../Splash';
-import { Colors, ApplicationStyles, Images } from '~/Theme';
+import { Colors, AppStyles, Images } from '~/Theme';
 import styles from './styles';
 import LLSIFService from '~/Services/LLSIFService';
 import { loadSettings } from '~/Utils';
@@ -249,7 +247,7 @@ function EventsScreen({ navigation }) {
    * Render footer of FlatList
    *
    */
-  const renderFooter = <View style={[ApplicationStyles.center, styles.margin10]}>
+  const renderFooter = <View style={[AppStyles.center, styles.margin10]}>
     <Image source={Images.alpaca} />
   </View>;
 
@@ -263,9 +261,9 @@ function EventsScreen({ navigation }) {
 
   return <View style={styles.container}>
     {/* HEADER */}
-    <ElevatedView elevation={5} style={[ApplicationStyles.header, styles.header]}>
-      <IconButton icon={'ios-menu'} onPress={openDrawer} />
-      <View style={ApplicationStyles.searchHeader}>
+    <Surface style={[AppStyles.header, styles.header]}>
+      <IconButton icon={'menu'} onPress={openDrawer} />
+      <View style={AppStyles.searchHeader}>
         <TextInput
           onChangeText={(text) => setSearchOptions({
             ...searchOptions,
@@ -273,27 +271,27 @@ function EventsScreen({ navigation }) {
           })}
           onSubmitEditing={onSearch}
           placeholder={'Search event...'}
-          style={ApplicationStyles.searchInput} />
+          style={AppStyles.searchInput} />
         <IconButton icon={'ios-search'} onPress={onSearch}
-          style={ApplicationStyles.searchButton} />
+          style={AppStyles.searchButton} />
       </View>
       <IconButton icon={'ios-more'} onPress={toggleFilter} />
-    </ElevatedView>
+    </Surface>
 
     {/* FILTER */}
     {isFilter
-      && <ElevatedView elevation={5} style={styles.filterContainer}>
+      && <Surface elevation={5} style={styles.filterContainer}>
         <IdolNameRow name={searchOptions.idol} selectIdol={selectIdol} />
         <MainUnitRow mainUnit={searchOptions.main_unit} selectMainUnit={selectMainUnit} />
         <SkillRow skill={searchOptions.skill} selectSkill={selectSkill} />
         <AttributeRow attribute={searchOptions.attribute}
           selectAttribute={selectAttribute} />
         <RegionRow japanOnly={searchOptions.is_english} selectRegion={selectRegion} />
-        <Touchable onPress={resetFilter} useForeground
+        <TouchableRipple onPress={resetFilter}
           style={styles.resetView}>
           <Text style={styles.resetText}>RESET</Text>
-        </Touchable>
-      </ElevatedView>}
+        </TouchableRipple>
+      </Surface>}
     <ConnectStatus />
     {/* LIST */}
     <FlatList data={list}

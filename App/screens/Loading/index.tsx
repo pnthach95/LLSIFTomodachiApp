@@ -3,6 +3,7 @@ import { View, StyleSheet } from 'react-native';
 import { Text, Button } from 'react-native-paper';
 
 import useStatusBar from '~/hooks/useStatusBar';
+import { initCachedData } from '~/Context/Reducer';
 import LLSIFService from '~/Services/LLSIFService';
 import LLSIFdotnetService from '~/Services/LLSIFdotnetService';
 import SplashScreen from '../Splash';
@@ -32,7 +33,7 @@ const LoadingScreen: React.FC<LoadingScreenProps> = () => {
   const loadCachedData = async () => {
     setError(false);
     try {
-      const cachedData: CachedDataObject = {};
+      const cachedData: CachedDataObject = { ...initCachedData };
       const enParams = {
         ordering: '-english_beginning',
         page_size: 1

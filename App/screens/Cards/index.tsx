@@ -1,12 +1,16 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import {
-  Text, View, FlatList, TextInput,
-  TouchableNativeFeedback, Alert, ScrollView,
-  Image, LayoutAnimation,
+  View,
+  FlatList,
+  TextInput,
+  TouchableNativeFeedback,
+  Alert,
+  ScrollView,
+  Image,
+  LayoutAnimation
 } from 'react-native';
-import { IconButton } from 'react-native-paper';
+import { Text, IconButton, Surface, TouchableRipple } from 'react-native-paper';
 import PropTypes from 'prop-types';
-import ElevatedView from 'react-native-elevated-view';
 import _ from 'lodash';
 
 import useStatusBar from '~/hooks/useStatusBar';
@@ -18,7 +22,6 @@ import SkillRow from '~/Components/SkillRow';
 import RarityRow from '~/Components/RarityRow';
 import RegionRow from '~/Components/RegionRow';
 import SchoolRow from '~/Components/SchoolRow';
-import Touchable from '~/Components/Touchable/Touchable';
 import SubUnitRow from '~/Components/SubUnitRow';
 import IdolNameRow from '~/Components/IdolNameRow';
 import MainUnitRow from '~/Components/MainUnitRow';
@@ -29,10 +32,20 @@ import Card2PicsItem from '~/Components/Card2PicsItem';
 import SpecialCardRow from '~/Components/SpecialCardRow';
 import LLSIFService from '~/Services/LLSIFService';
 import SplashScreen from '../Splash';
-import { Colors, ApplicationStyles, Images } from '~/Theme';
+import { Colors, AppStyles, Images } from '~/Theme';
 import styles from './styles';
 import { loadSettings } from '~/Utils';
 import { OrderingGroup } from '~/Config';
+import {
+  AttributeType,
+  BooleanOrEmpty,
+  CardObject,
+  CardsScreenProps,
+  MainUnitNames,
+  RarityType,
+  SkillType,
+  YearType
+} from '~/Utils/type';
 
 /**
  * [Card List Screen](https://github.com/MagiCircles/SchoolIdolAPI/wiki/API-Cards#get-the-list-of-cards)
@@ -61,7 +74,7 @@ import { OrderingGroup } from '~/Config';
  * - `idol_year`: Year (None, First, Second, Third)
  *
  */
-function CardsScreen({ navigation }) {
+const CardsScreen: React.FC<CardsScreenProps> = ({ navigation }) => {
   useStatusBar('dark-content', Colors.white);
   const defaultFilter = {
     search: '',
@@ -80,10 +93,12 @@ function CardsScreen({ navigation }) {
     idol_main_unit: '',
     idol_sub_unit: 'All',
     idol_school: 'All',
-    idol_year: '',
+    idol_year: ''
   };
   const [isLoading, setIsLoading] = useState(true);
-  const [searchOptions, setSearchOptions] = useState(defaultFilter);
+  const [searchOptions, setSearchOptions] = useState<typeof defaultFilter>(
+    defaultFilter
+  );
   const [column, setColumn] = useState(2);
   const [isActionButtonVisible, setIsActionButtonVisible] = useState(true);
   const [list, setList] = useState([]);
@@ -93,13 +108,12 @@ function CardsScreen({ navigation }) {
   let listViewOffset = 0;
 
   useEffect(() => {
-    loadSettings()
-      .then((res) => {
-        setSearchOptions({
-          ...searchOptions,
-          japan_only: res.worldwide_only ? 'False' : '',
-        });
+    loadSettings().then((res) => {
+      setSearchOptions({
+        ...searchOptions,
+        japan_only: res.worldwide_only ? 'False' : ''
       });
+    });
   }, []);
 
   useEffect(() => {
@@ -111,14 +125,14 @@ function CardsScreen({ navigation }) {
    *
    * @memberof CardsScreen
    */
-  const keyExtractor = (item) => `card ${item.id}`;
+  const keyExtractor = (item: CardObject) => `card ${item.id}`;
 
   /**
    * Render item in FlatList
    *
    * @memberof CardsScreen
    */
-  const renderItem = ({ item }) => {
+  const renderItem = ({ item }: { item: CardObject }) => {
     /**
      * Navigate to Card Detail Screen
      */
@@ -132,24 +146,28 @@ function CardsScreen({ navigation }) {
     return <CardItem item={item} onPress={navigateToCardDetail} />;
   };
 
-  renderItem.propTypes = {
-    item: PropTypes.object.isRequired,
-  };
-
   const onScroll = (event) => {
     // Simple fade-in / fade-out animation
     const CustomLayoutLinear = {
       duration: 100,
-      create: { type: LayoutAnimation.Types.linear, property: LayoutAnimation.Properties.opacity },
-      update: { type: LayoutAnimation.Types.linear, property: LayoutAnimation.Properties.opacity },
-      delete: { type: LayoutAnimation.Types.linear, property: LayoutAnimation.Properties.opacity },
+      create: {
+        type: LayoutAnimation.Types.linear,
+        property: LayoutAnimation.Properties.opacity
+      },
+      update: {
+        type: LayoutAnimation.Types.linear,
+        property: LayoutAnimation.Properties.opacity
+      },
+      delete: {
+        type: LayoutAnimation.Types.linear,
+        property: LayoutAnimation.Properties.opacity
+      }
     };
     // Check if the user is scrolling up or down
     // by confronting the new scroll position with your own one
     const currentOffset = event.nativeEvent.contentOffset.y;
-    const direction = (currentOffset > 0 && currentOffset > listViewOffset)
-      ? 'down'
-      : 'up';
+    const direction =
+      currentOffset > 0 && currentOffset > listViewOffset ? 'down' : 'up';
     // If the user is scrolling down (and the action-button is still visible) hide it
     const isActionButtonVisibleTmp = direction === 'up';
     if (isActionButtonVisibleTmp !== isActionButtonVisible) {
@@ -165,23 +183,33 @@ function CardsScreen({ navigation }) {
    *
    */
   async function getCards() {
-    const ordering = (searchOptions.isReverse ? '-' : '') + searchOptions.selectedOrdering;
+    const ordering =
+      (searchOptions.isReverse ? '-' : '') + searchOptions.selectedOrdering;
     const theFilter = {
       ordering,
       page_size: searchOptions.page_size,
-      page: searchOptions.page,
+      page: searchOptions.page
     };
-    if (searchOptions.attribute !== '') theFilter.attribute = searchOptions.attribute;
-    if (searchOptions.idol_main_unit !== '') theFilter.idol_main_unit = searchOptions.idol_main_unit;
-    if (searchOptions.idol_sub_unit !== 'All') theFilter.idol_sub_unit = searchOptions.idol_sub_unit;
-    if (searchOptions.idol_school !== 'All') theFilter.idol_school = searchOptions.idol_school;
+    if (searchOptions.attribute !== '')
+      theFilter.attribute = searchOptions.attribute;
+    if (searchOptions.idol_main_unit !== '')
+      theFilter.idol_main_unit = searchOptions.idol_main_unit;
+    if (searchOptions.idol_sub_unit !== 'All')
+      theFilter.idol_sub_unit = searchOptions.idol_sub_unit;
+    if (searchOptions.idol_school !== 'All')
+      theFilter.idol_school = searchOptions.idol_school;
     if (searchOptions.name !== 'All') theFilter.name = searchOptions.name;
     if (searchOptions.skill !== 'All') theFilter.skill = searchOptions.skill;
-    if (searchOptions.is_event !== '') theFilter.is_event = searchOptions.is_event;
-    if (searchOptions.is_promo !== '') theFilter.is_promo = searchOptions.is_promo;
-    if (searchOptions.japan_only !== '') theFilter.japan_only = searchOptions.japan_only;
-    if (searchOptions.idol_year !== '') theFilter.idol_year = searchOptions.idol_year;
-    if (searchOptions.is_special !== '') theFilter.is_special = searchOptions.is_special;
+    if (searchOptions.is_event !== '')
+      theFilter.is_event = searchOptions.is_event;
+    if (searchOptions.is_promo !== '')
+      theFilter.is_promo = searchOptions.is_promo;
+    if (searchOptions.japan_only !== '')
+      theFilter.japan_only = searchOptions.japan_only;
+    if (searchOptions.idol_year !== '')
+      theFilter.idol_year = searchOptions.idol_year;
+    if (searchOptions.is_special !== '')
+      theFilter.is_special = searchOptions.is_special;
     if (searchOptions.rarity !== '') theFilter.rarity = searchOptions.rarity;
     if (searchOptions.search !== '') theFilter.search = searchOptions.search;
     // console.log(`Cards.getCards: ${JSON.stringify(theFilter)}`);
@@ -192,12 +220,16 @@ function CardsScreen({ navigation }) {
         setStopSearch(true);
       } else {
         let x = [...list, ...result];
-        x = x.filter((thing, index, self) => index === self.findIndex((t) => t.id === thing.id));
+        x = x.filter(
+          (thing, index, self) =>
+            index === self.findIndex((t) => t.id === thing.id)
+        );
         setList(x);
       }
     } catch (err) {
-      Alert.alert('Error', 'Error when get cards',
-        [{ text: 'OK', onPress: () => console.log(`OK Pressed, ${err}`) }]);
+      Alert.alert('Error', 'Error when get cards', [
+        { text: 'OK', onPress: () => console.log(`OK Pressed, ${err}`) }
+      ]);
     } finally {
       setIsLoading(false);
     }
@@ -226,7 +258,7 @@ function CardsScreen({ navigation }) {
     if (stopSearch) return;
     setSearchOptions({
       ...searchOptions,
-      page: searchOptions.page + 1,
+      page: searchOptions.page + 1
     });
   }
 
@@ -245,7 +277,7 @@ function CardsScreen({ navigation }) {
   const toggleReverse = () => {
     setSearchOptions({
       ...searchOptions,
-      isReverse: !searchOptions.isReverse,
+      isReverse: !searchOptions.isReverse
     });
   };
 
@@ -262,10 +294,10 @@ function CardsScreen({ navigation }) {
    *
    * @param {String} value
    */
-  const selectPromo = (value) => () => {
+  const selectPromo = (value: BooleanOrEmpty) => () => {
     setSearchOptions({
       ...searchOptions,
-      is_promo: value,
+      is_promo: value
     });
   };
 
@@ -274,10 +306,10 @@ function CardsScreen({ navigation }) {
    *
    * @param {String} value
    */
-  const selectSpecial = (value) => () => {
+  const selectSpecial = (value: BooleanOrEmpty) => () => {
     setSearchOptions({
       ...searchOptions,
-      is_special: value,
+      is_special: value
     });
   };
 
@@ -286,10 +318,10 @@ function CardsScreen({ navigation }) {
    *
    * @param {String} itemValue
    */
-  const selectEvent = (value) => () => {
+  const selectEvent = (value: BooleanOrEmpty) => () => {
     setSearchOptions({
       ...searchOptions,
-      is_event: value,
+      is_event: value
     });
   };
 
@@ -298,10 +330,10 @@ function CardsScreen({ navigation }) {
    *
    * @param {String} value
    */
-  const selectMainUnit = (value) => () => {
+  const selectMainUnit = (value: MainUnitNames) => () => {
     setSearchOptions({
       ...searchOptions,
-      idol_main_unit: value,
+      idol_main_unit: value
     });
   };
 
@@ -310,10 +342,10 @@ function CardsScreen({ navigation }) {
    *
    * @param {String} value
    */
-  const selectRarity = (value) => () => {
+  const selectRarity = (value: RarityType) => () => {
     setSearchOptions({
       ...searchOptions,
-      rarity: value,
+      rarity: value
     });
   };
 
@@ -322,10 +354,10 @@ function CardsScreen({ navigation }) {
    *
    * @param {String} value
    */
-  const selectAttribute = (value) => () => {
+  const selectAttribute = (value: AttributeType) => () => {
     setSearchOptions({
       ...searchOptions,
-      attribute: value,
+      attribute: value
     });
   };
 
@@ -334,20 +366,21 @@ function CardsScreen({ navigation }) {
    *
    * @param {String} value
    */
-  const selectYear = (value) => () => setSearchOptions({
-    ...searchOptions,
-    idol_year: value,
-  });
+  const selectYear = (value: YearType) => () =>
+    setSearchOptions({
+      ...searchOptions,
+      idol_year: value
+    });
 
   /**
    * Save region
    *
    * @param {String} value
    */
-  const selectRegion = (value) => () => {
+  const selectRegion = (value: BooleanOrEmpty) => () => {
     setSearchOptions({
       ...searchOptions,
-      japan_only: value,
+      japan_only: value
     });
   };
 
@@ -356,10 +389,10 @@ function CardsScreen({ navigation }) {
    *
    * @param {String} itemValue
    */
-  const selectSubUnit = (itemValue) => {
+  const selectSubUnit = (itemValue: string) => {
     setSearchOptions({
       ...searchOptions,
-      idol_sub_unit: itemValue,
+      idol_sub_unit: itemValue
     });
   };
 
@@ -368,10 +401,10 @@ function CardsScreen({ navigation }) {
    *
    * @param {String} itemValue
    */
-  const selectIdol = (itemValue) => {
+  const selectIdol = (itemValue: string) => {
     setSearchOptions({
       ...searchOptions,
-      name: itemValue,
+      name: itemValue
     });
   };
 
@@ -380,10 +413,10 @@ function CardsScreen({ navigation }) {
    *
    * @param {String} itemValue
    */
-  const selectSchool = (itemValue) => {
+  const selectSchool = (itemValue: string) => {
     setSearchOptions({
       ...searchOptions,
-      idol_school: itemValue,
+      idol_school: itemValue
     });
   };
 
@@ -392,10 +425,10 @@ function CardsScreen({ navigation }) {
    *
    * @param {String} itemValue
    */
-  const selectSkill = (itemValue) => {
+  const selectSkill = (itemValue: SkillType) => {
     setSearchOptions({
       ...searchOptions,
-      skill: itemValue,
+      skill: itemValue
     });
   };
 
@@ -407,7 +440,7 @@ function CardsScreen({ navigation }) {
   const selectOrdering = (itemValue) => {
     setSearchOptions({
       ...searchOptions,
-      selectedOrdering: itemValue,
+      selectedOrdering: itemValue
     });
   };
 
@@ -423,93 +456,140 @@ function CardsScreen({ navigation }) {
    * Render footer of FlatList
    *
    */
-  const renderFooter = <View style={[ApplicationStyles.center, styles.flatListElement]}>
-    <Image source={Images.alpaca} />
-  </View>;
+  const renderFooter = (
+    <View style={[AppStyles.center, styles.flatListElement]}>
+      <Image source={Images.alpaca} />
+    </View>
+  );
 
-  const renderEmpty = <View style={styles.flatListElement}>
-    <Text style={styles.resetText}>No result</Text>
-  </View>;
+  const renderEmpty = (
+    <View style={styles.flatListElement}>
+      <Text style={styles.resetText}>No result</Text>
+    </View>
+  );
 
   if (isLoading) {
     return <SplashScreen bgColor={Colors.green} />;
   }
 
-  return <View style={styles.container}>
-    {/* HEADER */}
-    <ElevatedView elevation={5} style={[ApplicationStyles.header, styles.header]}>
-      <IconButton icon={'ios-menu'} onPress={openDrawer} />
-      <View style={ApplicationStyles.searchHeader}>
-        <TextInput
-          onChangeText={(text) => setSearchOptions({
-            ...searchOptions,
-            search: text,
-          })}
-          onSubmitEditing={onSearch}
-          placeholder={'Search card...'}
-          style={ApplicationStyles.searchInput} />
-        <IconButton icon={'ios-search'} onPress={onSearch}
-          style={ApplicationStyles.searchButton} />
-      </View>
-      <IconButton icon={'ios-more'} onPress={toggleFilter} />
-    </ElevatedView>
+  return (
+    <View style={styles.container}>
+      {/* HEADER */}
+      <Surface style={[AppStyles.header, styles.header]}>
+        <IconButton icon={'menu'} onPress={openDrawer} />
+        <View style={AppStyles.searchHeader}>
+          <TextInput
+            onChangeText={(text) =>
+              setSearchOptions({
+                ...searchOptions,
+                search: text
+              })
+            }
+            onSubmitEditing={onSearch}
+            placeholder={'Search card...'}
+            style={AppStyles.searchInput}
+          />
+          <IconButton
+            icon={'ios-search'}
+            onPress={onSearch}
+            style={AppStyles.searchButton}
+          />
+        </View>
+        <IconButton icon={'ios-more'} onPress={toggleFilter} />
+      </Surface>
 
-    {/* FILTER */}
-    {isFilter
-      && <ElevatedView elevation={5} style={styles.filterContainer}>
-        <ScrollView contentContainerStyle={styles.contentContainer}>
-          <IdolNameRow name={searchOptions.name} selectIdol={selectIdol} />
-          <RarityRow rarity={searchOptions.rarity} selectRarity={selectRarity} />
-          <AttributeRow attribute={searchOptions.attribute}
-            selectAttribute={selectAttribute} />
-          <RegionRow japanOnly={searchOptions.japan_only} selectRegion={selectRegion} />
-          <PromoCardRow isPromo={searchOptions.is_promo} selectPromo={selectPromo} />
-          <SpecialCardRow isSpecial={searchOptions.is_special}
-            selectSpecial={selectSpecial} />
-          <EventRow isEvent={searchOptions.is_event} selectEvent={selectEvent} />
-          <SkillRow skill={searchOptions.skill} selectSkill={selectSkill} />
-          <MainUnitRow mainUnit={searchOptions.idol_main_unit}
-            selectMainUnit={selectMainUnit} />
-          <SubUnitRow idolSubUnit={searchOptions.idol_sub_unit}
-            selectSubUnit={selectSubUnit} />
-          <SchoolRow idolSchool={searchOptions.idol_school} selectSchool={selectSchool} />
-          <YearRow idolYear={searchOptions.idol_year} selectYear={selectYear} />
-          <OrderingRow orderingItem={OrderingGroup.CARD}
-            selectedOrdering={searchOptions.selectedOrdering}
-            selectOrdering={selectOrdering}
-            isReverse={searchOptions.isReverse}
-            toggleReverse={toggleReverse} />
+      {/* FILTER */}
+      {isFilter && (
+        <Surface style={styles.filterContainer}>
+          <ScrollView contentContainerStyle={styles.contentContainer}>
+            <IdolNameRow name={searchOptions.name} selectIdol={selectIdol} />
+            <RarityRow
+              rarity={searchOptions.rarity}
+              selectRarity={selectRarity}
+            />
+            <AttributeRow
+              attribute={searchOptions.attribute}
+              selectAttribute={selectAttribute}
+            />
+            <RegionRow
+              japanOnly={searchOptions.japan_only}
+              selectRegion={selectRegion}
+            />
+            <PromoCardRow
+              isPromo={searchOptions.is_promo}
+              selectPromo={selectPromo}
+            />
+            <SpecialCardRow
+              isSpecial={searchOptions.is_special}
+              selectSpecial={selectSpecial}
+            />
+            <EventRow
+              isEvent={searchOptions.is_event}
+              selectEvent={selectEvent}
+            />
+            <SkillRow skill={searchOptions.skill} selectSkill={selectSkill} />
+            <MainUnitRow
+              mainUnit={searchOptions.idol_main_unit}
+              selectMainUnit={selectMainUnit}
+            />
+            <SubUnitRow
+              idolSubUnit={searchOptions.idol_sub_unit}
+              selectSubUnit={selectSubUnit}
+            />
+            <SchoolRow
+              idolSchool={searchOptions.idol_school}
+              selectSchool={selectSchool}
+            />
+            <YearRow
+              idolYear={searchOptions.idol_year}
+              selectYear={selectYear}
+            />
+            <OrderingRow
+              orderingItem={OrderingGroup.CARD}
+              selectedOrdering={searchOptions.selectedOrdering}
+              selectOrdering={selectOrdering}
+              isReverse={searchOptions.isReverse}
+              toggleReverse={toggleReverse}
+            />
 
-          {/* RESET BUTTON */}
-          <Touchable onPress={resetFilter} useForeground
-            style={styles.resetView}>
-            <Text style={styles.resetText}>RESET</Text>
-          </Touchable>
-        </ScrollView>
-      </ElevatedView>}
-    <ConnectStatus />
-    {/* LIST */}
-    <FlatList data={list}
-      key={`${column}c`}
-      showsVerticalScrollIndicator={false}
-      numColumns={column}
-      initialNumToRender={8}
-      keyExtractor={keyExtractor}
-      onEndReached={onEndReached}
-      style={styles.list}
-      onScroll={onScroll}
-      ListEmptyComponent={renderEmpty}
-      ListFooterComponent={renderFooter}
-      renderItem={renderItem} />
-    {isActionButtonVisible
-      && <View style={[styles.floatButton, ApplicationStyles.center]}>
-        <Touchable onPress={switchColumn}
-          background={TouchableNativeFeedback.Ripple(Colors.green, true)}>
-          <Image source={Images.column[column - 1]}
-            style={styles.floatButtonSize} />
-        </Touchable>
-      </View>}
-  </View>;
-}
+            {/* RESET BUTTON */}
+            <TouchableRipple onPress={resetFilter} style={styles.resetView}>
+              <Text style={styles.resetText}>RESET</Text>
+            </TouchableRipple>
+          </ScrollView>
+        </Surface>
+      )}
+      <ConnectStatus />
+      {/* LIST */}
+      <FlatList
+        data={list}
+        key={`${column}c`}
+        showsVerticalScrollIndicator={false}
+        numColumns={column}
+        initialNumToRender={8}
+        keyExtractor={keyExtractor}
+        onEndReached={onEndReached}
+        style={styles.list}
+        onScroll={onScroll}
+        ListEmptyComponent={renderEmpty}
+        ListFooterComponent={renderFooter}
+        renderItem={renderItem}
+      />
+      {isActionButtonVisible && (
+        <View style={[styles.floatButton, AppStyles.center]}>
+          <TouchableRipple
+            onPress={switchColumn}
+            background={TouchableNativeFeedback.Ripple(Colors.green, true)}
+          >
+            <Image
+              source={Images.column[column - 1]}
+              style={styles.floatButtonSize}
+            />
+          </TouchableRipple>
+        </View>
+      )}
+    </View>
+  );
+};
 
 export default CardsScreen;

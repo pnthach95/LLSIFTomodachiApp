@@ -12,6 +12,7 @@ export default StyleSheet.create({
   filterContainer: {
     backgroundColor: Colors.white,
     height: Metrics.screenHeight * 0.35,
+    elevation: 5,
   },
   flatListElement: {
     margin: Metrics.baseMargin,
@@ -31,6 +32,7 @@ export default StyleSheet.create({
   },
   header: {
     backgroundColor: Colors.white,
+    elevation: 5,
   },
   list: {
     padding: Metrics.smallMargin,

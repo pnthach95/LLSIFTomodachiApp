@@ -8,7 +8,7 @@ import { useNavigation } from '@react-navigation/native';
 import FastImage from 'react-native-fast-image';
 import moment from 'moment';
 
-import TimerCountdown from '~/Components/TimerCountdown/Timer';
+import TimerCountdown from '~/Components/TimerCountdown';
 import { AddHTTPS, findAttribute } from '~/Utils';
 import { Config, EventStatus } from '~/Config';
 import { Metrics, AppStyles, Fonts } from '~/Theme';

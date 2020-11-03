@@ -4,17 +4,28 @@
  * Created Date: Monday, 02/11/2020, 4:38:28 pm
  * Author: Pham Ngoc Thach
  * -----
- * Last Modified: Tuesday, 03/11/2020, 10:11:10 am
+ * Last Modified: Tuesday, 03/11/2020, 2:10:03 pm
  * Modified By: Pham Ngoc Thach (thachpn@honeynet.vn)
  * -----
  * Copyright © 2020 HONEYNET
  * ------------------------------------
  */
 
-import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
-import { StackScreenProps } from '@react-navigation/stack';
+import { CompositeNavigationProp } from '@react-navigation/native';
+import {
+  BottomTabScreenProps,
+  BottomTabNavigationProp
+} from '@react-navigation/bottom-tabs';
+import { StackScreenProps, StackNavigationProp } from '@react-navigation/stack';
 
-type ActionType = { type: 'LOADING' } | { type: 'DONE_LOADING'; data: object };
+type AppState = {
+  loading: boolean;
+  cachedData: CachedDataObject;
+};
+
+type ActionType =
+  | { type: 'LOADING' }
+  | { type: 'DONE_LOADING'; data: CachedDataObject };
 
 type IconComponent = React.FC<{
   focused?: boolean;
@@ -29,13 +40,20 @@ type BottomTabList = {
   SongsScreen: undefined;
 };
 
+type MainScreenProps = {
+  navigation: CompositeNavigationProp<
+    BottomTabNavigationProp<BottomTabList, 'MainScreen'>,
+    StackNavigationProp<RootStackParamList>
+  >;
+};
 type CardsScreenProps = BottomTabScreenProps<BottomTabList, 'CardsScreen'>;
 
 type RootStackParamList = {
+  Main: undefined;
   LoadingScreen: undefined;
   DrawerScreen: undefined;
   CardDetailScreen: { item: CardObject };
-  EventDetailScreen: { eventName: string };
+  EventDetailScreen: { eventName: string } | { event: EventObject };
   IdolDetailScreen: { name: string };
   SongDetailScreen: undefined;
 };
@@ -80,17 +98,17 @@ type SkillType =
   | 'Timer Trick';
 
 type CachedDataObject = {
-  idols?: object[];
-  skills?: object[];
-  subUnits?: string[];
-  schools?: object[];
-  maxStats?: object;
-  songsMaxStats?: object;
-  ENEvent?: EventObject;
-  JPEvent?: EventObject;
-  randomCard?: CardObject;
-  bgImage?: string;
-  eventInfo?: object;
+  idols: object[];
+  skills: object[];
+  subUnits: string[];
+  schools: object[];
+  maxStats: object;
+  songsMaxStats: object;
+  ENEvent: EventObject;
+  JPEvent: EventObject;
+  randomCard: CardObject;
+  bgImage: string;
+  eventInfo: object;
 };
 
 type CardObject = {

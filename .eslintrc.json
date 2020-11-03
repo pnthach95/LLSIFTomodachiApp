@@ -8,21 +8,21 @@
   },
   "plugins": [
     "@typescript-eslint",
+    "prettier",
     "react",
     "react-hooks",
     "react-native",
-    "jsdoc",
     "import"
   ],
   "extends": [
     "eslint:recommended",
     "plugin:@typescript-eslint/eslint-recommended",
     "plugin:@typescript-eslint/recommended",
+    "airbnb-typescript-prettier",
     "plugin:import/errors",
     "plugin:import/warnings",
     "plugin:react/recommended",
     "plugin:react-native/all",
-    "airbnb-typescript",
     "airbnb-base"
   ],
   "rules": {
@@ -34,10 +34,16 @@
         ]
       }
     ],
+    "no-unused-vars": "error",
     "import/no-extraneous-dependencies": [
       "error",
       {
         "packageDir": "./"
+      }
+    ],
+    "import/extensions": [
+      {
+        "tsx": 0
       }
     ],
     "class-methods-use-this": "off",

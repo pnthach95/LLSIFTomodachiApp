@@ -4,7 +4,7 @@
  * Created Date: Monday, 02/11/2020, 4:38:28 pm
  * Author: Pham Ngoc Thach
  * -----
- * Last Modified: Tuesday, 03/11/2020, 4:16:13 pm
+ * Last Modified: Tuesday, 03/11/2020, 4:25:02 pm
  * Modified By: Pham Ngoc Thach (thachpn@honeynet.vn)
  * -----
  * Copyright © 2020 HONEYNET
@@ -98,17 +98,19 @@ type SkillType =
   | 'Timer Trick';
 
 type CachedDataObject = {
-  idols: object[];
-  skills: object[];
+  idols: { label: string; value: string }[];
+  skills: { label: string; value: string }[];
   subUnits: string[];
-  schools: object[];
-  maxStats: object;
-  songsMaxStats: object;
+  schools: { label: string; value: string }[];
+  maxStats: {
+    Smile: number;
+    Pure: number;
+    Cool: number;
+  };
+  songsMaxStats: number;
   ENEvent: EventObject;
   JPEvent: EventObject;
-  randomCard: CardObject;
-  bgImage: string;
-  eventInfo: object;
+  eventInfo: { ww: object[]; jp: object[] };
 };
 
 type CardObject = {
@@ -326,42 +328,40 @@ type GithubRepoType = {
   prerelease: boolean;
   created_at: string;
   published_at: string;
-  assets: [
-    {
-      url: string;
+  assets: {
+    url: string;
+    id: number;
+    node_id: string;
+    name: string;
+    label: string | null;
+    uploader: {
+      login: string;
       id: number;
       node_id: string;
-      name: string;
-      label: string | null;
-      uploader: {
-        login: string;
-        id: number;
-        node_id: string;
-        avatar_url: string;
-        gravatar_id: string;
-        url: string;
-        html_url: string;
-        followers_url: string;
-        following_url: string;
-        gists_url: string;
-        starred_url: string;
-        subscriptions_url: string;
-        organizations_url: string;
-        repos_url: string;
-        events_url: string;
-        received_events_url: string;
-        type: string;
-        site_admin: boolean;
-      };
-      content_type: string;
-      state: string;
-      size: number;
-      download_count: number;
-      created_at: string;
-      updated_at: string;
-      browser_download_url: string;
-    }
-  ];
+      avatar_url: string;
+      gravatar_id: string;
+      url: string;
+      html_url: string;
+      followers_url: string;
+      following_url: string;
+      gists_url: string;
+      starred_url: string;
+      subscriptions_url: string;
+      organizations_url: string;
+      repos_url: string;
+      events_url: string;
+      received_events_url: string;
+      type: string;
+      site_admin: boolean;
+    };
+    content_type: string;
+    state: string;
+    size: number;
+    download_count: number;
+    created_at: string;
+    updated_at: string;
+    browser_download_url: string;
+  }[];
   tarball_url: string;
   zipball_url: string;
   body: string;

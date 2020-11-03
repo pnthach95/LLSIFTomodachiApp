@@ -20,7 +20,7 @@ The project contains:
 - [React Native Linear Gradient](https://github.com/react-native-community/react-native-linear-gradient) (v2.5.6)
 - [React Native Offline](https://github.com/rgommezz/react-native-offline) (v5.7.0)
 - [React Native Indicators](https://github.com/n4kz/react-native-indicators) (v0.17.0)
-- [Moment](https://momentjs.com/) (v2.26.0)
+- [dayjs](https://day.js.org/) (v1.9.4)
 - [React Native Vector Icons](https://github.com/oblador/react-native-vector-icons) (v6.6.0)
 - [React Native Version Number](https://github.com/APSL/react-native-version-number) (v0.3.6)
 - [async-storage](https://github.com/react-native-community/react-native-async-storage) (v1.11.0)

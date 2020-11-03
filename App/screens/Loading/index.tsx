@@ -26,7 +26,7 @@ const LoadingScreen: React.FC<LoadingScreenProps> = () => {
 
   useEffect(() => {
     if (loading) {
-      loadCachedData();
+      void loadCachedData();
     }
   }, [loading]);
 
@@ -42,17 +42,10 @@ const LoadingScreen: React.FC<LoadingScreenProps> = () => {
         ordering: '-beginning',
         page_size: 1
       };
-      const [
-        data,
-        eventEN,
-        eventJP,
-        randomCard,
-        eventInfo
-      ] = await Promise.all([
+      const [data, eventEN, eventJP, eventInfo] = await Promise.all([
         LLSIFService.fetchCachedData(),
         LLSIFService.fetchEventList(enParams),
         LLSIFService.fetchEventList(jpParams),
-        LLSIFService.fetchRandomCard(),
         LLSIFdotnetService.fetchEventInfo()
       ]);
 
@@ -84,15 +77,6 @@ const LoadingScreen: React.FC<LoadingScreenProps> = () => {
       const [eventJP0] = eventJP;
       cachedData.ENEvent = eventEN0;
       cachedData.JPEvent = eventJP0;
-      const r = Math.floor(Math.random() * 10);
-      let bgImage = '';
-      if (randomCard.clean_ur !== null && r < 6) {
-        bgImage = randomCard.clean_ur;
-      } else {
-        bgImage = randomCard.clean_ur_idolized;
-      }
-      cachedData.randomCard = randomCard;
-      cachedData.bgImage = bgImage;
       cachedData.eventInfo = eventInfo;
       dispatch({
         type: 'DONE_LOADING',

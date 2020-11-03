@@ -5,7 +5,7 @@ import FastImage, { OnLoadEvent } from 'react-native-fast-image';
 import ImageView from 'react-native-image-viewing';
 import LinearGradient from 'react-native-linear-gradient';
 import Icon from 'react-native-vector-icons/Ionicons';
-import moment from 'moment';
+import dayjs from 'dayjs';
 
 import useStatusBar from '~/hooks/useStatusBar';
 import UserContext from '~/Context/UserContext';
@@ -70,7 +70,7 @@ const CardDetailScreen: React.FC<CardDetailScreenProps> = ({
 
   useEffect(() => {
     const tmpImages = [];
-    if (!!item.card_image) {
+    if (item.card_image) {
       tmpImages.push({ uri: AddHTTPS(item.card_image) });
     }
     tmpImages.push({ uri: AddHTTPS(item.card_idolized_image) });
@@ -93,12 +93,12 @@ const CardDetailScreen: React.FC<CardDetailScreenProps> = ({
       <View style={styles.rightRow}>
         <FastImage
           source={mainUnit}
-          resizeMode="contain"
+          resizeMode='contain'
           style={styles.rightHeaderImage}
         />
         <FastImage
           source={subUnit}
-          resizeMode="contain"
+          resizeMode='contain'
           style={styles.rightHeaderImage}
         />
       </View>
@@ -147,7 +147,7 @@ const CardDetailScreen: React.FC<CardDetailScreenProps> = ({
         <View style={styles.progressRow}>
           <FastImage
             source={Images.attribute[icon]}
-            resizeMode="contain"
+            resizeMode='contain'
             style={[AppStyles.mediumIcon, styles.marginRight10]}
           />
           <ProgressBar
@@ -190,8 +190,7 @@ const CardDetailScreen: React.FC<CardDetailScreenProps> = ({
           styles.button,
           style,
           { backgroundColor: buttonID === id ? Colors.violet : Colors.inactive }
-        ]}
-      >
+        ]}>
         <Text style={[Fonts.style.normal, white]}>{text}</Text>
       </TouchableOpacity>
     );
@@ -225,7 +224,7 @@ const CardDetailScreen: React.FC<CardDetailScreenProps> = ({
       <TouchableOpacity key={index} onPress={onPressImg}>
         <FastImage
           source={{ uri: value.uri }}
-          resizeMode="contain"
+          resizeMode='contain'
           style={{
             width: Metrics.images.itemWidth,
             height: (Metrics.images.itemWidth * imgSize.height) / imgSize.width
@@ -254,8 +253,7 @@ const CardDetailScreen: React.FC<CardDetailScreenProps> = ({
       <LinearGradient style={AppStyles.screen} colors={[colors[1], colors[0]]}>
         <ScrollView
           showsVerticalScrollIndicator={false}
-          style={styles.scrollView}
-        >
+          style={styles.scrollView}>
           {/* CARD IMAGES */}
           {done && images.map((value, index) => renderImage(index, value))}
 
@@ -271,7 +269,7 @@ const CardDetailScreen: React.FC<CardDetailScreenProps> = ({
                   item1={{ flex: 1, text: 'Release date' }}
                   item2={{
                     flex: 2,
-                    text: moment(item.release_date).format(
+                    text: dayjs(item.release_date).format(
                       Config.DATE_FORMAT_OUTPUT
                     )
                   }}
@@ -343,8 +341,7 @@ const CardDetailScreen: React.FC<CardDetailScreenProps> = ({
                 )}
                 <TouchableOpacity
                   style={AppStyles.center}
-                  onPress={navigateToEventDetail(item.event.japanese_name)}
-                >
+                  onPress={navigateToEventDetail(item.event.japanese_name)}>
                   <FastImage
                     source={{ uri: AddHTTPS(item.event.image) }}
                     style={styles.banner}
@@ -369,8 +366,7 @@ const CardDetailScreen: React.FC<CardDetailScreenProps> = ({
                       style={AppStyles.center}
                       onPress={navigateToEventDetail(
                         item.other_event.japanese_name
-                      )}
-                    >
+                      )}>
                       <FastImage
                         source={{ uri: AddHTTPS(item.other_event.image) }}
                         style={styles.banner}
@@ -387,7 +383,7 @@ const CardDetailScreen: React.FC<CardDetailScreenProps> = ({
                 <Divider />
                 <View style={AppStyles.row}>
                   <Icon
-                    name="ios-heart"
+                    name='ios-heart'
                     size={Metrics.icons.medium}
                     color={'red'}
                   />

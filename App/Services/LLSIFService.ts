@@ -3,7 +3,7 @@ import _ from 'lodash/array';
 import { Config } from '../Config';
 
 const LLSIFApiClient = create({
-  baseURL: Config.API_URL,
+  baseURL: Config.API_URL
 });
 
 /**
@@ -58,7 +58,10 @@ async function fetchIdolListBySchool(schools) {
 
 async function fetchIdolListByPageSize() {
   const response1 = await LLSIFApiClient.get(Config.IDOLS, { page_size: 100 });
-  const response2 = await LLSIFApiClient.get(Config.IDOLS, { page_size: 100, page: 2 });
+  const response2 = await LLSIFApiClient.get(Config.IDOLS, {
+    page_size: 100,
+    page: 2
+  });
   let data1 = [];
   let data2 = [];
   if (response1.ok) {
@@ -78,17 +81,15 @@ async function fetchIdolListByPageSize() {
 function fetchIdolList(schools = null) {
   return new Promise((resolve, reject) => {
     if (schools === null) {
-      fetchIdolListByPageSize()
-        .then((res) => {
-          if (res.length === 0) reject(Error('Failed to get idol list'));
-          resolve(res);
-        });
+      fetchIdolListByPageSize().then((res) => {
+        if (res.length === 0) reject(Error('Failed to get idol list'));
+        resolve(res);
+      });
     } else {
-      fetchIdolListBySchool(schools)
-        .then((res) => {
-          if (res.length === 0) reject(Error('Failed to get idol list'));
-          resolve(res);
-        });
+      fetchIdolListBySchool(schools).then((res) => {
+        if (res.length === 0) reject(Error('Failed to get idol list'));
+        resolve(res);
+      });
     }
   });
 }
@@ -162,7 +163,7 @@ async function fetchRandomCard() {
     ordering: 'random',
     page_size: 1,
     rarity: 'SSR,UR',
-    idol_main_unit: 'μ\'s,Aqours',
+    idol_main_unit: "μ's,Aqours"
   };
   const response = await LLSIFApiClient.get(Config.CARDS, filter);
   if (response.ok) {
@@ -179,5 +180,5 @@ export default {
   fetchSongList,
   fetchEventList,
   fetchEventData,
-  fetchRandomCard,
+  fetchRandomCard
 };

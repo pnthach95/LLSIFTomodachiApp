@@ -1,12 +1,10 @@
 import React, { useState } from 'react';
-import {
-  View, ScrollView, TouchableOpacity, Image
-} from 'react-native';
+import { View, ScrollView, TouchableOpacity, Image } from 'react-native';
 import { Divider, Text } from 'react-native-paper';
 import PropTypes from 'prop-types';
 import { useNavigation } from '@react-navigation/native';
 import FastImage from 'react-native-fast-image';
-import moment from 'moment';
+import dayjs from 'dayjs';
 
 import TimerCountdown from '~/Components/TimerCountdown';
 import { AddHTTPS, findAttribute } from '~/Utils';
@@ -21,12 +19,12 @@ function Information({
   JPEventStart,
   JPEventEnd,
   cards,
-  songs,
+  songs
 }) {
   const navigation = useNavigation();
   const [imgSize, setImgSize] = useState({
     width: 1,
-    height: 0,
+    height: 0
   });
 
   /**
@@ -57,7 +55,7 @@ function Information({
   const styleFastImage = {
     alignSelf: 'center',
     width: Metrics.widthBanner,
-    height: (Metrics.widthBanner * imgSize.height) / imgSize.width,
+    height: (Metrics.widthBanner * imgSize.height) / imgSize.width
   };
 
   return (
@@ -65,8 +63,7 @@ function Information({
       <ScrollView
         showsVerticalScrollIndicator={false}
         style={AppStyles.screen}
-        contentContainerStyle={styles.content}
-      >
+        contentContainerStyle={styles.content}>
         {/* ENGLISH BLOCK */}
         {item.english_name !== null && (
           <View>
@@ -84,19 +81,19 @@ function Information({
             />
             <Text style={[styles.text, styles.whiteCenter]}>
               {`Start: ${WWEventStart.format(
-                Config.DATETIME_FORMAT_OUTPUT,
+                Config.DATETIME_FORMAT_OUTPUT
               )}\nEnd: ${WWEventEnd.format(Config.DATETIME_FORMAT_OUTPUT)}`}
             </Text>
             {item.world_current && (
               <Text style={[styles.text, styles.whiteCenter]}>
-                {timer(WWEventEnd.diff(moment()))}
+                {timer(WWEventEnd.diff(dayjs()))}
                 {' left'}
               </Text>
             )}
             {item.english_status === EventStatus.ANNOUNCED && (
               <Text style={[styles.text, styles.whiteCenter]}>
                 {'Starts in '}
-                {timer(WWEventStart.diff(moment()))}
+                {timer(WWEventStart.diff(dayjs()))}
               </Text>
             )}
           </View>
@@ -116,19 +113,19 @@ function Information({
         />
         <Text style={[styles.text, styles.whiteCenter]}>
           {`Start: ${JPEventStart.format(
-            Config.DATETIME_FORMAT_OUTPUT,
+            Config.DATETIME_FORMAT_OUTPUT
           )}\nEnd: ${JPEventEnd.format(Config.DATETIME_FORMAT_OUTPUT)}`}
         </Text>
         {item.japan_current && (
           <Text style={[styles.text, styles.whiteCenter]}>
-            {timer(JPEventEnd.diff(moment()))}
+            {timer(JPEventEnd.diff(dayjs()))}
             {' left'}
           </Text>
         )}
         {item.japan_status === EventStatus.ANNOUNCED && (
           <Text style={[styles.text, styles.whiteCenter]}>
             {'Starts in '}
-            {timer(JPEventStart.diff(moment()))}
+            {timer(JPEventStart.diff(dayjs()))}
           </Text>
         )}
         {songs.length !== 0 && <Divider style={styles.whiteLine} />}
@@ -141,8 +138,7 @@ function Information({
                 <TouchableOpacity
                   key={`song${index}`}
                   onPress={navigateTo('SongDetailScreen', songItem)}
-                  style={styles.card}
-                >
+                  style={styles.card}>
                   <FastImage
                     source={{ uri: AddHTTPS(songItem.image) }}
                     style={styles.song}
@@ -154,8 +150,8 @@ function Information({
                     />
                     <Text style={styles.whiteCenter}>
                       {`${songItem.name}${songItem.romaji_name !== null
-                        ? `\n${songItem.romaji_name}`
-                        : ''
+                          ? `\n${songItem.romaji_name}`
+                          : ''
                         }`}
                     </Text>
                   </View>
@@ -172,8 +168,7 @@ function Information({
             <TouchableOpacity
               key={`card${index}`}
               onPress={navigateTo('CardDetailScreen', cardItem)}
-              style={styles.card}
-            >
+              style={styles.card}>
               <View style={styles.cardImage}>
                 {cardItem.round_card_image !== null && (
                   <FastImage
@@ -210,14 +205,14 @@ Information.propTypes = {
     english_status: PropTypes.any,
     image: PropTypes.string,
     japan_current: PropTypes.any,
-    japan_status: PropTypes.any,
+    japan_status: PropTypes.any
   }),
   WWEventStart: PropTypes.any,
   WWEventEnd: PropTypes.any,
   JPEventStart: PropTypes.any,
   JPEventEnd: PropTypes.any,
   cards: PropTypes.array,
-  songs: PropTypes.array,
+  songs: PropTypes.array
 };
 
 export default Information;

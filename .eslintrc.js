@@ -22,6 +22,7 @@ module.exports = {
     'plugin:@typescript-eslint/eslint-recommended',
     'plugin:@typescript-eslint/recommended',
     'plugin:@typescript-eslint/recommended-requiring-type-checking',
+    'plugin:react-native/all'
   ],
   rules: {
     'react/prop-types': [
@@ -39,6 +40,7 @@ module.exports = {
     ],
     '@typescript-eslint/no-unsafe-assignment': 'off',
     '@typescript-eslint/ban-ts-comment': 'off',
+    'react-native/no-raw-text': 'off',
     'import/extensions': 0,
     'class-methods-use-this': 'off',
     'no-use-before-define': 'off',

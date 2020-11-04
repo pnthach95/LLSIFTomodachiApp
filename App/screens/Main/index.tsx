@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect } from 'react';
-import { View, ScrollView, Platform } from 'react-native';
+import { View, ScrollView, Platform, StyleSheet } from 'react-native';
 import { Text, Title, Divider, TouchableRipple } from 'react-native-paper';
 import FastImage, { OnLoadEvent } from 'react-native-fast-image';
 import VersionNumber from 'react-native-version-number';
@@ -13,8 +13,7 @@ import { Config, EventStatus } from '~/Config';
 import GithubService from '~/Services/GithubService';
 import { Metrics, Colors, Images, AppStyles } from '~/Theme';
 import UserContext from '~/Context/UserContext';
-import styles from './styles';
-import { EventObject, MainScreenProps } from '~/Utils/type';
+import type { EventObject, MainScreenProps } from '~/Utils/type';
 
 /**
  * Main Screen
@@ -96,7 +95,7 @@ const MainScreen: React.FC<MainScreenProps> = ({ navigation }) => {
   return (
     <View style={styles.container}>
       {/* HEADER */}
-      <View style={{ alignItems: 'center' }}>
+      <View style={styles.header}>
         <FastImage
           source={Images.logo}
           resizeMode='contain'
@@ -187,5 +186,29 @@ const MainScreen: React.FC<MainScreenProps> = ({ navigation }) => {
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  block: {
+    alignItems: 'center',
+    width: Metrics.screenWidth
+  },
+  container: {
+    flex: 1
+  },
+  content: {
+    alignItems: 'center',
+    padding: Metrics.baseMargin
+  },
+  header: {
+    alignItems: 'center'
+  },
+  update: {
+    alignItems: 'center',
+    alignSelf: 'center',
+    backgroundColor: Colors.lightGreen,
+    padding: 5,
+    width: Metrics.screenWidth * 0.9
+  }
+});
 
 export default MainScreen;

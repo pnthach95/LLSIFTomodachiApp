@@ -1,11 +1,3 @@
-/*
- * Filename: d:\Projects\LLSIFTomodachiApp\App\routes\routes.tsx
- * Path: d:\Projects\LLSIFTomodachiApp
- * Created Date: Tuesday, November 3rd 2020, 1:57:03 pm
- * Author: Pham Ngoc Thach
- *
- * Copyright (c) 2020 HONEYNET
- */
 import React, { useContext } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';

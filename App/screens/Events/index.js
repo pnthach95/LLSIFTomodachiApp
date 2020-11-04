@@ -1,10 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { View, FlatList, Text, TextInput, Alert, Image } from 'react-native';
 import { IconButton, Surface, TouchableRipple } from 'react-native-paper';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
 
-import useStatusBar from '~/hooks/useStatusBar';
 import ConnectStatus from '~/Components/ConnectStatus';
 import SkillRow from '~/Components/SkillRow';
 import EventItem from '~/Components/EventItem';
@@ -16,7 +15,7 @@ import LoadingScreen from '../Loading';
 import { Colors, AppStyles, Images } from '~/Theme';
 import styles from './styles';
 import LLSIFService from '~/Services/LLSIFService';
-import { loadSettings } from '~/Utils';
+import UserContext from '~/Context/UserContext';
 
 /**
  * [Event List Screen](https://github.com/MagiCircles/SchoolIdolAPI/wiki/API-Events#get-the-list-of-events)
@@ -38,6 +37,7 @@ import { loadSettings } from '~/Utils';
  *
  */
 function EventsScreen({ navigation }) {
+  const { state } = useContext(UserContext);
   const defaultFilter = {
     ordering: '-beginning',
     page_size: 30,
@@ -47,7 +47,7 @@ function EventsScreen({ navigation }) {
     main_unit: '',
     skill: 'All',
     attribute: '',
-    is_english: ''
+    is_english: state.options.worldwideOnly ? 'False' : ''
   };
 
   const [isLoading, setIsLoading] = useState(true);
@@ -56,15 +56,6 @@ function EventsScreen({ navigation }) {
   const [stopSearch, setStopSearch] = useState(false);
   const [searchOptions, setSearchOptions] = useState(defaultFilter);
   const onEndReached = _.debounce(onEndReaching, 500);
-
-  useEffect(() => {
-    loadSettings().then((res) => {
-      setSearchOptions({
-        ...searchOptions,
-        is_english: res.worldwide_only ? 'False' : ''
-      });
-    });
-  }, []);
 
   useEffect(() => {
     getEvents();

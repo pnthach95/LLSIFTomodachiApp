@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import {
   View,
   FlatList,
@@ -36,7 +36,7 @@ import SpecialCardRow from '~/Components/SpecialCardRow';
 import LLSIFService from '~/Services/LLSIFService';
 import LoadingScreen from '../Loading';
 import { Metrics, Fonts, Colors, AppStyles, Images } from '~/Theme';
-import { loadSettings } from '~/Utils';
+import UserContext from '~/Context/UserContext';
 import { OrderingGroup } from '~/Config';
 import type {
   AttributeType,
@@ -98,6 +98,7 @@ type FilterType = {
  *
  */
 const CardsScreen: React.FC<CardsScreenProps> = ({ navigation }) => {
+  const { state } = useContext(UserContext);
   const defaultFilter: FilterType = {
     search: '',
     selectedOrdering: OrderingGroup.CARD[1].value,
@@ -107,7 +108,7 @@ const CardsScreen: React.FC<CardsScreenProps> = ({ navigation }) => {
     name: 'All',
     rarity: '',
     attribute: '',
-    japan_only: '',
+    japan_only: state.options.worldwideOnly ? 'False' : '',
     is_promo: '',
     is_special: '',
     is_event: '',
@@ -124,15 +125,6 @@ const CardsScreen: React.FC<CardsScreenProps> = ({ navigation }) => {
   const [isFilter, setIsFilter] = useState(false);
   const [stopSearch, setStopSearch] = useState(false);
   const onEndReached = _.debounce(onEndReaching, 1000);
-
-  useEffect(() => {
-    void loadSettings().then((res) => {
-      setSearchOptions({
-        ...searchOptions,
-        japan_only: res.worldwideOnly ? 'False' : ''
-      });
-    });
-  }, []);
 
   useEffect(() => {
     void getCards();

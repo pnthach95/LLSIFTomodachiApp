@@ -84,7 +84,9 @@ const MainScreen: React.FC<MainScreenProps> = ({ navigation }) => {
    * Navigate to Event Detail Screen
    */
   const navigateToEventDetail = (event: EventObject) => {
-    navigation.navigate('EventDetailScreen', { event });
+    navigation.navigate('EventDetailScreen', {
+      eventName: event.japanese_name
+    });
   };
 
   const goToENEvent = () => navigateToEventDetail(ENEvent);

@@ -144,7 +144,7 @@ function SongDetailScreen({ route, navigation }) {
    *
    */
   const navigateToEventDetail = () => {
-    navigation.navigate('EventDetailScreen', { event: item.event });
+    navigation.navigate('EventDetailScreen', { eventName: item.event.name });
   };
 
   /**

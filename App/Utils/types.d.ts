@@ -64,7 +64,7 @@ type RootStackParamList = {
   IdolsScreen: undefined;
   SongsScreen: undefined;
   CardDetailScreen: { item: CardObject };
-  EventDetailScreen: { eventName: string } | { event: EventObject };
+  EventDetailScreen: { eventName: string };
   IdolDetailScreen: { name: string };
   SongDetailScreen: undefined;
 };
@@ -132,7 +132,48 @@ type CachedDataObject = {
   songsMaxStats: number;
   ENEvent: EventObject;
   JPEvent: EventObject;
-  eventInfo: { ww: object[]; jp: object[] };
+  eventInfo: LLNETEventInfo;
+};
+
+type LLNETEvent = {
+  event_id: number;
+  start_date: number;
+};
+
+type LLNETEventInfo = { ww: LLNETEvent[] | null; jp: LLNETEvent[] | null };
+
+type LLSIFnetParams = {
+  server: string;
+  id: number;
+};
+
+type LLSIFnetEvent = {
+  banner_url: string;
+  end_date: number;
+  end_date_localized: string;
+  event_cards: number[];
+  event_girls: string[];
+  event_id: number;
+  event_name: string;
+  event_type: string;
+  final_t1: number;
+  final_t2: number;
+  final_t3: number;
+  start_date: number;
+  start_date_localized: string;
+  t3_is_significant: boolean;
+  no_tier_event: boolean;
+  points_cutoffs: number[];
+  score_cutoffs: number[];
+  final_points_tiers: number[];
+  final_score_tiers: number[];
+};
+
+type LLSIFnetData = {
+  current_en_event: number | null;
+  current_jp_event: number | null;
+  en_events: Record<string, LLSIFnetEvent>;
+  jp_events: Record<string, LLSIFnetEvent>;
 };
 
 type CardObject = {

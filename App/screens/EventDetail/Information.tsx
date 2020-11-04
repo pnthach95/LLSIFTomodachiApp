@@ -1,18 +1,25 @@
 import React, { useState } from 'react';
-import { View, ScrollView, TouchableOpacity, Image } from 'react-native';
+import {
+  View,
+  ScrollView,
+  TouchableOpacity,
+  Image,
+  StyleProp
+} from 'react-native';
 import { Divider, Text } from 'react-native-paper';
 import PropTypes from 'prop-types';
 import { useNavigation } from '@react-navigation/native';
-import FastImage from 'react-native-fast-image';
-import dayjs from 'dayjs';
+import FastImage, { ImageStyle } from 'react-native-fast-image';
+import dayjs, { Dayjs } from 'dayjs';
 
 import TimerCountdown from '~/Components/TimerCountdown';
 import { AddHTTPS } from '~/Utils';
 import { Config, EventStatus } from '~/Config';
-import { Metrics, AppStyles, Fonts, Images } from '~/Theme';
+import { Metrics, AppStyles, Images } from '~/Theme';
 import styles from './styles';
+import { CardObject, EventObject, SongObject } from '~/Utils/types';
 
-function Information({
+const Information = ({
   item,
   WWEventStart,
   WWEventEnd,
@@ -20,7 +27,15 @@ function Information({
   JPEventEnd,
   cards,
   songs
-}) {
+}: {
+  item: EventObject;
+  WWEventStart: Dayjs;
+  WWEventEnd: Dayjs;
+  JPEventStart: Dayjs;
+  JPEventEnd: Dayjs;
+  cards: CardObject[];
+  songs: SongObject[];
+}): JSX.Element => {
   const navigation = useNavigation();
   const [imgSize, setImgSize] = useState({
     width: 1,
@@ -28,31 +43,16 @@ function Information({
   });
 
   /**
-   * Get width, height of image in FastImage
-   *
-   */
-  function onLoadFastImage(e) {
-    const { width, height } = e.nativeEvent;
-    setImgSize({ width, height });
-  }
-
-  /**
    * Navigate to destination screen
-   *
    */
-  const navigateTo = (destination, item0) => () => {
+  const navigateTo = (
+    destination: string,
+    item0: SongObject | CardObject
+  ) => () => {
     navigation.navigate(destination, { item: item0 });
   };
 
-  /**
-   * Countdown timer for ongoing event
-   *
-   */
-  function timer(time) {
-    return <TimerCountdown initialSecondsRemaining={time} allowFontScaling />;
-  }
-
-  const styleFastImage = {
+  const styleFastImage: StyleProp<ImageStyle> = {
     alignSelf: 'center',
     width: Metrics.widthBanner,
     height: (Metrics.widthBanner * imgSize.height) / imgSize.width
@@ -69,14 +69,11 @@ function Information({
           <View>
             <Text style={styles.whiteCenter}>Worldwide</Text>
             <Text style={[styles.text, styles.title, styles.whiteCenter]}>
-              {item.english_name.length === 0
-                ? item.romaji_name
-                : item.english_name}
+              {item.english_name || item.romaji_name}
             </Text>
             <FastImage
-              source={{ uri: AddHTTPS(item.english_image) }}
+              source={{ uri: AddHTTPS(item.english_image || '') }}
               resizeMode={FastImage.resizeMode.contain}
-              onLoad={(e) => onLoadFastImage(e)}
               style={styleFastImage}
             />
             <Text style={[styles.text, styles.whiteCenter]}>
@@ -86,14 +83,18 @@ function Information({
             </Text>
             {item.world_current && (
               <Text style={[styles.text, styles.whiteCenter]}>
-                {timer(WWEventEnd.diff(dayjs()))}
+                <TimerCountdown
+                  initialSecondsRemaining={WWEventEnd.diff(dayjs())}
+                />
                 {' left'}
               </Text>
             )}
             {item.english_status === EventStatus.ANNOUNCED && (
               <Text style={[styles.text, styles.whiteCenter]}>
                 {'Starts in '}
-                {timer(WWEventStart.diff(dayjs()))}
+                <TimerCountdown
+                  initialSecondsRemaining={WWEventStart.diff(dayjs())}
+                />
               </Text>
             )}
           </View>
@@ -108,7 +109,10 @@ function Information({
         <FastImage
           source={{ uri: AddHTTPS(item.image) }}
           resizeMode={FastImage.resizeMode.contain}
-          onLoad={(e) => onLoadFastImage(e)}
+          onLoad={(e) => {
+            const { width, height } = e.nativeEvent;
+            setImgSize({ width, height });
+          }}
           style={styleFastImage}
         />
         <Text style={[styles.text, styles.whiteCenter]}>
@@ -118,14 +122,18 @@ function Information({
         </Text>
         {item.japan_current && (
           <Text style={[styles.text, styles.whiteCenter]}>
-            {timer(JPEventEnd.diff(dayjs()))}
+            <TimerCountdown
+              initialSecondsRemaining={JPEventEnd.diff(dayjs())}
+            />
             {' left'}
           </Text>
         )}
         {item.japan_status === EventStatus.ANNOUNCED && (
           <Text style={[styles.text, styles.whiteCenter]}>
             {'Starts in '}
-            {timer(JPEventStart.diff(dayjs()))}
+            <TimerCountdown
+              initialSecondsRemaining={JPEventStart.diff(dayjs())}
+            />
           </Text>
         )}
         {songs.length !== 0 && <Divider style={styles.whiteLine} />}
@@ -145,14 +153,13 @@ function Information({
                   />
                   <View style={styles.songInfo}>
                     <Image
-                      source={Images.attribute[songItem.attribute]}
+                      source={Images.attribute[songItem.attribute || '']}
                       style={styles.attributeIcon}
                     />
                     <Text style={styles.whiteCenter}>
-                      {`${songItem.name}${songItem.romaji_name !== null
-                          ? `\n${songItem.romaji_name}`
-                          : ''
-                        }`}
+                      {`${songItem.name}${
+                        songItem.romaji_name ? `\n${songItem.romaji_name}` : ''
+                      }`}
                     </Text>
                   </View>
                 </TouchableOpacity>
@@ -170,31 +177,31 @@ function Information({
               onPress={navigateTo('CardDetailScreen', cardItem)}
               style={styles.card}>
               <View style={styles.cardImage}>
-                {cardItem.round_card_image !== null && (
+                {!!cardItem.round_card_image && (
                   <FastImage
                     source={{ uri: AddHTTPS(cardItem.round_card_image) }}
                     style={styles.roundImage}
                   />
                 )}
-                {cardItem.round_card_image !== null && (
-                  <View style={styles.width5} />
+                {!!cardItem.round_card_image && <View style={styles.width5} />}
+                {!!cardItem.round_card_idolized_image && (
+                  <FastImage
+                    source={{
+                      uri: AddHTTPS(cardItem.round_card_idolized_image)
+                    }}
+                    style={styles.roundImage}
+                  />
                 )}
-                <FastImage
-                  source={{ uri: AddHTTPS(cardItem.round_card_idolized_image) }}
-                  style={styles.roundImage}
-                />
               </View>
-              <Text style={Fonts.style.white}>{cardItem.idol.name}</Text>
-              {cardItem.other_event !== null && (
-                <Text style={Fonts.style.white}>(Worldwide only)</Text>
-              )}
+              <Text>{cardItem.idol.name}</Text>
+              {cardItem.other_event && <Text>(Worldwide only)</Text>}
             </TouchableOpacity>
           ))}
         </View>
       </ScrollView>
     </View>
   );
-}
+};
 
 Information.propTypes = {
   item: PropTypes.shape({

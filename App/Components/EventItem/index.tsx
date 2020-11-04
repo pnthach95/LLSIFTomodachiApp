@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { TouchableNativeFeedback, View, StyleSheet } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { Text, TouchableRipple, Surface } from 'react-native-paper';
 import FastImage, { OnLoadEvent } from 'react-native-fast-image';
 import { Metrics, Colors, Fonts } from '~/Theme';
@@ -62,9 +62,7 @@ const EventItem: React.FC<EventItemType> = ({ item, onPress }) => {
 
   return (
     <Surface style={[styles.container, { backgroundColor: state.color }]}>
-      <TouchableRipple
-        onPress={onPress}
-        background={TouchableNativeFeedback.Ripple(state.color, false)}>
+      <TouchableRipple borderless rippleColor={state.color} onPress={onPress}>
         <>
           <FastImage
             onLoad={onLoad}

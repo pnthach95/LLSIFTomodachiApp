@@ -1,14 +1,13 @@
-/* eslint-disable react/prop-types */
 import React, { useContext, useState, useEffect, useCallback } from 'react';
+import { View, ScrollView, StyleSheet } from 'react-native';
 import {
-  View,
-  ScrollView,
-  TouchableOpacity,
-  StyleSheet,
-  ViewStyle
-} from 'react-native';
-import { Text, Appbar, ProgressBar } from 'react-native-paper';
-import FastImage, { OnLoadEvent } from 'react-native-fast-image';
+  Text,
+  Appbar,
+  ProgressBar,
+  Button,
+  TouchableRipple
+} from 'react-native-paper';
+import FastImage from 'react-native-fast-image';
 import ImageView from 'react-native-image-viewing';
 import { responsiveWidth } from 'react-native-responsive-dimensions';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -21,9 +20,10 @@ import { findColorByAttribute, AddHTTPS, setStatusBar } from '~/Utils';
 import { Metrics, Fonts, AppStyles, Colors, Images } from '~/Theme';
 import type { AttributeType, CardDetailScreenProps } from '~/Utils/types';
 
+const { itemWidth, cardHeight, cardWidth } = Metrics.images;
+
 /**
  * Card detail screen
- *
  */
 const CardDetailScreen: React.FC<CardDetailScreenProps> = ({
   navigation,
@@ -60,10 +60,6 @@ const CardDetailScreen: React.FC<CardDetailScreenProps> = ({
   const [images, setImages] = useState<{ uri: string }[]>([]);
   const [buttonID, setButtonID] = useState(0);
   const [currentStats, setCurrentStats] = useState(minStats);
-  const [imgSize, setImgSize] = useState({
-    width: 1,
-    height: 0
-  });
   const cardColors = findColorByAttribute(item.attribute);
 
   useEffect(() => {
@@ -121,36 +117,29 @@ const CardDetailScreen: React.FC<CardDetailScreenProps> = ({
     );
   };
 
-  function statButton(
-    id: number,
-    text: string,
-    stats: number[],
-    style?: ViewStyle
-  ) {
-    const white = { color: 'white' };
-
+  const StatButton = ({
+    id,
+    text,
+    stats
+  }: {
+    id: number;
+    text: string;
+    stats: number[];
+  }) => {
     const saveStat = () => {
       setCurrentStats(stats);
       setButtonID(id);
     };
 
     return (
-      <TouchableOpacity
-        onPress={saveStat}
-        style={[
-          styles.button,
-          style,
-          { backgroundColor: buttonID === id ? Colors.violet : Colors.inactive }
-        ]}>
-        <Text style={[Fonts.style.normal, white]}>{text}</Text>
-      </TouchableOpacity>
+      <Button
+        mode='contained'
+        color={buttonID === id ? Colors.violet : Colors.inactive}
+        onPress={saveStat}>
+        <Text style={styles.whiteText}>{text}</Text>
+      </Button>
     );
-  }
-
-  function onLoadFastImage(e: OnLoadEvent) {
-    const { width, height } = e.nativeEvent;
-    setImgSize({ width, height });
-  }
+  };
 
   /**
    * Navigate to Event Detail Screen
@@ -166,23 +155,28 @@ const CardDetailScreen: React.FC<CardDetailScreenProps> = ({
     navigation.navigate('IdolDetailScreen', { name: item.idol.name });
   };
 
-  function renderImage(index: number, value: { uri: string }) {
+  const RenderImage = ({
+    index,
+    value
+  }: {
+    index: number;
+    value: { uri: string };
+  }) => {
     const onPressImg = () => setImgViewer({ visible: true, index });
 
     return (
-      <TouchableOpacity key={index} onPress={onPressImg}>
+      <TouchableRipple
+        borderless
+        onPress={onPressImg}
+        rippleColor={cardColors[0]}>
         <FastImage
           source={{ uri: value.uri }}
           resizeMode='contain'
-          style={{
-            width: Metrics.images.itemWidth,
-            height: (Metrics.images.itemWidth * imgSize.height) / imgSize.width
-          }}
-          onLoad={(e) => onLoadFastImage(e)}
+          style={styles.card}
         />
-      </TouchableOpacity>
+      </TouchableRipple>
     );
-  }
+  };
 
   const closeImgViewer = useCallback(
     () =>
@@ -193,10 +187,12 @@ const CardDetailScreen: React.FC<CardDetailScreenProps> = ({
     []
   );
 
+  const goBack = () => navigation.goBack();
+
   return (
     <>
       <Appbar.Header style={{ backgroundColor: cardColors[1] }}>
-        <Appbar.BackAction />
+        <Appbar.BackAction onPress={goBack} />
         <Appbar.Content title={item.idol.name} onPress={navigateToIdolDetail} />
         {!!item.idol.main_unit && (
           <FastImage
@@ -214,175 +210,172 @@ const CardDetailScreen: React.FC<CardDetailScreenProps> = ({
         )}
       </Appbar.Header>
       {done ? (
-        <ScrollView
-          showsVerticalScrollIndicator={false}
-          style={styles.container}>
+        <ScrollView showsVerticalScrollIndicator={false}>
           {/* CARD IMAGES */}
           <View style={styles.imageRow}>
-            {done && images.map((value, index) => renderImage(index, value))}
+            {done &&
+              images.map((value, index) => (
+                <RenderImage key={index} index={index} value={value} />
+              ))}
           </View>
+          <View style={styles.container}>
+            {/* INFORMATION */}
+            <TextRow
+              item1={{ flex: 1, text: 'Card ID' }}
+              item2={{ flex: 2, text: item.game_id }}
+            />
+            <TextRow
+              item1={{ flex: 1, text: 'Release date' }}
+              item2={{
+                flex: 2,
+                text: dayjs(item.release_date).format('LL')
+              }}
+            />
+            {Boolean(propertyLine) && <Text>{propertyLine}</Text>}
 
-          {/* INFORMATION */}
-          <TextRow
-            item1={{ flex: 1, text: 'Card ID' }}
-            item2={{ flex: 2, text: item.game_id }}
-          />
-          <TextRow
-            item1={{ flex: 1, text: 'Release date' }}
-            item2={{
-              flex: 2,
-              text: dayjs(item.release_date).format('LL')
-            }}
-          />
-          {Boolean(propertyLine) && <Text>{propertyLine}</Text>}
-
-          {!!item.skill && (
-            <>
-              <TextRow
-                item1={{ flex: 1, text: 'Skill' }}
-                item2={{ flex: 2, text: item.skill }}
-              />
-              <TextRow
-                item1={{ flex: 1, text: '' }}
-                item2={{
-                  flex: 2,
-                  text: item.skill_details || '',
-                  textStyle: styles.subtitleText
-                }}
-              />
-            </>
-          )}
-
-          {!!item.center_skill && (
-            <>
-              <TextRow
-                item1={{ flex: 1, text: 'Center skill' }}
-                item2={{ flex: 2, text: item.center_skill }}
-              />
-              <TextRow
-                item1={{ flex: 1, text: '' }}
-                item2={{
-                  flex: 2,
-                  text: item.center_skill_details || '',
-                  textStyle: styles.subtitleText
-                }}
-              />
-            </>
-          )}
-
-          {!!item.event && (
-            <>
-              <TextRow
-                item1={{
-                  text: 'Event',
-                  flex: 1,
-                  textStyle: Fonts.style.normal
-                }}
-                item2={{
-                  text: item.event.japanese_name,
-                  flex: 4,
-                  textStyle: Fonts.style.normal
-                }}
-              />
-              {item.event.english_name !== null && (
+            {!!item.skill && (
+              <>
                 <TextRow
-                  item1={{ text: '', flex: 1, textStyle: Fonts.style.normal }}
+                  item1={{ flex: 1, text: 'Skill' }}
+                  item2={{ flex: 2, text: item.skill }}
+                />
+                <TextRow
+                  item1={{ flex: 1, text: '' }}
                   item2={{
-                    text: item.event.english_name || '',
+                    flex: 2,
+                    text: item.skill_details || '',
+                    textStyle: styles.subtitleText
+                  }}
+                />
+              </>
+            )}
+
+            {!!item.center_skill && (
+              <>
+                <TextRow
+                  item1={{ flex: 1, text: 'Center skill' }}
+                  item2={{ flex: 2, text: item.center_skill }}
+                />
+                <TextRow
+                  item1={{ flex: 1, text: '' }}
+                  item2={{
+                    flex: 2,
+                    text: item.center_skill_details || '',
+                    textStyle: styles.subtitleText
+                  }}
+                />
+              </>
+            )}
+
+            {!!item.event && (
+              <>
+                <TextRow
+                  item1={{
+                    text: 'Event',
+                    flex: 1,
+                    textStyle: Fonts.style.normal
+                  }}
+                  item2={{
+                    text: item.event.japanese_name,
                     flex: 4,
                     textStyle: Fonts.style.normal
                   }}
                 />
-              )}
-              <TouchableOpacity
-                style={AppStyles.center}
-                onPress={navigateToEventDetail(item.event.japanese_name)}>
-                <FastImage
-                  source={{ uri: AddHTTPS(item.event.image) }}
-                  style={styles.banner}
-                  resizeMode={FastImage.resizeMode.contain}
-                />
-              </TouchableOpacity>
-              {!!item.other_event && (
-                <View>
+                {item.event.english_name !== null && (
                   <TextRow
-                    item1={{
-                      text: '',
-                      flex: 1,
-                      textStyle: Fonts.style.normal
-                    }}
+                    item1={{ text: '', flex: 1, textStyle: Fonts.style.normal }}
                     item2={{
-                      text: item.other_event.english_name || '',
+                      text: item.event.english_name || '',
                       flex: 4,
                       textStyle: Fonts.style.normal
                     }}
                   />
-                  <TouchableOpacity
-                    style={AppStyles.center}
-                    onPress={navigateToEventDetail(
-                      item.other_event.japanese_name
-                    )}>
-                    <FastImage
-                      source={{ uri: AddHTTPS(item.other_event.image) }}
-                      style={styles.banner}
-                      resizeMode={FastImage.resizeMode.contain}
+                )}
+                <TouchableRipple
+                  style={[AppStyles.center, styles.bannerContainer]}
+                  onPress={navigateToEventDetail(item.event.japanese_name)}>
+                  <FastImage
+                    source={{ uri: AddHTTPS(item.event.image) }}
+                    style={styles.banner}
+                    resizeMode={FastImage.resizeMode.contain}
+                  />
+                </TouchableRipple>
+                {!!item.other_event && (
+                  <View>
+                    <TextRow
+                      item1={{
+                        text: '',
+                        flex: 1,
+                        textStyle: Fonts.style.normal
+                      }}
+                      item2={{
+                        text: item.other_event.english_name || '',
+                        flex: 4,
+                        textStyle: Fonts.style.normal
+                      }}
                     />
-                  </TouchableOpacity>
+                    <TouchableRipple
+                      style={[AppStyles.center, styles.bannerContainer]}
+                      onPress={navigateToEventDetail(
+                        item.other_event.japanese_name
+                      )}>
+                      <FastImage
+                        source={{ uri: AddHTTPS(item.other_event.image) }}
+                        style={styles.banner}
+                        resizeMode={FastImage.resizeMode.contain}
+                      />
+                    </TouchableRipple>
+                  </View>
+                )}
+              </>
+            )}
+
+            {/* STATS */}
+            {item.hp !== 0 && (
+              <>
+                <View style={AppStyles.row}>
+                  <Icon
+                    name='ios-heart'
+                    size={Metrics.icons.medium}
+                    color={Colors.red600}
+                  />
+                  <Text style={Fonts.style.normal}> : {item.hp}</Text>
                 </View>
-              )}
-            </>
-          )}
-
-          {item.hp !== 0 && done && (
-            <>
-              <View style={AppStyles.row}>
-                <Icon
-                  name='ios-heart'
-                  size={Metrics.icons.medium}
-                  color={'red'}
+                <View style={styles.buttonRow}>
+                  <StatButton id={0} text='Level 1' stats={minStats} />
+                  {item.non_idolized_maximum_statistics_smile !== 0 && (
+                    <StatButton
+                      id={1}
+                      text={`Level ${item.non_idolized_max_level || 0}`}
+                      stats={nonIdolMaxStats}
+                    />
+                  )}
+                  {item.idolized_max_level !== 0 && (
+                    <StatButton
+                      id={2}
+                      text={`Level ${item.idolized_max_level || 0}`}
+                      stats={idolMaxStats}
+                    />
+                  )}
+                </View>
+                <ProgressUnit
+                  text='Smile'
+                  stat={currentStats[0]}
+                  color={Colors.pink}
                 />
-                <Text style={Fonts.style.normal}> : {item.hp}</Text>
-              </View>
-            </>
-          )}
-
-          {/* STATS */}
-          {item.hp !== 0 && done && (
-            <View>
-              <View style={styles.buttonRow}>
-                {statButton(0, 'Level 1', minStats, styles.leftRadius)}
-                {item.non_idolized_maximum_statistics_smile !== 0 &&
-                  statButton(
-                    1,
-                    `Level ${item.non_idolized_max_level || 0}`,
-                    nonIdolMaxStats
-                  )}
-                {item.idolized_max_level !== 0 &&
-                  statButton(
-                    2,
-                    `Level ${item.idolized_max_level || 0}`,
-                    idolMaxStats,
-                    styles.rightRadius
-                  )}
-              </View>
-              <ProgressUnit
-                text='Smile'
-                stat={currentStats[0]}
-                color={Colors.pink}
-              />
-              <ProgressUnit
-                text='Pure'
-                stat={currentStats[1]}
-                color={Colors.green}
-              />
-              <ProgressUnit
-                text='Cool'
-                stat={currentStats[2]}
-                color={Colors.blue}
-              />
-            </View>
-          )}
-          <View style={{ height: Metrics.doubleBaseMargin }} />
+                <ProgressUnit
+                  text='Pure'
+                  stat={currentStats[1]}
+                  color={Colors.green}
+                />
+                <ProgressUnit
+                  text='Cool'
+                  stat={currentStats[2]}
+                  color={Colors.blue}
+                />
+              </>
+            )}
+          </View>
         </ScrollView>
       ) : (
         <LoadingScreen />
@@ -402,17 +395,17 @@ const styles = StyleSheet.create({
     height: 100,
     width: responsiveWidth(80)
   },
-  button: {
-    alignItems: 'center',
-    flex: 1,
-    justifyContent: 'center',
-    marginHorizontal: 1,
+  bannerContainer: {
     paddingVertical: Metrics.baseMargin
   },
   buttonRow: {
     flexDirection: 'row',
     justifyContent: 'space-around',
     paddingVertical: Metrics.baseMargin
+  },
+  card: {
+    height: (itemWidth * cardHeight) / cardWidth,
+    width: itemWidth
   },
   container: {
     paddingHorizontal: Metrics.doubleBaseMargin
@@ -421,10 +414,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-around',
     paddingVertical: Metrics.doubleBaseMargin
-  },
-  leftRadius: {
-    borderBottomLeftRadius: 10,
-    borderTopLeftRadius: 10
   },
   marginRight10: {
     marginRight: Metrics.baseMargin
@@ -436,12 +425,11 @@ const styles = StyleSheet.create({
     height: 70,
     width: 70
   },
-  rightRadius: {
-    borderBottomRightRadius: 10,
-    borderTopRightRadius: 10
-  },
   subtitleText: {
     fontSize: Fonts.size.medium
+  },
+  whiteText: {
+    color: Colors.white
   }
 });
 

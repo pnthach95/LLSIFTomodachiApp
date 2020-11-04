@@ -27,6 +27,8 @@ export default {
     medium: 40,
     large: 60,
     logo: 200,
+    cardWidth: 512,
+    cardHeight: 720,
     itemWidth: ((width < height ? width : height) - 10) / 2 - 10,
     smallItemWidth: ((width < height ? width : height) - 10) / 3 - 10
   },

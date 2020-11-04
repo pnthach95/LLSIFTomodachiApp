@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { TouchableNativeFeedback, View, StyleSheet } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { Text, Surface, TouchableRipple } from 'react-native-paper';
 import FastImage, { OnLoadEvent } from 'react-native-fast-image';
 import { Metrics, Colors, Fonts } from '~/Theme';
@@ -33,9 +33,7 @@ const SongItem: React.FC<SongItemType> = ({ item, onPress }) => {
 
   return (
     <Surface style={[styles.container, { backgroundColor: attColors[0] }]}>
-      <TouchableRipple
-        onPress={onPress}
-        background={TouchableNativeFeedback.Ripple(attColors[1], true)}>
+      <TouchableRipple borderless rippleColor={attColors[1]} onPress={onPress}>
         <FastImage
           source={{ uri: AddHTTPS(item.image) }}
           onLoad={onLoad}

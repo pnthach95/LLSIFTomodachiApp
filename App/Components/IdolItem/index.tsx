@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { TouchableNativeFeedback, View, StyleSheet } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { Text, TouchableRipple, Surface } from 'react-native-paper';
 import FastImage, { OnLoadEvent } from 'react-native-fast-image';
 import { Metrics, Fonts, Colors } from '~/Theme';
@@ -36,9 +36,7 @@ const IdolItem: React.FC<IdolItemType> = ({ item, onPress }) => {
 
   return (
     <Surface style={[styles.container, { backgroundColor: attColors[1] }]}>
-      <TouchableRipple
-        onPress={onPress}
-        background={TouchableNativeFeedback.Ripple(attColors[0], true)}>
+      <TouchableRipple borderless rippleColor={attColors[0]} onPress={onPress}>
         <FastImage
           source={{
             uri: item.chibi,

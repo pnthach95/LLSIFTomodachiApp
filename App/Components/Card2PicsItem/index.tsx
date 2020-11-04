@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { TouchableNativeFeedback, View, Image, StyleSheet } from 'react-native';
+import { View, Image, StyleSheet } from 'react-native';
 import { Surface, TouchableRipple, Divider } from 'react-native-paper';
 import FastImage, { OnLoadEvent } from 'react-native-fast-image';
 import { Metrics, AppStyles, Images } from '~/Theme';
@@ -44,9 +44,7 @@ const Card2PicsItem: React.FC<Card2PicsItemType> = ({ item, onPress }) => {
 
   return (
     <Surface style={[styles.container, { backgroundColor: cardColors[1] }]}>
-      <TouchableRipple
-        onPress={onPress}
-        background={TouchableNativeFeedback.Ripple(cardColors[0], false)}>
+      <TouchableRipple borderless rippleColor={cardColors[0]} onPress={onPress}>
         <>
           <View style={styles.row}>
             {images.map((value, index) => (

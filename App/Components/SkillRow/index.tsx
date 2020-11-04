@@ -7,8 +7,8 @@ import UserContext from '~/Context/UserContext';
 import styles from '~/Theme/RowStyles';
 
 type SkillRowType = {
-  skill: string,
-  selectSkill: () => void,
+  skill: string;
+  selectSkill: () => void;
 };
 
 /**
@@ -24,18 +24,22 @@ type SkillRowType = {
 const SkillRow: React.FC<SkillRowType> = ({ skill, selectSkill }) => {
   const { state } = useContext(UserContext);
 
-  return <View style={styles.pickerRow}>
-    <View style={styles.leftView}>
-      <Text>Skill</Text>
+  return (
+    <View style={styles.pickerRow}>
+      <View style={styles.leftView}>
+        <Text>Skill</Text>
+      </View>
+      <View style={styles.flex2}>
+        <RNPickerSelect
+          onValueChange={selectSkill}
+          items={state.cachedData.skills}
+          style={{ inputIOS: styles.picker, inputAndroid: styles.picker }}
+          placeholder={{ label: 'All', value: 'All' }}
+          value={skill}
+        />
+      </View>
     </View>
-    <View style={styles.flex2}>
-      <RNPickerSelect onValueChange={selectSkill}
-        items={state.cachedData.skills}
-        style={{ inputIOS: styles.picker, inputAndroid: styles.picker }}
-        placeholder={{ label: 'All', value: 'All' }}
-        value={skill} />
-    </View>
-  </View>;
+  );
 };
 
 export default SkillRow;

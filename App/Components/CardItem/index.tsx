@@ -40,8 +40,7 @@ const CardItem: React.FC<CardItemType> = ({ item, onPress }) => {
     <Surface style={styles.container}>
       <TouchableRipple
         onPress={onPress}
-        background={TouchableNativeFeedback.Ripple(cardColors[0], false)}
-      >
+        background={TouchableNativeFeedback.Ripple(cardColors[0], false)}>
         <>
           {card && (
             <FastImage
@@ -50,7 +49,7 @@ const CardItem: React.FC<CardItemType> = ({ item, onPress }) => {
                 uri: AddHTTPS(card),
                 priority: FastImage.priority.normal
               }}
-              resizeMode="contain"
+              resizeMode='contain'
               style={[styles.topRadius, imgSize]}
             />
           )}

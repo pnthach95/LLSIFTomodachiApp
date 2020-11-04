@@ -34,8 +34,7 @@ const EventRow: React.FC<EventRowType> = ({ isEvent, selectEvent }) => {
             styles.textButton,
             styles.standardButton,
             isEvent === '' && styles.selectedValue
-          ]}
-        >
+          ]}>
           <Text style={styles.buttonText}>All</Text>
         </TouchableOpacity>
         <TouchableOpacity
@@ -44,8 +43,7 @@ const EventRow: React.FC<EventRowType> = ({ isEvent, selectEvent }) => {
             styles.textButton,
             styles.standardButton,
             isEvent === 'True' && styles.selectedValue
-          ]}
-        >
+          ]}>
           <Text style={styles.buttonText}>Only</Text>
         </TouchableOpacity>
         <TouchableOpacity
@@ -54,8 +52,7 @@ const EventRow: React.FC<EventRowType> = ({ isEvent, selectEvent }) => {
             styles.textButton,
             styles.standardButton,
             isEvent === 'False' && styles.selectedValue
-          ]}
-        >
+          ]}>
           <Text style={styles.buttonText}>None</Text>
         </TouchableOpacity>
       </View>

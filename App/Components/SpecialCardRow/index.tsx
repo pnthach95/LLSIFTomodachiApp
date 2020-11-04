@@ -33,8 +33,7 @@ const SpecialCardRow: React.FC<SpecialCardRowType> = ({
             styles.textButton,
             styles.standardButton,
             isSpecial === '' && styles.selectedValue
-          ]}
-        >
+          ]}>
           <Text style={styles.buttonText}>All</Text>
         </TouchableOpacity>
         <TouchableOpacity
@@ -43,8 +42,7 @@ const SpecialCardRow: React.FC<SpecialCardRowType> = ({
             styles.textButton,
             styles.standardButton,
             isSpecial === 'True' && styles.selectedValue
-          ]}
-        >
+          ]}>
           <Text style={styles.buttonText}>Only</Text>
         </TouchableOpacity>
         <TouchableOpacity
@@ -53,8 +51,7 @@ const SpecialCardRow: React.FC<SpecialCardRowType> = ({
             styles.textButton,
             styles.standardButton,
             isSpecial === 'False' && styles.selectedValue
-          ]}
-        >
+          ]}>
           <Text style={styles.buttonText}>None</Text>
         </TouchableOpacity>
       </View>

@@ -8,7 +8,7 @@ import type { CardObject } from '~/Utils/type';
 
 type Card2PicsItemType = {
   item: CardObject;
-  onPress: () => {};
+  onPress: () => void;
 };
 
 /**
@@ -47,8 +47,7 @@ const Card2PicsItem: React.FC<Card2PicsItemType> = ({ item, onPress }) => {
     <Surface style={[styles.container, { backgroundColor: cardColors[1] }]}>
       <TouchableRipple
         onPress={onPress}
-        background={TouchableNativeFeedback.Ripple(cardColors[0], false)}
-      >
+        background={TouchableNativeFeedback.Ripple(cardColors[0], false)}>
         <>
           <View style={styles.row}>
             {images.map((value, index) => (
@@ -56,7 +55,7 @@ const Card2PicsItem: React.FC<Card2PicsItemType> = ({ item, onPress }) => {
                 key={index}
                 source={{ uri: value }}
                 onLoad={onLoad}
-                resizeMode="contain"
+                resizeMode='contain'
                 style={imgSize}
               />
             ))}
@@ -108,8 +107,8 @@ const Card2PicsItem: React.FC<Card2PicsItemType> = ({ item, onPress }) => {
 
 const styles = StyleSheet.create({
   container: {
-    elevation: 5,
     borderRadius: 4,
+    elevation: 5,
     margin: Metrics.smallMargin,
     width: Metrics.screenWidth - Metrics.smallMargin * 4
   },

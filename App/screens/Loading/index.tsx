@@ -2,12 +2,11 @@ import React, { useState, useEffect, useContext } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Text, Button } from 'react-native-paper';
 
-import useStatusBar from '~/hooks/useStatusBar';
 import { initCachedData } from '~/Context/Reducer';
 import LLSIFService from '~/Services/LLSIFService';
 import SplashScreen from '../Splash';
 import UserContext from '~/Context/UserContext';
-import { Colors, AppStyles, Fonts } from '~/Theme';
+import { Colors, AppStyles } from '~/Theme';
 import type { LoadingScreenProps, CachedDataObject } from '~/Utils/type';
 
 /**
@@ -15,7 +14,6 @@ import type { LoadingScreenProps, CachedDataObject } from '~/Utils/type';
  *
  */
 const LoadingScreen: React.FC<LoadingScreenProps> = () => {
-  useStatusBar('light-content', Colors.pink);
   const { dispatch } = useContext(UserContext);
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -99,11 +97,9 @@ const LoadingScreen: React.FC<LoadingScreenProps> = () => {
   }
   if (error) {
     return (
-      <View style={[AppStyles.screen, AppStyles.center, styles.bg]}>
+      <View style={[AppStyles.screen, AppStyles.center]}>
         <View style={styles.textBox}>
-          <Text style={styles.text}>
-            {"Can't get data.\nCheck internet connection and retry."}
-          </Text>
+          <Text>{"Can't get data.\nCheck internet connection and retry."}</Text>
         </View>
         <Button onPress={loadCachedData}>Retry</Button>
       </View>
@@ -113,19 +109,6 @@ const LoadingScreen: React.FC<LoadingScreenProps> = () => {
 };
 
 const styles = StyleSheet.create({
-  bg: {
-    backgroundColor: Colors.pink
-  },
-  button: {
-    backgroundColor: Colors.white,
-    margin: 10,
-    padding: 10
-  },
-  text: {
-    ...Fonts.style.normal,
-    ...Fonts.style.white,
-    ...Fonts.style.center
-  },
   textBox: {
     marginHorizontal: 10
   }

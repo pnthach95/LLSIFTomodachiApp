@@ -38,8 +38,7 @@ const RarityRow: React.FC<RarityRowType> = ({ rarity, selectRarity }) => {
               rowStyles.standardButton,
               styles.paddingLeft0,
               rarity === '' && rowStyles.selectedValue1
-            ]}
-          >
+            ]}>
             <Image source={Images.empty} style={rowStyles.buttonImage} />
           </TouchableOpacity>
           <TouchableOpacity
@@ -47,8 +46,7 @@ const RarityRow: React.FC<RarityRowType> = ({ rarity, selectRarity }) => {
             style={[
               rowStyles.standardButton,
               rarity === 'N' && rowStyles.selectedValue1
-            ]}
-          >
+            ]}>
             <Image source={Images.rarity[0]} style={rowStyles.buttonImage} />
           </TouchableOpacity>
           <TouchableOpacity
@@ -56,8 +54,7 @@ const RarityRow: React.FC<RarityRowType> = ({ rarity, selectRarity }) => {
             style={[
               rowStyles.standardButton,
               rarity === 'R' && rowStyles.selectedValue1
-            ]}
-          >
+            ]}>
             <Image source={Images.rarity[1]} style={rowStyles.buttonImage} />
           </TouchableOpacity>
           <TouchableOpacity
@@ -65,8 +62,7 @@ const RarityRow: React.FC<RarityRowType> = ({ rarity, selectRarity }) => {
             style={[
               rowStyles.standardButton,
               rarity === 'SR' && rowStyles.selectedValue1
-            ]}
-          >
+            ]}>
             <Image source={Images.rarity[2]} style={rowStyles.buttonImage} />
           </TouchableOpacity>
           <TouchableOpacity
@@ -74,8 +70,7 @@ const RarityRow: React.FC<RarityRowType> = ({ rarity, selectRarity }) => {
             style={[
               rowStyles.standardButton,
               rarity === 'SSR' && rowStyles.selectedValue1
-            ]}
-          >
+            ]}>
             <Image source={Images.rarity[3]} style={rowStyles.buttonImage} />
           </TouchableOpacity>
           <TouchableOpacity
@@ -83,8 +78,7 @@ const RarityRow: React.FC<RarityRowType> = ({ rarity, selectRarity }) => {
             style={[
               rowStyles.standardButton,
               rarity === 'UR' && rowStyles.selectedValue1
-            ]}
-          >
+            ]}>
             <Image source={Images.rarity[4]} style={rowStyles.buttonImage} />
           </TouchableOpacity>
         </ScrollView>

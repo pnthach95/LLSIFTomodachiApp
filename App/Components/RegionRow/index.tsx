@@ -30,8 +30,7 @@ const RegionRow: React.FC<RegionRowType> = ({ japanOnly, selectRegion }) => {
             styles.textButton,
             styles.standardButton,
             japanOnly === '' && styles.selectedValue
-          ]}
-        >
+          ]}>
           <Text style={styles.buttonText}>All</Text>
         </TouchableOpacity>
         <TouchableOpacity
@@ -40,8 +39,7 @@ const RegionRow: React.FC<RegionRowType> = ({ japanOnly, selectRegion }) => {
             styles.textButton,
             styles.standardButton,
             japanOnly === 'False' && styles.selectedValue
-          ]}
-        >
+          ]}>
           <Text style={styles.buttonText}>EN Only</Text>
         </TouchableOpacity>
         <TouchableOpacity
@@ -50,8 +48,7 @@ const RegionRow: React.FC<RegionRowType> = ({ japanOnly, selectRegion }) => {
             styles.textButton,
             styles.standardButton,
             japanOnly === 'True' && styles.selectedValue
-          ]}
-        >
+          ]}>
           <Text style={styles.buttonText}>JP Only</Text>
         </TouchableOpacity>
       </View>

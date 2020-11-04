@@ -30,8 +30,7 @@ const PromoCardRow: React.FC<PromoCardRowType> = ({ isPromo, selectPromo }) => {
             styles.textButton,
             styles.standardButton,
             isPromo === '' && styles.selectedValue
-          ]}
-        >
+          ]}>
           <Text style={styles.buttonText}>All</Text>
         </TouchableOpacity>
         <TouchableOpacity
@@ -40,8 +39,7 @@ const PromoCardRow: React.FC<PromoCardRowType> = ({ isPromo, selectPromo }) => {
             styles.textButton,
             styles.standardButton,
             isPromo === 'True' && styles.selectedValue
-          ]}
-        >
+          ]}>
           <Text style={styles.buttonText}>Only</Text>
         </TouchableOpacity>
         <TouchableOpacity
@@ -50,8 +48,7 @@ const PromoCardRow: React.FC<PromoCardRowType> = ({ isPromo, selectPromo }) => {
             styles.textButton,
             styles.standardButton,
             isPromo === 'False' && styles.selectedValue
-          ]}
-        >
+          ]}>
           <Text style={styles.buttonText}>None</Text>
         </TouchableOpacity>
       </View>

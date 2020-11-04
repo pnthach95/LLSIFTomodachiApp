@@ -34,8 +34,7 @@ const TextRow: React.FC<TextRowType> = ({ item1, item2 }) => {
       <View style={{ flex: item2.flex }}>
         <Text
           onPress={item2.onPress}
-          style={[Fonts.style.normal, item2.textStyle]}
-        >
+          style={[Fonts.style.normal, item2.textStyle]}>
           {item2.text}
         </Text>
       </View>

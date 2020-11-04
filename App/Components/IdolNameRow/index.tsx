@@ -6,7 +6,7 @@ import UserContext from '~/Context/UserContext';
 import styles from '~/Theme/RowStyles';
 
 type IdolNameRow = {
-  name: string,
+  name: string;
   selectIdol: () => void;
 };
 
@@ -23,18 +23,22 @@ type IdolNameRow = {
 const IdolNameRow: React.FC<IdolNameRow> = ({ name, selectIdol }) => {
   const { state } = useContext(UserContext);
 
-  return <View style={styles.pickerRow}>
-    <View style={styles.leftView}>
-      <Text>Idol</Text>
+  return (
+    <View style={styles.pickerRow}>
+      <View style={styles.leftView}>
+        <Text>Idol</Text>
+      </View>
+      <View style={styles.flex2}>
+        <RNPickerSelect
+          onValueChange={selectIdol}
+          items={state.cachedData.idols}
+          style={{ inputIOS: styles.picker, inputAndroid: styles.picker }}
+          placeholder={{ label: 'All', value: 'All' }}
+          value={name}
+        />
+      </View>
     </View>
-    <View style={styles.flex2}>
-      <RNPickerSelect onValueChange={selectIdol}
-        items={state.cachedData.idols}
-        style={{ inputIOS: styles.picker, inputAndroid: styles.picker }}
-        placeholder={{ label: 'All', value: 'All' }}
-        value={name} />
-    </View>
-  </View>;
+  );
 };
 
 export default IdolNameRow;

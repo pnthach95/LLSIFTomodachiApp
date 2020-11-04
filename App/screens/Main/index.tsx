@@ -148,7 +148,7 @@ const MainScreen: React.FC<MainScreenProps> = ({ navigation }) => {
             )}
           </>
         </TouchableRipple>
-        <Divider />
+        <Divider style={styles.divider} />
         {/* JAPANESE BLOCK */}
         <TouchableRipple style={styles.block} onPress={goToJPEvent}>
           <>
@@ -198,6 +198,9 @@ const styles = StyleSheet.create({
   content: {
     alignItems: 'center',
     padding: Metrics.baseMargin
+  },
+  divider: {
+    paddingVertical: 10
   },
   header: {
     alignItems: 'center'

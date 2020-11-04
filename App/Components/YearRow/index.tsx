@@ -31,8 +31,7 @@ const YearRow: React.FC<YearRowType> = ({ idolYear, selectYear }) => {
             styles.textButton,
             styles.standardButton,
             idolYear === '' && styles.selectedValue
-          ]}
-        >
+          ]}>
           <Text style={styles.buttonText}>All</Text>
         </TouchableOpacity>
         <TouchableOpacity
@@ -41,8 +40,7 @@ const YearRow: React.FC<YearRowType> = ({ idolYear, selectYear }) => {
             styles.textButton,
             styles.standardButton,
             idolYear === 'First' && styles.selectedValue
-          ]}
-        >
+          ]}>
           <Text style={styles.buttonText}>1st</Text>
         </TouchableOpacity>
         <TouchableOpacity
@@ -51,8 +49,7 @@ const YearRow: React.FC<YearRowType> = ({ idolYear, selectYear }) => {
             styles.textButton,
             styles.standardButton,
             idolYear === 'Second' && styles.selectedValue
-          ]}
-        >
+          ]}>
           <Text style={styles.buttonText}>2nd</Text>
         </TouchableOpacity>
         <TouchableOpacity
@@ -61,8 +58,7 @@ const YearRow: React.FC<YearRowType> = ({ idolYear, selectYear }) => {
             styles.textButton,
             styles.standardButton,
             idolYear === 'Third' && styles.selectedValue
-          ]}
-        >
+          ]}>
           <Text style={styles.buttonText}>3rd</Text>
         </TouchableOpacity>
       </View>

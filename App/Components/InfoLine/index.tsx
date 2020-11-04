@@ -5,64 +5,86 @@ import { openLink } from '~/Utils';
 import { Metrics, Fonts } from '~/Theme';
 
 type InfoLineType = {
-  title: string,
-  content: string,
-  twitter: string | null,
-  instagram: string | null,
-  myanimelist: string | null,
+  title: string;
+  content: string;
+  twitter: string | null;
+  instagram: string | null;
+  myanimelist: string | null;
 };
 
 /**
  * InfoLine
  */
 const InfoLine: React.FC<InfoLineType> = ({
-  title, content, twitter, instagram, myanimelist
+  title,
+  content,
+  twitter,
+  instagram,
+  myanimelist
 }) => {
-  const openTwitter = () => openLink(`https://twitter.com/${twitter}`);
-  const openInstagram = () => openLink(`https://www.instagram.com/${instagram}`);
+  const openTwitter = () => {
+    if (twitter) {
+      openLink(`https://twitter.com/${twitter}`);
+    }
+  };
+  const openInstagram = () => {
+    if (instagram) {
+      openLink(`https://www.instagram.com/${instagram}`);
+    }
+  };
   const openMAL = () => openLink(myanimelist);
 
-  return <View style={styles.container}>
-    <Text style={styles.title}>{title}</Text>
-    <Text selectable style={styles.content}>{content}</Text>
-    {!!twitter && <Text style={styles.content}>
-      Twitter: <Text onPress={openTwitter}
-        style={[styles.content, styles.link]}>
-        {twitter}
+  return (
+    <View style={styles.container}>
+      <Text style={styles.title}>{title}</Text>
+      <Text selectable style={styles.content}>
+        {content}
       </Text>
-    </Text>}
-    {!!instagram && <Text style={styles.content}>
-      Instagram: <Text onPress={openInstagram}
-        style={[styles.content, styles.link]}>
-        {instagram}
-      </Text>
-    </Text>}
-    {!!myanimelist && <Text style={styles.content}>
-      MyAnimeList: <Text onPress={openMAL}
-        style={[styles.content, styles.link]}>
-        {myanimelist}
-      </Text>
-    </Text>}
-  </View>;
+      {!!twitter && (
+        <Text style={styles.content}>
+          Twitter:{' '}
+          <Text onPress={openTwitter} style={[styles.content, styles.link]}>
+            {twitter}
+          </Text>
+        </Text>
+      )}
+      {!!instagram && (
+        <Text style={styles.content}>
+          Instagram:{' '}
+          <Text onPress={openInstagram} style={[styles.content, styles.link]}>
+            {instagram}
+          </Text>
+        </Text>
+      )}
+      {!!myanimelist && (
+        <Text style={styles.content}>
+          MyAnimeList:{' '}
+          <Text onPress={openMAL} style={[styles.content, styles.link]}>
+            {myanimelist}
+          </Text>
+        </Text>
+      )}
+    </View>
+  );
 };
 
 const styles = StyleSheet.create({
   container: {
-    marginVertical: Metrics.smallMargin,
+    marginVertical: Metrics.smallMargin
   },
   content: {
     ...Fonts.style.normal,
     ...Fonts.style.black,
-    textAlign: 'justify',
+    textAlign: 'justify'
   },
   link: {
-    textDecorationLine: 'underline',
+    textDecorationLine: 'underline'
   },
   title: {
     ...Fonts.style.black,
     fontSize: Fonts.size.small,
-    fontWeight: 'bold',
-  },
+    fontWeight: 'bold'
+  }
 });
 
 export default InfoLine;

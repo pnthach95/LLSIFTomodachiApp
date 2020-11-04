@@ -30,29 +30,30 @@ const IdolItem: React.FC<IdolItemType> = ({ item, onPress }) => {
     const { width, height } = e.nativeEvent;
     setImgSize({
       ...imgSize,
-      height: (Metrics.images.smallItemWidth * height) / width,
+      height: (Metrics.images.smallItemWidth * height) / width
     });
   };
 
-  return <Surface style={[
-    styles.container,
-    { backgroundColor: attColors[1] },
-  ]}>
-    <TouchableRipple onPress={onPress}
-      background={TouchableNativeFeedback.Ripple(attColors[0], true)}>
-      <FastImage
-        source={{
-          uri: item.chibi,
-          priority: FastImage.priority.normal,
-        }}
-        onLoad={onLoad}
-        resizeMode='contain'
-        style={imgSize} />
-      <View style={styles.info}>
-        <Text style={Fonts.style.center}>{item.name}</Text>
-      </View>
-    </TouchableRipple>
-  </Surface>;
+  return (
+    <Surface style={[styles.container, { backgroundColor: attColors[1] }]}>
+      <TouchableRipple
+        onPress={onPress}
+        background={TouchableNativeFeedback.Ripple(attColors[0], true)}>
+        <FastImage
+          source={{
+            uri: item.chibi,
+            priority: FastImage.priority.normal
+          }}
+          onLoad={onLoad}
+          resizeMode='contain'
+          style={imgSize}
+        />
+        <View style={styles.info}>
+          <Text style={Fonts.style.center}>{item.name}</Text>
+        </View>
+      </TouchableRipple>
+    </Surface>
+  );
 };
 
 const styles = StyleSheet.create({
@@ -62,17 +63,14 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     elevation: 5,
     margin: Metrics.smallMargin,
-    width: Metrics.images.smallItemWidth,
-  },
-  image: {
-    marginTop: 10,
+    width: Metrics.images.smallItemWidth
   },
   info: {
     alignItems: 'center',
     flexDirection: 'row',
     justifyContent: 'space-around',
-    margin: Metrics.smallMargin,
-  },
+    margin: Metrics.smallMargin
+  }
 });
 
 export default IdolItem;

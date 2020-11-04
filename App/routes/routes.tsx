@@ -17,6 +17,7 @@ import AnimatedTabBar, {
   TabsConfig,
   BubbleTabBarItemConfig
 } from '@gorhom/animated-tabbar';
+import { DefaultTheme, Provider as PaperProvider } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/SimpleLineIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
@@ -35,13 +36,19 @@ import EventDetailScreen from '~/screens/EventDetail';
 import IdolDetailScreen from '~/screens/IdolDetail';
 import SongDetailScreen from '~/screens/SongDetail';
 
+const homeIcon = () => <Icon name='home' />;
+const cardIcon = () => <Ionicons name='ios-albums-sharp' />;
+const idolIcon = () => <Ionicons name='ios-star' />;
+const eventIcon = () => <Ionicons name='md-calendar' />;
+const songIcon = () => <Ionicons name='ios-musical-notes' />;
+
 const tabs: TabsConfig<BubbleTabBarItemConfig> = {
   MainScreen: {
     labelStyle: {
       color: '#5B37B7'
     },
     icon: {
-      component: () => <Icon name='home' />,
+      component: homeIcon,
       activeColor: 'rgba(91,55,183,1)',
       inactiveColor: 'rgba(0,0,0,1)'
     },
@@ -55,7 +62,7 @@ const tabs: TabsConfig<BubbleTabBarItemConfig> = {
       color: '#1194AA'
     },
     icon: {
-      component: () => <Ionicons name='ios-albums-sharp' />,
+      component: cardIcon,
       activeColor: 'rgba(17,148,170,1)',
       inactiveColor: 'rgba(0,0,0,1)'
     },
@@ -69,7 +76,7 @@ const tabs: TabsConfig<BubbleTabBarItemConfig> = {
       color: '#1194AA'
     },
     icon: {
-      component: () => <Ionicons name='ios-star' />,
+      component: idolIcon,
       activeColor: 'rgba(17,148,170,1)',
       inactiveColor: 'rgba(0,0,0,1)'
     },
@@ -83,7 +90,7 @@ const tabs: TabsConfig<BubbleTabBarItemConfig> = {
       color: '#1194AA'
     },
     icon: {
-      component: () => <Ionicons name='md-calendar' />,
+      component: eventIcon,
       activeColor: 'rgba(17,148,170,1)',
       inactiveColor: 'rgba(0,0,0,1)'
     },
@@ -97,7 +104,7 @@ const tabs: TabsConfig<BubbleTabBarItemConfig> = {
       color: '#1194AA'
     },
     icon: {
-      component: () => <Ionicons name='ios-musical-notes' />,
+      component: songIcon,
       activeColor: 'rgba(17,148,170,1)',
       inactiveColor: 'rgba(0,0,0,1)'
     },
@@ -114,7 +121,7 @@ const Stack = createStackNavigator<RootStackParamList>();
 const LLSIFTab: React.FC<BottomTabNavigationProp<BottomTabList>> = () => {
   return (
     <Tab.Navigator
-      // @ts-ignore
+      //@ts-ignore
       tabBar={(props) => <AnimatedTabBar tabs={tabs} {...props} />}>
       <Tab.Screen
         name='MainScreen'
@@ -155,48 +162,50 @@ const LLSIFTab: React.FC<BottomTabNavigationProp<BottomTabList>> = () => {
   );
 };
 
-const Routes = () => {
+const Routes = (): JSX.Element => {
   const { state } = useContext(UserContext);
   return (
-    <NavigationContainer>
-      <Stack.Navigator>
-        {state.loading ? (
-          <Stack.Screen
-            name='LoadingScreen'
-            component={LoadingScreen}
-            options={{
-              headerShown: false
-            }}
-          />
-        ) : (
-          <>
+    <PaperProvider theme={DefaultTheme}>
+      <NavigationContainer>
+        <Stack.Navigator>
+          {state.loading ? (
             <Stack.Screen
-              name='Main'
-              component={LLSIFTab}
+              name='LoadingScreen'
+              component={LoadingScreen}
               options={{
                 headerShown: false
               }}
             />
-            <Stack.Screen
-              name='CardDetailScreen'
-              component={CardDetailScreen}
-            />
-            <Stack.Screen
-              name='EventDetailScreen'
-              component={EventDetailScreen}
-            />
-            <Stack.Screen
-              name='IdolDetailScreen'
-              component={IdolDetailScreen}
-            />
-            <Stack.Screen
-              name='SongDetailScreen'
-              component={SongDetailScreen}
-            />
-          </>
-        )}
-      </Stack.Navigator>
-    </NavigationContainer>
+          ) : (
+            <>
+              <Stack.Screen
+                name='Main'
+                component={LLSIFTab}
+                options={{
+                  headerShown: false
+                }}
+              />
+              <Stack.Screen
+                name='CardDetailScreen'
+                component={CardDetailScreen}
+              />
+              <Stack.Screen
+                name='EventDetailScreen'
+                component={EventDetailScreen}
+              />
+              <Stack.Screen
+                name='IdolDetailScreen'
+                component={IdolDetailScreen}
+              />
+              <Stack.Screen
+                name='SongDetailScreen'
+                component={SongDetailScreen}
+              />
+            </>
+          )}
+        </Stack.Navigator>
+      </NavigationContainer>
+    </PaperProvider>
   );
 };
 

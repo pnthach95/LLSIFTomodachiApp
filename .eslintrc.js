@@ -38,6 +38,7 @@ module.exports = {
       }
     ],
     '@typescript-eslint/no-unsafe-assignment': 'off',
+    '@typescript-eslint/ban-ts-comment': 'off',
     'import/extensions': 0,
     'class-methods-use-this': 'off',
     'no-use-before-define': 'off',

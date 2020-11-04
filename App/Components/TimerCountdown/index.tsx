@@ -10,7 +10,7 @@ const TimerCountdown = ({
   initialSecondsRemaining: number;
   interval?: number;
   style?: TextStyle;
-}) => {
+}): JSX.Element => {
   const [remaining, setRemaining] = useState(initialSecondsRemaining);
 
   const getFormattedTime = (t: number) => {
@@ -22,10 +22,10 @@ const TimerCountdown = ({
     const s = seconds < 10 ? `0${seconds}` : seconds;
     let m = minutes < 10 ? `0${minutes}` : minutes;
     let h = hours < 10 ? `0${hours}` : hours;
-    const d = days == 0 ? '' : days + (days == 1 ? ' day ' : ' days ');
-    h = h === '00' ? '' : h + (h == 1 ? ' hour ' : ' hours ');
-    m = m === '00' ? '' : m + (m == 1 ? ' minute ' : ' minutes ');
-    return `${d + h + m + s} seconds`;
+    const d = days == 0 ? '' : String(days) + (days == 1 ? ' day ' : ' days ');
+    h = h === '00' ? '' : String(h) + (h == 1 ? ' hour ' : ' hours ');
+    m = m === '00' ? '' : String(m) + (m == 1 ? ' minute ' : ' minutes ');
+    return `${d} ${h} ${m} ${s} seconds`;
   };
 
   useEffect(() => {

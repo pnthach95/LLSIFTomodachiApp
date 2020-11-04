@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import {
   View,
   TouchableOpacity,
@@ -36,8 +37,7 @@ const AttributeRow: React.FC<AttributeRowType> = ({
               rowStyles.standardButton,
               styles.zeroPaddingLeft,
               attribute === '' && rowStyles.selectedValue1
-            ]}
-          >
+            ]}>
             <Image source={Images.empty} style={rowStyles.buttonImage} />
           </TouchableOpacity>
           <TouchableOpacity
@@ -45,8 +45,7 @@ const AttributeRow: React.FC<AttributeRowType> = ({
             style={[
               rowStyles.standardButton,
               attribute === 'Smile' && rowStyles.selectedValue1
-            ]}
-          >
+            ]}>
             <Image source={Images.attribute[0]} style={rowStyles.buttonImage} />
           </TouchableOpacity>
           <TouchableOpacity
@@ -54,8 +53,7 @@ const AttributeRow: React.FC<AttributeRowType> = ({
             style={[
               rowStyles.standardButton,
               attribute === 'Pure' && rowStyles.selectedValue1
-            ]}
-          >
+            ]}>
             <Image source={Images.attribute[1]} style={rowStyles.buttonImage} />
           </TouchableOpacity>
           <TouchableOpacity
@@ -63,8 +61,7 @@ const AttributeRow: React.FC<AttributeRowType> = ({
             style={[
               rowStyles.standardButton,
               attribute === 'Cool' && rowStyles.selectedValue1
-            ]}
-          >
+            ]}>
             <Image source={Images.attribute[2]} style={rowStyles.buttonImage} />
           </TouchableOpacity>
           <TouchableOpacity
@@ -72,8 +69,7 @@ const AttributeRow: React.FC<AttributeRowType> = ({
             style={[
               rowStyles.standardButton,
               attribute === 'All' && rowStyles.selectedValue1
-            ]}
-          >
+            ]}>
             <Image source={Images.attribute[3]} style={rowStyles.buttonImage} />
           </TouchableOpacity>
         </ScrollView>
@@ -85,5 +81,10 @@ const AttributeRow: React.FC<AttributeRowType> = ({
 const styles = StyleSheet.create({
   zeroPaddingLeft: { paddingLeft: 0 }
 });
+
+AttributeRow.propTypes = {
+  attribute: PropTypes.any,
+  selectAttribute: PropTypes.any
+};
 
 export default AttributeRow;

@@ -1,6 +1,6 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { View, ScrollView, Platform } from 'react-native';
-import { Text, Divider, TouchableRipple } from 'react-native-paper';
+import { Text, Title, Divider, TouchableRipple } from 'react-native-paper';
 import FastImage, { OnLoadEvent } from 'react-native-fast-image';
 import VersionNumber from 'react-native-version-number';
 import dayjs from 'dayjs';
@@ -28,7 +28,7 @@ const MainScreen: React.FC<MainScreenProps> = ({ navigation }) => {
     filename: string;
     link: string;
   } | null>(null);
-  const [imgSize, setImgSize] = useState({ width: 1, height: 0 });
+  const [imgSize, setImgSize] = useState({ width: 1, height: 1 });
 
   /** Start time of Worldwide event */
   const ENEventStart = dayjs(ENEvent.english_beginning);
@@ -62,35 +62,18 @@ const MainScreen: React.FC<MainScreenProps> = ({ navigation }) => {
   };
 
   const compareVersion = (appVersion: string, gitVersion: string) => {
-    const appVersionArr = appVersion.split(/\D|[a-zA-Z]/);
-    const gitVersionArr = gitVersion.split(/\./);
-    if (appVersionArr[0] < gitVersionArr[0]) {
-      return true;
-    }
-    if (
-      appVersionArr[0] === gitVersionArr[0] &&
-      appVersionArr[1] < gitVersionArr[1]
-    ) {
-      return true;
-    }
-    if (
-      appVersionArr[0] === gitVersionArr[0] &&
-      appVersionArr[1] === gitVersionArr[1] &&
-      appVersionArr[2] < gitVersionArr[2]
-    ) {
-      return true;
+    const pa = appVersion.split('.');
+    const pb = gitVersion.split('.');
+    for (let i = 0; i < 3; i++) {
+      const na = Number(pa[i]);
+      const nb = Number(pb[i]);
+      if (na > nb) return false;
+      if (nb > na) return true;
+      if (!isNaN(na) && isNaN(nb)) return false;
+      if (isNaN(na) && !isNaN(nb)) return true;
     }
     return false;
   };
-
-  /**
-   * Countdown timer for ongoing event
-   */
-  function timer(time: number) {
-    return (
-      <TimerCountdown initialSecondsRemaining={time} style={styles.text} />
-    );
-  }
 
   /**
    * Get width, height of image in FastImage
@@ -103,15 +86,13 @@ const MainScreen: React.FC<MainScreenProps> = ({ navigation }) => {
   /**
    * Navigate to Event Detail Screen
    */
-  function navigateToEventDetail(event: EventObject) {
+  const navigateToEventDetail = (event: EventObject) => {
     navigation.navigate('EventDetailScreen', { event });
-  }
+  };
 
-  const data = state.cachedData;
-  if (data === null) {
-    return <View style={styles.blank} />;
-  }
+  const goToENEvent = () => navigateToEventDetail(ENEvent);
 
+  const goToJPEvent = () => navigateToEventDetail(JPEvent);
   return (
     <View style={styles.container}>
       {/* HEADER */}
@@ -135,16 +116,10 @@ const MainScreen: React.FC<MainScreenProps> = ({ navigation }) => {
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.content}>
         {/* ENGLISH BLOCK */}
-        <TouchableRipple
-          style={styles.block}
-          onPress={() => navigateToEventDetail(ENEvent)}>
+        <TouchableRipple style={styles.block} onPress={goToENEvent}>
           <>
-            <Text style={styles.text}>
-              {`Worldwide Event: ${ENEvent.english_status || ''}`}
-            </Text>
-            <View style={styles.textbox}>
-              <Text style={styles.title}>{ENEvent.english_name}</Text>
-            </View>
+            <Text>{`Worldwide Event: ${ENEvent.english_status || ''}`}</Text>
+            <Title>{ENEvent.english_name}</Title>
             <FastImage
               source={{ uri: AddHTTPS(ENEvent.english_image || '') }}
               onLoad={onLoadFastImage}
@@ -154,74 +129,57 @@ const MainScreen: React.FC<MainScreenProps> = ({ navigation }) => {
                 height: (Metrics.widthBanner * imgSize.height) / imgSize.width
               }}
             />
-            <View style={styles.textbox}>
-              <Text style={styles.text}>
-                {`Start: ${ENEventStart.format(
-                  Config.DATETIME_FORMAT_OUTPUT
-                )}\nEnd: ${ENEventEnd.format(Config.DATETIME_FORMAT_OUTPUT)}`}
-              </Text>
-            </View>
+            <Text>{`Start: ${ENEventStart.format('LLL')}`}</Text>
+            <Text>{`End: ${ENEventEnd.format('LLL')}`}</Text>
             {ENEvent.world_current && (
-              <View style={styles.textbox}>
-                <Text style={styles.text}>
-                  {timer(ENEventEnd.diff(dayjs()))}
-                  {' left'}
-                </Text>
-              </View>
+              <Text>
+                <TimerCountdown
+                  initialSecondsRemaining={ENEventEnd.diff(dayjs())}
+                />
+                {' left'}
+              </Text>
             )}
             {ENEvent.english_status === EventStatus.ANNOUNCED && (
-              <View style={styles.textbox}>
-                <Text style={styles.text}>
-                  {'Starts in '}
-                  {timer(ENEventStart.diff(dayjs()))}
-                </Text>
-              </View>
+              <Text>
+                {'Starts in '}
+                <TimerCountdown
+                  initialSecondsRemaining={ENEventStart.diff(dayjs())}
+                />
+              </Text>
             )}
           </>
         </TouchableRipple>
-        <Divider style={styles.bgWhite} />
+        <Divider />
         {/* JAPANESE BLOCK */}
-        <TouchableRipple
-          style={styles.block}
-          onPress={() => navigateToEventDetail(JPEvent)}>
+        <TouchableRipple style={styles.block} onPress={goToJPEvent}>
           <>
-            <Text style={styles.text}>
-              {`Japanese Event: ${JPEvent.japan_status || ''}`}
-            </Text>
-            <View style={styles.textbox}>
-              <Text style={styles.title}>{JPEvent.romaji_name}</Text>
-            </View>
+            <Text>{`Japanese Event: ${JPEvent.japan_status || ''}`}</Text>
+            <Title>{JPEvent.romaji_name}</Title>
             <FastImage
               source={{ uri: AddHTTPS(JPEvent.image) }}
-              onLoad={onLoadFastImage}
               resizeMode='contain'
               style={{
                 width: Metrics.widthBanner,
                 height: (Metrics.widthBanner * imgSize.height) / imgSize.width
               }}
             />
-            <View style={styles.textbox}>
-              <Text style={styles.text}>
-                {`Start: ${JPEventStart.format(
-                  Config.DATETIME_FORMAT_OUTPUT
-                )}\nEnd: ${JPEventEnd.format(Config.DATETIME_FORMAT_OUTPUT)}`}
-              </Text>
-            </View>
+            <Text>{`Start: ${JPEventStart.format('LLL')}`}</Text>
+            <Text>{`End: ${JPEventEnd.format('LLL')}`}</Text>
             {JPEvent.japan_current && (
-              <View style={styles.textbox}>
-                <Text style={styles.text}>
-                  {timer(JPEventEnd.diff(dayjs()))}
-                  {' left'}
-                </Text>
-              </View>
+              <Text>
+                <TimerCountdown
+                  initialSecondsRemaining={JPEventEnd.diff(dayjs())}
+                />
+                {' left'}
+              </Text>
             )}
             {JPEvent.japan_status === EventStatus.ANNOUNCED && (
-              <View style={styles.textbox}>
-                <Text style={styles.text}>
-                  {'Starts in '}
-                  {timer(JPEventStart.diff(dayjs()))}
-                </Text>
-              </View>
+              <Text>
+                {'Starts in '}
+                <TimerCountdown
+                  initialSecondsRemaining={JPEventStart.diff(dayjs())}
+                />
+              </Text>
             )}
           </>
         </TouchableRipple>

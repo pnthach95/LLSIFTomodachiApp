@@ -1,35 +1,30 @@
-/*
- * Filename: d:\Projects\LLSIFTomodachiApp\App\routes\index.tsx
- * Path: d:\Projects\LLSIFTomodachiApp
- * Created Date: Tuesday, November 3rd 2020, 1:56:57 pm
- * Author: Pham Ngoc Thach
- *
- * Copyright (c) 2020 HONEYNET
- */
-
 import React, { useEffect } from 'react';
 import { Alert } from 'react-native';
 import { NetworkProvider } from 'react-native-offline';
 import firebase from 'react-native-firebase';
 import * as Sentry from '@sentry/react-native';
+import dayjs from 'dayjs';
+import localizedFormat from 'dayjs/plugin/localizedFormat';
 
 import { loadSettings } from '~/Utils';
 import { FirebaseTopic } from '~/Config';
 import { UserProvider } from '~/Context/UserContext';
 import Routes from './routes';
 
+dayjs.extend(localizedFormat);
+
 Sentry.init({
   dsn: 'https://ac9aa894ab9341fba115b29731378b6b@sentry.io/1330276'
 });
 
-const MainContainer: React.FC<{}> = () => {
+const MainContainer: React.FC<unknown> = () => {
   useEffect(() => {
     if (__DEV__) {
       // console.clear();
       // eslint-disable-next-line no-console
       console.log('App is running in DEV mode', FirebaseTopic);
     }
-    firebase
+    void firebase
       .messaging()
       .hasPermission()
       .then((enabled) => {
@@ -56,7 +51,7 @@ const MainContainer: React.FC<{}> = () => {
       'Default channel',
       firebase.notifications.Android.Importance.High
     ).enableLights(false);
-    firebase.notifications().android.createChannel(channel);
+    void firebase.notifications().android.createChannel(channel);
     const notificationDisplayedListener = firebase
       .notifications()
       // eslint-disable-next-line no-unused-vars
@@ -91,7 +86,7 @@ const MainContainer: React.FC<{}> = () => {
         // console.log('notificationOpenedListener', action, notification);
       });
 
-    firebase
+    void firebase
       .notifications()
       .getInitialNotification()
       .then((notificationOpen) => {
@@ -111,7 +106,7 @@ const MainContainer: React.FC<{}> = () => {
         }
       });
 
-    loadSettings().then((res) => {
+    void loadSettings().then((res) => {
       if (res.jp_event) {
         firebase.messaging().subscribeToTopic(FirebaseTopic.JP_EVENT);
       } else {

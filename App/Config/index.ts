@@ -14,7 +14,7 @@ export const Config = {
   GITHUB_API: 'https://api.github.com/repos/',
   REPO: 'pnthach95/LLSIFTomodachiApp/releases',
   GITHUB_PROJECT: 'https://github.com/pnthach95/LLSIFTomodachiApp',
-  DEFAULT_BACKGROUND: '//i.schoolido.lu/c/1722idolizedRuby.png',
+  DEFAULT_BACKGROUND: '//i.schoolido.lu/c/1722idolizedRuby.png'
 };
 
 export const OrderingGroup = {
@@ -22,12 +22,12 @@ export const OrderingGroup = {
     { label: 'Game ID', value: 'game_id' },
     { label: 'Release date', value: 'release_date' },
     { label: 'Idol', value: 'name' },
-    { label: 'Smile\'s statistics', value: 'idolized_maximum_statistics_smile' },
-    { label: 'Pure\'s statistics', value: 'idolized_maximum_statistics_pure' },
-    { label: 'Cool\'s statistics', value: 'idolized_maximum_statistics_cool' },
+    { label: "Smile's statistics", value: 'idolized_maximum_statistics_smile' },
+    { label: "Pure's statistics", value: 'idolized_maximum_statistics_pure' },
+    { label: "Cool's statistics", value: 'idolized_maximum_statistics_cool' },
     { label: 'Rarity', value: 'rarity' },
     { label: 'Attribute', value: 'attribute' },
-    { label: 'HP', value: 'hp' },
+    { label: 'HP', value: 'hp' }
   ],
   SONG: [
     { label: 'Date added', value: 'id' },
@@ -38,8 +38,8 @@ export const OrderingGroup = {
     { label: 'Rank to unlock song', value: 'rank' },
     { label: 'Notes in Hard song', value: 'hard_notes' },
     { label: 'Notes in Expert song', value: 'expert_notes' },
-    { label: 'Notes in Master song', value: 'master_notes' },
-  ],
+    { label: 'Notes in Master song', value: 'master_notes' }
+  ]
 };
 
 export const RELEASE_NOTE = `This app is free and open-source.
@@ -104,11 +104,11 @@ export const EventStatus = {
   UNKNOWN: 'unknown',
   ANNOUNCED: 'announced',
   ONGOING: 'ongoing',
-  FINISHED: 'finished',
+  FINISHED: 'finished'
 };
 
 export const FirebaseTopic = {
-  JP_EVENT: (__DEV__) ? 'jp_event_test' : 'jp_event',
-  WW_EVENT: (__DEV__) ? 'ww_event_test' : 'ww_event',
-  MESSAGE: (__DEV__) ? 'test_only' : 'admin_message',
+  JP_EVENT: __DEV__ ? 'jp_event_test' : 'jp_event',
+  WW_EVENT: __DEV__ ? 'ww_event_test' : 'ww_event',
+  MESSAGE: __DEV__ ? 'test_only' : 'admin_message'
 };

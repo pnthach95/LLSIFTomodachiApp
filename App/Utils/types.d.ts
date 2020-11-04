@@ -16,8 +16,8 @@ type AppState = {
 };
 
 type ActionType =
-  | { type: 'LOADING' }
-  | { type: 'DONE_LOADING'; data: CachedDataObject }
+  | { type: 'LOADING'; loading: boolean }
+  | { type: 'SAVE_CACHED_DATA'; data: CachedDataObject }
   | { type: 'SAVE_OPTIONS'; data: AppOptions };
 
 type IconComponent = React.FC<{
@@ -47,7 +47,7 @@ type CardsScreenProps = {
 
 type RootStackParamList = {
   Main: undefined;
-  LoadingScreen: undefined;
+  SplashScreen: undefined;
   DrawerScreen: undefined;
   IdolsScreen: undefined;
   SongsScreen: undefined;
@@ -57,7 +57,7 @@ type RootStackParamList = {
   SongDetailScreen: undefined;
 };
 
-type LoadingScreenProps = StackScreenProps<RootStackParamList, 'LoadingScreen'>;
+type SplashScreenProps = StackScreenProps<RootStackParamList, 'SplashScreen'>;
 type DrawerScreenProps = StackScreenProps<RootStackParamList, 'DrawerScreen'>;
 type CardDetailScreenProps = StackScreenProps<
   RootStackParamList,

@@ -5,13 +5,17 @@ const reducer: React.Reducer<AppState, ActionType> = (prevState, action) => {
     case 'LOADING':
       return {
         ...prevState,
-        loading: true
+        loading: action.loading
       };
-    case 'DONE_LOADING':
+    case 'SAVE_CACHED_DATA':
       return {
         ...prevState,
-        loading: false,
         cachedData: action.data
+      };
+    case 'SAVE_OPTIONS':
+      return {
+        ...prevState,
+        options: action.data
       };
     default:
       return prevState;
@@ -29,32 +33,35 @@ export const initCachedData: CachedDataObject = {
     japanese_name: '',
     website_url: ''
   },
-  bgImage: '',
-  eventInfo: {},
+  eventInfo: {
+    jp: [],
+    ww: []
+  },
   idols: [],
-  maxStats: [],
-  randomCard: {
-    attribute: 'All',
-    card_idolized_image: '',
-    game_id: '',
-    id: 0,
-    idol: {
-      name: ''
-    },
-    rarity: 'N',
-    website_url: ''
+  maxStats: {
+    Smile: 0,
+    Pure: 0,
+    Cool: 0
   },
   schools: [],
   skills: [],
-  songsMaxStats: [],
+  songsMaxStats: 0,
   subUnits: []
+};
+
+export const initAppOptions = {
+  wwEvent: true,
+  jpEvent: true,
+  worldwideOnly: false,
+  isDark: false
 };
 
 /** Bộ state ban đầu */
 export const initState: AppState = {
   /** Trạng thái đang tải */
   loading: true,
-  cachedData: initCachedData
+  cachedData: initCachedData,
+  options: initAppOptions
 };
 
 export default reducer;

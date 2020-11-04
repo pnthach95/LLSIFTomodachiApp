@@ -9,7 +9,7 @@ import UserContext from '~/Context/UserContext';
 import StarBar from '~/Components/StarBar';
 import ProgressBar from '~/Components/ProgressBar';
 import TextRow from '~/Components/TextRow';
-import SplashScreen from '../Splash';
+import LoadingScreen from '../Loading';
 import { findColorByAttribute, AddHTTPS, findMainUnit } from '~/Utils';
 import { Metrics, AppStyles, Colors, Images } from '~/Theme';
 import styles from './styles';
@@ -179,7 +179,7 @@ function SongDetailScreen({ route, navigation }) {
 
   const progressStat = (stat) => (100 * stat) / state.cachedData.songsMaxStats;
 
-  if (isLoading) return <SplashScreen />;
+  if (isLoading) return <LoadingScreen />;
 
   return (
     <LinearGradient colors={[colors[1], colors[1]]} style={styles.content}>

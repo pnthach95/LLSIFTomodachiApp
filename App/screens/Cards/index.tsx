@@ -34,7 +34,7 @@ import PromoCardRow from '~/Components/PromoCardRow';
 import Card2PicsItem from '~/Components/Card2PicsItem';
 import SpecialCardRow from '~/Components/SpecialCardRow';
 import LLSIFService from '~/Services/LLSIFService';
-import SplashScreen from '../Splash';
+import LoadingScreen from '../Loading';
 import { Metrics, Fonts, Colors, AppStyles, Images } from '~/Theme';
 import { loadSettings } from '~/Utils';
 import { OrderingGroup } from '~/Config';
@@ -455,7 +455,7 @@ const CardsScreen: React.FC<CardsScreenProps> = ({ navigation }) => {
   );
 
   if (isLoading) {
-    return <SplashScreen bgColor={Colors.green} />;
+    return <LoadingScreen bgColor={Colors.green} />;
   }
 
   return (

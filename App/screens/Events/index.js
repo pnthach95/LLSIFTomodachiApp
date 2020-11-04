@@ -12,7 +12,7 @@ import RegionRow from '~/Components/RegionRow';
 import IdolNameRow from '~/Components/IdolNameRow';
 import MainUnitRow from '~/Components/MainUnitRow';
 import AttributeRow from '~/Components/AttributeRow';
-import SplashScreen from '../Splash';
+import LoadingScreen from '../Loading';
 import { Colors, AppStyles, Images } from '~/Theme';
 import styles from './styles';
 import LLSIFService from '~/Services/LLSIFService';
@@ -273,7 +273,7 @@ function EventsScreen({ navigation }) {
   );
 
   if (isLoading) {
-    return <SplashScreen bgColor={Colors.violet} />;
+    return <LoadingScreen bgColor={Colors.violet} />;
   }
 
   return (

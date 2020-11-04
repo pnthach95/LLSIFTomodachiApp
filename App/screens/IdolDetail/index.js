@@ -5,7 +5,7 @@ import FastImage from 'react-native-fast-image';
 import LinearGradient from 'react-native-linear-gradient';
 import dayjs from 'dayjs';
 
-import SplashScreen from '../Splash';
+import LoadingScreen from '../Loading';
 import InfoLine from '~/Components/InfoLine';
 import LLSIFService from '~/Services/LLSIFService';
 import {
@@ -117,7 +117,7 @@ function IdolDetailScreen({ route, navigation }) {
     }
   };
 
-  if (isLoading) return <SplashScreen bgColor={Colors.blue} />;
+  if (isLoading) return <LoadingScreen bgColor={Colors.blue} />;
   return (
     <LinearGradient style={AppStyles.screen} colors={[colors[1], colors[0]]}>
       <ScrollView showsVerticalScrollIndicator={false}>

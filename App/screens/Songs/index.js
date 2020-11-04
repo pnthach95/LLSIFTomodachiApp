@@ -11,7 +11,7 @@ import SongItem from '~/Components/SongItem';
 import MainUnitRow from '~/Components/MainUnitRow';
 import OrderingRow from '~/Components/OrderingRow';
 import AttributeRow from '~/Components/AttributeRow';
-import SplashScreen from '../Splash';
+import LoadingScreen from '../Loading';
 import LLSIFService from '~/Services/LLSIFService';
 import { AppStyles, Images, Fonts, Colors } from '~/Theme';
 import { OrderingGroup } from '~/Config';
@@ -254,7 +254,7 @@ function SongsScreen({ navigation }) {
   );
 
   if (isLoading) {
-    return <SplashScreen />;
+    return <LoadingScreen />;
   }
   return (
     <View style={AppStyles.screen}>

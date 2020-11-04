@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useEffect } from 'react';
 import { Alert } from 'react-native';
 import { NetworkProvider } from 'react-native-offline';
@@ -6,7 +8,6 @@ import * as Sentry from '@sentry/react-native';
 import dayjs from 'dayjs';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
 
-import { loadSettings } from '~/Utils';
 import { FirebaseTopic } from '~/Config';
 import { UserProvider } from '~/Context/UserContext';
 import Routes from './routes';
@@ -17,7 +18,7 @@ Sentry.init({
   dsn: 'https://ac9aa894ab9341fba115b29731378b6b@sentry.io/1330276'
 });
 
-const MainContainer: React.FC<unknown> = () => {
+const MainContainer: React.FC<null> = () => {
   useEffect(() => {
     if (__DEV__) {
       // console.clear();
@@ -54,7 +55,6 @@ const MainContainer: React.FC<unknown> = () => {
     void firebase.notifications().android.createChannel(channel);
     const notificationDisplayedListener = firebase
       .notifications()
-      // eslint-disable-next-line no-unused-vars
       .onNotificationDisplayed((notification) => {
         // Process your notification as required
         // ANDROID: Remote notifications do not contain the channel ID.
@@ -106,18 +106,6 @@ const MainContainer: React.FC<unknown> = () => {
         }
       });
 
-    void loadSettings().then((res) => {
-      if (res.jp_event) {
-        firebase.messaging().subscribeToTopic(FirebaseTopic.JP_EVENT);
-      } else {
-        firebase.messaging().unsubscribeFromTopic(FirebaseTopic.JP_EVENT);
-      }
-      if (res.ww_event) {
-        firebase.messaging().subscribeToTopic(FirebaseTopic.WW_EVENT);
-      } else {
-        firebase.messaging().unsubscribeFromTopic(FirebaseTopic.WW_EVENT);
-      }
-    });
     firebase.messaging().subscribeToTopic(FirebaseTopic.MESSAGE);
 
     return () => {

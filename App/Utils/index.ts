@@ -1,6 +1,7 @@
 import { Alert, Linking } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
-import { Colors } from '../Theme';
+import { Colors } from '~/Theme';
+import { initAppOptions } from '~/Context/Reducer';
 import type { AppOptions, AttributeType } from './types';
 
 /**
@@ -109,12 +110,7 @@ export const findSkill = (key: string): number => {
 export const loadSettings = async (): Promise<AppOptions> => {
   const res = await AsyncStorage.getItem('settings');
   if (res === null) {
-    return {
-      wwEvent: true,
-      jpEvent: true,
-      worldwideOnly: false,
-      isDark: false
-    };
+    return initAppOptions;
   } else {
     const parsed: AppOptions = JSON.parse(res);
     return parsed;

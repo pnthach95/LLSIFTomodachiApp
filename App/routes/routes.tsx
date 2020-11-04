@@ -6,14 +6,18 @@ import AnimatedTabBar, {
   TabsConfig,
   BubbleTabBarItemConfig
 } from '@gorhom/animated-tabbar';
-import { DefaultTheme, Provider as PaperProvider } from 'react-native-paper';
+import {
+  DefaultTheme,
+  DarkTheme,
+  Provider as PaperProvider
+} from 'react-native-paper';
 import Animated from 'react-native-reanimated';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import { Colors } from '~/Theme';
 import UserContext from '~/Context/UserContext';
 
-import LoadingScreen from '~/screens/Loading';
+import SplashScreen from '~/screens/Splash';
 import MainScreen from '~/screens/Main';
 import CardsScreen from '~/screens/Cards';
 import IdolsScreen from '~/screens/Idols';
@@ -146,16 +150,16 @@ const LLSIFTab = () => {
   );
 };
 
-const Routes: React.FC<null> = () => {
+const Routes = (): JSX.Element => {
   const { state } = useContext(UserContext);
   return (
-    <PaperProvider theme={DefaultTheme}>
+    <PaperProvider theme={state.options.isDark ? DarkTheme : DefaultTheme}>
       <NavigationContainer>
         <Stack.Navigator>
           {state.loading ? (
             <Stack.Screen
-              name='LoadingScreen'
-              component={LoadingScreen}
+              name='SplashScreen'
+              component={SplashScreen}
               options={{
                 headerShown: false
               }}

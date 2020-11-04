@@ -9,7 +9,7 @@ import UserContext from '~/Context/UserContext';
 import ConnectStatus from '~/Components/ConnectStatus';
 import IdolItem from '~/Components/IdolItem';
 import LLSIFService from '~/Services/LLSIFService';
-import SplashScreen from '../Splash';
+import LoadingScreen from '../Loading';
 import { Colors, AppStyles, Images } from '~/Theme';
 import styles from './styles';
 
@@ -125,7 +125,7 @@ function IdolsScreen({ navigation }) {
   };
 
   if (isLoading) {
-    return <SplashScreen bgColor={Colors.blue} />;
+    return <LoadingScreen bgColor={Colors.blue} />;
   }
 
   return (

@@ -8,7 +8,7 @@ import Information from './Information';
 import Tracker from './Tracker';
 import UserContext from '~/Context/UserContext';
 import useStatusBar from '~/hooks/useStatusBar';
-import SplashScreen from '../Splash';
+import LoadingScreen from '../Loading';
 import LLSIFService from '~/Services/LLSIFService';
 import LLSIFdotnetService from '~/Services/LLSIFdotnetService';
 import { Config } from '~/Config';
@@ -150,7 +150,7 @@ function EventDetailScreen({ navigation, route }) {
     if (!isLoading) setSelectedTab(index);
   };
 
-  if (isLoading) return <SplashScreen bgColor={Colors.violet} />;
+  if (isLoading) return <LoadingScreen bgColor={Colors.violet} />;
   return (
     <View style={AppStyles.screen}>
       {selectedTab === 0 ? (

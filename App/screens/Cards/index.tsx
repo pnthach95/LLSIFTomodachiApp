@@ -44,23 +44,23 @@ import type {
 } from '~/Utils/types';
 
 type FilterType = {
-  search?: string;
-  selectedOrdering?: string;
-  isReverse?: boolean;
-  page_size: number;
-  page: number;
-  name?: string;
-  rarity?: RarityType;
-  attribute?: AttributeType;
-  japan_only?: BooleanOrEmpty;
-  is_promo?: BooleanOrEmpty;
-  is_special?: BooleanOrEmpty;
-  is_event?: BooleanOrEmpty;
-  skill?: SkillType;
-  idol_main_unit?: MainUnitNames;
-  idol_sub_unit?: string;
-  idol_school?: string;
-  idol_year?: YearType;
+  search?: string; // Keyword for search
+  selectedOrdering?: string; // Selected ordering option {label: string, value: string}
+  isReverse?: boolean; // Is reverse (boolean)
+  page_size: number; // Number of object per API call
+  page: number; // Page number
+  name?: string; // Idol name
+  rarity?: RarityType; // Rarity (None, N, R, SR, SSR, UR)
+  attribute?: AttributeType; // Attribute (None, Smile, Pure, Cool, All)
+  japan_only?: BooleanOrEmpty; // Japan only (None, False, True)
+  is_promo?: BooleanOrEmpty; // Is promo (None, True, False)
+  is_special?: BooleanOrEmpty; // Is special (None, True, False)
+  is_event?: BooleanOrEmpty; // Is event (None, True, False)
+  skill?: SkillType; // Skill name
+  idol_main_unit?: MainUnitNames; // Main unit (None, μ's, Aqours)
+  idol_sub_unit?: string; // Sub unit
+  idol_school?: string; // School name
+  idol_year?: YearType; // Year (None, First, Second, Third)
   ordering?: string;
 };
 
@@ -72,23 +72,6 @@ type FilterType = {
  * - `list`: Data for FlatList
  * - `isFilter`: Filter on/off
  * - `stopSearch`: Prevent calling API
- * - `search`: Keyword for search
- * - `selectedOrdering`: Selected ordering option {label: string, value: string}
- * - `isReverse`: Is reverse (boolean)
- * - `page_size`: Number of object per API call
- * - `page`: Page number
- * - `name`: Idol name
- * - `rarity`: Rarity (None, N, R, SR, SSR, UR)
- * - `attribute`: Attribute (None, Smile, Pure, Cool, All)
- * - `japan_only`: Japan only (None, False, True)
- * - `is_promo`: Is promo (None, True, False)
- * - `is_special`: Is special (None, True, False)
- * - `is_event`: Is event (None, True, False)
- * - `skill`: Skill name
- * - `idol_main_unit`: Main unit (None, μ's, Aqours)
- * - `idol_sub_unit`: Sub unit
- * - `idol_school`: School name
- * - `idol_year`: Year (None, First, Second, Third)
  *
  */
 const CardsScreen: React.FC<CardsScreenProps> = ({ navigation }) => {
@@ -401,15 +384,15 @@ const CardsScreen: React.FC<CardsScreenProps> = ({ navigation }) => {
     </View>
   );
 
-  if (isLoading) {
-    return <LoadingScreen bgColor={Colors.green} />;
-  }
-
   const onChangeText = (text: string): void =>
     setSearchOptions({
       ...searchOptions,
       search: text
     });
+
+  if (isLoading) {
+    return <LoadingScreen />;
+  }
 
   return (
     <View style={AppStyles.screen}>

@@ -7,7 +7,7 @@ import {
   Image,
   StyleSheet
 } from 'react-native';
-import { IconButton, Text, Surface, TouchableRipple } from 'react-native-paper';
+import { Text, Surface, Button, Appbar } from 'react-native-paper';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
 
@@ -19,7 +19,7 @@ import IdolNameRow from '~/Components/IdolNameRow';
 import MainUnitRow from '~/Components/MainUnitRow';
 import AttributeRow from '~/Components/AttributeRow';
 import LoadingScreen from '../Loading';
-import { Metrics, Colors, Fonts, AppStyles, Images } from '~/Theme';
+import { Metrics, Colors, AppStyles, Images } from '~/Theme';
 import LLSIFService from '~/Services/LLSIFService';
 import UserContext from '~/Context/UserContext';
 import type {
@@ -32,15 +32,15 @@ import type {
 } from '~/Utils/types';
 
 type FilterType = {
-  ordering: string;
-  page_size: number;
-  page: number;
-  idol?: string;
-  search?: string;
-  main_unit?: MainUnitNames;
-  skill?: SkillType;
-  attribute?: AttributeType;
-  is_english?: BooleanOrEmpty;
+  ordering: string; // Ordering by any field (See link above)
+  page_size: number; // Number of object per API call
+  page: number; // Page number
+  idol?: string; // Idol name
+  search?: string; // Keyword for search
+  main_unit?: MainUnitNames; // Main unit (None, μ's, Aqours)
+  skill?: SkillType; // Skill name
+  attribute?: AttributeType; // Attribute (None, Smile, Pure, Cool, All)
+  is_english?: BooleanOrEmpty; // Is English
 };
 
 /**
@@ -51,15 +51,6 @@ type FilterType = {
  * - `list`: Data for FlatList
  * - `isFilter`: Filter on/off
  * - `stopSearch`: Prevent calling API
- * - `ordering`: Ordering by any field (See link above)
- * - `page_size`: Number of object per API call
- * - `page`: Page number
- * - `search`: Keyword for search
- * - `idol`: Idol name
- * - `main_unit`: Main unit (None, μ's, Aqours)
- * - `skill`: Skill name
- * - `attribute`: Attribute (None, Smile, Pure, Cool, All)
- * - `is_english`: Is English
  *
  */
 const EventsScreen: React.FC<EventsScreenProps> = ({ navigation }) => {
@@ -266,7 +257,7 @@ const EventsScreen: React.FC<EventsScreenProps> = ({ navigation }) => {
 
   const renderEmpty = (
     <View style={styles.margin10}>
-      <Text style={styles.resetText}>No result</Text>
+      <Text>No result</Text>
     </View>
   );
 
@@ -283,22 +274,18 @@ const EventsScreen: React.FC<EventsScreenProps> = ({ navigation }) => {
   return (
     <View style={styles.container}>
       {/* HEADER */}
-      <Surface style={[AppStyles.header, styles.header]}>
+      <Appbar.Header>
         <View style={AppStyles.searchHeader}>
           <TextInput
             onChangeText={onChangeText}
             onSubmitEditing={onSearch}
-            placeholder={'Search event...'}
+            placeholder='Search event...'
             style={AppStyles.searchInput}
           />
-          <IconButton
-            icon={'magnify'}
-            onPress={onSearch}
-            style={AppStyles.searchButton}
-          />
         </View>
-        <IconButton icon={'more'} onPress={toggleFilter} />
-      </Surface>
+        <Appbar.Action icon='magnify' onPress={onSearch} />
+        <Appbar.Action icon='dots-horizontal' onPress={toggleFilter} />
+      </Appbar.Header>
 
       {/* FILTER */}
       {isFilter && (
@@ -323,9 +310,9 @@ const EventsScreen: React.FC<EventsScreenProps> = ({ navigation }) => {
             japanOnly={searchOptions.is_english || ''}
             selectRegion={selectRegion}
           />
-          <TouchableRipple onPress={resetFilter} style={styles.resetView}>
-            <Text style={styles.resetText}>RESET</Text>
-          </TouchableRipple>
+          <Button mode='contained' onPress={resetFilter}>
+            RESET
+          </Button>
         </Surface>
       )}
       <ConnectStatus />
@@ -358,26 +345,11 @@ const styles = StyleSheet.create({
     elevation: 5,
     padding: 10
   },
-  header: {
-    backgroundColor: Colors.white,
-    elevation: 5
-  },
   list: {
     padding: Metrics.smallMargin
   },
   margin10: {
     margin: 10
-  },
-  resetText: {
-    ...Fonts.style.white,
-    ...Fonts.style.center
-  },
-  resetView: {
-    alignItems: 'stretch',
-    backgroundColor: Colors.red,
-    justifyContent: 'center',
-    marginTop: 10,
-    padding: 10
   }
 });
 

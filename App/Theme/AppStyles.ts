@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-
+import Colors from './Colors';
 import Metrics from './Metrics';
 
 export default StyleSheet.create({
@@ -46,12 +46,11 @@ export default StyleSheet.create({
     width: Metrics.navBarHeight - 10
   },
   searchHeader: {
-    backgroundColor: '#dcdcdc',
-    borderRadius: 20,
+    backgroundColor: Colors.grey200,
+    flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginVertical: 6,
-    width: Metrics.screenWidth - Metrics.navBarHeight * 2
+    marginVertical: 6
   },
   searchInput: {
     paddingLeft: 10,

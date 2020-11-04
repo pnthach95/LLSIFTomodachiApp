@@ -8,13 +8,7 @@ import {
   Image,
   StyleSheet
 } from 'react-native';
-import {
-  Text,
-  IconButton,
-  Surface,
-  TouchableRipple,
-  FAB
-} from 'react-native-paper';
+import { Text, Button, Appbar, Surface, FAB } from 'react-native-paper';
 import _ from 'lodash';
 
 import ConnectStatus from '~/Components/ConnectStatus';
@@ -35,7 +29,7 @@ import Card2PicsItem from '~/Components/Card2PicsItem';
 import SpecialCardRow from '~/Components/SpecialCardRow';
 import LLSIFService from '~/Services/LLSIFService';
 import LoadingScreen from '../Loading';
-import { Metrics, Fonts, Colors, AppStyles, Images } from '~/Theme';
+import { Metrics, Colors, AppStyles, Images } from '~/Theme';
 import UserContext from '~/Context/UserContext';
 import { OrderingGroup } from '~/Config';
 import type {
@@ -132,15 +126,11 @@ const CardsScreen: React.FC<CardsScreenProps> = ({ navigation }) => {
 
   /**
    * Key extractor in FlatList
-   *
-   * @memberof CardsScreen
    */
   const keyExtractor = (item: CardObject) => `card ${item.id}`;
 
   /**
    * Render item in FlatList
-   *
-   * @memberof CardsScreen
    */
   const renderItem = ({ item }: { item: CardObject }) => {
     /**
@@ -158,7 +148,6 @@ const CardsScreen: React.FC<CardsScreenProps> = ({ navigation }) => {
 
   /**
    * Get card list
-   *
    */
   async function getCards() {
     const ordering =
@@ -208,8 +197,7 @@ const CardsScreen: React.FC<CardsScreenProps> = ({ navigation }) => {
         throw Error('null');
       }
     } catch (err) {
-      // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-      console.log(`OK Pressed, ${err}`);
+      console.log('OK Pressed', err);
       Alert.alert('Error', 'Error when get cards', [{ text: 'OK' }]);
     } finally {
       setIsLoading(false);
@@ -218,7 +206,6 @@ const CardsScreen: React.FC<CardsScreenProps> = ({ navigation }) => {
 
   /**
    * Call when pressing search button
-   *
    */
   const onSearch = () => {
     setList([]);
@@ -230,7 +217,6 @@ const CardsScreen: React.FC<CardsScreenProps> = ({ navigation }) => {
   /**
    * Call when scrolling to the end of list.
    * stopSearch prevents calling getCards when no card was found (404).
-   *
    */
   function onEndReaching() {
     if (stopSearch) return;
@@ -242,7 +228,6 @@ const CardsScreen: React.FC<CardsScreenProps> = ({ navigation }) => {
 
   /**
    * Filter on/off
-   *
    */
   const toggleFilter = () => {
     setIsFilter(!isFilter);
@@ -250,7 +235,6 @@ const CardsScreen: React.FC<CardsScreenProps> = ({ navigation }) => {
 
   /**
    * Reverse search on/off
-   *
    */
   const toggleReverse = () => {
     setSearchOptions({
@@ -261,7 +245,6 @@ const CardsScreen: React.FC<CardsScreenProps> = ({ navigation }) => {
 
   /**
    * Switch 1 column and 2 columns
-   *
    */
   const switchColumn = () => {
     setColumn(column === 1 ? 2 : 1);
@@ -269,8 +252,6 @@ const CardsScreen: React.FC<CardsScreenProps> = ({ navigation }) => {
 
   /**
    * Save is_promo
-   *
-   * @param {String} value
    */
   const selectPromo = (value: BooleanOrEmpty) => () => {
     setSearchOptions({
@@ -281,8 +262,6 @@ const CardsScreen: React.FC<CardsScreenProps> = ({ navigation }) => {
 
   /**
    * Save is_special
-   *
-   * @param {String} value
    */
   const selectSpecial = (value: BooleanOrEmpty) => () => {
     setSearchOptions({
@@ -293,8 +272,6 @@ const CardsScreen: React.FC<CardsScreenProps> = ({ navigation }) => {
 
   /**
    * Save is_event
-   *
-   * @param {String} itemValue
    */
   const selectEvent = (value: BooleanOrEmpty) => () => {
     setSearchOptions({
@@ -305,8 +282,6 @@ const CardsScreen: React.FC<CardsScreenProps> = ({ navigation }) => {
 
   /**
    * Save idol_main_unit
-   *
-   * @param {String} value
    */
   const selectMainUnit = (value: MainUnitNames) => () => {
     setSearchOptions({
@@ -317,8 +292,6 @@ const CardsScreen: React.FC<CardsScreenProps> = ({ navigation }) => {
 
   /**
    * Save rarity
-   *
-   * @param {String} value
    */
   const selectRarity = (value: RarityType) => () => {
     setSearchOptions({
@@ -329,8 +302,6 @@ const CardsScreen: React.FC<CardsScreenProps> = ({ navigation }) => {
 
   /**
    * Save attribute
-   *
-   * @param {String} value
    */
   const selectAttribute = (value: AttributeType) => () => {
     setSearchOptions({
@@ -341,8 +312,6 @@ const CardsScreen: React.FC<CardsScreenProps> = ({ navigation }) => {
 
   /**
    * Save idol_year
-   *
-   * @param {String} value
    */
   const selectYear = (value: YearType) => () =>
     setSearchOptions({
@@ -352,8 +321,6 @@ const CardsScreen: React.FC<CardsScreenProps> = ({ navigation }) => {
 
   /**
    * Save region
-   *
-   * @param {String} value
    */
   const selectRegion = (value: BooleanOrEmpty) => () => {
     setSearchOptions({
@@ -364,8 +331,6 @@ const CardsScreen: React.FC<CardsScreenProps> = ({ navigation }) => {
 
   /**
    * Save idol_sub_unit
-   *
-   * @param {String} itemValue
    */
   const selectSubUnit = (itemValue: string) => {
     setSearchOptions({
@@ -376,8 +341,6 @@ const CardsScreen: React.FC<CardsScreenProps> = ({ navigation }) => {
 
   /**
    * Save idol name
-   *
-   * @param {String} itemValue
    */
   const selectIdol = (itemValue: string) => {
     setSearchOptions({
@@ -388,8 +351,6 @@ const CardsScreen: React.FC<CardsScreenProps> = ({ navigation }) => {
 
   /**
    * Save school
-   *
-   * @param {String} itemValue
    */
   const selectSchool = (itemValue: string) => {
     setSearchOptions({
@@ -400,8 +361,6 @@ const CardsScreen: React.FC<CardsScreenProps> = ({ navigation }) => {
 
   /**
    * Save skill
-   *
-   * @param {String} itemValue
    */
   const selectSkill = (itemValue: SkillType) => {
     setSearchOptions({
@@ -412,8 +371,6 @@ const CardsScreen: React.FC<CardsScreenProps> = ({ navigation }) => {
 
   /**
    * Save ordering
-   *
-   * @param {String} itemValue
    */
   const selectOrdering = (itemValue: string) => {
     setSearchOptions({
@@ -424,7 +381,6 @@ const CardsScreen: React.FC<CardsScreenProps> = ({ navigation }) => {
 
   /**
    * Reset filter variables
-   *
    */
   const resetFilter = () => {
     setSearchOptions(defaultFilter);
@@ -432,7 +388,6 @@ const CardsScreen: React.FC<CardsScreenProps> = ({ navigation }) => {
 
   /**
    * Render footer of FlatList
-   *
    */
   const renderFooter = (
     <View style={[AppStyles.center, styles.flatListElement]}>
@@ -442,7 +397,7 @@ const CardsScreen: React.FC<CardsScreenProps> = ({ navigation }) => {
 
   const renderEmpty = (
     <View style={styles.flatListElement}>
-      <Text style={styles.resetText}>No result</Text>
+      <Text>No result</Text>
     </View>
   );
 
@@ -450,30 +405,27 @@ const CardsScreen: React.FC<CardsScreenProps> = ({ navigation }) => {
     return <LoadingScreen bgColor={Colors.green} />;
   }
 
+  const onChangeText = (text: string): void =>
+    setSearchOptions({
+      ...searchOptions,
+      search: text
+    });
+
   return (
-    <View style={styles.container}>
+    <View style={AppStyles.screen}>
       {/* HEADER */}
-      <Surface style={[AppStyles.header, styles.header]}>
+      <Appbar.Header>
         <View style={AppStyles.searchHeader}>
           <TextInput
-            onChangeText={(text) =>
-              setSearchOptions({
-                ...searchOptions,
-                search: text
-              })
-            }
+            onChangeText={onChangeText}
             onSubmitEditing={onSearch}
-            placeholder={'Search card...'}
+            placeholder='Search card...'
             style={AppStyles.searchInput}
           />
-          <IconButton
-            icon='magnify'
-            onPress={onSearch}
-            style={AppStyles.searchButton}
-          />
         </View>
-        <IconButton icon='more' onPress={toggleFilter} />
-      </Surface>
+        <Appbar.Action icon='magnify' onPress={onSearch} />
+        <Appbar.Action icon='dots-horizontal' onPress={toggleFilter} />
+      </Appbar.Header>
 
       {/* FILTER */}
       {isFilter && (
@@ -536,9 +488,9 @@ const CardsScreen: React.FC<CardsScreenProps> = ({ navigation }) => {
             />
 
             {/* RESET BUTTON */}
-            <TouchableRipple onPress={resetFilter} style={styles.resetView}>
-              <Text style={styles.resetText}>RESET</Text>
-            </TouchableRipple>
+            <Button mode='contained' onPress={resetFilter}>
+              RESET
+            </Button>
           </ScrollView>
         </Surface>
       )}
@@ -563,10 +515,6 @@ const CardsScreen: React.FC<CardsScreenProps> = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    backgroundColor: Colors.green,
-    flex: 1
-  },
   contentContainer: {
     padding: Metrics.baseMargin
   },
@@ -584,23 +532,8 @@ const styles = StyleSheet.create({
   flatListElement: {
     margin: Metrics.baseMargin
   },
-  header: {
-    backgroundColor: Colors.white,
-    elevation: 5
-  },
   list: {
     padding: Metrics.smallMargin
-  },
-  resetText: {
-    ...Fonts.style.white,
-    ...Fonts.style.center
-  },
-  resetView: {
-    alignItems: 'stretch',
-    backgroundColor: Colors.red,
-    justifyContent: 'center',
-    marginTop: Metrics.baseMargin,
-    padding: Metrics.baseMargin
   }
 });
 

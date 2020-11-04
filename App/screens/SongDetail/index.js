@@ -11,7 +11,7 @@ import ProgressBar from '~/Components/ProgressBar';
 import TextRow from '~/Components/TextRow';
 import SplashScreen from '../Splash';
 import { findColorByAttribute, AddHTTPS, findMainUnit } from '~/Utils';
-import { Metrics, AppStyles, Colors } from '~/Theme';
+import { Metrics, AppStyles, Colors, Images } from '~/Theme';
 import styles from './styles';
 
 /**
@@ -91,13 +91,15 @@ function SongDetailScreen({ route, navigation }) {
     }
     setMaster([item.master_notes, masterArray]);
     setCurrentStats([item.easy_notes, easyArray]);
-    const unitIcon = () => (
-      <FastImage
-        source={findMainUnit(item.main_unit)}
-        resizeMode='contain'
-        style={styles.rightHeaderImage}
-      />
-    );
+    const mainunit = findMainUnit(item.main_unit);
+    const unitIcon = () =>
+      mainunit && (
+        <FastImage
+          source={Images.mainUnit[mainunit]}
+          resizeMode='contain'
+          style={styles.rightHeaderImage}
+        />
+      );
     navigation.setOptions({
       headerStyle: { backgroundColor: colors[1] },
       headerTitle: name,

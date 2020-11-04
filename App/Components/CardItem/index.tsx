@@ -58,7 +58,7 @@ const CardItem: React.FC<CardItemType> = ({ item, onPress }) => {
           <View style={[styles.info, { backgroundColor: cardColors[1] }]}>
             {!!item.skill && (
               <Image
-                source={findSkill(item.skill)}
+                source={Images.skill[findSkill(item.skill)]}
                 style={[AppStyles.mediumIcon, { tintColor: cardColors[0] }]}
               />
             )}

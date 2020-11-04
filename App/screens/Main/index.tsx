@@ -7,7 +7,6 @@ import dayjs from 'dayjs';
 
 import ConnectStatus from '~/Components/ConnectStatus';
 import TimerCountdown from '~/Components/TimerCountdown';
-import useStatusBar from '~/hooks/useStatusBar';
 import { AddHTTPS, openLink } from '~/Utils';
 import { Config, EventStatus } from '~/Config';
 import GithubService from '~/Services/GithubService';

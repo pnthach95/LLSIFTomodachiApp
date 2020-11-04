@@ -8,7 +8,7 @@ import styles from '~/Theme/RowStyles';
 
 type SchoolRowType = {
   idolSchool: string;
-  selectSchool: () => void;
+  selectSchool: (idolSchool: string) => void;
 };
 
 /**

@@ -5,10 +5,11 @@ import RNPickerSelect from 'react-native-picker-select';
 
 import UserContext from '~/Context/UserContext';
 import styles from '~/Theme/RowStyles';
+import type { SkillType } from '~/Utils/types';
 
 type SkillRowType = {
-  skill: string;
-  selectSkill: () => void;
+  skill: SkillType;
+  selectSkill: (skill: SkillType) => void;
 };
 
 /**

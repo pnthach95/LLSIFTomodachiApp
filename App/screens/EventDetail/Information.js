@@ -9,7 +9,7 @@ import dayjs from 'dayjs';
 import TimerCountdown from '~/Components/TimerCountdown';
 import { AddHTTPS, findAttribute } from '~/Utils';
 import { Config, EventStatus } from '~/Config';
-import { Metrics, AppStyles, Fonts } from '~/Theme';
+import { Metrics, AppStyles, Fonts, Images } from '~/Theme';
 import styles from './styles';
 
 function Information({
@@ -145,7 +145,9 @@ function Information({
                   />
                   <View style={styles.songInfo}>
                     <Image
-                      source={findAttribute(songItem.attribute)}
+                      source={
+                        Images.attribute[findAttribute(songItem.attribute)]
+                      }
                       style={styles.attributeIcon}
                     />
                     <Text style={styles.whiteCenter}>

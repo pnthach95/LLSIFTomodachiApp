@@ -14,7 +14,7 @@ import {
   findMainUnit,
   findSubUnit
 } from '~/Utils';
-import { Metrics, AppStyles, Colors } from '~/Theme';
+import { Metrics, AppStyles, Colors, Images } from '~/Theme';
 import styles from './styles';
 
 /**
@@ -54,18 +54,25 @@ function IdolDetailScreen({ route, navigation }) {
         </View>
       );
 
+      const mainunit = findMainUnit(item.main_unit);
+      const subunit = findSubUnit(item.sub_unit);
+
       const headerRight = () => (
         <View style={AppStyles.row}>
-          <FastImage
-            source={findMainUnit(item.main_unit)}
-            resizeMode='contain'
-            style={styles.rightHeaderImage}
-          />
-          <FastImage
-            source={findSubUnit(item.sub_unit)}
-            resizeMode='contain'
-            style={styles.rightHeaderImage}
-          />
+          {mainunit && (
+            <FastImage
+              source={Images.mainUnit[mainunit]}
+              resizeMode='contain'
+              style={styles.rightHeaderImage}
+            />
+          )}
+          {subunit && (
+            <FastImage
+              source={Images.subUnit[subunit]}
+              resizeMode='contain'
+              style={styles.rightHeaderImage}
+            />
+          )}
         </View>
       );
       StatusBar.setBackgroundColor(colors[1]);

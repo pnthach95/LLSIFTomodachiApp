@@ -67,7 +67,7 @@ const Card2PicsItem: React.FC<Card2PicsItemType> = ({ item, onPress }) => {
             <View style={[styles.infoRight, AppStyles.screen]}>
               {!!item.skill && (
                 <Image
-                  source={findSkill(item.skill)}
+                  source={Images.skill[findSkill(item.skill)]}
                   style={[AppStyles.mediumIcon, { tintColor: cardColors[0] }]}
                 />
               )}

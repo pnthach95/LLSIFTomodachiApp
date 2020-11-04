@@ -1,18 +1,22 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   FlatList,
   TextInput,
-  TouchableNativeFeedback,
   Alert,
   ScrollView,
   Image,
-  LayoutAnimation
+  StyleSheet
 } from 'react-native';
-import { Text, IconButton, Surface, TouchableRipple } from 'react-native-paper';
+import {
+  Text,
+  IconButton,
+  Surface,
+  TouchableRipple,
+  FAB
+} from 'react-native-paper';
 import _ from 'lodash';
 
-import useStatusBar from '~/hooks/useStatusBar';
 import ConnectStatus from '~/Components/ConnectStatus';
 import YearRow from '~/Components/YearRow';
 import CardItem from '~/Components/CardItem';
@@ -31,8 +35,7 @@ import Card2PicsItem from '~/Components/Card2PicsItem';
 import SpecialCardRow from '~/Components/SpecialCardRow';
 import LLSIFService from '~/Services/LLSIFService';
 import SplashScreen from '../Splash';
-import { Colors, AppStyles, Images } from '~/Theme';
-import styles from './styles';
+import { Metrics, Fonts, Colors, AppStyles, Images } from '~/Theme';
 import { loadSettings } from '~/Utils';
 import { OrderingGroup } from '~/Config';
 import type {
@@ -45,6 +48,27 @@ import type {
   SkillType,
   YearType
 } from '~/Utils/types';
+
+type FilterType = {
+  search?: string;
+  selectedOrdering?: string;
+  isReverse?: boolean;
+  page_size?: number;
+  page?: number;
+  name?: string;
+  rarity?: RarityType;
+  attribute?: AttributeType;
+  japan_only?: BooleanOrEmpty;
+  is_promo?: BooleanOrEmpty;
+  is_special?: BooleanOrEmpty;
+  is_event?: BooleanOrEmpty;
+  skill?: SkillType;
+  idol_main_unit?: MainUnitNames;
+  idol_sub_unit?: string;
+  idol_school?: string;
+  idol_year?: YearType;
+  ordering?: string;
+};
 
 /**
  * [Card List Screen](https://github.com/MagiCircles/SchoolIdolAPI/wiki/API-Cards#get-the-list-of-cards)
@@ -74,7 +98,7 @@ import type {
  *
  */
 const CardsScreen: React.FC<CardsScreenProps> = ({ navigation }) => {
-  const defaultFilter = {
+  const defaultFilter: FilterType = {
     search: '',
     selectedOrdering: OrderingGroup.CARD[1].value,
     isReverse: true,
@@ -94,28 +118,24 @@ const CardsScreen: React.FC<CardsScreenProps> = ({ navigation }) => {
     idol_year: ''
   };
   const [isLoading, setIsLoading] = useState(true);
-  const [searchOptions, setSearchOptions] = useState<typeof defaultFilter>(
-    defaultFilter
-  );
+  const [searchOptions, setSearchOptions] = useState(defaultFilter);
   const [column, setColumn] = useState(2);
-  const [isActionButtonVisible, setIsActionButtonVisible] = useState(true);
-  const [list, setList] = useState([]);
+  const [list, setList] = useState<CardObject[]>([]);
   const [isFilter, setIsFilter] = useState(false);
   const [stopSearch, setStopSearch] = useState(false);
   const onEndReached = _.debounce(onEndReaching, 1000);
-  let listViewOffset = 0;
 
   useEffect(() => {
-    loadSettings().then((res) => {
+    void loadSettings().then((res) => {
       setSearchOptions({
         ...searchOptions,
-        japan_only: res.worldwide_only ? 'False' : ''
+        japan_only: res.worldwideOnly ? 'False' : ''
       });
     });
   }, []);
 
   useEffect(() => {
-    getCards();
+    void getCards();
   }, [searchOptions.page]);
 
   /**
@@ -144,46 +164,15 @@ const CardsScreen: React.FC<CardsScreenProps> = ({ navigation }) => {
     return <CardItem item={item} onPress={navigateToCardDetail} />;
   };
 
-  const onScroll = (event) => {
-    // Simple fade-in / fade-out animation
-    const CustomLayoutLinear = {
-      duration: 100,
-      create: {
-        type: LayoutAnimation.Types.linear,
-        property: LayoutAnimation.Properties.opacity
-      },
-      update: {
-        type: LayoutAnimation.Types.linear,
-        property: LayoutAnimation.Properties.opacity
-      },
-      delete: {
-        type: LayoutAnimation.Types.linear,
-        property: LayoutAnimation.Properties.opacity
-      }
-    };
-    // Check if the user is scrolling up or down
-    // by confronting the new scroll position with your own one
-    const currentOffset = event.nativeEvent.contentOffset.y;
-    const direction =
-      currentOffset > 0 && currentOffset > listViewOffset ? 'down' : 'up';
-    // If the user is scrolling down (and the action-button is still visible) hide it
-    const isActionButtonVisibleTmp = direction === 'up';
-    if (isActionButtonVisibleTmp !== isActionButtonVisible) {
-      LayoutAnimation.configureNext(CustomLayoutLinear);
-      setIsActionButtonVisible(isActionButtonVisibleTmp);
-    }
-    // Update your scroll position
-    listViewOffset = currentOffset;
-  };
-
   /**
    * Get card list
    *
    */
   async function getCards() {
     const ordering =
-      (searchOptions.isReverse ? '-' : '') + searchOptions.selectedOrdering;
-    const theFilter = {
+      (searchOptions?.isReverse ? '-' : '') +
+      (searchOptions.selectedOrdering || '');
+    const theFilter: FilterType = {
       ordering,
       page_size: searchOptions.page_size,
       page: searchOptions.page
@@ -216,25 +205,24 @@ const CardsScreen: React.FC<CardsScreenProps> = ({ navigation }) => {
       if (result === 404) {
         // console.log('LLSIFService.fetchCardList 404');
         setStopSearch(true);
-      } else {
+      } else if (Array.isArray(result)) {
         let x = [...list, ...result];
         x = x.filter(
           (thing, index, self) =>
             index === self.findIndex((t) => t.id === thing.id)
         );
         setList(x);
+      } else {
+        throw Error('null');
       }
     } catch (err) {
-      Alert.alert('Error', 'Error when get cards', [
-        { text: 'OK', onPress: () => console.log(`OK Pressed, ${err}`) }
-      ]);
+      // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+      console.log(`OK Pressed, ${err}`);
+      Alert.alert('Error', 'Error when get cards', [{ text: 'OK' }]);
     } finally {
       setIsLoading(false);
     }
   }
-
-  /** Open drawer */
-  const openDrawer = useCallback(() => navigation.openDrawer(), []);
 
   /**
    * Call when pressing search button
@@ -244,7 +232,7 @@ const CardsScreen: React.FC<CardsScreenProps> = ({ navigation }) => {
     setList([]);
     setIsFilter(false);
     setStopSearch(false);
-    getCards();
+    void getCards();
   };
 
   /**
@@ -256,7 +244,7 @@ const CardsScreen: React.FC<CardsScreenProps> = ({ navigation }) => {
     if (stopSearch) return;
     setSearchOptions({
       ...searchOptions,
-      page: searchOptions.page + 1
+      page: (searchOptions.page || 1) + 1
     });
   }
 
@@ -435,7 +423,7 @@ const CardsScreen: React.FC<CardsScreenProps> = ({ navigation }) => {
    *
    * @param {String} itemValue
    */
-  const selectOrdering = (itemValue) => {
+  const selectOrdering = (itemValue: string) => {
     setSearchOptions({
       ...searchOptions,
       selectedOrdering: itemValue
@@ -474,7 +462,6 @@ const CardsScreen: React.FC<CardsScreenProps> = ({ navigation }) => {
     <View style={styles.container}>
       {/* HEADER */}
       <Surface style={[AppStyles.header, styles.header]}>
-        <IconButton icon={'menu'} onPress={openDrawer} />
         <View style={AppStyles.searchHeader}>
           <TextInput
             onChangeText={(text) =>
@@ -488,65 +475,71 @@ const CardsScreen: React.FC<CardsScreenProps> = ({ navigation }) => {
             style={AppStyles.searchInput}
           />
           <IconButton
-            icon={'search'}
+            icon='magnify'
             onPress={onSearch}
             style={AppStyles.searchButton}
           />
         </View>
-        <IconButton icon={'ios-more'} onPress={toggleFilter} />
+        <IconButton icon='more' onPress={toggleFilter} />
       </Surface>
 
       {/* FILTER */}
       {isFilter && (
         <Surface style={styles.filterContainer}>
           <ScrollView contentContainerStyle={styles.contentContainer}>
-            <IdolNameRow name={searchOptions.name} selectIdol={selectIdol} />
+            <IdolNameRow
+              name={searchOptions.name || ''}
+              selectIdol={selectIdol}
+            />
             <RarityRow
-              rarity={searchOptions.rarity}
+              rarity={searchOptions.rarity || ''}
               selectRarity={selectRarity}
             />
             <AttributeRow
-              attribute={searchOptions.attribute}
+              attribute={searchOptions.attribute || 'All'}
               selectAttribute={selectAttribute}
             />
             <RegionRow
-              japanOnly={searchOptions.japan_only}
+              japanOnly={searchOptions.japan_only || ''}
               selectRegion={selectRegion}
             />
             <PromoCardRow
-              isPromo={searchOptions.is_promo}
+              isPromo={searchOptions.is_promo || ''}
               selectPromo={selectPromo}
             />
             <SpecialCardRow
-              isSpecial={searchOptions.is_special}
+              isSpecial={searchOptions.is_special || ''}
               selectSpecial={selectSpecial}
             />
             <EventRow
-              isEvent={searchOptions.is_event}
+              isEvent={searchOptions.is_event || ''}
               selectEvent={selectEvent}
             />
-            <SkillRow skill={searchOptions.skill} selectSkill={selectSkill} />
+            <SkillRow
+              skill={searchOptions.skill || 'All'}
+              selectSkill={selectSkill}
+            />
             <MainUnitRow
-              mainUnit={searchOptions.idol_main_unit}
+              mainUnit={searchOptions.idol_main_unit || ''}
               selectMainUnit={selectMainUnit}
             />
             <SubUnitRow
-              idolSubUnit={searchOptions.idol_sub_unit}
+              idolSubUnit={searchOptions.idol_sub_unit || ''}
               selectSubUnit={selectSubUnit}
             />
             <SchoolRow
-              idolSchool={searchOptions.idol_school}
+              idolSchool={searchOptions.idol_school || ''}
               selectSchool={selectSchool}
             />
             <YearRow
-              idolYear={searchOptions.idol_year}
+              idolYear={searchOptions.idol_year || ''}
               selectYear={selectYear}
             />
             <OrderingRow
               orderingItem={OrderingGroup.CARD}
               selectedOrdering={searchOptions.selectedOrdering}
               selectOrdering={selectOrdering}
-              isReverse={searchOptions.isReverse}
+              isReverse={searchOptions.isReverse || false}
               toggleReverse={toggleReverse}
             />
 
@@ -568,25 +561,55 @@ const CardsScreen: React.FC<CardsScreenProps> = ({ navigation }) => {
         keyExtractor={keyExtractor}
         onEndReached={onEndReached}
         style={styles.list}
-        onScroll={onScroll}
         ListEmptyComponent={renderEmpty}
         ListFooterComponent={renderFooter}
         renderItem={renderItem}
       />
-      {isActionButtonVisible && (
-        <View style={[styles.floatButton, AppStyles.center]}>
-          <TouchableRipple
-            onPress={switchColumn}
-            background={TouchableNativeFeedback.Ripple(Colors.green, true)}>
-            <Image
-              source={Images.column[column - 1]}
-              style={styles.floatButtonSize}
-            />
-          </TouchableRipple>
-        </View>
-      )}
+      <FAB icon='calendar' onPress={switchColumn} style={styles.fab} />
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    backgroundColor: Colors.green,
+    flex: 1
+  },
+  contentContainer: {
+    padding: Metrics.baseMargin
+  },
+  fab: {
+    bottom: 0,
+    margin: 16,
+    position: 'absolute',
+    right: 0
+  },
+  filterContainer: {
+    backgroundColor: Colors.white,
+    elevation: 5,
+    height: Metrics.screenHeight * 0.35
+  },
+  flatListElement: {
+    margin: Metrics.baseMargin
+  },
+  header: {
+    backgroundColor: Colors.white,
+    elevation: 5
+  },
+  list: {
+    padding: Metrics.smallMargin
+  },
+  resetText: {
+    ...Fonts.style.white,
+    ...Fonts.style.center
+  },
+  resetView: {
+    alignItems: 'stretch',
+    backgroundColor: Colors.red,
+    justifyContent: 'center',
+    marginTop: Metrics.baseMargin,
+    padding: Metrics.baseMargin
+  }
+});
 
 export default CardsScreen;

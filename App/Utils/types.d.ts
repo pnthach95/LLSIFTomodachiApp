@@ -1,18 +1,24 @@
 import { CompositeNavigationProp } from '@react-navigation/native';
-import {
-  BottomTabScreenProps,
-  BottomTabNavigationProp
-} from '@react-navigation/bottom-tabs';
+import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
 import { StackScreenProps, StackNavigationProp } from '@react-navigation/stack';
+
+type AppOptions = {
+  isDark: boolean;
+  wwEvent: boolean;
+  jpEvent: boolean;
+  worldwideOnly: boolean;
+};
 
 type AppState = {
   loading: boolean;
   cachedData: CachedDataObject;
+  options: AppOptions;
 };
 
 type ActionType =
   | { type: 'LOADING' }
-  | { type: 'DONE_LOADING'; data: CachedDataObject };
+  | { type: 'DONE_LOADING'; data: CachedDataObject }
+  | { type: 'SAVE_OPTIONS'; data: AppOptions };
 
 type IconComponent = React.FC<{
   focused?: boolean;
@@ -32,7 +38,12 @@ type MainScreenProps = {
     StackNavigationProp<RootStackParamList>
   >;
 };
-type CardsScreenProps = BottomTabScreenProps<BottomTabList, 'CardsScreen'>;
+type CardsScreenProps = {
+  navigation: CompositeNavigationProp<
+    BottomTabNavigationProp<BottomTabList, 'CardsScreen'>,
+    StackNavigationProp<RootStackParamList>
+  >;
+};
 
 type RootStackParamList = {
   Main: undefined;
@@ -71,6 +82,7 @@ type BooleanOrEmpty = 'True' | 'False' | '';
 type AttributeType = 'Smile' | 'Pure' | 'Cool' | 'All' | '';
 type RarityType = 'N' | 'R' | 'SR' | 'SSR' | 'UR' | '';
 type SkillType =
+  | 'All'
   | 'Score Up'
   | 'Healer'
   | 'Perfect Lock'

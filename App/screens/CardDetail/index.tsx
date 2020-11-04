@@ -90,16 +90,20 @@ const CardDetailScreen: React.FC<CardDetailScreenProps> = ({
 
     const headerRight = () => (
       <View style={styles.rightRow}>
-        <FastImage
-          source={mainUnit}
-          resizeMode='contain'
-          style={styles.rightHeaderImage}
-        />
-        <FastImage
-          source={subUnit}
-          resizeMode='contain'
-          style={styles.rightHeaderImage}
-        />
+        {mainUnit && (
+          <FastImage
+            source={Images.mainUnit[mainUnit]}
+            resizeMode='contain'
+            style={styles.rightHeaderImage}
+          />
+        )}
+        {subUnit && (
+          <FastImage
+            source={Images.subUnit[subUnit]}
+            resizeMode='contain'
+            style={styles.rightHeaderImage}
+          />
+        )}
       </View>
     );
 

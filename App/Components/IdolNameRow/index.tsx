@@ -7,7 +7,7 @@ import styles from '~/Theme/RowStyles';
 
 type IdolNameRow = {
   name: string;
-  selectIdol: () => void;
+  selectIdol: (name: string) => void;
 };
 
 /**

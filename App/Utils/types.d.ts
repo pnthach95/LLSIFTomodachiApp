@@ -22,9 +22,8 @@ type IconComponent = React.FC<{
 type BottomTabList = {
   MainScreen: undefined;
   CardsScreen: undefined;
-  IdolsScreen: undefined;
   EventsScreen: undefined;
-  SongsScreen: undefined;
+  MoreScreen: undefined;
 };
 
 type MainScreenProps = {
@@ -39,6 +38,8 @@ type RootStackParamList = {
   Main: undefined;
   LoadingScreen: undefined;
   DrawerScreen: undefined;
+  IdolsScreen: undefined;
+  SongsScreen: undefined;
   CardDetailScreen: { item: CardObject };
   EventDetailScreen: { eventName: string } | { event: EventObject };
   IdolDetailScreen: { name: string };

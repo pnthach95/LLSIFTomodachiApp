@@ -25,7 +25,7 @@ const TimerCountdown = ({
     const d = days == 0 ? '' : String(days) + (days == 1 ? ' day ' : ' days ');
     h = h === '00' ? '' : String(h) + (h == 1 ? ' hour ' : ' hours ');
     m = m === '00' ? '' : String(m) + (m == 1 ? ' minute ' : ' minutes ');
-    return `${d} ${h} ${m} ${s} seconds`;
+    return `${d}${h}${m}${s} seconds`;
   };
 
   useEffect(() => {

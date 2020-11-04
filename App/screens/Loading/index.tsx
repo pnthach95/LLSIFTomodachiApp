@@ -93,7 +93,7 @@ const LoadingScreen: React.FC<LoadingScreenProps> = () => {
   };
 
   if (loading) {
-    return <SplashScreen bgColor={Colors.pink} />;
+    return <SplashScreen />;
   }
   if (error) {
     return (

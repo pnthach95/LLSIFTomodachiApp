@@ -1,19 +1,16 @@
 import React, { useContext } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import {
-  createBottomTabNavigator,
-  BottomTabNavigationProp
-} from '@react-navigation/bottom-tabs';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import AnimatedTabBar, {
   TabsConfig,
   BubbleTabBarItemConfig
 } from '@gorhom/animated-tabbar';
 import { DefaultTheme, Provider as PaperProvider } from 'react-native-paper';
-import Icon from 'react-native-vector-icons/SimpleLineIcons';
+import Animated from 'react-native-reanimated';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
-import type { BottomTabList, RootStackParamList } from '~/Utils/types';
+import { Colors } from '~/Theme';
 import UserContext from '~/Context/UserContext';
 
 import LoadingScreen from '~/screens/Loading';
@@ -28,66 +25,83 @@ import EventDetailScreen from '~/screens/EventDetail';
 import IdolDetailScreen from '~/screens/IdolDetail';
 import SongDetailScreen from '~/screens/SongDetail';
 
-const homeIcon = () => <Icon name='home' />;
-const cardIcon = () => <Ionicons name='ios-albums-sharp' />;
-const eventIcon = () => <Ionicons name='md-calendar' />;
-const songIcon = () => <Ionicons name='ios-musical-notes' />;
+import type { BottomTabList, RootStackParamList } from '~/Utils/types';
 
-const tabs: TabsConfig<BubbleTabBarItemConfig> = {
+type IconProps = {
+  color: Animated.Node<string>;
+  size: number;
+};
+
+const Icon = Animated.createAnimatedComponent(Ionicons);
+
+const homeIcon = ({ size, color }: IconProps) => (
+  <Icon name='home' size={size} color={color} />
+);
+const cardIcon = ({ size, color }: IconProps) => (
+  <Icon name='albums' size={size} color={color} />
+);
+const eventIcon = ({ size, color }: IconProps) => (
+  <Icon name='calendar' size={size} color={color} />
+);
+const moreIcon = ({ size, color }: IconProps) => (
+  <Icon name='ellipsis-horizontal' size={size} color={color} />
+);
+
+const tabs: TabsConfig<BubbleTabBarItemConfig, BottomTabList> = {
   MainScreen: {
     labelStyle: {
-      color: '#5B37B7'
+      color: Colors.pink
     },
     icon: {
       component: homeIcon,
-      activeColor: 'rgba(91,55,183,1)',
-      inactiveColor: 'rgba(0,0,0,1)'
+      activeColor: Colors.pink,
+      inactiveColor: Colors.grey600
     },
     background: {
-      activeColor: 'rgba(223,215,243,1)',
-      inactiveColor: 'rgba(223,215,243,0)'
+      activeColor: Colors.lightPink,
+      inactiveColor: Colors.transparent
     }
   },
   CardsScreen: {
     labelStyle: {
-      color: '#1194AA'
+      color: Colors.green
     },
     icon: {
       component: cardIcon,
-      activeColor: 'rgba(17,148,170,1)',
-      inactiveColor: 'rgba(0,0,0,1)'
+      activeColor: Colors.green,
+      inactiveColor: Colors.grey600
     },
     background: {
-      activeColor: 'rgba(207,235,239,1)',
-      inactiveColor: 'rgba(207,235,239,0)'
+      activeColor: Colors.lightGreen,
+      inactiveColor: Colors.transparent
     }
   },
   EventsScreen: {
     labelStyle: {
-      color: '#1194AA'
+      color: Colors.blue
     },
     icon: {
       component: eventIcon,
-      activeColor: 'rgba(17,148,170,1)',
-      inactiveColor: 'rgba(0,0,0,1)'
+      activeColor: Colors.blue,
+      inactiveColor: Colors.grey600
     },
     background: {
-      activeColor: 'rgba(207,235,239,1)',
-      inactiveColor: 'rgba(207,235,239,0)'
+      activeColor: Colors.lightBlue,
+      inactiveColor: Colors.transparent
     }
   },
   MoreScreen: {
     labelStyle: {
-      color: '#1194AA'
+      color: Colors.yellow900
     },
     icon: {
-      component: songIcon,
-      activeColor: 'rgba(17,148,170,1)',
-      inactiveColor: 'rgba(0,0,0,1)'
+      component: moreIcon,
+      activeColor: Colors.yellow900,
+      inactiveColor: Colors.grey600
     },
     background: {
-      activeColor: 'rgba(207,235,239,1)',
-      inactiveColor: 'rgba(207,235,239,0)'
+      activeColor: Colors.yellow200,
+      inactiveColor: Colors.transparent
     }
   }
 };
@@ -95,7 +109,7 @@ const tabs: TabsConfig<BubbleTabBarItemConfig> = {
 const Tab = createBottomTabNavigator<BottomTabList>();
 const Stack = createStackNavigator<RootStackParamList>();
 
-const LLSIFTab: React.FC<BottomTabNavigationProp<BottomTabList>> = () => {
+const LLSIFTab = () => {
   return (
     <Tab.Navigator
       //@ts-ignore
@@ -132,7 +146,7 @@ const LLSIFTab: React.FC<BottomTabNavigationProp<BottomTabList>> = () => {
   );
 };
 
-const Routes = (): JSX.Element => {
+const Routes: React.FC<null> = () => {
   const { state } = useContext(UserContext);
   return (
     <PaperProvider theme={DefaultTheme}>

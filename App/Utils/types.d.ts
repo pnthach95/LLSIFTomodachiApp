@@ -44,6 +44,12 @@ type CardsScreenProps = {
     StackNavigationProp<RootStackParamList>
   >;
 };
+type EventsScreenProps = {
+  navigation: CompositeNavigationProp<
+    BottomTabNavigationProp<BottomTabList, 'EventsScreen'>,
+    StackNavigationProp<RootStackParamList>
+  >;
+};
 type MoreScreenProps = {
   navigation: CompositeNavigationProp<
     BottomTabNavigationProp<BottomTabList, 'MoreScreen'>,

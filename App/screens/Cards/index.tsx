@@ -53,8 +53,8 @@ type FilterType = {
   search?: string;
   selectedOrdering?: string;
   isReverse?: boolean;
-  page_size?: number;
-  page?: number;
+  page_size: number;
+  page: number;
   name?: string;
   rarity?: RarityType;
   attribute?: AttributeType;

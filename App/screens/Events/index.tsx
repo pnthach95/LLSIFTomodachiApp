@@ -1,6 +1,13 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { View, FlatList, Text, TextInput, Alert, Image } from 'react-native';
-import { IconButton, Surface, TouchableRipple } from 'react-native-paper';
+import {
+  View,
+  FlatList,
+  TextInput,
+  Alert,
+  Image,
+  StyleSheet
+} from 'react-native';
+import { IconButton, Text, Surface, TouchableRipple } from 'react-native-paper';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
 
@@ -12,10 +19,29 @@ import IdolNameRow from '~/Components/IdolNameRow';
 import MainUnitRow from '~/Components/MainUnitRow';
 import AttributeRow from '~/Components/AttributeRow';
 import LoadingScreen from '../Loading';
-import { Colors, AppStyles, Images } from '~/Theme';
-import styles from './styles';
+import { Metrics, Colors, Fonts, AppStyles, Images } from '~/Theme';
 import LLSIFService from '~/Services/LLSIFService';
 import UserContext from '~/Context/UserContext';
+import type {
+  EventsScreenProps,
+  EventObject,
+  AttributeType,
+  MainUnitNames,
+  BooleanOrEmpty,
+  SkillType
+} from '~/Utils/types';
+
+type FilterType = {
+  ordering: string;
+  page_size: number;
+  page: number;
+  idol?: string;
+  search?: string;
+  main_unit?: MainUnitNames;
+  skill?: SkillType;
+  attribute?: AttributeType;
+  is_english?: BooleanOrEmpty;
+};
 
 /**
  * [Event List Screen](https://github.com/MagiCircles/SchoolIdolAPI/wiki/API-Events#get-the-list-of-events)
@@ -36,9 +62,9 @@ import UserContext from '~/Context/UserContext';
  * - `is_english`: Is English
  *
  */
-function EventsScreen({ navigation }) {
+const EventsScreen: React.FC<EventsScreenProps> = ({ navigation }) => {
   const { state } = useContext(UserContext);
-  const defaultFilter = {
+  const defaultFilter: FilterType = {
     ordering: '-beginning',
     page_size: 30,
     page: 1,
@@ -51,7 +77,7 @@ function EventsScreen({ navigation }) {
   };
 
   const [isLoading, setIsLoading] = useState(true);
-  const [list, setList] = useState([]);
+  const [list, setList] = useState<EventObject[]>([]);
   const [isFilter, setIsFilter] = useState(false);
   const [stopSearch, setStopSearch] = useState(false);
   const [searchOptions, setSearchOptions] = useState(defaultFilter);
@@ -65,13 +91,13 @@ function EventsScreen({ navigation }) {
    * Key extractor for FlatList
    *
    */
-  const keyExtractor = (item) => `event ${item.japanese_name}`;
+  const keyExtractor = (item: EventObject) => `event ${item.japanese_name}`;
 
   /**
    * Render item in FlatList
    *
    */
-  const renderItem = ({ item }) => {
+  const renderItem = ({ item }: { item: EventObject }) => {
     /**
      * Navigate to Event Detail Screen
      *
@@ -105,10 +131,9 @@ function EventsScreen({ navigation }) {
 
   /**
    * Get event list
-   *
    */
   function getEvents() {
-    const theFilter = {
+    const theFilter: FilterType = {
       ordering: searchOptions.ordering,
       page_size: searchOptions.page_size,
       page: searchOptions.page
@@ -133,7 +158,7 @@ function EventsScreen({ navigation }) {
         if (result === 404) {
           // console.log('LLSIFService.fetchEventList 404');
           setStopSearch(true);
-        } else {
+        } else if (Array.isArray(result)) {
           let x = [...list, ...result];
           // eslint-disable-next-line max-len
           x = x.filter(
@@ -142,6 +167,8 @@ function EventsScreen({ navigation }) {
               self.findIndex((t) => t.japanese_name === thing.japanese_name)
           );
           setList(x);
+        } else {
+          throw Error('null');
         }
       })
       .catch((err) => {
@@ -158,14 +185,7 @@ function EventsScreen({ navigation }) {
   }
 
   /**
-   * Open drawer
-   *
-   */
-  const openDrawer = () => navigation.openDrawer();
-
-  /**
    * Call when pressing search button
-   *
    */
   const onSearch = () => {
     setList([]);
@@ -180,7 +200,6 @@ function EventsScreen({ navigation }) {
 
   /**
    * Reset filter
-   *
    */
   const resetFilter = () => {
     setSearchOptions(defaultFilter);
@@ -188,16 +207,13 @@ function EventsScreen({ navigation }) {
 
   /**
    * Filter on/off
-   *
    */
   const toggleFilter = () => setIsFilter(!isFilter);
 
   /**
    * Save `attribute`
-   *
-   * @param {String} value
    */
-  const selectAttribute = (value) => () =>
+  const selectAttribute = (value: AttributeType) => () =>
     setSearchOptions({
       ...searchOptions,
       attribute: value
@@ -205,10 +221,8 @@ function EventsScreen({ navigation }) {
 
   /**
    * Save `main_unit`
-   *
-   * @param {String} value
    */
-  const selectMainUnit = (value) => () =>
+  const selectMainUnit = (value: MainUnitNames) => () =>
     setSearchOptions({
       ...searchOptions,
       main_unit: value
@@ -216,10 +230,8 @@ function EventsScreen({ navigation }) {
 
   /**
    * Save `is_english`
-   *
-   * @param {String} value
    */
-  const selectRegion = (value) => () =>
+  const selectRegion = (value: BooleanOrEmpty) => () =>
     setSearchOptions({
       ...searchOptions,
       is_english: value
@@ -227,10 +239,8 @@ function EventsScreen({ navigation }) {
 
   /**
    * Save `skill`
-   *
-   * @param {String} itemValue
    */
-  const selectSkill = (itemValue) =>
+  const selectSkill = (itemValue: SkillType) =>
     setSearchOptions({
       ...searchOptions,
       skill: itemValue
@@ -238,10 +248,8 @@ function EventsScreen({ navigation }) {
 
   /**
    * Save `idol`
-   *
-   * @param {String} itemValue
    */
-  const selectIdol = (itemValue) =>
+  const selectIdol = (itemValue: string) =>
     setSearchOptions({
       ...searchOptions,
       idol: itemValue
@@ -249,7 +257,6 @@ function EventsScreen({ navigation }) {
 
   /**
    * Render footer of FlatList
-   *
    */
   const renderFooter = (
     <View style={[AppStyles.center, styles.margin10]}>
@@ -264,50 +271,56 @@ function EventsScreen({ navigation }) {
   );
 
   if (isLoading) {
-    return <LoadingScreen bgColor={Colors.violet} />;
+    return <LoadingScreen />;
   }
+
+  const onChangeText = (text: string): void =>
+    setSearchOptions({
+      ...searchOptions,
+      search: text
+    });
 
   return (
     <View style={styles.container}>
       {/* HEADER */}
       <Surface style={[AppStyles.header, styles.header]}>
-        <IconButton icon={'menu'} onPress={openDrawer} />
         <View style={AppStyles.searchHeader}>
           <TextInput
-            onChangeText={(text) =>
-              setSearchOptions({
-                ...searchOptions,
-                search: text
-              })
-            }
+            onChangeText={onChangeText}
             onSubmitEditing={onSearch}
             placeholder={'Search event...'}
             style={AppStyles.searchInput}
           />
           <IconButton
-            icon={'search'}
+            icon={'magnify'}
             onPress={onSearch}
             style={AppStyles.searchButton}
           />
         </View>
-        <IconButton icon={'ios-more'} onPress={toggleFilter} />
+        <IconButton icon={'more'} onPress={toggleFilter} />
       </Surface>
 
       {/* FILTER */}
       {isFilter && (
-        <Surface elevation={5} style={styles.filterContainer}>
-          <IdolNameRow name={searchOptions.idol} selectIdol={selectIdol} />
+        <Surface style={styles.filterContainer}>
+          <IdolNameRow
+            name={searchOptions.idol || ''}
+            selectIdol={selectIdol}
+          />
           <MainUnitRow
-            mainUnit={searchOptions.main_unit}
+            mainUnit={searchOptions.main_unit || ''}
             selectMainUnit={selectMainUnit}
           />
-          <SkillRow skill={searchOptions.skill} selectSkill={selectSkill} />
+          <SkillRow
+            skill={searchOptions.skill || 'All'}
+            selectSkill={selectSkill}
+          />
           <AttributeRow
-            attribute={searchOptions.attribute}
+            attribute={searchOptions.attribute || 'All'}
             selectAttribute={selectAttribute}
           />
           <RegionRow
-            japanOnly={searchOptions.is_english}
+            japanOnly={searchOptions.is_english || ''}
             selectRegion={selectRegion}
           />
           <TouchableRipple onPress={resetFilter} style={styles.resetView}>
@@ -330,6 +343,42 @@ function EventsScreen({ navigation }) {
       />
     </View>
   );
-}
+};
+
+const styles = StyleSheet.create({
+  container: {
+    backgroundColor: Colors.violet,
+    flex: 1
+  },
+  content: {
+    alignItems: 'center'
+  },
+  filterContainer: {
+    backgroundColor: Colors.white,
+    elevation: 5,
+    padding: 10
+  },
+  header: {
+    backgroundColor: Colors.white,
+    elevation: 5
+  },
+  list: {
+    padding: Metrics.smallMargin
+  },
+  margin10: {
+    margin: 10
+  },
+  resetText: {
+    ...Fonts.style.white,
+    ...Fonts.style.center
+  },
+  resetView: {
+    alignItems: 'stretch',
+    backgroundColor: Colors.red,
+    justifyContent: 'center',
+    marginTop: 10,
+    padding: 10
+  }
+});
 
 export default EventsScreen;

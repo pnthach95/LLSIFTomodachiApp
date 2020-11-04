@@ -11,6 +11,8 @@ type CardItemType = {
   onPress: () => void;
 };
 
+const { itemWidth } = Metrics.images;
+
 /**
  * Card item for Card List Screen
  *
@@ -30,10 +32,7 @@ const CardItem: React.FC<CardItemType> = ({ item, onPress }) => {
 
   const onLoad = (e: OnLoadEvent) => {
     const { width, height } = e.nativeEvent;
-    setImgSize({
-      width: Metrics.images.itemWidth,
-      height: (Metrics.images.itemWidth * height) / width
-    });
+    setImgSize({ width, height });
   };
 
   return (
@@ -50,7 +49,13 @@ const CardItem: React.FC<CardItemType> = ({ item, onPress }) => {
                 priority: FastImage.priority.normal
               }}
               resizeMode='contain'
-              style={[styles.topRadius, imgSize]}
+              style={[
+                styles.topRadius,
+                {
+                  width: itemWidth,
+                  height: (itemWidth * imgSize.height) / imgSize.width
+                }
+              ]}
             />
           )}
           {/* FOOTER */}
@@ -96,7 +101,7 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     elevation: 5,
     margin: Metrics.smallMargin,
-    width: Metrics.images.itemWidth
+    width: itemWidth
   },
   info: {
     borderBottomLeftRadius: 4,

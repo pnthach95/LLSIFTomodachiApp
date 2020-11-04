@@ -11,6 +11,8 @@ type SongItemType = {
   onPress: () => void;
 };
 
+const { itemWidth } = Metrics.images;
+
 /**
  * Song item for Song List Screen
  *
@@ -21,18 +23,12 @@ type SongItemType = {
  */
 const SongItem: React.FC<SongItemType> = ({ item, onPress }) => {
   const attColors = findColorByAttribute(item.attribute || '');
-  const [imgSize, setImgSize] = useState({
-    width: Metrics.images.itemWidth,
-    height: Metrics.images.itemWidth
-  });
+  const [imgSize, setImgSize] = useState({ width: 1, height: 1 });
   const getName = item.name + (item.romaji_name ? `\n${item.romaji_name}` : '');
 
   const onLoad = (e: OnLoadEvent) => {
     const { width, height } = e.nativeEvent;
-    setImgSize({
-      width: Metrics.images.itemWidth,
-      height: (Metrics.images.itemWidth * height) / width
-    });
+    setImgSize({ width, height });
   };
 
   return (
@@ -43,7 +39,13 @@ const SongItem: React.FC<SongItemType> = ({ item, onPress }) => {
         <FastImage
           source={{ uri: AddHTTPS(item.image) }}
           onLoad={onLoad}
-          style={[imgSize, styles.image]}
+          style={[
+            styles.image,
+            {
+              width: itemWidth,
+              height: (itemWidth * imgSize.height) / imgSize.width
+            }
+          ]}
         />
         <View style={styles.info}>
           <Text style={styles.text}>{getName}</Text>
@@ -59,7 +61,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     elevation: 5,
     margin: Metrics.smallMargin,
-    width: Metrics.images.itemWidth
+    width: itemWidth
   },
   image: {
     borderTopLeftRadius: 5,

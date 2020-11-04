@@ -57,10 +57,7 @@ const EventItem: React.FC<EventItemType> = ({ item, onPress }) => {
 
   const onLoad = (e: OnLoadEvent) => {
     const { width, height } = e.nativeEvent;
-    setImgSize({
-      width: Metrics.widthBanner,
-      height: (Metrics.widthBanner * height) / width
-    });
+    setImgSize({ width, height });
   };
 
   return (
@@ -76,7 +73,13 @@ const EventItem: React.FC<EventItemType> = ({ item, onPress }) => {
               priority: FastImage.priority.normal
             }}
             resizeMode={FastImage.resizeMode.contain}
-            style={[imgSize, styles.image]}
+            style={[
+              styles.image,
+              {
+                width: Metrics.widthBanner,
+                height: (Metrics.widthBanner * imgSize.height) / imgSize.width
+              }
+            ]}
           />
           <View style={styles.textBox}>
             <Text style={styles.text}>

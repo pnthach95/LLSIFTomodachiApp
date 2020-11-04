@@ -11,6 +11,8 @@ type Card2PicsItemType = {
   onPress: () => void;
 };
 
+const { itemWidth } = Metrics.images;
+
 /**
  * Card item for Card List Screen, idolized and unidolized
  *
@@ -37,10 +39,7 @@ const Card2PicsItem: React.FC<Card2PicsItemType> = ({ item, onPress }) => {
 
   const onLoad = (e: OnLoadEvent) => {
     const { width, height } = e.nativeEvent;
-    setImgSize({
-      width: Metrics.images.itemWidth,
-      height: (Metrics.images.itemWidth * height) / width
-    });
+    setImgSize({ width, height });
   };
 
   return (
@@ -56,7 +55,10 @@ const Card2PicsItem: React.FC<Card2PicsItemType> = ({ item, onPress }) => {
                 source={{ uri: value }}
                 onLoad={onLoad}
                 resizeMode='contain'
-                style={imgSize}
+                style={{
+                  width: itemWidth,
+                  height: (itemWidth * imgSize.height) / imgSize.width
+                }}
               />
             ))}
           </View>

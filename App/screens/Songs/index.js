@@ -1,10 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import {
-  View, FlatList, TextInput, Alert, Image,
-} from 'react-native';
-import {
-  IconButton, Surface, Text, TouchableRipple,
-} from 'react-native-paper';
+import { View, FlatList, TextInput, Alert, Image } from 'react-native';
+import { IconButton, Surface, Text, TouchableRipple } from 'react-native-paper';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
 
@@ -17,9 +13,7 @@ import OrderingRow from '~/Components/OrderingRow';
 import AttributeRow from '~/Components/AttributeRow';
 import SplashScreen from '../Splash';
 import LLSIFService from '~/Services/LLSIFService';
-import {
-  AppStyles, Images, Fonts, Colors,
-} from '~/Theme';
+import { AppStyles, Images, Fonts, Colors } from '~/Theme';
 import { OrderingGroup } from '~/Config';
 import styles from './styles';
 
@@ -35,7 +29,7 @@ const defaultFilter = {
   is_event: '',
   is_daily_rotation: '',
   available: '',
-  main_unit: '',
+  main_unit: ''
 };
 
 /**
@@ -90,11 +84,10 @@ function SongsScreen({ navigation }) {
       navigation.navigate('SongDetailScreen', { item });
     };
 
-    return <SongItem item={item}
-      onPress={navigateToSongDetail} />;
+    return <SongItem item={item} onPress={navigateToSongDetail} />;
   };
   renderItem.propTypes = {
-    item: PropTypes.object.isRequired,
+    item: PropTypes.object.isRequired
   };
 
   /**
@@ -106,7 +99,7 @@ function SongsScreen({ navigation }) {
     if (stopSearch) return;
     setSearchOptions({
       ...searchOptions,
-      page: searchOptions.page + 1,
+      page: searchOptions.page + 1
     });
   }
 
@@ -115,37 +108,51 @@ function SongsScreen({ navigation }) {
    *
    */
   function getSongs() {
-    const ordering = (searchOptions.isReverse ? '-' : '') + searchOptions.selectedOrdering;
+    const ordering =
+      (searchOptions.isReverse ? '-' : '') + searchOptions.selectedOrdering;
     const theFilter = {
       ordering,
       page_size: searchOptions.page_size,
       page: searchOptions.page,
-      expand_event: searchOptions.expand_event,
+      expand_event: searchOptions.expand_event
       // is_daily_rotation: this.state.is_daily_rotation
     };
-    if (searchOptions.attribute !== '') theFilter.attribute = searchOptions.attribute;
-    if (searchOptions.available !== '') theFilter.available = searchOptions.available;
-    if (searchOptions.is_event !== '') theFilter.is_event = searchOptions.is_event;
-    if (searchOptions.main_unit !== '') theFilter.main_unit = searchOptions.main_unit;
+    if (searchOptions.attribute !== '')
+      theFilter.attribute = searchOptions.attribute;
+    if (searchOptions.available !== '')
+      theFilter.available = searchOptions.available;
+    if (searchOptions.is_event !== '')
+      theFilter.is_event = searchOptions.is_event;
+    if (searchOptions.main_unit !== '')
+      theFilter.main_unit = searchOptions.main_unit;
     if (searchOptions.search !== '') theFilter.search = searchOptions.search;
     // eslint-disable-next-line no-console
     console.log(`Songs.getSongs ${JSON.stringify(theFilter)}`);
-    LLSIFService.fetchSongList(theFilter).then((result) => {
-      if (result === 404) {
-        // console.log('LLSIFService.fetchSongList 404')
-        setStopSearch(true);
-      } else {
-        let x = [...list, ...result];
-        x = x.filter((thing, ind, self) => ind === self.findIndex((t) => t.name === thing.name));
-        setList(x);
-      }
-    }).catch((err) => {
-      Alert.alert('Error', 'Error when get songs',
-        // eslint-disable-next-line no-console
-        [{ text: 'OK', onPress: () => console.log(`OK Pressed ${err}`) }]);
-    }).finally(() => {
-      setIsLoading(false);
-    });
+    LLSIFService.fetchSongList(theFilter)
+      .then((result) => {
+        if (result === 404) {
+          // console.log('LLSIFService.fetchSongList 404')
+          setStopSearch(true);
+        } else {
+          let x = [...list, ...result];
+          x = x.filter(
+            (thing, ind, self) =>
+              ind === self.findIndex((t) => t.name === thing.name)
+          );
+          setList(x);
+        }
+      })
+      .catch((err) => {
+        Alert.alert(
+          'Error',
+          'Error when get songs',
+          // eslint-disable-next-line no-console
+          [{ text: 'OK', onPress: () => console.log(`OK Pressed ${err}`) }]
+        );
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
   }
 
   /**
@@ -158,10 +165,11 @@ function SongsScreen({ navigation }) {
    * Reverse search on/off
    *
    */
-  const toggleReverse = () => setSearchOptions({
-    ...searchOptions,
-    isReverse: !searchOptions.isReverse,
-  });
+  const toggleReverse = () =>
+    setSearchOptions({
+      ...searchOptions,
+      isReverse: !searchOptions.isReverse
+    });
 
   /**
    * Open drawer
@@ -179,7 +187,7 @@ function SongsScreen({ navigation }) {
     setStopSearch(false);
     setSearchOptions({
       ...searchOptions,
-      page: 1,
+      page: 1
     });
   };
 
@@ -195,99 +203,127 @@ function SongsScreen({ navigation }) {
    * Save `is_event`
    *
    */
-  const selectEvent = (value) => () => setSearchOptions({
-    ...searchOptions,
-    is_event: value,
-  });
+  const selectEvent = (value) => () =>
+    setSearchOptions({
+      ...searchOptions,
+      is_event: value
+    });
 
   /**
    * Save `attribute`
    *
    */
-  const selectAttribute = (value) => () => setSearchOptions({
-    ...searchOptions,
-    attribute: value,
-  });
+  const selectAttribute = (value) => () =>
+    setSearchOptions({
+      ...searchOptions,
+      attribute: value
+    });
 
   /**
    * Save `main_unit`
    *
    */
-  const selectMainUnit = (value) => () => setSearchOptions({
-    ...searchOptions,
-    main_unit: value,
-  });
+  const selectMainUnit = (value) => () =>
+    setSearchOptions({
+      ...searchOptions,
+      main_unit: value
+    });
 
   /**
    * Save ordering
    *
    */
-  const selectOrdering = (itemValue) => setSearchOptions({
-    ...searchOptions,
-    selectedOrdering: itemValue,
-  });
+  const selectOrdering = (itemValue) =>
+    setSearchOptions({
+      ...searchOptions,
+      selectedOrdering: itemValue
+    });
 
   /**
    * Render footer in FlatList
    */
-  const renderFooter = <View style={[AppStyles.center, styles.flatListElement]}>
-    <Image source={Images.alpaca} />
-  </View>;
+  const renderFooter = (
+    <View style={[AppStyles.center, styles.flatListElement]}>
+      <Image source={Images.alpaca} />
+    </View>
+  );
 
-  const renderEmpty = <View style={styles.flatListElement}>
-    <Text style={Fonts.style.center}>No result</Text>
-  </View>;
+  const renderEmpty = (
+    <View style={styles.flatListElement}>
+      <Text style={Fonts.style.center}>No result</Text>
+    </View>
+  );
 
   if (isLoading) {
     return <SplashScreen />;
   }
-  return <View style={AppStyles.screen}>
-
-    {/* HEADER */}
-    <Surface style={[AppStyles.header, styles.header]}>
-      <IconButton icon={'menu'} onPress={openDrawer} />
-      <View style={AppStyles.searchHeader}>
-        <TextInput style={AppStyles.searchInput}
-          onChangeText={(text) => setSearchOptions({
-            ...searchOptions,
-            search: text,
-          })}
-          onSubmitEditing={onSearch}
-          placeholder={'Search song...'} />
-        <IconButton icon={'ios-search'} onPress={onSearch}
-          style={AppStyles.searchButton} />
-      </View>
-      <IconButton icon={'ios-more'} onPress={toggleFilter} />
-    </Surface>
-    {/* FILTER */}
-    {isFilter
-      && <Surface style={styles.filterContainer}>
-        <AttributeRow attribute={searchOptions.attribute}
-          selectAttribute={selectAttribute} />
-        <EventRow isEvent={searchOptions.is_event} selectEvent={selectEvent} />
-        <MainUnitRow mainUnit={searchOptions.main_unit} selectMainUnit={selectMainUnit} />
-        <OrderingRow orderingItem={OrderingGroup.SONG}
-          selectedOrdering={searchOptions.selectedOrdering}
-          selectOrdering={selectOrdering}
-          isReverse={searchOptions.isReverse}
-          toggleReverse={toggleReverse} />
-        <TouchableRipple onPress={resetFilter}
-          style={styles.resetView}>
-          <Text style={styles.resetText}>RESET</Text>
-        </TouchableRipple>
-      </Surface>}
-    <ConnectStatus />
-    {/* LIST */}
-    <FlatList data={list}
-      initialNumToRender={6}
-      numColumns={2}
-      keyExtractor={keyExtractor}
-      style={styles.list}
-      onEndReached={onEndReached}
-      ListEmptyComponent={renderEmpty}
-      ListFooterComponent={renderFooter}
-      renderItem={renderItem} />
-  </View>;
+  return (
+    <View style={AppStyles.screen}>
+      {/* HEADER */}
+      <Surface style={[AppStyles.header, styles.header]}>
+        <IconButton icon={'menu'} onPress={openDrawer} />
+        <View style={AppStyles.searchHeader}>
+          <TextInput
+            style={AppStyles.searchInput}
+            onChangeText={(text) =>
+              setSearchOptions({
+                ...searchOptions,
+                search: text
+              })
+            }
+            onSubmitEditing={onSearch}
+            placeholder={'Search song...'}
+          />
+          <IconButton
+            icon={'ios-search'}
+            onPress={onSearch}
+            style={AppStyles.searchButton}
+          />
+        </View>
+        <IconButton icon={'ios-more'} onPress={toggleFilter} />
+      </Surface>
+      {/* FILTER */}
+      {isFilter && (
+        <Surface style={styles.filterContainer}>
+          <AttributeRow
+            attribute={searchOptions.attribute}
+            selectAttribute={selectAttribute}
+          />
+          <EventRow
+            isEvent={searchOptions.is_event}
+            selectEvent={selectEvent}
+          />
+          <MainUnitRow
+            mainUnit={searchOptions.main_unit}
+            selectMainUnit={selectMainUnit}
+          />
+          <OrderingRow
+            orderingItem={OrderingGroup.SONG}
+            selectedOrdering={searchOptions.selectedOrdering}
+            selectOrdering={selectOrdering}
+            isReverse={searchOptions.isReverse}
+            toggleReverse={toggleReverse}
+          />
+          <TouchableRipple onPress={resetFilter} style={styles.resetView}>
+            <Text style={styles.resetText}>RESET</Text>
+          </TouchableRipple>
+        </Surface>
+      )}
+      <ConnectStatus />
+      {/* LIST */}
+      <FlatList
+        data={list}
+        initialNumToRender={6}
+        numColumns={2}
+        keyExtractor={keyExtractor}
+        style={styles.list}
+        onEndReached={onEndReached}
+        ListEmptyComponent={renderEmpty}
+        ListFooterComponent={renderFooter}
+        renderItem={renderItem}
+      />
+    </View>
+  );
 }
 
 export default SongsScreen;

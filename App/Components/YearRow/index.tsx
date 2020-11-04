@@ -3,7 +3,7 @@ import { View, TouchableOpacity } from 'react-native';
 import { Text } from 'react-native-paper';
 import styles from '~/Theme/RowStyles';
 import { AppStyles } from '~/Theme';
-import { YearType } from '~/Utils/type';
+import type { YearType } from '~/Utils/types';
 
 type YearRowType = {
   idolYear: YearType;

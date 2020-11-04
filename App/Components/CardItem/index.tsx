@@ -4,7 +4,7 @@ import { Surface, TouchableRipple, Divider } from 'react-native-paper';
 import FastImage, { OnLoadEvent } from 'react-native-fast-image';
 import { Metrics, AppStyles, Images } from '~/Theme';
 import { AddHTTPS, findColorByAttribute, findSkill } from '~/Utils';
-import { CardObject } from '~/Utils/type';
+import type { CardObject } from '~/Utils/types';
 
 type CardItemType = {
   item: CardObject;

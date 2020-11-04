@@ -13,7 +13,7 @@ import { Config, EventStatus } from '~/Config';
 import GithubService from '~/Services/GithubService';
 import { Metrics, Colors, Images, AppStyles } from '~/Theme';
 import UserContext from '~/Context/UserContext';
-import type { EventObject, MainScreenProps } from '~/Utils/type';
+import type { EventObject, MainScreenProps } from '~/Utils/types';
 
 /**
  * Main Screen

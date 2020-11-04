@@ -2,7 +2,7 @@ import { Alert, Linking } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import Color from 'color';
 import { Colors, Images } from '../Theme';
-import { AttributeType } from './type';
+import type { AttributeType } from './types';
 
 /**
  * Add `https:` for image link

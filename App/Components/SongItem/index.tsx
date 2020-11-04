@@ -4,7 +4,7 @@ import { Text, Surface, TouchableRipple } from 'react-native-paper';
 import FastImage, { OnLoadEvent } from 'react-native-fast-image';
 import { Metrics, Colors, Fonts } from '~/Theme';
 import { AddHTTPS, findColorByAttribute } from '~/Utils';
-import { SongObject } from '~/Utils/type';
+import type { SongObject } from '~/Utils/types';
 
 type SongItemType = {
   item: SongObject;

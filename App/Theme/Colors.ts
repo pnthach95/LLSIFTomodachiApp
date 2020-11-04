@@ -1,10 +1,7 @@
-/**
- * This file contains the application's colors.
- *
- * Define color here instead of duplicating them throughout the components.
- * That allows to change them more easily later on.
- */
+import { Colors } from 'react-native-paper';
+
 export default {
+  ...Colors,
   primary: '#007bff',
   success: '#28a745',
   error: '#dc3545',
@@ -22,8 +19,6 @@ export default {
   ongoing: '#00C200',
   finished: '#EBA3FF',
   star: ['#D8FD53', '#F7FB34', '#FBAAC3', '#F33256'],
-  white: 'white',
-  black: 'black',
   c0005: '#0005',
   c333: '#333',
   c777: '#777',

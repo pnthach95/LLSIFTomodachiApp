@@ -5,7 +5,7 @@ import FastImage, { OnLoadEvent } from 'react-native-fast-image';
 import { Metrics, Colors, Fonts } from '~/Theme';
 import { AddHTTPS } from '~/Utils';
 import { EventStatus } from '~/Config';
-import { EventObject } from '~/Utils/type';
+import type { EventObject } from '~/Utils/types';
 
 type EventItemType = {
   item: EventObject;

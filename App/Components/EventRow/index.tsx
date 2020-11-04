@@ -3,7 +3,7 @@ import { View, TouchableOpacity } from 'react-native';
 import { Text } from 'react-native-paper';
 import styles from '~/Theme/RowStyles';
 import { AppStyles } from '~/Theme';
-import { BooleanOrEmpty } from '~/Utils/type';
+import type { BooleanOrEmpty } from '~/Utils/types';
 
 type EventRowType = {
   isEvent: BooleanOrEmpty;

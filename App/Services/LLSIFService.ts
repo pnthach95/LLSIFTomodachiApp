@@ -8,7 +8,7 @@ import type {
   IdolObject,
   LLSIFCacheData,
   SongObject
-} from '~/Utils/type';
+} from '~/Utils/types';
 
 const LLSIFApiClient = create({
   baseURL: Config.API_URL

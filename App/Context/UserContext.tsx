@@ -1,6 +1,6 @@
 import React, { useReducer, useMemo } from 'react';
 import reducer, { initState } from './Reducer';
-import type { ActionType, AppState } from '~/Utils/type';
+import type { ActionType, AppState } from '~/Utils/types';
 
 type ContextProps = {
   state: AppState;

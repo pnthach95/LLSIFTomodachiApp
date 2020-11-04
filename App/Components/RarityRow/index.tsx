@@ -9,7 +9,7 @@ import {
 import { Text } from 'react-native-paper';
 import { Images, AppStyles } from '~/Theme';
 import rowStyles from '~/Theme/RowStyles';
-import type { RarityType } from '~/Utils/type';
+import type { RarityType } from '~/Utils/types';
 
 type RarityRowType = {
   rarity: RarityType;

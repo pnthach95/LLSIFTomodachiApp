@@ -20,7 +20,7 @@ import {
 import { Metrics, Fonts, AppStyles, Colors, Images } from '~/Theme';
 import { Config } from '~/Config';
 import styles from './styles';
-import { CardDetailScreenProps } from '~/Utils/type';
+import type { CardDetailScreenProps } from '~/Utils/types';
 
 /**
  * Card detail screen

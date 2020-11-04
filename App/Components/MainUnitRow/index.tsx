@@ -3,7 +3,7 @@ import { View, TouchableOpacity, Image } from 'react-native';
 import { Text } from 'react-native-paper';
 import { Images, AppStyles } from '~/Theme';
 import styles from '~/Theme/RowStyles';
-import { MainUnitNames } from '~/Utils/type';
+import type { MainUnitNames } from '~/Utils/types';
 
 type MainUnitRowType = {
   mainUnit: MainUnitNames;

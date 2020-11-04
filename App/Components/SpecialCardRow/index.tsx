@@ -2,7 +2,7 @@ import React from 'react';
 import { Text, View, TouchableOpacity } from 'react-native';
 import styles from '~/Theme/RowStyles';
 import { AppStyles } from '~/Theme';
-import { BooleanOrEmpty } from '~/Utils/type';
+import type { BooleanOrEmpty } from '~/Utils/types';
 
 type SpecialCardRowType = {
   isSpecial: BooleanOrEmpty;

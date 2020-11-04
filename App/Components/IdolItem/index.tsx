@@ -4,7 +4,7 @@ import { Text, TouchableRipple, Surface } from 'react-native-paper';
 import FastImage, { OnLoadEvent } from 'react-native-fast-image';
 import { Metrics, Fonts, Colors } from '~/Theme';
 import { findColorByAttribute } from '~/Utils';
-import { IdolObject } from '~/Utils/type';
+import type { IdolObject } from '~/Utils/types';
 
 type IdolItemType = {
   item: IdolObject;

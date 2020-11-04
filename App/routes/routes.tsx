@@ -13,7 +13,7 @@ import { DefaultTheme, Provider as PaperProvider } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/SimpleLineIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
-import { BottomTabList, RootStackParamList } from '~/Utils/type';
+import type { BottomTabList, RootStackParamList } from '~/Utils/types';
 import UserContext from '~/Context/UserContext';
 
 import LoadingScreen from '~/screens/Loading';
@@ -22,7 +22,7 @@ import CardsScreen from '~/screens/Cards';
 import IdolsScreen from '~/screens/Idols';
 import EventsScreen from '~/screens/Events';
 import SongsScreen from '~/screens/Songs';
-
+import MoreScreen from '~/screens/More';
 import CardDetailScreen from '~/screens/CardDetail';
 import EventDetailScreen from '~/screens/EventDetail';
 import IdolDetailScreen from '~/screens/IdolDetail';
@@ -30,7 +30,6 @@ import SongDetailScreen from '~/screens/SongDetail';
 
 const homeIcon = () => <Icon name='home' />;
 const cardIcon = () => <Ionicons name='ios-albums-sharp' />;
-const idolIcon = () => <Ionicons name='ios-star' />;
 const eventIcon = () => <Ionicons name='md-calendar' />;
 const songIcon = () => <Ionicons name='ios-musical-notes' />;
 
@@ -63,20 +62,6 @@ const tabs: TabsConfig<BubbleTabBarItemConfig> = {
       inactiveColor: 'rgba(207,235,239,0)'
     }
   },
-  IdolsScreen: {
-    labelStyle: {
-      color: '#1194AA'
-    },
-    icon: {
-      component: idolIcon,
-      activeColor: 'rgba(17,148,170,1)',
-      inactiveColor: 'rgba(0,0,0,1)'
-    },
-    background: {
-      activeColor: 'rgba(207,235,239,1)',
-      inactiveColor: 'rgba(207,235,239,0)'
-    }
-  },
   EventsScreen: {
     labelStyle: {
       color: '#1194AA'
@@ -91,7 +76,7 @@ const tabs: TabsConfig<BubbleTabBarItemConfig> = {
       inactiveColor: 'rgba(207,235,239,0)'
     }
   },
-  SongsScreen: {
+  MoreScreen: {
     labelStyle: {
       color: '#1194AA'
     },
@@ -130,13 +115,6 @@ const LLSIFTab: React.FC<BottomTabNavigationProp<BottomTabList>> = () => {
         }}
       />
       <Tab.Screen
-        name='IdolsScreen'
-        component={IdolsScreen}
-        options={{
-          tabBarLabel: 'Idols'
-        }}
-      />
-      <Tab.Screen
         name='EventsScreen'
         component={EventsScreen}
         options={{
@@ -144,10 +122,10 @@ const LLSIFTab: React.FC<BottomTabNavigationProp<BottomTabList>> = () => {
         }}
       />
       <Tab.Screen
-        name='SongsScreen'
-        component={SongsScreen}
+        name='MoreScreen'
+        component={MoreScreen}
         options={{
-          tabBarLabel: 'Songs'
+          tabBarLabel: 'More'
         }}
       />
     </Tab.Navigator>
@@ -177,6 +155,8 @@ const Routes = (): JSX.Element => {
                   headerShown: false
                 }}
               />
+              <Stack.Screen name='IdolsScreen' component={IdolsScreen} />
+              <Stack.Screen name='SongsScreen' component={SongsScreen} />
               <Stack.Screen
                 name='CardDetailScreen'
                 component={CardDetailScreen}

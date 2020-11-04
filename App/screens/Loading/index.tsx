@@ -7,7 +7,7 @@ import LLSIFService from '~/Services/LLSIFService';
 import SplashScreen from '../Splash';
 import UserContext from '~/Context/UserContext';
 import { Colors, AppStyles } from '~/Theme';
-import type { LoadingScreenProps, CachedDataObject } from '~/Utils/type';
+import type { LoadingScreenProps, CachedDataObject } from '~/Utils/types';
 
 /**
  * Loading Screen

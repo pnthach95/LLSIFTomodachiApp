@@ -10,7 +10,6 @@ import {
   LayoutAnimation
 } from 'react-native';
 import { Text, IconButton, Surface, TouchableRipple } from 'react-native-paper';
-import PropTypes from 'prop-types';
 import _ from 'lodash';
 
 import useStatusBar from '~/hooks/useStatusBar';
@@ -36,7 +35,7 @@ import { Colors, AppStyles, Images } from '~/Theme';
 import styles from './styles';
 import { loadSettings } from '~/Utils';
 import { OrderingGroup } from '~/Config';
-import {
+import type {
   AttributeType,
   BooleanOrEmpty,
   CardObject,
@@ -45,7 +44,7 @@ import {
   RarityType,
   SkillType,
   YearType
-} from '~/Utils/type';
+} from '~/Utils/types';
 
 /**
  * [Card List Screen](https://github.com/MagiCircles/SchoolIdolAPI/wiki/API-Cards#get-the-list-of-cards)
@@ -579,8 +578,7 @@ const CardsScreen: React.FC<CardsScreenProps> = ({ navigation }) => {
         <View style={[styles.floatButton, AppStyles.center]}>
           <TouchableRipple
             onPress={switchColumn}
-            background={TouchableNativeFeedback.Ripple(Colors.green, true)}
-          >
+            background={TouchableNativeFeedback.Ripple(Colors.green, true)}>
             <Image
               source={Images.column[column - 1]}
               style={styles.floatButtonSize}

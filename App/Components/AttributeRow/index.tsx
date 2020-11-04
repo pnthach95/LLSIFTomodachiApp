@@ -10,7 +10,7 @@ import {
 import { Text } from 'react-native-paper';
 import { Images, AppStyles } from '~/Theme';
 import rowStyles from '~/Theme/RowStyles';
-import type { AttributeType } from '~/Utils/type';
+import type { AttributeType } from '~/Utils/types';
 
 type AttributeRowType = {
   attribute: AttributeType;

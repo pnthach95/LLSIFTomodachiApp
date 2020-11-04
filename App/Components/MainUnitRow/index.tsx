@@ -43,7 +43,7 @@ const MainUnitRow: React.FC<MainUnitRowType> = ({
             styles.standardButton,
             mainUnit === "μ's" && styles.selectedValue1
           ]}>
-          <Image source={Images.mainUnit[0]} style={styles.buttonImage1} />
+          <Image source={Images.mainUnit["μ's"]} style={styles.buttonImage1} />
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => selectMainUnit('Aqours')}
@@ -51,7 +51,7 @@ const MainUnitRow: React.FC<MainUnitRowType> = ({
             styles.standardButton,
             mainUnit === 'Aqours' && styles.selectedValue1
           ]}>
-          <Image source={Images.mainUnit[1]} style={styles.buttonImage1} />
+          <Image source={Images.mainUnit.Aqours} style={styles.buttonImage1} />
         </TouchableOpacity>
       </View>
     </View>

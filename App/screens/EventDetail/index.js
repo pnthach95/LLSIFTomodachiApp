@@ -7,7 +7,6 @@ import dayjs from 'dayjs';
 import Information from './Information';
 import Tracker from './Tracker';
 import UserContext from '~/Context/UserContext';
-import useStatusBar from '~/hooks/useStatusBar';
 import LoadingScreen from '../Loading';
 import LLSIFService from '~/Services/LLSIFService';
 import LLSIFdotnetService from '~/Services/LLSIFdotnetService';

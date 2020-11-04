@@ -46,7 +46,10 @@ const AttributeRow: React.FC<AttributeRowType> = ({
               rowStyles.standardButton,
               attribute === 'Smile' && rowStyles.selectedValue1
             ]}>
-            <Image source={Images.attribute[0]} style={rowStyles.buttonImage} />
+            <Image
+              source={Images.attribute.Smile}
+              style={rowStyles.buttonImage}
+            />
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => selectAttribute('Pure')}
@@ -54,7 +57,10 @@ const AttributeRow: React.FC<AttributeRowType> = ({
               rowStyles.standardButton,
               attribute === 'Pure' && rowStyles.selectedValue1
             ]}>
-            <Image source={Images.attribute[1]} style={rowStyles.buttonImage} />
+            <Image
+              source={Images.attribute.Pure}
+              style={rowStyles.buttonImage}
+            />
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => selectAttribute('Cool')}
@@ -62,7 +68,10 @@ const AttributeRow: React.FC<AttributeRowType> = ({
               rowStyles.standardButton,
               attribute === 'Cool' && rowStyles.selectedValue1
             ]}>
-            <Image source={Images.attribute[2]} style={rowStyles.buttonImage} />
+            <Image
+              source={Images.attribute.Cool}
+              style={rowStyles.buttonImage}
+            />
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => selectAttribute('All')}
@@ -70,7 +79,10 @@ const AttributeRow: React.FC<AttributeRowType> = ({
               rowStyles.standardButton,
               attribute === 'All' && rowStyles.selectedValue1
             ]}>
-            <Image source={Images.attribute[3]} style={rowStyles.buttonImage} />
+            <Image
+              source={Images.attribute.All}
+              style={rowStyles.buttonImage}
+            />
           </TouchableOpacity>
         </ScrollView>
       </View>

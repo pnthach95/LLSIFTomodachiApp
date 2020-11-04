@@ -4,7 +4,6 @@ import { IconButton, Surface, Text, TouchableRipple } from 'react-native-paper';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
 
-import useStatusBar from '~/hooks/useStatusBar';
 import ConnectStatus from '~/Components/ConnectStatus';
 import EventRow from '~/Components/EventRow';
 import SongItem from '~/Components/SongItem';

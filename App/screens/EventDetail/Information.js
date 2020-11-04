@@ -7,7 +7,7 @@ import FastImage from 'react-native-fast-image';
 import dayjs from 'dayjs';
 
 import TimerCountdown from '~/Components/TimerCountdown';
-import { AddHTTPS, findAttribute } from '~/Utils';
+import { AddHTTPS } from '~/Utils';
 import { Config, EventStatus } from '~/Config';
 import { Metrics, AppStyles, Fonts, Images } from '~/Theme';
 import styles from './styles';
@@ -145,9 +145,7 @@ function Information({
                   />
                   <View style={styles.songInfo}>
                     <Image
-                      source={
-                        Images.attribute[findAttribute(songItem.attribute)]
-                      }
+                      source={Images.attribute[songItem.attribute]}
                       style={styles.attributeIcon}
                     />
                     <Text style={styles.whiteCenter}>

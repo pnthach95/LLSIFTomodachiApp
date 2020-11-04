@@ -2,15 +2,13 @@ import React, { useState, useEffect, useContext } from 'react';
 import { Text, View, ScrollView, TouchableOpacity } from 'react-native';
 import PropTypes from 'prop-types';
 import FastImage from 'react-native-fast-image';
-import LinearGradient from 'react-native-linear-gradient';
 
-import useStatusBar from '~/hooks/useStatusBar';
 import UserContext from '~/Context/UserContext';
 import StarBar from '~/Components/StarBar';
 import ProgressBar from '~/Components/ProgressBar';
 import TextRow from '~/Components/TextRow';
 import LoadingScreen from '../Loading';
-import { findColorByAttribute, AddHTTPS, findMainUnit } from '~/Utils';
+import { findColorByAttribute, AddHTTPS } from '~/Utils';
 import { Metrics, AppStyles, Colors, Images } from '~/Theme';
 import styles from './styles';
 
@@ -91,11 +89,10 @@ function SongDetailScreen({ route, navigation }) {
     }
     setMaster([item.master_notes, masterArray]);
     setCurrentStats([item.easy_notes, easyArray]);
-    const mainunit = findMainUnit(item.main_unit);
     const unitIcon = () =>
-      mainunit && (
+      !!item.main_unit && (
         <FastImage
-          source={Images.mainUnit[mainunit]}
+          source={Images.mainUnit[item.main_unit]}
           resizeMode='contain'
           style={styles.rightHeaderImage}
         />
@@ -182,100 +179,98 @@ function SongDetailScreen({ route, navigation }) {
   if (isLoading) return <LoadingScreen />;
 
   return (
-    <LinearGradient colors={[colors[1], colors[1]]} style={styles.content}>
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={styles.scrollViewContainer}
-        style={AppStyles.screen}>
-        <FastImage
-          source={{ uri: AddHTTPS(item.image) }}
-          onLoad={onLoadFastImage}
-          resizeMode='contain'
-          style={{
-            width: Metrics.screenWidth / 2,
-            height: ((Metrics.screenWidth / 2) * imgSize.height) / imgSize.width
-          }}
-        />
-        <View style={styles.height10} />
+    <ScrollView
+      showsVerticalScrollIndicator={false}
+      contentContainerStyle={styles.scrollViewContainer}
+      style={AppStyles.screen}>
+      <FastImage
+        source={{ uri: AddHTTPS(item.image) }}
+        onLoad={onLoadFastImage}
+        resizeMode='contain'
+        style={{
+          width: Metrics.screenWidth / 2,
+          height: ((Metrics.screenWidth / 2) * imgSize.height) / imgSize.width
+        }}
+      />
+      <View style={styles.height10} />
 
-        <TextRow
-          item1={{ text: 'Attribute', flex: 1 }}
-          item2={{ text: item.attribute, flex: 1 }}
-        />
-        {Boolean(item.rank) && (
-          <View style={styles.event}>
-            <TextRow
-              item1={{ text: 'Unlock', flex: 1 }}
-              item2={{ text: item.rank, flex: 1 }}
-            />
-          </View>
-        )}
-        <TextRow
-          item1={{ text: 'Beats per minute', flex: 1 }}
-          item2={{ text: item.BPM, flex: 1 }}
-        />
-        <TextRow
-          item1={{ text: 'Length', flex: 1 }}
-          item2={{ text: formatTime(item.time), flex: 1 }}
-        />
-        {item.event && (
-          <View style={styles.event}>
-            <TextRow
-              item1={{ text: 'Event', flex: 1 }}
-              item2={{ text: item.event.japanese_name, flex: 1 }}
-            />
-            <TextRow
-              item1={{ text: '', flex: 1 }}
-              item2={{ text: item.event.english_name, flex: 1 }}
-            />
-            <TouchableOpacity
-              onPress={navigateToEventDetail}
-              style={styles.eventButton}>
-              <FastImage
-                source={{ uri: AddHTTPS(item.event.image) }}
-                resizeMode={FastImage.resizeMode.contain}
-                style={styles.eventImage}
-              />
-            </TouchableOpacity>
-          </View>
-        )}
-        {Boolean(item.daily_rotation) && (
-          <View style={styles.event}>
-            <TextRow
-              item1={{ text: 'Daily rotation', flex: 1 }}
-              item2={{
-                text: `${item.daily_rotation} - ${item.daily_rotation_position}`,
-                flex: 1
-              }}
-            />
-          </View>
-        )}
-        <TextRow
-          item1={{ text: 'Currently available', flex: 1 }}
-          item2={{ text: item.available ? 'Yes' : 'No', flex: 1 }}
-        />
-        <View style={styles.buttonRow}>
-          {statButton(0, 'Easy', easy, styles.leftRadius)}
-          {statButton(1, 'Normal', normal)}
-          {statButton(2, 'Hard', hard)}
-          {statButton(
-            3,
-            'Expert',
-            expert,
-            random[1].length === 0 && !master[0] && styles.rightRadius
-          )}
-          {random[1].length !== 0 &&
-            statButton(4, 'Random', random, !master[0] && styles.rightRadius)}
-          {master[0] && statButton(5, 'Master', master, styles.rightRadius)}
+      <TextRow
+        item1={{ text: 'Attribute', flex: 1 }}
+        item2={{ text: item.attribute, flex: 1 }}
+      />
+      {Boolean(item.rank) && (
+        <View style={styles.event}>
+          <TextRow
+            item1={{ text: 'Unlock', flex: 1 }}
+            item2={{ text: item.rank, flex: 1 }}
+          />
         </View>
-        <ProgressBar
-          number={currentStats[0] || 0}
-          progress={progressStat(currentStats[0] || 0)}
-          fillStyle={{ backgroundColor: colors[0] }}
-        />
-        <StarBar array={currentStats[1]} />
-      </ScrollView>
-    </LinearGradient>
+      )}
+      <TextRow
+        item1={{ text: 'Beats per minute', flex: 1 }}
+        item2={{ text: item.BPM, flex: 1 }}
+      />
+      <TextRow
+        item1={{ text: 'Length', flex: 1 }}
+        item2={{ text: formatTime(item.time), flex: 1 }}
+      />
+      {item.event && (
+        <View style={styles.event}>
+          <TextRow
+            item1={{ text: 'Event', flex: 1 }}
+            item2={{ text: item.event.japanese_name, flex: 1 }}
+          />
+          <TextRow
+            item1={{ text: '', flex: 1 }}
+            item2={{ text: item.event.english_name, flex: 1 }}
+          />
+          <TouchableOpacity
+            onPress={navigateToEventDetail}
+            style={styles.eventButton}>
+            <FastImage
+              source={{ uri: AddHTTPS(item.event.image) }}
+              resizeMode={FastImage.resizeMode.contain}
+              style={styles.eventImage}
+            />
+          </TouchableOpacity>
+        </View>
+      )}
+      {Boolean(item.daily_rotation) && (
+        <View style={styles.event}>
+          <TextRow
+            item1={{ text: 'Daily rotation', flex: 1 }}
+            item2={{
+              text: `${item.daily_rotation} - ${item.daily_rotation_position}`,
+              flex: 1
+            }}
+          />
+        </View>
+      )}
+      <TextRow
+        item1={{ text: 'Currently available', flex: 1 }}
+        item2={{ text: item.available ? 'Yes' : 'No', flex: 1 }}
+      />
+      <View style={styles.buttonRow}>
+        {statButton(0, 'Easy', easy, styles.leftRadius)}
+        {statButton(1, 'Normal', normal)}
+        {statButton(2, 'Hard', hard)}
+        {statButton(
+          3,
+          'Expert',
+          expert,
+          random[1].length === 0 && !master[0] && styles.rightRadius
+        )}
+        {random[1].length !== 0 &&
+          statButton(4, 'Random', random, !master[0] && styles.rightRadius)}
+        {master[0] && statButton(5, 'Master', master, styles.rightRadius)}
+      </View>
+      <ProgressBar
+        number={currentStats[0] || 0}
+        progress={progressStat(currentStats[0] || 0)}
+        fillStyle={{ backgroundColor: colors[0] }}
+      />
+      <StarBar array={currentStats[1]} />
+    </ScrollView>
   );
 }
 

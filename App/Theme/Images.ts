@@ -36,9 +36,30 @@ import ur from '../Images/rarity/UR.png';
 const column = [twoColumns, oneColumns];
 const skill = [scoreUp, perfectLock, healer, special];
 const region = [japan, world];
-const mainUnit = [mainUnit0, mainUnit1];
-const subUnit = [sub0, sub1, sub2, sub3, sub4, sub5, sub6, sub7];
-const attribute = [attribute0, attribute1, attribute2, attribute3];
+const mainUnit = {
+  "μ's": mainUnit0,
+  Aqours: mainUnit1
+};
+
+const subUnit = {
+  Printemps: sub0,
+  'Lily White': sub1,
+  Bibi: sub2,
+  'CYaRon!': sub3,
+  AZALEA: sub4,
+  'Guilty Kiss': sub5,
+  'Saint Snow': sub6,
+  'A-RISE': sub7
+};
+
+const attribute = {
+  Smile: attribute0,
+  Pure: attribute1,
+  Cool: attribute2,
+  All: attribute3,
+  '': null
+};
+
 const rarity = [n, r, sr, ssr, ur];
 
 export default {

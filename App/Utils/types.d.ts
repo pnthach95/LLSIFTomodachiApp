@@ -90,6 +90,16 @@ type SongDetailScreenProps = StackScreenProps<
 
 type YearType = 'First' | 'Second' | 'Third' | '';
 type MainUnitNames = `μ's` | 'Aqours' | '';
+type SubUnitNames =
+  | 'Printemps'
+  | 'Lily White'
+  | 'Bibi'
+  | 'CYaRon!'
+  | 'AZALEA'
+  | 'Guilty Kiss'
+  | 'Saint Snow'
+  | 'A-RISE';
+
 type BooleanOrEmpty = 'True' | 'False' | '';
 type AttributeType = 'Smile' | 'Pure' | 'Cool' | 'All' | '';
 type RarityType = 'N' | 'R' | 'SR' | 'SSR' | 'UR' | '';
@@ -186,9 +196,9 @@ type MiniIdolObject = {
   name: string;
   school?: string;
   year?: string;
-  main_unit?: string;
+  main_unit?: MainUnitNames;
   japanese_name?: string;
-  sub_unit?: string;
+  sub_unit?: SubUnitNames;
 };
 
 type MiniEventObject = {

@@ -1,26 +1,25 @@
+/* eslint-disable react/prop-types */
 import React, { useContext, useState, useEffect, useCallback } from 'react';
-import { View, ScrollView, TouchableOpacity, ViewStyle } from 'react-native';
-import { Text, Divider } from 'react-native-paper';
+import {
+  View,
+  ScrollView,
+  TouchableOpacity,
+  StyleSheet,
+  ViewStyle
+} from 'react-native';
+import { Text, Appbar, ProgressBar } from 'react-native-paper';
 import FastImage, { OnLoadEvent } from 'react-native-fast-image';
 import ImageView from 'react-native-image-viewing';
-import LinearGradient from 'react-native-linear-gradient';
+import { responsiveWidth } from 'react-native-responsive-dimensions';
 import Icon from 'react-native-vector-icons/Ionicons';
 import dayjs from 'dayjs';
 
-import useStatusBar from '~/hooks/useStatusBar';
+import LoadingScreen from '../Loading';
 import UserContext from '~/Context/UserContext';
 import TextRow from '~/Components/TextRow';
-import ProgressBar from '~/Components/ProgressBar';
-import {
-  findColorByAttribute,
-  AddHTTPS,
-  findMainUnit,
-  findSubUnit
-} from '~/Utils';
+import { findColorByAttribute, AddHTTPS, setStatusBar } from '~/Utils';
 import { Metrics, Fonts, AppStyles, Colors, Images } from '~/Theme';
-import { Config } from '~/Config';
-import styles from './styles';
-import type { CardDetailScreenProps } from '~/Utils/types';
+import type { AttributeType, CardDetailScreenProps } from '~/Utils/types';
 
 /**
  * Card detail screen
@@ -65,9 +64,10 @@ const CardDetailScreen: React.FC<CardDetailScreenProps> = ({
     width: 1,
     height: 0
   });
-  const colors = findColorByAttribute(route.params.item.attribute);
+  const cardColors = findColorByAttribute(item.attribute);
 
   useEffect(() => {
+    setStatusBar(cardColors[0]);
     const tmpImages = [];
     if (item.card_image) {
       tmpImages.push({ uri: AddHTTPS(item.card_image) });
@@ -78,100 +78,48 @@ const CardDetailScreen: React.FC<CardDetailScreenProps> = ({
     if (item.is_promo) tmp.push('Promo card');
     if (item.japan_only) tmp.push('Japan only');
     setPropertyLine(tmp.join(' - '));
-
-    const mainUnit = findMainUnit(item.idol.main_unit || '');
-    const subUnit = findSubUnit(item.idol.sub_unit || '');
-
-    const headerTitle = () => (
-      <TouchableOpacity onPress={navigateToIdolDetail}>
-        <Text style={Fonts.style.normal}>{item.idol.name}</Text>
-      </TouchableOpacity>
-    );
-
-    const headerRight = () => (
-      <View style={styles.rightRow}>
-        {mainUnit && (
-          <FastImage
-            source={Images.mainUnit[mainUnit]}
-            resizeMode='contain'
-            style={styles.rightHeaderImage}
-          />
-        )}
-        {subUnit && (
-          <FastImage
-            source={Images.subUnit[subUnit]}
-            resizeMode='contain'
-            style={styles.rightHeaderImage}
-          />
-        )}
-      </View>
-    );
-
-    navigation.setOptions({
-      headerStyle: { backgroundColor: colors[1] },
-      headerTitle,
-      headerRight
-    });
     setDone(true);
+    return () => setStatusBar(Colors.white);
   }, []);
 
-  function progressSmile(stat: number) {
-    return (100 * stat) / maxStats[0];
-  }
-
-  function progressPure(stat: number) {
-    return (100 * stat) / maxStats[1];
-  }
-
-  function progressCool(stat: number) {
-    return (100 * stat) / maxStats[2];
-  }
-
-  function progressUnit(text: string, stat: number, color: string) {
-    let icon = 2;
+  const ProgressUnit = ({
+    text,
+    stat,
+    color
+  }: {
+    text: AttributeType;
+    stat: number;
+    color: string;
+  }) => {
     let progress = 0;
     switch (text) {
       case 'Smile':
-        icon = 0;
-        progress = progressSmile(stat);
+        progress = stat / maxStats[0];
         break;
       case 'Pure':
-        icon = 1;
-        progress = progressPure(stat);
+        progress = stat / maxStats[1];
         break;
       default:
-        icon = 2;
-        progress = progressCool(stat);
+        progress = stat / maxStats[2];
         break;
     }
     return (
-      <View style={{ width: Metrics.screenWidth }}>
-        <Text style={[Fonts.style.normal, styles.progressText]}>{text}</Text>
-        <View style={styles.progressRow}>
+      <View style={styles.progressRow}>
+        <Text>{text}</Text>
+        <View style={AppStyles.row}>
           <FastImage
-            source={Images.attribute[icon]}
+            source={Images.attribute[text]}
             resizeMode='contain'
             style={[AppStyles.mediumIcon, styles.marginRight10]}
           />
-          <ProgressBar
-            number={stat}
-            progress={progress}
-            fillStyle={{ backgroundColor: color }}
-          />
+          <View style={AppStyles.screen}>
+            <Text>{stat}</Text>
+            <ProgressBar progress={progress} color={color} />
+          </View>
         </View>
       </View>
     );
-  }
-
-  function progressView(stats: number[]) {
-    return (
-      <View>
-        {progressUnit('Smile', stats[0], Colors.pink)}
-        {progressUnit('Pure', stats[1], Colors.green)}
-        {progressUnit('Cool', stats[2], Colors.blue)}
-      </View>
-    );
-  }
+  };
 
   function statButton(
     id: number,
@@ -206,7 +154,6 @@ const CardDetailScreen: React.FC<CardDetailScreenProps> = ({
 
   /**
    * Navigate to Event Detail Screen
-   *
    */
   const navigateToEventDetail = (name: string) => () => {
     navigation.navigate('EventDetailScreen', { eventName: name });
@@ -214,7 +161,6 @@ const CardDetailScreen: React.FC<CardDetailScreenProps> = ({
 
   /**
    * Navigate to Idol Detail Screen
-   *
    */
   const navigateToIdolDetail = () => {
     navigation.navigate('IdolDetailScreen', { name: item.idol.name });
@@ -247,154 +193,158 @@ const CardDetailScreen: React.FC<CardDetailScreenProps> = ({
     []
   );
 
-  if (done) {
-    return <View />;
-  }
-
   return (
     <>
-      <LinearGradient style={AppStyles.screen} colors={[colors[1], colors[0]]}>
+      <Appbar.Header style={{ backgroundColor: cardColors[1] }}>
+        <Appbar.BackAction />
+        <Appbar.Content title={item.idol.name} onPress={navigateToIdolDetail} />
+        {!!item.idol.main_unit && (
+          <FastImage
+            source={Images.mainUnit[item.idol.main_unit]}
+            resizeMode='contain'
+            style={styles.rightHeaderImage}
+          />
+        )}
+        {!!item.idol.sub_unit && (
+          <FastImage
+            source={Images.subUnit[item.idol.sub_unit]}
+            resizeMode='contain'
+            style={styles.rightHeaderImage}
+          />
+        )}
+      </Appbar.Header>
+      {done ? (
         <ScrollView
           showsVerticalScrollIndicator={false}
-          style={styles.scrollView}>
+          style={styles.container}>
           {/* CARD IMAGES */}
-          {done && images.map((value, index) => renderImage(index, value))}
+          <View style={styles.imageRow}>
+            {done && images.map((value, index) => renderImage(index, value))}
+          </View>
 
           {/* INFORMATION */}
-          <View style={styles.informationBlock}>
-            {done && (
-              <>
-                <TextRow
-                  item1={{ flex: 1, text: 'Card ID' }}
-                  item2={{ flex: 2, text: item.game_id }}
-                />
-                <TextRow
-                  item1={{ flex: 1, text: 'Release date' }}
-                  item2={{
-                    flex: 2,
-                    text: dayjs(item.release_date).format(
-                      Config.DATE_FORMAT_OUTPUT
-                    )
-                  }}
-                />
-              </>
-            )}
-            {Boolean(propertyLine) && <Text>{propertyLine}</Text>}
+          <TextRow
+            item1={{ flex: 1, text: 'Card ID' }}
+            item2={{ flex: 2, text: item.game_id }}
+          />
+          <TextRow
+            item1={{ flex: 1, text: 'Release date' }}
+            item2={{
+              flex: 2,
+              text: dayjs(item.release_date).format('LL')
+            }}
+          />
+          {Boolean(propertyLine) && <Text>{propertyLine}</Text>}
 
-            {!!item.skill && (
-              <View>
-                <Divider />
-                <TextRow
-                  item1={{ flex: 1, text: 'Skill' }}
-                  item2={{ flex: 2, text: item.skill }}
-                />
-                <TextRow
-                  item1={{ flex: 1, text: '' }}
-                  item2={{
-                    flex: 2,
-                    text: item.skill_details || '',
-                    textStyle: styles.subtitleText
-                  }}
-                />
-              </View>
-            )}
+          {!!item.skill && (
+            <>
+              <TextRow
+                item1={{ flex: 1, text: 'Skill' }}
+                item2={{ flex: 2, text: item.skill }}
+              />
+              <TextRow
+                item1={{ flex: 1, text: '' }}
+                item2={{
+                  flex: 2,
+                  text: item.skill_details || '',
+                  textStyle: styles.subtitleText
+                }}
+              />
+            </>
+          )}
 
-            {!!item.center_skill && (
-              <View>
-                <Divider />
-                <TextRow
-                  item1={{ flex: 1, text: 'Center skill' }}
-                  item2={{ flex: 2, text: item.center_skill }}
-                />
-                <TextRow
-                  item1={{ flex: 1, text: '' }}
-                  item2={{
-                    flex: 2,
-                    text: item.center_skill_details || '',
-                    textStyle: styles.subtitleText
-                  }}
-                />
-              </View>
-            )}
+          {!!item.center_skill && (
+            <>
+              <TextRow
+                item1={{ flex: 1, text: 'Center skill' }}
+                item2={{ flex: 2, text: item.center_skill }}
+              />
+              <TextRow
+                item1={{ flex: 1, text: '' }}
+                item2={{
+                  flex: 2,
+                  text: item.center_skill_details || '',
+                  textStyle: styles.subtitleText
+                }}
+              />
+            </>
+          )}
 
-            {!!item.event && (
-              <View>
-                <Divider />
+          {!!item.event && (
+            <>
+              <TextRow
+                item1={{
+                  text: 'Event',
+                  flex: 1,
+                  textStyle: Fonts.style.normal
+                }}
+                item2={{
+                  text: item.event.japanese_name,
+                  flex: 4,
+                  textStyle: Fonts.style.normal
+                }}
+              />
+              {item.event.english_name !== null && (
                 <TextRow
-                  item1={{
-                    text: 'Event',
-                    flex: 1,
-                    textStyle: Fonts.style.normal
-                  }}
+                  item1={{ text: '', flex: 1, textStyle: Fonts.style.normal }}
                   item2={{
-                    text: item.event.japanese_name,
+                    text: item.event.english_name || '',
                     flex: 4,
                     textStyle: Fonts.style.normal
                   }}
                 />
-                {item.event.english_name !== null && (
+              )}
+              <TouchableOpacity
+                style={AppStyles.center}
+                onPress={navigateToEventDetail(item.event.japanese_name)}>
+                <FastImage
+                  source={{ uri: AddHTTPS(item.event.image) }}
+                  style={styles.banner}
+                  resizeMode={FastImage.resizeMode.contain}
+                />
+              </TouchableOpacity>
+              {!!item.other_event && (
+                <View>
                   <TextRow
-                    item1={{ text: '', flex: 1, textStyle: Fonts.style.normal }}
+                    item1={{
+                      text: '',
+                      flex: 1,
+                      textStyle: Fonts.style.normal
+                    }}
                     item2={{
-                      text: item.event.english_name || '',
+                      text: item.other_event.english_name || '',
                       flex: 4,
                       textStyle: Fonts.style.normal
                     }}
                   />
-                )}
-                <TouchableOpacity
-                  style={AppStyles.center}
-                  onPress={navigateToEventDetail(item.event.japanese_name)}>
-                  <FastImage
-                    source={{ uri: AddHTTPS(item.event.image) }}
-                    style={styles.banner}
-                    resizeMode={FastImage.resizeMode.contain}
-                  />
-                </TouchableOpacity>
-                {!!item.other_event && (
-                  <View>
-                    <TextRow
-                      item1={{
-                        text: '',
-                        flex: 1,
-                        textStyle: Fonts.style.normal
-                      }}
-                      item2={{
-                        text: item.other_event.english_name || '',
-                        flex: 4,
-                        textStyle: Fonts.style.normal
-                      }}
+                  <TouchableOpacity
+                    style={AppStyles.center}
+                    onPress={navigateToEventDetail(
+                      item.other_event.japanese_name
+                    )}>
+                    <FastImage
+                      source={{ uri: AddHTTPS(item.other_event.image) }}
+                      style={styles.banner}
+                      resizeMode={FastImage.resizeMode.contain}
                     />
-                    <TouchableOpacity
-                      style={AppStyles.center}
-                      onPress={navigateToEventDetail(
-                        item.other_event.japanese_name
-                      )}>
-                      <FastImage
-                        source={{ uri: AddHTTPS(item.other_event.image) }}
-                        style={styles.banner}
-                        resizeMode={FastImage.resizeMode.contain}
-                      />
-                    </TouchableOpacity>
-                  </View>
-                )}
-              </View>
-            )}
-
-            {item.hp !== 0 && done && (
-              <View>
-                <Divider />
-                <View style={AppStyles.row}>
-                  <Icon
-                    name='ios-heart'
-                    size={Metrics.icons.medium}
-                    color={'red'}
-                  />
-                  <Text style={Fonts.style.normal}> : {item.hp}</Text>
+                  </TouchableOpacity>
                 </View>
+              )}
+            </>
+          )}
+
+          {item.hp !== 0 && done && (
+            <>
+              <View style={AppStyles.row}>
+                <Icon
+                  name='ios-heart'
+                  size={Metrics.icons.medium}
+                  color={'red'}
+                />
+                <Text style={Fonts.style.normal}> : {item.hp}</Text>
               </View>
-            )}
-          </View>
+            </>
+          )}
 
           {/* STATS */}
           {item.hp !== 0 && done && (
@@ -404,23 +354,39 @@ const CardDetailScreen: React.FC<CardDetailScreenProps> = ({
                 {item.non_idolized_maximum_statistics_smile !== 0 &&
                   statButton(
                     1,
-                    `Level ${item.non_idolized_max_level}`,
+                    `Level ${item.non_idolized_max_level || 0}`,
                     nonIdolMaxStats
                   )}
                 {item.idolized_max_level !== 0 &&
                   statButton(
                     2,
-                    `Level ${item.idolized_max_level}`,
+                    `Level ${item.idolized_max_level || 0}`,
                     idolMaxStats,
                     styles.rightRadius
                   )}
               </View>
-              {progressView(currentStats)}
+              <ProgressUnit
+                text='Smile'
+                stat={currentStats[0]}
+                color={Colors.pink}
+              />
+              <ProgressUnit
+                text='Pure'
+                stat={currentStats[1]}
+                color={Colors.green}
+              />
+              <ProgressUnit
+                text='Cool'
+                stat={currentStats[2]}
+                color={Colors.blue}
+              />
             </View>
           )}
           <View style={{ height: Metrics.doubleBaseMargin }} />
         </ScrollView>
-      </LinearGradient>
+      ) : (
+        <LoadingScreen />
+      )}
       <ImageView
         images={images}
         imageIndex={imgViewer.index}
@@ -430,5 +396,53 @@ const CardDetailScreen: React.FC<CardDetailScreenProps> = ({
     </>
   );
 };
+
+const styles = StyleSheet.create({
+  banner: {
+    height: 100,
+    width: responsiveWidth(80)
+  },
+  button: {
+    alignItems: 'center',
+    flex: 1,
+    justifyContent: 'center',
+    marginHorizontal: 1,
+    paddingVertical: Metrics.baseMargin
+  },
+  buttonRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    paddingVertical: Metrics.baseMargin
+  },
+  container: {
+    paddingHorizontal: Metrics.doubleBaseMargin
+  },
+  imageRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    paddingVertical: Metrics.doubleBaseMargin
+  },
+  leftRadius: {
+    borderBottomLeftRadius: 10,
+    borderTopLeftRadius: 10
+  },
+  marginRight10: {
+    marginRight: Metrics.baseMargin
+  },
+  progressRow: {
+    paddingVertical: Metrics.baseMargin
+  },
+  rightHeaderImage: {
+    height: 70,
+    width: 70
+  },
+  rightRadius: {
+    borderBottomRightRadius: 10,
+    borderTopRightRadius: 10
+  },
+  subtitleText: {
+    fontSize: Fonts.size.medium
+  }
+});
 
 export default CardDetailScreen;

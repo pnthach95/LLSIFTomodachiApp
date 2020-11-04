@@ -4,7 +4,6 @@ import { IconButton, Surface, Text, Divider } from 'react-native-paper';
 import PropTypes from 'prop-types';
 import FastImage from 'react-native-fast-image';
 
-import useStatusBar from '~/hooks/useStatusBar';
 import UserContext from '~/Context/UserContext';
 import ConnectStatus from '~/Components/ConnectStatus';
 import IdolItem from '~/Components/IdolItem';

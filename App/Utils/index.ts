@@ -1,5 +1,6 @@
-import { Alert, Linking } from 'react-native';
+import { Alert, Linking, StatusBar } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
+import Color from 'color';
 import { Colors } from '~/Theme';
 import { initAppOptions } from '~/Context/Reducer';
 import type { AppOptions, AttributeType } from './types';
@@ -22,62 +23,6 @@ export const findColorByAttribute = (key: AttributeType): string[] => {
       return [Colors.blue, Colors.lightBlue];
     default:
       return [Colors.violet, Colors.lightViolet];
-  }
-};
-
-/**
- * Find icon by attribute
- */
-export const findAttribute = (key: AttributeType): number => {
-  switch (key) {
-    case 'Smile':
-      return 0;
-    case 'Pure':
-      return 1;
-    case 'Cool':
-      return 2;
-    default:
-      return 3;
-  }
-};
-
-/**
- * Find icon by main unit
- */
-export const findMainUnit = (key: string): number | null => {
-  switch (key) {
-    case 'Aqours':
-      return 1;
-    case "μ's":
-      return 0;
-    default:
-      return null;
-  }
-};
-
-/**
- * Find icon by sub unit
- */
-export const findSubUnit = (key: string): number | null => {
-  switch (key) {
-    case 'Printemps':
-      return 0;
-    case 'Lily White':
-      return 1;
-    case 'Bibi':
-      return 2;
-    case 'CYaRon!':
-      return 3;
-    case 'AZALEA':
-      return 4;
-    case 'Guilty Kiss':
-      return 5;
-    case 'Saint Snow':
-      return 6;
-    case 'A-RISE':
-      return 7;
-    default:
-      return null;
   }
 };
 
@@ -126,4 +71,10 @@ export const openLink = (link: string): void => {
     { text: 'Cancel', style: 'cancel' },
     { text: 'OK', onPress: () => Linking.openURL(link) }
   ]);
+};
+
+export const setStatusBar = (c: string): void => {
+  const cc = Color(c);
+  StatusBar.setBarStyle(cc.isDark() ? 'light-content' : 'dark-content');
+  StatusBar.setBackgroundColor(c);
 };

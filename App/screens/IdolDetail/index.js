@@ -2,18 +2,12 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Text, View, ScrollView, StatusBar } from 'react-native';
 import FastImage from 'react-native-fast-image';
-import LinearGradient from 'react-native-linear-gradient';
 import dayjs from 'dayjs';
 
 import LoadingScreen from '../Loading';
 import InfoLine from '~/Components/InfoLine';
 import LLSIFService from '~/Services/LLSIFService';
-import {
-  findColorByAttribute,
-  AddHTTPS,
-  findMainUnit,
-  findSubUnit
-} from '~/Utils';
+import { findColorByAttribute, AddHTTPS } from '~/Utils';
 import { Metrics, AppStyles, Colors, Images } from '~/Theme';
 import styles from './styles';
 
@@ -54,21 +48,18 @@ function IdolDetailScreen({ route, navigation }) {
         </View>
       );
 
-      const mainunit = findMainUnit(item.main_unit);
-      const subunit = findSubUnit(item.sub_unit);
-
       const headerRight = () => (
         <View style={AppStyles.row}>
-          {mainunit && (
+          {!!item.main_unit && (
             <FastImage
-              source={Images.mainUnit[mainunit]}
+              source={Images.mainUnit[item.main_unit]}
               resizeMode='contain'
               style={styles.rightHeaderImage}
             />
           )}
-          {subunit && (
+          {!!item.sub_unit && (
             <FastImage
-              source={Images.subUnit[subunit]}
+              source={Images.subUnit[item.sub_unit]}
               resizeMode='contain'
               style={styles.rightHeaderImage}
             />
@@ -119,25 +110,12 @@ function IdolDetailScreen({ route, navigation }) {
 
   if (isLoading) return <LoadingScreen bgColor={Colors.blue} />;
   return (
-    <LinearGradient style={AppStyles.screen} colors={[colors[1], colors[0]]}>
-      <ScrollView showsVerticalScrollIndicator={false}>
-        <View style={styles.imageRow}>
-          {images[0] && images[0].includes('.png') && (
-            <FastImage
-              source={{
-                uri: AddHTTPS(images[0]),
-                priority: FastImage.priority.high
-              }}
-              resizeMode={FastImage.resizeMode.contain}
-              style={{
-                width: Metrics.images.itemWidth * 1.5,
-                height: Metrics.images.itemWidth * 1.5
-              }}
-            />
-          )}
+    <ScrollView showsVerticalScrollIndicator={false}>
+      <View style={styles.imageRow}>
+        {images[0] && images[0].includes('.png') && (
           <FastImage
             source={{
-              uri: AddHTTPS(images[1]),
+              uri: AddHTTPS(images[0]),
               priority: FastImage.priority.high
             }}
             resizeMode={FastImage.resizeMode.contain}
@@ -146,61 +124,72 @@ function IdolDetailScreen({ route, navigation }) {
               height: Metrics.images.itemWidth * 1.5
             }}
           />
-        </View>
-        <View style={styles.scrollView}>
-          {item.school !== null && (
-            <InfoLine title={'School'} content={item.school} />
-          )}
-          <InfoLine title={'Attribute'} content={item.attribute} />
-          {item.birthday !== null && (
-            <InfoLine
-              title={'Birthday'}
-              content={dayjs(item.birthday, 'MM-DD').format('MMM Do')}
-            />
-          )}
-          {item.astrological_sign !== null && (
-            <InfoLine
-              title={'Astrological Sign'}
-              content={item.astrological_sign}
-            />
-          )}
-          {item.blood !== null && (
-            <InfoLine title={'Blood Type'} content={item.blood} />
-          )}
-          {item.height !== null && (
-            <InfoLine title={'Height'} content={`${item.height} cm`} />
-          )}
-          {item.measurements !== null && (
-            <InfoLine title={'Measurements'} content={item.measurements} />
-          )}
-          {item.favorite_food !== null && (
-            <InfoLine title={'Favorite Food'} content={item.favorite_food} />
-          )}
-          {item.least_favorite_food !== null && (
-            <InfoLine
-              title={'Least Favorite Food'}
-              content={item.least_favorite_food}
-            />
-          )}
-          {item.hobbies !== null && (
-            <InfoLine title={'Hobbies'} content={item.hobbies} />
-          )}
-          {item.year && <InfoLine title={'Year'} content={item.year} />}
-          {item.cv !== null && (
-            <InfoLine
-              title={'CV'}
-              content={`${item.cv.name} (${item.cv.nickname})`}
-              twitter={item.cv.twitter}
-              instagram={item.cv.instagram}
-              myanimelist={item.cv.url}
-            />
-          )}
-          {item.summary !== null && (
-            <InfoLine title={'Summary'} content={item.summary} />
-          )}
-        </View>
-      </ScrollView>
-    </LinearGradient>
+        )}
+        <FastImage
+          source={{
+            uri: AddHTTPS(images[1]),
+            priority: FastImage.priority.high
+          }}
+          resizeMode={FastImage.resizeMode.contain}
+          style={{
+            width: Metrics.images.itemWidth * 1.5,
+            height: Metrics.images.itemWidth * 1.5
+          }}
+        />
+      </View>
+      <View style={styles.scrollView}>
+        {item.school !== null && (
+          <InfoLine title={'School'} content={item.school} />
+        )}
+        <InfoLine title={'Attribute'} content={item.attribute} />
+        {item.birthday !== null && (
+          <InfoLine
+            title={'Birthday'}
+            content={dayjs(item.birthday, 'MM-DD').format('MMM Do')}
+          />
+        )}
+        {item.astrological_sign !== null && (
+          <InfoLine
+            title={'Astrological Sign'}
+            content={item.astrological_sign}
+          />
+        )}
+        {item.blood !== null && (
+          <InfoLine title={'Blood Type'} content={item.blood} />
+        )}
+        {item.height !== null && (
+          <InfoLine title={'Height'} content={`${item.height} cm`} />
+        )}
+        {item.measurements !== null && (
+          <InfoLine title={'Measurements'} content={item.measurements} />
+        )}
+        {item.favorite_food !== null && (
+          <InfoLine title={'Favorite Food'} content={item.favorite_food} />
+        )}
+        {item.least_favorite_food !== null && (
+          <InfoLine
+            title={'Least Favorite Food'}
+            content={item.least_favorite_food}
+          />
+        )}
+        {item.hobbies !== null && (
+          <InfoLine title={'Hobbies'} content={item.hobbies} />
+        )}
+        {item.year && <InfoLine title={'Year'} content={item.year} />}
+        {item.cv !== null && (
+          <InfoLine
+            title={'CV'}
+            content={`${item.cv.name} (${item.cv.nickname})`}
+            twitter={item.cv.twitter}
+            instagram={item.cv.instagram}
+            myanimelist={item.cv.url}
+          />
+        )}
+        {item.summary !== null && (
+          <InfoLine title={'Summary'} content={item.summary} />
+        )}
+      </View>
+    </ScrollView>
   );
 }
 IdolDetailScreen.propTypes = {

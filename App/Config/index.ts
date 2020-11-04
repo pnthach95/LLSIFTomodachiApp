@@ -44,9 +44,10 @@ export const OrderingGroup = {
 
 export const RELEASE_NOTE = `This app is free and open-source.
 
-Press Version to view background.
-
 Change log:
+- Version 0.4.0:
+  • Rework UI.
+
 - Version 0.3.4:
   • Small bugfix.
 

@@ -2,20 +2,17 @@ import { Alert, Linking } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import Color from 'color';
 import { Colors, Images } from '../Theme';
+import { AttributeType } from './type';
 
 /**
  * Add `https:` for image link
- *
- * @param {String} link
  */
-export const AddHTTPS = (link) => `https:${link}`;
+export const AddHTTPS = (link: string): string => `https:${link}`;
 
 /**
  * Find color by attribute
- *
- * @param {String} key Smile || Pure || Cool || null
  */
-export const findColorByAttribute = (key) => {
+export const findColorByAttribute = (key: AttributeType): string[] => {
   switch (key) {
     case 'Smile':
       return [Colors.pink, Colors.lightPink];
@@ -30,9 +27,8 @@ export const findColorByAttribute = (key) => {
 
 /**
  * Find icon by attribute
- * @param {String} key Smile || Pure || Cool || null
  */
-export const findAttribute = (key) => {
+export const findAttribute = (key: AttributeType) => {
   switch (key) {
     case 'Smile':
       return Images.attribute[0];
@@ -47,13 +43,12 @@ export const findAttribute = (key) => {
 
 /**
  * Find icon by main unit
- * @param {String} key μ's || Aqours || null
  */
-export const findMainUnit = (key) => {
+export const findMainUnit = (key: string) => {
   switch (key) {
     case 'Aqours':
       return Images.mainUnit[1];
-    case 'μ\'s':
+    case "μ's":
       return Images.mainUnit[0];
     default:
       return null;
@@ -62,9 +57,8 @@ export const findMainUnit = (key) => {
 
 /**
  * Find icon by sub unit
- * @param {String} key Printemps, Lily White, Bibi, CYaRon!, AZALEA, Guilty Kiss, Saint Snow, A-RISE
  */
-export const findSubUnit = (key) => {
+export const findSubUnit = (key: string) => {
   switch (key) {
     case 'Printemps':
       return Images.subUnit[0];
@@ -89,11 +83,8 @@ export const findSubUnit = (key) => {
 
 /**
  * Find image for skill
- *
- * @param {String} key
- * @returns Image
  */
-export const findSkill = (key) => {
+export const findSkill = (key: string) => {
   switch (key) {
     case 'Score Up':
     case 'Perfect Charm':
@@ -116,22 +107,23 @@ export const findSkill = (key) => {
   }
 };
 
-export const loadSettings = async () => new Promise((resolve, reject) => {
-  AsyncStorage.getItem('settings')
-    .then((res) => {
-      if (res === null) {
-        resolve({
-          ww_event: true,
-          jp_event: true,
-          worldwide_only: false,
-        });
-      } else {
-        resolve(JSON.parse(res));
-      }
-      resolve(res);
-    })
-    .catch((err) => reject(err));
-});
+export const loadSettings = async () =>
+  new Promise((resolve, reject) => {
+    AsyncStorage.getItem('settings')
+      .then((res) => {
+        if (res === null) {
+          resolve({
+            ww_event: true,
+            jp_event: true,
+            worldwide_only: false
+          });
+        } else {
+          resolve(JSON.parse(res));
+        }
+        resolve(res);
+      })
+      .catch((err) => reject(err));
+  });
 
 export const saveSettings = (settings) => {
   AsyncStorage.setItem('settings', JSON.stringify(settings));
@@ -139,9 +131,9 @@ export const saveSettings = (settings) => {
 
 export const darkenColor = (color) => Color(color).darken(0.5);
 
-export const openLink = (link) => {
+export const openLink = (link: string) => {
   Alert.alert('Open link', link, [
-    { text: 'Cancel', onPress: () => { }, style: 'cancel' },
-    { text: 'OK', onPress: () => Linking.openURL(link) },
+    { text: 'Cancel', onPress: () => {}, style: 'cancel' },
+    { text: 'OK', onPress: () => Linking.openURL(link) }
   ]);
 };

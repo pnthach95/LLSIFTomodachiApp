@@ -35,5 +35,5 @@ export default {
   fff6: '#fff6',
   fff9: '#fff9',
   fffb: '#fffb',
-  transparent: '#0000',
+  transparent: '#0000'
 };

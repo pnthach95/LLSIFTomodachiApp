@@ -21,7 +21,8 @@ const SplashScreen: React.FC<SplashScreenProps> = () => {
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(true);
   const [isMounted, setIsMounted] = useState(true);
-  const [loaded, setLoaded] = useState(0);
+  const [loadedAppOptions, setLoadedAO] = useState(false);
+  const [loadedCached, setLoadedC] = useState(false);
 
   useEffect(() => {
     void loadAppOptions();
@@ -35,10 +36,10 @@ const SplashScreen: React.FC<SplashScreenProps> = () => {
   }, [loading]);
 
   useEffect(() => {
-    if (loaded === 2) {
+    if (loadedAppOptions && loadedCached) {
       dispatch({ type: 'LOADING', loading: false });
     }
-  }, [loaded]);
+  }, [loadedAppOptions, loadedCached]);
 
   const loadAppOptions = async () => {
     const res = await loadSettings();
@@ -53,7 +54,7 @@ const SplashScreen: React.FC<SplashScreenProps> = () => {
       firebase.messaging().unsubscribeFromTopic(FirebaseTopic.WW_EVENT);
     }
     dispatch({ type: 'SAVE_OPTIONS', data: res });
-    setLoaded(loaded + 1);
+    setLoadedAO(true);
   };
 
   const loadCachedData = async () => {
@@ -108,12 +109,12 @@ const SplashScreen: React.FC<SplashScreenProps> = () => {
           type: 'SAVE_CACHED_DATA',
           data: cachedData
         });
-        setLoaded(loaded + 1);
+        setLoadedC(true);
       } else {
         throw Error('data = null');
       }
     } catch (e) {
-      console.log(e);
+      // console.log(e);
       setError(true);
     } finally {
       if (isMounted) {

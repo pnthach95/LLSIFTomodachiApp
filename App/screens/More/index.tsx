@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
-import { View, TouchableHighlight, ScrollView, StyleSheet } from 'react-native';
-import { Text, Switch } from 'react-native-paper';
+import { View, ScrollView, StyleSheet } from 'react-native';
+import { Text, Switch, TouchableRipple } from 'react-native-paper';
 import firebase from 'react-native-firebase';
 import Icon from 'react-native-vector-icons/Ionicons';
 import VersionNumber from 'react-native-version-number';
@@ -70,27 +70,33 @@ const MoreScreen: React.FC<MoreScreenProps> = ({ navigation }) => {
           <Text style={Fonts.style.black}>OPTIONS</Text>
         </View>
         <View style={styles.body}>
-          <View style={styles.settingRow}>
-            <Text style={Fonts.style.black}>Search Worldwide only</Text>
-            <Switch
-              value={state.options.worldwideOnly}
-              onValueChange={worldwideToggle}
-            />
-          </View>
-          <View style={styles.settingRow}>
-            <Text style={Fonts.style.black}>Notify WW event</Text>
-            <Switch
-              value={state.options.wwEvent}
-              onValueChange={wwEventToggle}
-            />
-          </View>
-          <View style={styles.settingRow}>
-            <Text style={Fonts.style.black}>Notify JP event</Text>
-            <Switch
-              value={state.options.jpEvent}
-              onValueChange={jpEventToggle}
-            />
-          </View>
+          <TouchableRipple onPress={worldwideToggle}>
+            <View style={styles.settingRow}>
+              <Text style={Fonts.style.black}>Search Worldwide only</Text>
+              <Switch
+                value={state.options.worldwideOnly}
+                onValueChange={worldwideToggle}
+              />
+            </View>
+          </TouchableRipple>
+          <TouchableRipple onPress={wwEventToggle}>
+            <View style={styles.settingRow}>
+              <Text style={Fonts.style.black}>Notify WW event</Text>
+              <Switch
+                value={state.options.wwEvent}
+                onValueChange={wwEventToggle}
+              />
+            </View>
+          </TouchableRipple>
+          <TouchableRipple onPress={jpEventToggle}>
+            <View style={styles.settingRow}>
+              <Text style={Fonts.style.black}>Notify JP event</Text>
+              <Switch
+                value={state.options.jpEvent}
+                onValueChange={jpEventToggle}
+              />
+            </View>
+          </TouchableRipple>
         </View>
         <View style={styles.group}>
           <Text style={Fonts.style.black}>ABOUT ME</Text>
@@ -99,47 +105,35 @@ const MoreScreen: React.FC<MoreScreenProps> = ({ navigation }) => {
           <Text style={Fonts.style.black}>{RELEASE_NOTE}</Text>
         </View>
       </View>
-      <View style={[AppStyles.center, styles.footer]}>
-        <View style={styles.footerBlock}>
-          <Text style={styles.versionText}>
-            {'Powered by '}
-            {
-              <Text
-                onPress={() => openLink(Config.SCHOOLIDO)}
-                style={[styles.versionText, styles.textUnderline]}>
-                {'School Idol Tomodachi'}
-              </Text>
-            }
-            {', '}
-            {
-              <Text
-                onPress={() => openLink(Config.LLSIFNET)}
-                style={[styles.versionText, styles.textUnderline]}>
-                {'llsif.net'}
-              </Text>
-            }
-          </Text>
-        </View>
-        <View style={styles.footerBlock}>
-          <TouchableHighlight
-            onPress={() => openLink(Config.GITHUB_PROJECT)}
-            underlayColor={'#0000'}
-            style={AppStyles.center}>
-            <View style={AppStyles.center}>
-              <Icon name={'logo-github'} size={50} />
-              <Text style={Fonts.style.black}>Project</Text>
-            </View>
-          </TouchableHighlight>
-        </View>
-      </View>
-
-      <TouchableHighlight
-        underlayColor={'#fff'}
-        style={[AppStyles.center, styles.versionContainer]}>
+      <View style={AppStyles.center}>
         <Text style={styles.versionText}>
-          Version {VersionNumber.appVersion}
+          {'Powered by '}
+          {
+            <Text
+              onPress={() => openLink(Config.SCHOOLIDO)}
+              style={[styles.versionText, styles.textUnderline]}>
+              {'School Idol Tomodachi'}
+            </Text>
+          }
+          {', '}
+          {
+            <Text
+              onPress={() => openLink(Config.LLSIFNET)}
+              style={[styles.versionText, styles.textUnderline]}>
+              {'llsif.net'}
+            </Text>
+          }
         </Text>
-      </TouchableHighlight>
+        <TouchableRipple
+          onPress={() => openLink(Config.GITHUB_PROJECT)}
+          style={AppStyles.center}>
+          <View style={AppStyles.center}>
+            <Icon name={'logo-github'} size={50} />
+            <Text style={Fonts.style.black}>Project</Text>
+          </View>
+        </TouchableRipple>
+      </View>
+      <Text style={styles.versionText}>Version {VersionNumber.appVersion}</Text>
     </ScrollView>
   );
 };
@@ -150,30 +144,17 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingVertical: 6
   },
-  footer: {
-    alignSelf: 'flex-end',
-    backgroundColor: Colors.eeec,
-    height: 150,
-    width: '100%'
-  },
-  footerBlock: {
-    flexDirection: 'row',
-    marginVertical: Metrics.baseMargin,
-    paddingHorizontal: 5
-  },
   group: {
     alignItems: 'center',
-    backgroundColor: Colors.fff9,
+    backgroundColor: Colors.white,
     borderBottomColor: Colors.c0005,
     borderBottomWidth: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginTop: 5,
     padding: Metrics.baseMargin
   },
   settingRow: {
     alignItems: 'center',
-    backgroundColor: Colors.fff6,
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginBottom: Metrics.smallMargin,
@@ -183,16 +164,7 @@ const styles = StyleSheet.create({
   textUnderline: {
     textDecorationLine: 'underline'
   },
-  versionContainer: {
-    backgroundColor: Colors.white,
-    bottom: 0,
-    height: 50,
-    left: 0,
-    position: 'absolute',
-    right: 0
-  },
   versionText: {
-    ...Fonts.style.black,
     ...Fonts.style.center
   }
 });

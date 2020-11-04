@@ -66,7 +66,6 @@ const CardDetailScreen: React.FC<CardDetailScreenProps> = ({
     height: 0
   });
   const colors = findColorByAttribute(route.params.item.attribute);
-  useStatusBar('dark-content', colors[1]);
 
   useEffect(() => {
     const tmpImages = [];

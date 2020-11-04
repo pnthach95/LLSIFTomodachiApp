@@ -38,8 +38,6 @@ import styles from './styles';
  *
  */
 function EventDetailScreen({ navigation, route }) {
-  useStatusBar('dark-content', Colors.lightViolet);
-
   const { state } = useContext(UserContext);
   const wwEventInfo = state.cachedData.eventInfo.ww;
   const jpEventInfo = state.cachedData.eventInfo.jp;

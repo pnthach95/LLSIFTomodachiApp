@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import {
-  View, FlatList, Text, TextInput, Alert, Image,
-} from 'react-native';
+import { View, FlatList, Text, TextInput, Alert, Image } from 'react-native';
 import { IconButton, Surface, TouchableRipple } from 'react-native-paper';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
@@ -40,7 +38,6 @@ import { loadSettings } from '~/Utils';
  *
  */
 function EventsScreen({ navigation }) {
-  useStatusBar('dark-content', Colors.white);
   const defaultFilter = {
     ordering: '-beginning',
     page_size: 30,
@@ -50,7 +47,7 @@ function EventsScreen({ navigation }) {
     main_unit: '',
     skill: 'All',
     attribute: '',
-    is_english: '',
+    is_english: ''
   };
 
   const [isLoading, setIsLoading] = useState(true);
@@ -64,7 +61,7 @@ function EventsScreen({ navigation }) {
     loadSettings().then((res) => {
       setSearchOptions({
         ...searchOptions,
-        is_english: res.worldwide_only ? 'False' : '',
+        is_english: res.worldwide_only ? 'False' : ''
       });
     });
   }, []);
@@ -90,17 +87,16 @@ function EventsScreen({ navigation }) {
      */
     const navigateToEventDetail = () => {
       navigation.navigate('EventDetailScreen', {
-        eventName: item.japanese_name,
+        eventName: item.japanese_name
       });
     };
 
-    return <EventItem item={item}
-      onPress={navigateToEventDetail} />;
+    return <EventItem item={item} onPress={navigateToEventDetail} />;
   };
   renderItem.propTypes = {
     item: PropTypes.shape({
-      japanese_name: PropTypes.string.isRequired,
-    }),
+      japanese_name: PropTypes.string.isRequired
+    })
   };
 
   /**
@@ -112,7 +108,7 @@ function EventsScreen({ navigation }) {
     if (stopSearch) return;
     setSearchOptions({
       ...searchOptions,
-      page: searchOptions.page + 1,
+      page: searchOptions.page + 1
     });
   }
 
@@ -124,7 +120,7 @@ function EventsScreen({ navigation }) {
     const theFilter = {
       ordering: searchOptions.ordering,
       page_size: searchOptions.page_size,
-      page: searchOptions.page,
+      page: searchOptions.page
     };
     if (searchOptions.idol !== 'All') theFilter.idol = searchOptions.idol;
     if (searchOptions.skill !== 'All') theFilter.skill = searchOptions.skill;
@@ -134,28 +130,40 @@ function EventsScreen({ navigation }) {
       else isEnglish = 'True';
       theFilter.is_english = isEnglish;
     }
-    if (searchOptions.main_unit !== '') theFilter.main_unit = searchOptions.main_unit;
-    if (searchOptions.attribute !== '') theFilter.attribute = searchOptions.attribute;
+    if (searchOptions.main_unit !== '')
+      theFilter.main_unit = searchOptions.main_unit;
+    if (searchOptions.attribute !== '')
+      theFilter.attribute = searchOptions.attribute;
     if (searchOptions.search !== '') theFilter.search = searchOptions.search;
     // eslint-disable-next-line no-console
     console.log(`Events.getEvents ${JSON.stringify(theFilter)}`);
-    LLSIFService.fetchEventList(theFilter).then((result) => {
-      if (result === 404) {
-        // console.log('LLSIFService.fetchEventList 404');
-        setStopSearch(true);
-      } else {
-        let x = [...list, ...result];
-        // eslint-disable-next-line max-len
-        x = x.filter((thing, index, self) => index === self.findIndex((t) => t.japanese_name === thing.japanese_name));
-        setList(x);
-      }
-    }).catch((err) => {
-      Alert.alert('Error', 'Error when get songs',
-        // eslint-disable-next-line no-console
-        [{ text: 'OK', onPress: () => console.log('OK Pressed', err) }]);
-    }).finally(() => {
-      setIsLoading(false);
-    });
+    LLSIFService.fetchEventList(theFilter)
+      .then((result) => {
+        if (result === 404) {
+          // console.log('LLSIFService.fetchEventList 404');
+          setStopSearch(true);
+        } else {
+          let x = [...list, ...result];
+          // eslint-disable-next-line max-len
+          x = x.filter(
+            (thing, index, self) =>
+              index ===
+              self.findIndex((t) => t.japanese_name === thing.japanese_name)
+          );
+          setList(x);
+        }
+      })
+      .catch((err) => {
+        Alert.alert(
+          'Error',
+          'Error when get songs',
+          // eslint-disable-next-line no-console
+          [{ text: 'OK', onPress: () => console.log('OK Pressed', err) }]
+        );
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
   }
 
   /**
@@ -174,7 +182,7 @@ function EventsScreen({ navigation }) {
     setStopSearch(false);
     setSearchOptions({
       ...searchOptions,
-      page: 1,
+      page: 1
     });
     getEvents();
   };
@@ -198,112 +206,139 @@ function EventsScreen({ navigation }) {
    *
    * @param {String} value
    */
-  const selectAttribute = (value) => () => setSearchOptions({
-    ...searchOptions,
-    attribute: value,
-  });
+  const selectAttribute = (value) => () =>
+    setSearchOptions({
+      ...searchOptions,
+      attribute: value
+    });
 
   /**
    * Save `main_unit`
    *
    * @param {String} value
    */
-  const selectMainUnit = (value) => () => setSearchOptions({
-    ...searchOptions,
-    main_unit: value,
-  });
+  const selectMainUnit = (value) => () =>
+    setSearchOptions({
+      ...searchOptions,
+      main_unit: value
+    });
 
   /**
    * Save `is_english`
    *
    * @param {String} value
    */
-  const selectRegion = (value) => () => setSearchOptions({
-    ...searchOptions,
-    is_english: value,
-  });
+  const selectRegion = (value) => () =>
+    setSearchOptions({
+      ...searchOptions,
+      is_english: value
+    });
 
   /**
    * Save `skill`
    *
    * @param {String} itemValue
    */
-  const selectSkill = (itemValue) => setSearchOptions({
-    ...searchOptions,
-    skill: itemValue,
-  });
+  const selectSkill = (itemValue) =>
+    setSearchOptions({
+      ...searchOptions,
+      skill: itemValue
+    });
 
   /**
    * Save `idol`
    *
    * @param {String} itemValue
    */
-  const selectIdol = (itemValue) => setSearchOptions({
-    ...searchOptions,
-    idol: itemValue,
-  });
+  const selectIdol = (itemValue) =>
+    setSearchOptions({
+      ...searchOptions,
+      idol: itemValue
+    });
 
   /**
    * Render footer of FlatList
    *
    */
-  const renderFooter = <View style={[AppStyles.center, styles.margin10]}>
-    <Image source={Images.alpaca} />
-  </View>;
+  const renderFooter = (
+    <View style={[AppStyles.center, styles.margin10]}>
+      <Image source={Images.alpaca} />
+    </View>
+  );
 
-  const renderEmpty = <View style={styles.margin10}>
-    <Text style={styles.resetText}>No result</Text>
-  </View>;
+  const renderEmpty = (
+    <View style={styles.margin10}>
+      <Text style={styles.resetText}>No result</Text>
+    </View>
+  );
 
   if (isLoading) {
     return <SplashScreen bgColor={Colors.violet} />;
   }
 
-  return <View style={styles.container}>
-    {/* HEADER */}
-    <Surface style={[AppStyles.header, styles.header]}>
-      <IconButton icon={'menu'} onPress={openDrawer} />
-      <View style={AppStyles.searchHeader}>
-        <TextInput
-          onChangeText={(text) => setSearchOptions({
-            ...searchOptions,
-            search: text,
-          })}
-          onSubmitEditing={onSearch}
-          placeholder={'Search event...'}
-          style={AppStyles.searchInput} />
-        <IconButton icon={'ios-search'} onPress={onSearch}
-          style={AppStyles.searchButton} />
-      </View>
-      <IconButton icon={'ios-more'} onPress={toggleFilter} />
-    </Surface>
+  return (
+    <View style={styles.container}>
+      {/* HEADER */}
+      <Surface style={[AppStyles.header, styles.header]}>
+        <IconButton icon={'menu'} onPress={openDrawer} />
+        <View style={AppStyles.searchHeader}>
+          <TextInput
+            onChangeText={(text) =>
+              setSearchOptions({
+                ...searchOptions,
+                search: text
+              })
+            }
+            onSubmitEditing={onSearch}
+            placeholder={'Search event...'}
+            style={AppStyles.searchInput}
+          />
+          <IconButton
+            icon={'search'}
+            onPress={onSearch}
+            style={AppStyles.searchButton}
+          />
+        </View>
+        <IconButton icon={'ios-more'} onPress={toggleFilter} />
+      </Surface>
 
-    {/* FILTER */}
-    {isFilter
-      && <Surface elevation={5} style={styles.filterContainer}>
-        <IdolNameRow name={searchOptions.idol} selectIdol={selectIdol} />
-        <MainUnitRow mainUnit={searchOptions.main_unit} selectMainUnit={selectMainUnit} />
-        <SkillRow skill={searchOptions.skill} selectSkill={selectSkill} />
-        <AttributeRow attribute={searchOptions.attribute}
-          selectAttribute={selectAttribute} />
-        <RegionRow japanOnly={searchOptions.is_english} selectRegion={selectRegion} />
-        <TouchableRipple onPress={resetFilter}
-          style={styles.resetView}>
-          <Text style={styles.resetText}>RESET</Text>
-        </TouchableRipple>
-      </Surface>}
-    <ConnectStatus />
-    {/* LIST */}
-    <FlatList data={list}
-      contentContainerStyle={styles.content}
-      initialNumToRender={6}
-      keyExtractor={keyExtractor}
-      style={styles.list}
-      ListEmptyComponent={renderEmpty}
-      ListFooterComponent={renderFooter}
-      onEndReached={onEndReached}
-      renderItem={renderItem} />
-  </View>;
+      {/* FILTER */}
+      {isFilter && (
+        <Surface elevation={5} style={styles.filterContainer}>
+          <IdolNameRow name={searchOptions.idol} selectIdol={selectIdol} />
+          <MainUnitRow
+            mainUnit={searchOptions.main_unit}
+            selectMainUnit={selectMainUnit}
+          />
+          <SkillRow skill={searchOptions.skill} selectSkill={selectSkill} />
+          <AttributeRow
+            attribute={searchOptions.attribute}
+            selectAttribute={selectAttribute}
+          />
+          <RegionRow
+            japanOnly={searchOptions.is_english}
+            selectRegion={selectRegion}
+          />
+          <TouchableRipple onPress={resetFilter} style={styles.resetView}>
+            <Text style={styles.resetText}>RESET</Text>
+          </TouchableRipple>
+        </Surface>
+      )}
+      <ConnectStatus />
+      {/* LIST */}
+      <FlatList
+        data={list}
+        contentContainerStyle={styles.content}
+        initialNumToRender={6}
+        keyExtractor={keyExtractor}
+        style={styles.list}
+        ListEmptyComponent={renderEmpty}
+        ListFooterComponent={renderFooter}
+        onEndReached={onEndReached}
+        renderItem={renderItem}
+      />
+    </View>
+  );
 }
 
 export default EventsScreen;

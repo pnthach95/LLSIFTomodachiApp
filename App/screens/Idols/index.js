@@ -1,12 +1,6 @@
-import React, {
-  useState, useContext, useEffect, useCallback,
-} from 'react';
-import {
-  View, SectionList, FlatList, Alert,
-} from 'react-native';
-import {
-  IconButton, Surface, Text, Divider,
-} from 'react-native-paper';
+import React, { useState, useContext, useEffect, useCallback } from 'react';
+import { View, SectionList, FlatList, Alert } from 'react-native';
+import { IconButton, Surface, Text, Divider } from 'react-native-paper';
 import PropTypes from 'prop-types';
 import FastImage from 'react-native-fast-image';
 
@@ -28,7 +22,6 @@ import styles from './styles';
  *
  */
 function IdolsScreen({ navigation }) {
-  useStatusBar('light-content', Colors.blue);
   const { state } = useContext(UserContext);
   const [isLoading, setIsLoading] = useState(true);
   const [list, setList] = useState([]);
@@ -49,9 +42,9 @@ function IdolsScreen({ navigation }) {
           data: [
             {
               key: school.label,
-              list: res.filter((value) => value.school === school.label),
-            },
-          ],
+              list: res.filter((value) => value.school === school.label)
+            }
+          ]
         };
         if (item.data[0].list.length !== 0) array.push(item);
       });
@@ -60,9 +53,9 @@ function IdolsScreen({ navigation }) {
         data: [
           {
             key: 'Other',
-            list: res.filter((value) => value.school === null),
-          },
-        ],
+            list: res.filter((value) => value.school === null)
+          }
+        ]
       };
       if (item.data[0].list.length !== 0) array.push(item);
       setList(array);
@@ -86,13 +79,12 @@ function IdolsScreen({ navigation }) {
       navigation.navigate('IdolDetailScreen', { name: item.name });
     };
 
-    return <IdolItem item={item}
-      onPress={navigateToIdolDetail} />;
+    return <IdolItem item={item} onPress={navigateToIdolDetail} />;
   };
   renderItem.propTypes = {
     item: PropTypes.shape({
-      name: PropTypes.string.isRequired,
-    }),
+      name: PropTypes.string.isRequired
+    })
   };
 
   /** Open drawer */
@@ -105,17 +97,21 @@ function IdolsScreen({ navigation }) {
      */
     const keyExtractor = (fItem) => `idol${fItem.name}`;
 
-    return <FlatList numColumns={3}
-      data={item.list}
-      initialNumToRender={9}
-      renderItem={renderItem}
-      keyExtractor={keyExtractor} />;
+    return (
+      <FlatList
+        numColumns={3}
+        data={item.list}
+        initialNumToRender={9}
+        renderItem={renderItem}
+        keyExtractor={keyExtractor}
+      />
+    );
   };
 
   renderFlatList.propTypes = {
     item: PropTypes.shape({
-      list: PropTypes.object,
-    }),
+      list: PropTypes.object
+    })
   };
 
   const sectionKeyExtractor = (item, index) => `School${index}`;
@@ -124,43 +120,49 @@ function IdolsScreen({ navigation }) {
   );
   renderSectionHeader.propTypes = {
     section: PropTypes.shape({
-      title: PropTypes.string.isRequired,
-    }),
+      title: PropTypes.string.isRequired
+    })
   };
 
   if (isLoading) {
     return <SplashScreen bgColor={Colors.blue} />;
   }
 
-  return <View style={[AppStyles.screen, styles.container]}>
-    {/* HEADER */}
-    <Surface style={[AppStyles.header, styles.container]}>
-      <IconButton icon={'menu'} onPress={openDrawer} color={'white'} />
-      <FastImage source={Images.logo}
-        resizeMode='contain'
-        style={AppStyles.imageHeader} />
-      <View style={styles.hole} />
-    </Surface>
-    <ConnectStatus />
-    {/* BODY */}
-    <SectionList sections={list}
-      initialNumToRender={9}
-      keyExtractor={sectionKeyExtractor}
-      style={styles.list}
-      renderSectionHeader={renderSectionHeader}
-      stickySectionHeadersEnabled={false}
-      ListHeaderComponent={<View style={styles.height10} />}
-      ListFooterComponent={<View style={styles.height10} />}
-      SectionSeparatorComponent={(data) => {
-        if (data.leadingItem && data.leadingItem.key === 'Other') return null;
-        const styleSeperator = {
-          backgroundColor: 'white',
-          marginBottom: data.leadingItem ? 20 : 0,
-        };
-        return <Divider style={styleSeperator} />;
-      }}
-      renderItem={renderFlatList} />
-  </View>;
+  return (
+    <View style={[AppStyles.screen, styles.container]}>
+      {/* HEADER */}
+      <Surface style={[AppStyles.header, styles.container]}>
+        <IconButton icon={'menu'} onPress={openDrawer} color={'white'} />
+        <FastImage
+          source={Images.logo}
+          resizeMode='contain'
+          style={AppStyles.imageHeader}
+        />
+        <View style={styles.hole} />
+      </Surface>
+      <ConnectStatus />
+      {/* BODY */}
+      <SectionList
+        sections={list}
+        initialNumToRender={9}
+        keyExtractor={sectionKeyExtractor}
+        style={styles.list}
+        renderSectionHeader={renderSectionHeader}
+        stickySectionHeadersEnabled={false}
+        ListHeaderComponent={<View style={styles.height10} />}
+        ListFooterComponent={<View style={styles.height10} />}
+        SectionSeparatorComponent={(data) => {
+          if (data.leadingItem && data.leadingItem.key === 'Other') return null;
+          const styleSeperator = {
+            backgroundColor: 'white',
+            marginBottom: data.leadingItem ? 20 : 0
+          };
+          return <Divider style={styleSeperator} />;
+        }}
+        renderItem={renderFlatList}
+      />
+    </View>
+  );
 }
 
 export default IdolsScreen;

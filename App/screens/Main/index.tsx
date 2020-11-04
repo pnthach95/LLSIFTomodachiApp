@@ -19,7 +19,6 @@ import type { EventObject, MainScreenProps } from '~/Utils/types';
  * Main Screen
  */
 const MainScreen: React.FC<MainScreenProps> = ({ navigation }) => {
-  useStatusBar('light-content', Colors.pink);
   const { state } = useContext(UserContext);
   const { ENEvent, JPEvent } = state.cachedData;
   const [version, setVersion] = useState<{

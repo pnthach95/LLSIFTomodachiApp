@@ -74,7 +74,6 @@ import type {
  *
  */
 const CardsScreen: React.FC<CardsScreenProps> = ({ navigation }) => {
-  useStatusBar('dark-content', Colors.white);
   const defaultFilter = {
     search: '',
     selectedOrdering: OrderingGroup.CARD[1].value,
@@ -489,7 +488,7 @@ const CardsScreen: React.FC<CardsScreenProps> = ({ navigation }) => {
             style={AppStyles.searchInput}
           />
           <IconButton
-            icon={'ios-search'}
+            icon={'search'}
             onPress={onSearch}
             style={AppStyles.searchButton}
           />

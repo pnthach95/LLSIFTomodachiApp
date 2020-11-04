@@ -53,7 +53,6 @@ const defaultFilter = {
  *
  */
 function SongsScreen({ navigation }) {
-  useStatusBar('dark-content', Colors.white);
   const [isLoading, setIsLoading] = useState(true);
   const [list, setList] = useState([]);
   const [isFilter, setIsFilter] = useState(false);
@@ -275,7 +274,7 @@ function SongsScreen({ navigation }) {
             placeholder={'Search song...'}
           />
           <IconButton
-            icon={'ios-search'}
+            icon={'search'}
             onPress={onSearch}
             style={AppStyles.searchButton}
           />

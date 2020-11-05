@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import { View, StyleSheet } from 'react-native';
 import { Text, TouchableRipple, Surface } from 'react-native-paper';
 import FastImage, { OnLoadEvent } from 'react-native-fast-image';
-import { Metrics, Fonts, Colors } from '~/Theme';
+import { Metrics, Fonts } from '~/Theme';
 import { findColorByAttribute } from '~/Utils';
 import type { IdolObject } from '~/Utils/types';
 
@@ -59,7 +60,6 @@ const IdolItem: React.FC<IdolItemType> = ({ item, onPress }) => {
 const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
-    backgroundColor: Colors.white,
     borderRadius: 5,
     elevation: 5,
     margin: Metrics.smallMargin,
@@ -72,5 +72,10 @@ const styles = StyleSheet.create({
     margin: Metrics.smallMargin
   }
 });
+
+IdolItem.propTypes = {
+  item: PropTypes.any,
+  onPress: PropTypes.any
+};
 
 export default IdolItem;

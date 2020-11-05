@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { View, StyleSheet } from 'react-native';
 import { Text, Surface, TouchableRipple } from 'react-native-paper';
 import FastImage, { OnLoadEvent } from 'react-native-fast-image';
-import { Metrics, Colors, Fonts } from '~/Theme';
+import { Metrics, Fonts } from '~/Theme';
 import { AddHTTPS, findColorByAttribute } from '~/Utils';
 import type { SongObject } from '~/Utils/types';
 
@@ -58,7 +58,6 @@ const SongItem: React.FC<SongItemType> = ({ item, onPress }) => {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: Colors.white,
     borderRadius: 5,
     elevation: 5,
     margin: Metrics.smallMargin,

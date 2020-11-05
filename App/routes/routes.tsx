@@ -6,15 +6,11 @@ import AnimatedTabBar, {
   TabsConfig,
   BubbleTabBarItemConfig
 } from '@gorhom/animated-tabbar';
-import {
-  DefaultTheme,
-  DarkTheme,
-  Provider as PaperProvider
-} from 'react-native-paper';
+import { Provider as PaperProvider, useTheme } from 'react-native-paper';
 import Animated from 'react-native-reanimated';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
-import { Colors } from '~/Theme';
+import { Colors, Dark, Light } from '~/Theme';
 import UserContext from '~/Context/UserContext';
 
 import SplashScreen from '~/screens/Splash';
@@ -28,6 +24,7 @@ import CardDetailScreen from '~/screens/CardDetail';
 import EventDetailScreen from '~/screens/EventDetail';
 import IdolDetailScreen from '~/screens/IdolDetail';
 import SongDetailScreen from '~/screens/SongDetail';
+import AboutMeScreen from '~/screens/AboutMe';
 
 import type { BottomTabList, RootStackParamList } from '~/Utils/types';
 
@@ -114,10 +111,17 @@ const Tab = createBottomTabNavigator<BottomTabList>();
 const Stack = createStackNavigator<RootStackParamList>();
 
 const LLSIFTab = () => {
+  const { colors } = useTheme();
+  const tabStyle = {
+    backgroundColor: colors.card
+  };
+
   return (
     <Tab.Navigator
-      //@ts-ignore
-      tabBar={(props) => <AnimatedTabBar tabs={tabs} {...props} />}>
+      tabBar={(props) => (
+        //@ts-ignore
+        <AnimatedTabBar tabs={tabs} style={tabStyle} {...props} />
+      )}>
       <Tab.Screen
         name='MainScreen'
         component={MainScreen}
@@ -153,8 +157,8 @@ const LLSIFTab = () => {
 const Routes = (): JSX.Element => {
   const { state } = useContext(UserContext);
   return (
-    <PaperProvider theme={state.options.isDark ? DarkTheme : DefaultTheme}>
-      <NavigationContainer>
+    <PaperProvider theme={state.options.isDark ? Dark : Light}>
+      <NavigationContainer theme={state.options.isDark ? Dark : Light}>
         <Stack.Navigator>
           {state.loading ? (
             <Stack.Screen
@@ -197,6 +201,7 @@ const Routes = (): JSX.Element => {
                 name='SongDetailScreen'
                 component={SongDetailScreen}
               />
+              <Stack.Screen name='AboutMeScreen' component={AboutMeScreen} />
             </>
           )}
         </Stack.Navigator>

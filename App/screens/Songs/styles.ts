@@ -5,27 +5,27 @@ export default StyleSheet.create({
   filterContainer: {
     backgroundColor: Colors.white,
     elevation: 5,
-    padding: 10,
+    padding: 10
   },
   flatListElement: {
-    margin: 10,
+    margin: 10
   },
   header: {
     backgroundColor: Colors.white,
     elevation: 5
   },
   list: {
-    padding: Metrics.smallMargin,
+    padding: Metrics.smallMargin
   },
   resetText: {
     ...Fonts.style.white,
-    ...Fonts.style.center,
+    ...Fonts.style.center
   },
   resetView: {
     alignItems: 'stretch',
-    backgroundColor: Colors.red,
+    backgroundColor: Colors.red600,
     justifyContent: 'center',
     marginTop: 10,
-    padding: 10,
-  },
+    padding: 10
+  }
 });

@@ -37,18 +37,20 @@ const IdolItem: React.FC<IdolItemType> = ({ item, onPress }) => {
   return (
     <Surface style={[styles.container, { backgroundColor: attColors[1] }]}>
       <TouchableRipple borderless rippleColor={attColors[0]} onPress={onPress}>
-        <FastImage
-          source={{
-            uri: item.chibi,
-            priority: FastImage.priority.normal
-          }}
-          onLoad={onLoad}
-          resizeMode='contain'
-          style={imgSize}
-        />
-        <View style={styles.info}>
-          <Text style={Fonts.style.center}>{item.name}</Text>
-        </View>
+        <>
+          <FastImage
+            source={{
+              uri: item.chibi,
+              priority: FastImage.priority.normal
+            }}
+            onLoad={onLoad}
+            resizeMode='contain'
+            style={imgSize}
+          />
+          <View style={styles.info}>
+            <Text style={Fonts.style.center}>{item.name}</Text>
+          </View>
+        </>
       </TouchableRipple>
     </Surface>
   );

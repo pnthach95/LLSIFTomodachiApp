@@ -9,29 +9,26 @@ import { Fonts, Colors } from '~/Theme';
  */
 const ConnectStatus = (): React.ReactElement => {
   return (
-    <View>
-      <NetworkConsumer>
-        {({ isConnected }) =>
-          isConnected ? (
-            <View style={styles.zero} />
-          ) : (
-            <View style={styles.box}>
-              <Text style={[Fonts.style.white, Fonts.style.center]}>
-                No internet connection
-              </Text>
-            </View>
-          )
-        }
-      </NetworkConsumer>
-    </View>
+    <NetworkConsumer>
+      {({ isConnected }) =>
+        isConnected ? (
+          <View style={styles.zero} />
+        ) : (
+          <View style={styles.box}>
+            <Text style={[Fonts.style.white, Fonts.style.center]}>
+              No internet connection
+            </Text>
+          </View>
+        )
+      }
+    </NetworkConsumer>
   );
 };
 
 const styles = StyleSheet.create({
   box: {
-    backgroundColor: Colors.red,
-    padding: 10,
-    width: '100%'
+    backgroundColor: Colors.red600,
+    padding: 10
   },
   zero: {
     height: 0

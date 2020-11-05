@@ -67,6 +67,7 @@ type RootStackParamList = {
   EventDetailScreen: { eventName: string };
   IdolDetailScreen: { name: string };
   SongDetailScreen: undefined;
+  AboutMeScreen: undefined;
 };
 
 type SplashScreenProps = StackScreenProps<RootStackParamList, 'SplashScreen'>;

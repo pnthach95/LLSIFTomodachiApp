@@ -2,21 +2,21 @@ import React, { useContext } from 'react';
 import { View, ScrollView, StyleSheet } from 'react-native';
 import { Text, Switch, TouchableRipple } from 'react-native-paper';
 import firebase from 'react-native-firebase';
-import Icon from 'react-native-vector-icons/Ionicons';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import VersionNumber from 'react-native-version-number';
 
 import UserContext from '~/Context/UserContext';
-import { AppStyles, Fonts, Metrics, Colors } from '~/Theme';
-import { Config, RELEASE_NOTE } from '~/Config';
-import { saveSettings, openLink } from '~/Utils';
+import { Fonts, Metrics, Colors } from '~/Theme';
+import { saveSettings } from '~/Utils';
 import type { AppOptions, MoreScreenProps } from '~/Utils/types';
+
+const iconSize = 30;
 
 const MoreScreen: React.FC<MoreScreenProps> = ({ navigation }) => {
   const { state, dispatch } = useContext(UserContext);
 
   /**
    * Toggle worldwide option
-   *
    */
   const worldwideToggle = () => {
     const data: AppOptions = {
@@ -29,7 +29,6 @@ const MoreScreen: React.FC<MoreScreenProps> = ({ navigation }) => {
 
   /**
    * Toggle receiving worldwide event notification option
-   *
    */
   const wwEventToggle = () => {
     const data: AppOptions = {
@@ -47,7 +46,6 @@ const MoreScreen: React.FC<MoreScreenProps> = ({ navigation }) => {
 
   /**
    * Toggle receiving japanese event notification option
-   *
    */
   const jpEventToggle = () => {
     const data: AppOptions = {
@@ -63,109 +61,109 @@ const MoreScreen: React.FC<MoreScreenProps> = ({ navigation }) => {
     saveSettings(data);
   };
 
+  /**
+   * Toggle dark theme
+   */
+  const themeToggle = () => {
+    const data: AppOptions = {
+      ...state.options,
+      isDark: !state.options.isDark
+    };
+    dispatch({ type: 'SAVE_OPTIONS', data });
+    saveSettings(data);
+  };
+
+  const goToIdols = () => navigation.navigate('IdolsScreen');
+  const goToSongs = () => navigation.navigate('SongsScreen');
+  const goToAboutMe = () => navigation.navigate('AboutMeScreen');
+
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
-      <View style={AppStyles.screen}>
-        <View style={styles.group}>
-          <Text style={Fonts.style.black}>OPTIONS</Text>
-        </View>
-        <View style={styles.body}>
-          <TouchableRipple onPress={worldwideToggle}>
-            <View style={styles.settingRow}>
-              <Text style={Fonts.style.black}>Search Worldwide only</Text>
-              <Switch
-                value={state.options.worldwideOnly}
-                onValueChange={worldwideToggle}
-              />
-            </View>
-          </TouchableRipple>
-          <TouchableRipple onPress={wwEventToggle}>
-            <View style={styles.settingRow}>
-              <Text style={Fonts.style.black}>Notify WW event</Text>
-              <Switch
-                value={state.options.wwEvent}
-                onValueChange={wwEventToggle}
-              />
-            </View>
-          </TouchableRipple>
-          <TouchableRipple onPress={jpEventToggle}>
-            <View style={styles.settingRow}>
-              <Text style={Fonts.style.black}>Notify JP event</Text>
-              <Switch
-                value={state.options.jpEvent}
-                onValueChange={jpEventToggle}
-              />
-            </View>
-          </TouchableRipple>
-        </View>
-        <View style={styles.group}>
-          <Text style={Fonts.style.black}>ABOUT ME</Text>
-        </View>
-        <View style={AppStyles.screen}>
-          <Text style={Fonts.style.black}>{RELEASE_NOTE}</Text>
-        </View>
+      <View style={styles.group}>
+        <Text style={styles.headline}>Options</Text>
       </View>
-      <View style={AppStyles.center}>
-        <Text style={styles.versionText}>
-          {'Powered by '}
-          {
-            <Text
-              onPress={() => openLink(Config.SCHOOLIDO)}
-              style={[styles.versionText, styles.textUnderline]}>
-              {'School Idol Tomodachi'}
-            </Text>
-          }
-          {', '}
-          {
-            <Text
-              onPress={() => openLink(Config.LLSIFNET)}
-              style={[styles.versionText, styles.textUnderline]}>
-              {'llsif.net'}
-            </Text>
-          }
-        </Text>
-        <TouchableRipple
-          onPress={() => openLink(Config.GITHUB_PROJECT)}
-          style={AppStyles.center}>
-          <View style={AppStyles.center}>
-            <Icon name={'logo-github'} size={50} />
-            <Text style={Fonts.style.black}>Project</Text>
-          </View>
-        </TouchableRipple>
+      <TouchableRipple onPress={worldwideToggle}>
+        <View style={styles.settingRow}>
+          <Text>Search Worldwide only</Text>
+          <Switch
+            value={state.options.worldwideOnly}
+            onValueChange={worldwideToggle}
+          />
+        </View>
+      </TouchableRipple>
+      <TouchableRipple onPress={wwEventToggle}>
+        <View style={styles.settingRow}>
+          <Text>Notify WW event</Text>
+          <Switch value={state.options.wwEvent} onValueChange={wwEventToggle} />
+        </View>
+      </TouchableRipple>
+      <TouchableRipple onPress={jpEventToggle}>
+        <View style={styles.settingRow}>
+          <Text>Notify JP event</Text>
+          <Switch value={state.options.jpEvent} onValueChange={jpEventToggle} />
+        </View>
+      </TouchableRipple>
+      <TouchableRipple onPress={themeToggle}>
+        <View style={styles.settingRow}>
+          <Text>Dark theme</Text>
+          <Switch value={state.options.isDark} onValueChange={themeToggle} />
+        </View>
+      </TouchableRipple>
+      <View style={styles.group}>
+        <Text style={styles.headline}>Navigation</Text>
       </View>
-      <Text style={styles.versionText}>Version {VersionNumber.appVersion}</Text>
+      <TouchableRipple onPress={goToIdols}>
+        <View style={styles.button}>
+          <Icon name='face-woman' size={iconSize} />
+          <View style={styles.space} />
+          <Text>Idols</Text>
+        </View>
+      </TouchableRipple>
+      <TouchableRipple onPress={goToSongs}>
+        <View style={styles.button}>
+          <Icon name='music-box-multiple' size={iconSize} />
+          <View style={styles.space} />
+          <Text>Songs</Text>
+        </View>
+      </TouchableRipple>
+      <TouchableRipple onPress={goToAboutMe}>
+        <View style={styles.button}>
+          <Icon name='help-circle' size={iconSize} />
+          <View style={styles.space} />
+          <Text>About me</Text>
+        </View>
+      </TouchableRipple>
+      <Text style={Fonts.style.center}>Version {VersionNumber.appVersion}</Text>
     </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
-  body: {
-    alignItems: 'stretch',
-    flex: 1,
-    paddingVertical: 6
+  button: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    padding: Metrics.baseMargin
   },
   group: {
     alignItems: 'center',
-    backgroundColor: Colors.white,
-    borderBottomColor: Colors.c0005,
-    borderBottomWidth: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    padding: Metrics.baseMargin
+    paddingBottom: Metrics.baseMargin,
+    paddingHorizontal: Metrics.doubleBaseMargin,
+    paddingTop: Metrics.doubleBaseMargin
+  },
+  headline: {
+    color: Colors.blue600,
+    fontWeight: 'bold'
   },
   settingRow: {
     alignItems: 'center',
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginBottom: Metrics.smallMargin,
-    marginLeft: Metrics.baseMargin,
     padding: Metrics.baseMargin
   },
-  textUnderline: {
-    textDecorationLine: 'underline'
-  },
-  versionText: {
-    ...Fonts.style.center
+  space: {
+    width: Metrics.baseMargin
   }
 });
 

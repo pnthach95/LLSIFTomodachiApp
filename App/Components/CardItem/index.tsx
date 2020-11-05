@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import { View, Image, StyleSheet } from 'react-native';
 import { Surface, TouchableRipple, Divider } from 'react-native-paper';
 import FastImage, { OnLoadEvent } from 'react-native-fast-image';
@@ -113,5 +114,10 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 4
   }
 });
+
+CardItem.propTypes = {
+  item: PropTypes.any,
+  onPress: PropTypes.any
+};
 
 export default CardItem;

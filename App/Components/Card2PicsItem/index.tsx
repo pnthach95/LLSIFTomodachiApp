@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import PropTypes from 'prop-types';
 import { View, Image, StyleSheet } from 'react-native';
 import { Surface, TouchableRipple, Divider } from 'react-native-paper';
 import FastImage, { OnLoadEvent } from 'react-native-fast-image';
@@ -127,5 +128,10 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around'
   }
 });
+
+Card2PicsItem.propTypes = {
+  item: PropTypes.any,
+  onPress: PropTypes.any
+};
 
 export default Card2PicsItem;

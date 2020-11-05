@@ -1,6 +1,7 @@
 import React from 'react';
-import { View, TouchableOpacity } from 'react-native';
-import { Text } from 'react-native-paper';
+import PropTypes from 'prop-types';
+import { View } from 'react-native';
+import { Text, TouchableRipple } from 'react-native-paper';
 import styles from '~/Theme/RowStyles';
 import { AppStyles } from '~/Theme';
 import type { YearType } from '~/Utils/types';
@@ -19,51 +20,60 @@ type YearRowType = {
  *
  */
 const YearRow: React.FC<YearRowType> = ({ idolYear, selectYear }) => {
+  const none = () => selectYear('');
+  const first = () => selectYear('First');
+  const second = () => selectYear('Second');
+  const third = () => selectYear('Third');
   return (
     <View style={AppStyles.row}>
       <View style={styles.leftView}>
         <Text>Year</Text>
       </View>
       <View style={styles.rightView}>
-        <TouchableOpacity
-          onPress={() => selectYear('')}
+        <TouchableRipple
+          onPress={none}
           style={[
             styles.textButton,
             styles.standardButton,
             idolYear === '' && styles.selectedValue
           ]}>
-          <Text style={styles.buttonText}>All</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => selectYear('First')}
+          <Text>All</Text>
+        </TouchableRipple>
+        <TouchableRipple
+          onPress={first}
           style={[
             styles.textButton,
             styles.standardButton,
             idolYear === 'First' && styles.selectedValue
           ]}>
-          <Text style={styles.buttonText}>1st</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => selectYear('Second')}
+          <Text>1st</Text>
+        </TouchableRipple>
+        <TouchableRipple
+          onPress={second}
           style={[
             styles.textButton,
             styles.standardButton,
             idolYear === 'Second' && styles.selectedValue
           ]}>
-          <Text style={styles.buttonText}>2nd</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => selectYear('Third')}
+          <Text>2nd</Text>
+        </TouchableRipple>
+        <TouchableRipple
+          onPress={third}
           style={[
             styles.textButton,
             styles.standardButton,
             idolYear === 'Third' && styles.selectedValue
           ]}>
-          <Text style={styles.buttonText}>3rd</Text>
-        </TouchableOpacity>
+          <Text>3rd</Text>
+        </TouchableRipple>
       </View>
     </View>
   );
+};
+
+YearRow.propTypes = {
+  idolYear: PropTypes.any,
+  selectYear: PropTypes.any
 };
 
 export default YearRow;

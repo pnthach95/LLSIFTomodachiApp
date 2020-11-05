@@ -1,6 +1,7 @@
 import React from 'react';
-import { View, TouchableOpacity } from 'react-native';
-import { Text } from 'react-native-paper';
+import PropTypes from 'prop-types';
+import { View } from 'react-native';
+import { Text, TouchableRipple } from 'react-native-paper';
 import styles from '~/Theme/RowStyles';
 import { AppStyles } from '~/Theme';
 import type { BooleanOrEmpty } from '~/Utils/types';
@@ -18,42 +19,51 @@ type RegionRowType = {
  *
  */
 const RegionRow: React.FC<RegionRowType> = ({ japanOnly, selectRegion }) => {
+  const none = () => selectRegion('');
+  const sFalse = () => selectRegion('False');
+  const sTrue = () => selectRegion('True');
+
   return (
     <View style={AppStyles.row}>
       <View style={styles.leftView}>
         <Text>Region</Text>
       </View>
       <View style={styles.rightView}>
-        <TouchableOpacity
-          onPress={() => selectRegion('')}
+        <TouchableRipple
+          onPress={none}
           style={[
             styles.textButton,
             styles.standardButton,
             japanOnly === '' && styles.selectedValue
           ]}>
-          <Text style={styles.buttonText}>All</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => selectRegion('False')}
+          <Text>All</Text>
+        </TouchableRipple>
+        <TouchableRipple
+          onPress={sFalse}
           style={[
             styles.textButton,
             styles.standardButton,
             japanOnly === 'False' && styles.selectedValue
           ]}>
-          <Text style={styles.buttonText}>EN Only</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => selectRegion('True')}
+          <Text>EN Only</Text>
+        </TouchableRipple>
+        <TouchableRipple
+          onPress={sTrue}
           style={[
             styles.textButton,
             styles.standardButton,
             japanOnly === 'True' && styles.selectedValue
           ]}>
-          <Text style={styles.buttonText}>JP Only</Text>
-        </TouchableOpacity>
+          <Text>JP Only</Text>
+        </TouchableRipple>
       </View>
     </View>
   );
+};
+
+RegionRow.propTypes = {
+  japanOnly: PropTypes.any,
+  selectRegion: PropTypes.any
 };
 
 export default RegionRow;

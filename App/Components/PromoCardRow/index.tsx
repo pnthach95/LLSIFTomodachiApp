@@ -1,5 +1,7 @@
 import React from 'react';
-import { Text, View, TouchableOpacity } from 'react-native';
+import PropTypes from 'prop-types';
+import { View } from 'react-native';
+import { Text, TouchableRipple } from 'react-native-paper';
 import styles from '~/Theme/RowStyles';
 import { AppStyles } from '~/Theme';
 import type { BooleanOrEmpty } from '~/Utils/types';
@@ -18,42 +20,51 @@ type PromoCardRowType = {
  *
  */
 const PromoCardRow: React.FC<PromoCardRowType> = ({ isPromo, selectPromo }) => {
+  const none = () => selectPromo('');
+  const sTrue = () => selectPromo('True');
+  const sFalse = () => selectPromo('False');
+
   return (
     <View style={AppStyles.row}>
       <View style={styles.leftView}>
         <Text>Promo card</Text>
       </View>
       <View style={styles.rightView}>
-        <TouchableOpacity
-          onPress={() => selectPromo('')}
+        <TouchableRipple
+          onPress={none}
           style={[
             styles.textButton,
             styles.standardButton,
             isPromo === '' && styles.selectedValue
           ]}>
-          <Text style={styles.buttonText}>All</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => selectPromo('True')}
+          <Text>All</Text>
+        </TouchableRipple>
+        <TouchableRipple
+          onPress={sTrue}
           style={[
             styles.textButton,
             styles.standardButton,
             isPromo === 'True' && styles.selectedValue
           ]}>
-          <Text style={styles.buttonText}>Only</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => selectPromo('False')}
+          <Text>Only</Text>
+        </TouchableRipple>
+        <TouchableRipple
+          onPress={sFalse}
           style={[
             styles.textButton,
             styles.standardButton,
             isPromo === 'False' && styles.selectedValue
           ]}>
-          <Text style={styles.buttonText}>None</Text>
-        </TouchableOpacity>
+          <Text>None</Text>
+        </TouchableRipple>
       </View>
     </View>
   );
+};
+
+PromoCardRow.propTypes = {
+  isPromo: PropTypes.any,
+  selectPromo: PropTypes.any
 };
 
 export default PromoCardRow;

@@ -12,10 +12,6 @@ export default StyleSheet.create({
     resizeMode: 'contain',
     width: 50
   },
-  buttonText: {
-    color: Colors.black,
-    fontSize: 16
-  },
   flex2: {
     flex: 2
   },

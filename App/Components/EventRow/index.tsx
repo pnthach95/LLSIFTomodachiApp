@@ -1,6 +1,7 @@
 import React from 'react';
-import { View, TouchableOpacity } from 'react-native';
-import { Text } from 'react-native-paper';
+import PropTypes from 'prop-types';
+import { View } from 'react-native';
+import { Text, TouchableRipple } from 'react-native-paper';
 import styles from '~/Theme/RowStyles';
 import { AppStyles } from '~/Theme';
 import type { BooleanOrEmpty } from '~/Utils/types';
@@ -16,48 +17,53 @@ type EventRowType = {
  * Prop:
  * - `selectEvent`: Save `isEvent` state
  * - `isEvent`: state from parent
- *
- * @export
- * @class EventRow
- * @extends {React.Component}
  */
 const EventRow: React.FC<EventRowType> = ({ isEvent, selectEvent }) => {
+  const none = () => selectEvent('');
+  const sTrue = () => selectEvent('True');
+  const sFalse = () => selectEvent('False');
+
   return (
     <View style={AppStyles.row}>
       <View style={styles.leftView}>
         <Text>Event</Text>
       </View>
       <View style={styles.rightView}>
-        <TouchableOpacity
-          onPress={() => selectEvent('')}
+        <TouchableRipple
+          onPress={none}
           style={[
             styles.textButton,
             styles.standardButton,
             isEvent === '' && styles.selectedValue
           ]}>
-          <Text style={styles.buttonText}>All</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => selectEvent('True')}
+          <Text>All</Text>
+        </TouchableRipple>
+        <TouchableRipple
+          onPress={sTrue}
           style={[
             styles.textButton,
             styles.standardButton,
             isEvent === 'True' && styles.selectedValue
           ]}>
-          <Text style={styles.buttonText}>Only</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => selectEvent('False')}
+          <Text>Only</Text>
+        </TouchableRipple>
+        <TouchableRipple
+          onPress={sFalse}
           style={[
             styles.textButton,
             styles.standardButton,
             isEvent === 'False' && styles.selectedValue
           ]}>
-          <Text style={styles.buttonText}>None</Text>
-        </TouchableOpacity>
+          <Text>None</Text>
+        </TouchableRipple>
       </View>
     </View>
   );
+};
+
+EventRow.propTypes = {
+  isEvent: PropTypes.any,
+  selectEvent: PropTypes.any
 };
 
 export default EventRow;

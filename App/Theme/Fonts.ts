@@ -30,6 +30,11 @@ const style = StyleSheet.create({
   normal: {
     fontSize: size.regular
   },
+  textWrap: {
+    flexGrow: 1,
+    flex: 1,
+    width: 0
+  },
   white: {
     color: Colors.white
   }

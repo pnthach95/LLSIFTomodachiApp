@@ -1,6 +1,8 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useEffect } from 'react';
 import { Alert } from 'react-native';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { ModalProvider } from 'react-native-modalfy';
 import { NetworkProvider } from 'react-native-offline';
 import firebase from 'react-native-firebase';
 import * as Sentry from '@sentry/react-native';
@@ -10,6 +12,7 @@ import duration from 'dayjs/plugin/duration';
 
 import { FirebaseTopic } from '~/Config';
 import { UserProvider } from '~/Context/UserContext';
+import Modals from '~/modals';
 import Routes from './routes';
 
 dayjs.extend(duration);
@@ -119,9 +122,13 @@ const MainContainer: React.FC<null> = () => {
 
   return (
     <NetworkProvider>
-      <UserProvider>
-        <Routes />
-      </UserProvider>
+      <SafeAreaProvider>
+        <UserProvider>
+          <ModalProvider stack={Modals}>
+            <Routes />
+          </ModalProvider>
+        </UserProvider>
+      </SafeAreaProvider>
     </NetworkProvider>
   );
 };

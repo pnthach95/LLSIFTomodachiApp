@@ -17,7 +17,8 @@ export default StyleSheet.create({
   },
   leftView: {
     flex: 1,
-    justifyContent: 'center'
+    justifyContent: 'center',
+    marginVertical: Metrics.baseMargin
   },
   picker: {
     borderBottomWidth: 1
@@ -37,6 +38,12 @@ export default StyleSheet.create({
   },
   selectedValue1: {
     backgroundColor: Colors.lightGreen
+  },
+  selectionButton: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    margin: Metrics.baseMargin
   },
   standardButton: {
     borderRadius: 5,

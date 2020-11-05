@@ -1,6 +1,10 @@
 import { CompositeNavigationProp } from '@react-navigation/native';
 import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
 import { StackScreenProps, StackNavigationProp } from '@react-navigation/stack';
+import {
+  ModalComponentWithOptions,
+  ModalComponentProp
+} from 'react-native-modalfy';
 
 type AppOptions = {
   isDark: boolean;
@@ -19,11 +23,6 @@ type ActionType =
   | { type: 'LOADING'; loading: boolean }
   | { type: 'SAVE_CACHED_DATA'; data: CachedDataObject }
   | { type: 'SAVE_OPTIONS'; data: AppOptions };
-
-type IconComponent = React.FC<{
-  focused?: boolean;
-  color: string;
-}>;
 
 type BottomTabList = {
   MainScreen: undefined;
@@ -88,6 +87,19 @@ type SongDetailScreenProps = StackScreenProps<
   'SongDetailScreen'
 >;
 
+type ModalStackParamList = {
+  list: {
+    title: string;
+    selectItem: string;
+    data: string[];
+    onPress: (item: string) => void;
+  };
+};
+
+type ListModalComponent = ModalComponentWithOptions<
+  ModalComponentProp<ModalStackParamList, void, 'list'>
+>;
+
 type YearType = 'First' | 'Second' | 'Third' | '';
 type MainUnitNames = `μ's` | 'Aqours' | '';
 type SubUnitNames =
@@ -119,11 +131,13 @@ type SkillType =
   | 'Total Yell'
   | 'Timer Trick';
 
+type SelectionObject = { label: string; value: string };
+
 type CachedDataObject = {
-  idols: { label: string; value: string }[];
-  skills: { label: string; value: string }[];
-  subUnits: { label: string; value: string }[];
-  schools: { label: string; value: string }[];
+  idols: string[];
+  skills: SelectionObject[];
+  subUnits: SelectionObject[];
+  schools: SelectionObject[];
   maxStats: {
     Smile: number;
     Pure: number;

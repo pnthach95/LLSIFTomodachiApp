@@ -492,7 +492,11 @@ const CardsScreen: React.FC<CardsScreenProps> = ({ navigation }) => {
         ListFooterComponent={renderFooter}
         renderItem={renderItem}
       />
-      <FAB icon='calendar' onPress={switchColumn} style={styles.fab} />
+      <FAB
+        icon={column === 1 ? 'view-grid' : 'view-agenda'}
+        onPress={switchColumn}
+        style={styles.fab}
+      />
     </View>
   );
 };

@@ -334,7 +334,6 @@ const EventsScreen: React.FC<EventsScreenProps> = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: Colors.violet,
     flex: 1
   },
   content: {

@@ -59,7 +59,7 @@ const IdolItem: React.FC<IdolItemType> = ({ item, onPress }) => {
 const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
-    backgroundColor: Colors.itemColor,
+    backgroundColor: Colors.white,
     borderRadius: 5,
     elevation: 5,
     margin: Metrics.smallMargin,

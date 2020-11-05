@@ -60,7 +60,7 @@ export default StyleSheet.create({
     backgroundColor: Colors.lightViolet
   },
   trackerHead: {
-    backgroundColor: Colors.f1f8ff,
+    backgroundColor: Colors.grey400,
     height: 40
   },
   trackerRegion: {

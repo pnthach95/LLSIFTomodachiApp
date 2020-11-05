@@ -58,7 +58,7 @@ const SongItem: React.FC<SongItemType> = ({ item, onPress }) => {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: Colors.itemColor,
+    backgroundColor: Colors.white,
     borderRadius: 5,
     elevation: 5,
     margin: Metrics.smallMargin,

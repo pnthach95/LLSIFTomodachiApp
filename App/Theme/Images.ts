@@ -3,8 +3,6 @@ import promo from '../Images/others/promo.png';
 import event from '../Images/others/event.png';
 import empty from '../Images/others/empty.png';
 import alpaca from '../Images/others/small_Alpaca.png';
-import twoColumns from '../Images/others/two_columns.png';
-import oneColumns from '../Images/others/one_column.png';
 import scoreUp from '../Images/skills/score_up.png';
 import perfectLock from '../Images/skills/perfect_lock.png';
 import healer from '../Images/skills/healer.png';
@@ -33,7 +31,6 @@ import sr from '../Images/rarity/SR.png';
 import ssr from '../Images/rarity/SSR.png';
 import ur from '../Images/rarity/UR.png';
 
-const column = [twoColumns, oneColumns];
 const skill = [scoreUp, perfectLock, healer, special];
 const region = [japan, world];
 const mainUnit = {
@@ -68,7 +65,6 @@ export default {
   event,
   empty,
   alpaca,
-  column,
   skill,
   region,
   mainUnit,

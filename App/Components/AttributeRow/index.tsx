@@ -1,13 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {
-  View,
-  TouchableOpacity,
-  Image,
-  ScrollView,
-  StyleSheet
-} from 'react-native';
-import { Text } from 'react-native-paper';
+import { View, Image, ScrollView } from 'react-native';
+import { Text, TouchableRipple } from 'react-native-paper';
 import { Images, AppStyles } from '~/Theme';
 import rowStyles from '~/Theme/RowStyles';
 import type { AttributeType } from '~/Utils/types';
@@ -24,6 +18,12 @@ const AttributeRow: React.FC<AttributeRowType> = ({
   attribute,
   selectAttribute
 }) => {
+  const none = () => selectAttribute('');
+  const smile = () => selectAttribute('Smile');
+  const pure = () => selectAttribute('Pure');
+  const cool = () => selectAttribute('Cool');
+  const all = () => selectAttribute('All');
+
   return (
     <View style={AppStyles.row}>
       <View style={rowStyles.leftView}>
@@ -31,17 +31,16 @@ const AttributeRow: React.FC<AttributeRowType> = ({
       </View>
       <View style={rowStyles.rightView}>
         <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-          <TouchableOpacity
-            onPress={() => selectAttribute('')}
+          <TouchableRipple
+            onPress={none}
             style={[
               rowStyles.standardButton,
-              styles.zeroPaddingLeft,
               attribute === '' && rowStyles.selectedValue1
             ]}>
             <Image source={Images.empty} style={rowStyles.buttonImage} />
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => selectAttribute('Smile')}
+          </TouchableRipple>
+          <TouchableRipple
+            onPress={smile}
             style={[
               rowStyles.standardButton,
               attribute === 'Smile' && rowStyles.selectedValue1
@@ -50,9 +49,9 @@ const AttributeRow: React.FC<AttributeRowType> = ({
               source={Images.attribute.Smile}
               style={rowStyles.buttonImage}
             />
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => selectAttribute('Pure')}
+          </TouchableRipple>
+          <TouchableRipple
+            onPress={pure}
             style={[
               rowStyles.standardButton,
               attribute === 'Pure' && rowStyles.selectedValue1
@@ -61,9 +60,9 @@ const AttributeRow: React.FC<AttributeRowType> = ({
               source={Images.attribute.Pure}
               style={rowStyles.buttonImage}
             />
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => selectAttribute('Cool')}
+          </TouchableRipple>
+          <TouchableRipple
+            onPress={cool}
             style={[
               rowStyles.standardButton,
               attribute === 'Cool' && rowStyles.selectedValue1
@@ -72,9 +71,9 @@ const AttributeRow: React.FC<AttributeRowType> = ({
               source={Images.attribute.Cool}
               style={rowStyles.buttonImage}
             />
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => selectAttribute('All')}
+          </TouchableRipple>
+          <TouchableRipple
+            onPress={all}
             style={[
               rowStyles.standardButton,
               attribute === 'All' && rowStyles.selectedValue1
@@ -83,16 +82,12 @@ const AttributeRow: React.FC<AttributeRowType> = ({
               source={Images.attribute.All}
               style={rowStyles.buttonImage}
             />
-          </TouchableOpacity>
+          </TouchableRipple>
         </ScrollView>
       </View>
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  zeroPaddingLeft: { paddingLeft: 0 }
-});
 
 AttributeRow.propTypes = {
   attribute: PropTypes.any,

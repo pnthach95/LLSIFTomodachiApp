@@ -142,10 +142,12 @@ const SongDetailScreen: React.FC<SongDetailScreenProps> = ({
     );
   };
 
+  const goBack = () => navigation.goBack();
+
   return (
     <>
       <Appbar.Header style={{ backgroundColor: attributeColors[1] }}>
-        <Appbar.BackAction />
+        <Appbar.BackAction onPress={goBack} />
         <Appbar.Content title={item.name} subtitle={item.romaji_name} />
         {!!item.main_unit && (
           <FastImage

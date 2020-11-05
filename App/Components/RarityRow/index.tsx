@@ -1,12 +1,7 @@
 import React from 'react';
-import {
-  View,
-  TouchableOpacity,
-  Image,
-  ScrollView,
-  StyleSheet
-} from 'react-native';
-import { Text } from 'react-native-paper';
+import PropTypes from 'prop-types';
+import { View, Image, ScrollView } from 'react-native';
+import { Text, TouchableRipple } from 'react-native-paper';
 import { Images, AppStyles } from '~/Theme';
 import rowStyles from '~/Theme/RowStyles';
 import type { RarityType } from '~/Utils/types';
@@ -25,6 +20,13 @@ type RarityRowType = {
  *
  */
 const RarityRow: React.FC<RarityRowType> = ({ rarity, selectRarity }) => {
+  const none = () => selectRarity('');
+  const n = () => selectRarity('N');
+  const r = () => selectRarity('R');
+  const sr = () => selectRarity('SR');
+  const ssr = () => selectRarity('SSR');
+  const ur = () => selectRarity('UR');
+
   return (
     <View style={AppStyles.row}>
       <View style={rowStyles.leftView}>
@@ -32,63 +34,63 @@ const RarityRow: React.FC<RarityRowType> = ({ rarity, selectRarity }) => {
       </View>
       <View style={rowStyles.rightView}>
         <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-          <TouchableOpacity
-            onPress={() => selectRarity('')}
+          <TouchableRipple
+            onPress={none}
             style={[
               rowStyles.standardButton,
-              styles.paddingLeft0,
               rarity === '' && rowStyles.selectedValue1
             ]}>
             <Image source={Images.empty} style={rowStyles.buttonImage} />
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => selectRarity('N')}
+          </TouchableRipple>
+          <TouchableRipple
+            onPress={n}
             style={[
               rowStyles.standardButton,
               rarity === 'N' && rowStyles.selectedValue1
             ]}>
             <Image source={Images.rarity[0]} style={rowStyles.buttonImage} />
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => selectRarity('R')}
+          </TouchableRipple>
+          <TouchableRipple
+            onPress={r}
             style={[
               rowStyles.standardButton,
               rarity === 'R' && rowStyles.selectedValue1
             ]}>
             <Image source={Images.rarity[1]} style={rowStyles.buttonImage} />
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => selectRarity('SR')}
+          </TouchableRipple>
+          <TouchableRipple
+            onPress={sr}
             style={[
               rowStyles.standardButton,
               rarity === 'SR' && rowStyles.selectedValue1
             ]}>
             <Image source={Images.rarity[2]} style={rowStyles.buttonImage} />
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => selectRarity('SSR')}
+          </TouchableRipple>
+          <TouchableRipple
+            onPress={ssr}
             style={[
               rowStyles.standardButton,
               rarity === 'SSR' && rowStyles.selectedValue1
             ]}>
             <Image source={Images.rarity[3]} style={rowStyles.buttonImage} />
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => selectRarity('UR')}
+          </TouchableRipple>
+          <TouchableRipple
+            onPress={ur}
             style={[
               rowStyles.standardButton,
               rarity === 'UR' && rowStyles.selectedValue1
             ]}>
             <Image source={Images.rarity[4]} style={rowStyles.buttonImage} />
-          </TouchableOpacity>
+          </TouchableRipple>
         </ScrollView>
       </View>
     </View>
   );
 };
 
-const styles = StyleSheet.create({
-  paddingLeft0: { paddingLeft: 0 }
-});
+RarityRow.propTypes = {
+  rarity: PropTypes.any,
+  selectRarity: PropTypes.any
+};
 
 export default RarityRow;

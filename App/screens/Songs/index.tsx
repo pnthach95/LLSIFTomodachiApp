@@ -7,7 +7,7 @@ import {
   Image,
   StyleSheet
 } from 'react-native';
-import { Appbar, Surface, Text, Button } from 'react-native-paper';
+import { Appbar, Surface, Text, Button, useTheme } from 'react-native-paper';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
 
@@ -79,6 +79,7 @@ const defaultFilter: FilterType = {
  *
  */
 const SongsScreen: React.FC<SongsScreenProps> = ({ navigation }) => {
+  const { colors } = useTheme();
   const [loading, setLoading] = useState(true);
   const [list, setList] = useState<SongObject[]>([]);
   const [isFilter, setIsFilter] = useState(false);
@@ -208,7 +209,7 @@ const SongsScreen: React.FC<SongsScreenProps> = ({ navigation }) => {
   /**
    * Save `is_event`
    */
-  const selectEvent = (value: BooleanOrEmpty) => () =>
+  const selectEvent = (value: BooleanOrEmpty) =>
     setSearchOptions({
       ...searchOptions,
       is_event: value
@@ -217,7 +218,7 @@ const SongsScreen: React.FC<SongsScreenProps> = ({ navigation }) => {
   /**
    * Save `attribute`
    */
-  const selectAttribute = (value: AttributeType) => () =>
+  const selectAttribute = (value: AttributeType) =>
     setSearchOptions({
       ...searchOptions,
       attribute: value
@@ -226,7 +227,7 @@ const SongsScreen: React.FC<SongsScreenProps> = ({ navigation }) => {
   /**
    * Save `main_unit`
    */
-  const selectMainUnit = (value: MainUnitNames) => () =>
+  const selectMainUnit = (value: MainUnitNames) =>
     setSearchOptions({
       ...searchOptions,
       main_unit: value
@@ -264,17 +265,21 @@ const SongsScreen: React.FC<SongsScreenProps> = ({ navigation }) => {
       search: text
     });
 
+  const goBack = () => navigation.goBack();
+
   return (
     <View style={AppStyles.screen}>
       {/* HEADER */}
-      <Appbar.Header>
-        <Appbar.BackAction />
-        <TextInput
-          style={AppStyles.searchInput}
-          onChangeText={onChangeText}
-          onSubmitEditing={onSearch}
-          placeholder='Search song...'
-        />
+      <Appbar.Header style={{ backgroundColor: colors.card }}>
+        <Appbar.BackAction onPress={goBack} />
+        <View style={AppStyles.searchHeader}>
+          <TextInput
+            style={AppStyles.searchInput}
+            onChangeText={onChangeText}
+            onSubmitEditing={onSearch}
+            placeholder='Search song...'
+          />
+        </View>
         <Appbar.Action icon='magnify' onPress={onSearch} />
         <Appbar.Action icon='dots-horizontal' onPress={toggleFilter} />
       </Appbar.Header>

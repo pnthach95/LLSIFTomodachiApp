@@ -8,7 +8,14 @@ import {
   Image,
   StyleSheet
 } from 'react-native';
-import { Text, Button, Appbar, Surface, FAB } from 'react-native-paper';
+import {
+  Text,
+  Button,
+  Appbar,
+  Surface,
+  FAB,
+  useTheme
+} from 'react-native-paper';
 import _ from 'lodash';
 
 import ConnectStatus from '~/Components/ConnectStatus';
@@ -28,7 +35,6 @@ import PromoCardRow from '~/Components/PromoCardRow';
 import Card2PicsItem from '~/Components/Card2PicsItem';
 import SpecialCardRow from '~/Components/SpecialCardRow';
 import LLSIFService from '~/Services/LLSIFService';
-import LoadingScreen from '../Loading';
 import { Metrics, Colors, AppStyles, Images } from '~/Theme';
 import UserContext from '~/Context/UserContext';
 import { OrderingGroup } from '~/Config';
@@ -75,6 +81,7 @@ type FilterType = {
  *
  */
 const CardsScreen: React.FC<CardsScreenProps> = ({ navigation }) => {
+  const { colors } = useTheme();
   const { state } = useContext(UserContext);
   const defaultFilter: FilterType = {
     search: '',
@@ -101,7 +108,6 @@ const CardsScreen: React.FC<CardsScreenProps> = ({ navigation }) => {
   const [list, setList] = useState<CardObject[]>([]);
   const [isFilter, setIsFilter] = useState(false);
   const [stopSearch, setStopSearch] = useState(false);
-  const onEndReached = _.debounce(onEndReaching, 1000);
 
   useEffect(() => {
     void getCards();
@@ -132,7 +138,7 @@ const CardsScreen: React.FC<CardsScreenProps> = ({ navigation }) => {
   /**
    * Get card list
    */
-  async function getCards() {
+  const getCards = async () => {
     const ordering =
       (searchOptions?.isReverse ? '-' : '') +
       (searchOptions.selectedOrdering || '');
@@ -165,6 +171,7 @@ const CardsScreen: React.FC<CardsScreenProps> = ({ navigation }) => {
     if (searchOptions.search !== '') theFilter.search = searchOptions.search;
     // console.log(`Cards.getCards: ${JSON.stringify(theFilter)}`);
     try {
+      setIsLoading(true);
       const result = await LLSIFService.fetchCardList(theFilter);
       if (result === 404) {
         // console.log('LLSIFService.fetchCardList 404');
@@ -180,12 +187,12 @@ const CardsScreen: React.FC<CardsScreenProps> = ({ navigation }) => {
         throw Error('null');
       }
     } catch (err) {
-      console.log('OK Pressed', err);
+      // console.log('OK Pressed', err);
       Alert.alert('Error', 'Error when get cards', [{ text: 'OK' }]);
     } finally {
       setIsLoading(false);
     }
-  }
+  };
 
   /**
    * Call when pressing search button
@@ -201,13 +208,15 @@ const CardsScreen: React.FC<CardsScreenProps> = ({ navigation }) => {
    * Call when scrolling to the end of list.
    * stopSearch prevents calling getCards when no card was found (404).
    */
-  function onEndReaching() {
+  const onEndReaching = () => {
     if (stopSearch) return;
     setSearchOptions({
       ...searchOptions,
       page: (searchOptions.page || 1) + 1
     });
-  }
+  };
+
+  const onEndReached = _.debounce(onEndReaching, 1000);
 
   /**
    * Filter on/off
@@ -236,7 +245,7 @@ const CardsScreen: React.FC<CardsScreenProps> = ({ navigation }) => {
   /**
    * Save is_promo
    */
-  const selectPromo = (value: BooleanOrEmpty) => () => {
+  const selectPromo = (value: BooleanOrEmpty) => {
     setSearchOptions({
       ...searchOptions,
       is_promo: value
@@ -246,7 +255,7 @@ const CardsScreen: React.FC<CardsScreenProps> = ({ navigation }) => {
   /**
    * Save is_special
    */
-  const selectSpecial = (value: BooleanOrEmpty) => () => {
+  const selectSpecial = (value: BooleanOrEmpty) => {
     setSearchOptions({
       ...searchOptions,
       is_special: value
@@ -256,7 +265,7 @@ const CardsScreen: React.FC<CardsScreenProps> = ({ navigation }) => {
   /**
    * Save is_event
    */
-  const selectEvent = (value: BooleanOrEmpty) => () => {
+  const selectEvent = (value: BooleanOrEmpty) => {
     setSearchOptions({
       ...searchOptions,
       is_event: value
@@ -266,7 +275,7 @@ const CardsScreen: React.FC<CardsScreenProps> = ({ navigation }) => {
   /**
    * Save idol_main_unit
    */
-  const selectMainUnit = (value: MainUnitNames) => () => {
+  const selectMainUnit = (value: MainUnitNames) => {
     setSearchOptions({
       ...searchOptions,
       idol_main_unit: value
@@ -276,7 +285,7 @@ const CardsScreen: React.FC<CardsScreenProps> = ({ navigation }) => {
   /**
    * Save rarity
    */
-  const selectRarity = (value: RarityType) => () => {
+  const selectRarity = (value: RarityType) => {
     setSearchOptions({
       ...searchOptions,
       rarity: value
@@ -286,7 +295,7 @@ const CardsScreen: React.FC<CardsScreenProps> = ({ navigation }) => {
   /**
    * Save attribute
    */
-  const selectAttribute = (value: AttributeType) => () => {
+  const selectAttribute = (value: AttributeType) => {
     setSearchOptions({
       ...searchOptions,
       attribute: value
@@ -296,7 +305,7 @@ const CardsScreen: React.FC<CardsScreenProps> = ({ navigation }) => {
   /**
    * Save idol_year
    */
-  const selectYear = (value: YearType) => () =>
+  const selectYear = (value: YearType) =>
     setSearchOptions({
       ...searchOptions,
       idol_year: value
@@ -305,7 +314,7 @@ const CardsScreen: React.FC<CardsScreenProps> = ({ navigation }) => {
   /**
    * Save region
    */
-  const selectRegion = (value: BooleanOrEmpty) => () => {
+  const selectRegion = (value: BooleanOrEmpty) => {
     setSearchOptions({
       ...searchOptions,
       japan_only: value
@@ -379,8 +388,8 @@ const CardsScreen: React.FC<CardsScreenProps> = ({ navigation }) => {
   );
 
   const renderEmpty = (
-    <View style={styles.flatListElement}>
-      <Text>No result</Text>
+    <View style={[AppStyles.center, styles.flatListElement]}>
+      <Text>{isLoading ? 'Loading' : 'No result'}</Text>
     </View>
   );
 
@@ -390,14 +399,10 @@ const CardsScreen: React.FC<CardsScreenProps> = ({ navigation }) => {
       search: text
     });
 
-  if (isLoading) {
-    return <LoadingScreen />;
-  }
-
   return (
     <View style={AppStyles.screen}>
       {/* HEADER */}
-      <Appbar.Header>
+      <Appbar.Header style={{ backgroundColor: colors.card }}>
         <View style={AppStyles.searchHeader}>
           <TextInput
             onChangeText={onChangeText}
@@ -423,7 +428,7 @@ const CardsScreen: React.FC<CardsScreenProps> = ({ navigation }) => {
               selectRarity={selectRarity}
             />
             <AttributeRow
-              attribute={searchOptions.attribute || 'All'}
+              attribute={searchOptions.attribute || ''}
               selectAttribute={selectAttribute}
             />
             <RegionRow

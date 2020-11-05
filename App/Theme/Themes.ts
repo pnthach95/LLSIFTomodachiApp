@@ -15,5 +15,5 @@ declare global {
   }
 }
 
-export const Light = merge(PaperDefaultTheme, DefaultTheme);
-export const Dark = merge(PaperDarkTheme, DarkTheme);
+export const Light = merge(DefaultTheme, PaperDefaultTheme);
+export const Dark = merge(DarkTheme, PaperDarkTheme);

@@ -76,10 +76,7 @@ const SplashScreen: React.FC<SplashScreenProps> = () => {
       ]);
       if (data) {
         const cardsInfo = data.cards_info;
-        const idols = cardsInfo.idols.map((value: { name: string }) => ({
-          label: value.name,
-          value: value.name
-        }));
+        const idols = cardsInfo.idols.map(({ name }) => name);
         cachedData.idols = idols;
         const skills = cardsInfo.skills.map((value: { skill: string }) => ({
           label: value.skill,

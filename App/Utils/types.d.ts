@@ -60,18 +60,17 @@ type MoreScreenProps = {
 type RootStackParamList = {
   Main: undefined;
   SplashScreen: undefined;
-  DrawerScreen: undefined;
   IdolsScreen: undefined;
   SongsScreen: undefined;
   CardDetailScreen: { item: CardObject };
   EventDetailScreen: { eventName: string };
   IdolDetailScreen: { name: string };
-  SongDetailScreen: undefined;
+  SongDetailScreen: { item: SongObject };
   AboutMeScreen: undefined;
 };
 
 type SplashScreenProps = StackScreenProps<RootStackParamList, 'SplashScreen'>;
-type DrawerScreenProps = StackScreenProps<RootStackParamList, 'DrawerScreen'>;
+type SongsScreenProps = StackScreenProps<RootStackParamList, 'SongsScreen'>;
 type CardDetailScreenProps = StackScreenProps<
   RootStackParamList,
   'CardDetailScreen'

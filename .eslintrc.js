@@ -31,7 +31,8 @@ module.exports = {
         ignore: ['navigation']
       }
     ],
-    'no-unused-vars': 'error',
+    'no-unused-vars': 'off',
+    'no-console': 1,
     'import/no-extraneous-dependencies': [
       'error',
       {

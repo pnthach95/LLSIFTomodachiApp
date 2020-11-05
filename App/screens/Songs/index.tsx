@@ -1,5 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { View, FlatList, TextInput, Alert, Image } from 'react-native';
+import {
+  View,
+  FlatList,
+  TextInput,
+  Alert,
+  Image,
+  StyleSheet
+} from 'react-native';
 import { IconButton, Surface, Text, TouchableRipple } from 'react-native-paper';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
@@ -10,13 +17,33 @@ import SongItem from '~/Components/SongItem';
 import MainUnitRow from '~/Components/MainUnitRow';
 import OrderingRow from '~/Components/OrderingRow';
 import AttributeRow from '~/Components/AttributeRow';
-import LoadingScreen from '../Loading';
 import LLSIFService from '~/Services/LLSIFService';
-import { AppStyles, Images, Fonts, Colors } from '~/Theme';
+import { AppStyles, Images, Metrics, Colors, Fonts } from '~/Theme';
 import { OrderingGroup } from '~/Config';
-import styles from './styles';
+import type {
+  AttributeType,
+  BooleanOrEmpty,
+  MainUnitNames,
+  SongObject,
+  SongsScreenProps
+} from '~/Utils/types';
 
-const defaultFilter = {
+type FilterType = {
+  ordering: string;
+  page_size: number;
+  page: number;
+  expand_event: string;
+  selectedOrdering?: string;
+  isReverse?: boolean;
+  search?: string;
+  attribute?: AttributeType;
+  is_event?: BooleanOrEmpty;
+  is_daily_rotation?: BooleanOrEmpty;
+  available?: BooleanOrEmpty;
+  main_unit?: MainUnitNames;
+};
+
+const defaultFilter: FilterType = {
   selectedOrdering: OrderingGroup.SONG[0].value,
   isReverse: true,
   ordering: '-id',
@@ -51,9 +78,8 @@ const defaultFilter = {
  * - `stopSearch`: Prevent calling API
  *
  */
-function SongsScreen({ navigation }) {
-  const [isLoading, setIsLoading] = useState(true);
-  const [list, setList] = useState([]);
+const SongsScreen: React.FC<SongsScreenProps> = ({ navigation }) => {
+  const [list, setList] = useState<SongObject[]>([]);
   const [isFilter, setIsFilter] = useState(false);
   const [stopSearch, setStopSearch] = useState(false);
   const [searchOptions, setSearchOptions] = useState(defaultFilter);
@@ -65,18 +91,15 @@ function SongsScreen({ navigation }) {
 
   /**
    * Key extractor for FlatList
-   *
    */
-  const keyExtractor = (item) => `song ${item.name}`;
+  const keyExtractor = (item: SongObject) => `song ${item.name}`;
 
   /**
    * Render item in FlatList
-   *
    */
-  const renderItem = ({ item }) => {
+  const renderItem = ({ item }: { item: SongObject }) => {
     /**
      * Navigate to Song Detail Screen
-     *
      */
     const navigateToSongDetail = () => {
       navigation.navigate('SongDetailScreen', { item });
@@ -91,7 +114,6 @@ function SongsScreen({ navigation }) {
   /**
    * Call when scrolling to the end of list.
    * stopSearch prevents calling getCards when no card was found (404).
-   *
    */
   function onEndReaching() {
     if (stopSearch) return;
@@ -103,12 +125,12 @@ function SongsScreen({ navigation }) {
 
   /**
    * Fetch song list
-   *
    */
   function getSongs() {
     const ordering =
-      (searchOptions.isReverse ? '-' : '') + searchOptions.selectedOrdering;
-    const theFilter = {
+      (searchOptions.isReverse ? '-' : '') +
+      (searchOptions.selectedOrdering || '');
+    const theFilter: FilterType = {
       ordering,
       page_size: searchOptions.page_size,
       page: searchOptions.page,
@@ -124,44 +146,36 @@ function SongsScreen({ navigation }) {
     if (searchOptions.main_unit !== '')
       theFilter.main_unit = searchOptions.main_unit;
     if (searchOptions.search !== '') theFilter.search = searchOptions.search;
-    // eslint-disable-next-line no-console
-    console.log(`Songs.getSongs ${JSON.stringify(theFilter)}`);
+    // console.log(`Songs.getSongs ${JSON.stringify(theFilter)}`);
     LLSIFService.fetchSongList(theFilter)
       .then((result) => {
         if (result === 404) {
-          // console.log('LLSIFService.fetchSongList 404')
           setStopSearch(true);
-        } else {
+        } else if (Array.isArray(result)) {
           let x = [...list, ...result];
           x = x.filter(
             (thing, ind, self) =>
               ind === self.findIndex((t) => t.name === thing.name)
           );
           setList(x);
+        } else {
+          throw Error('null');
         }
       })
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       .catch((err) => {
-        Alert.alert(
-          'Error',
-          'Error when get songs',
-          // eslint-disable-next-line no-console
-          [{ text: 'OK', onPress: () => console.log(`OK Pressed ${err}`) }]
-        );
-      })
-      .finally(() => {
-        setIsLoading(false);
+        // console.log('OK Pressed', err);
+        Alert.alert('Error', 'Error when get songs', [{ text: 'OK' }]);
       });
   }
 
   /**
    * Filter on/off
-   *
    */
   const toggleFilter = () => setIsFilter(!isFilter);
 
   /**
    * Reverse search on/off
-   *
    */
   const toggleReverse = () =>
     setSearchOptions({
@@ -170,28 +184,17 @@ function SongsScreen({ navigation }) {
     });
 
   /**
-   * Open drawer
-   *
-   */
-  const openDrawer = () => navigation.openDrawer();
-
-  /**
    * Call when pressing search button
-   *
    */
   const onSearch = () => {
     setList([]);
     setIsFilter(false);
     setStopSearch(false);
-    setSearchOptions({
-      ...searchOptions,
-      page: 1
-    });
+    setSearchOptions({ ...searchOptions, page: 1 });
   };
 
   /**
    * Reset filter variables
-   *
    */
   const resetFilter = () => {
     setSearchOptions(defaultFilter);
@@ -199,9 +202,8 @@ function SongsScreen({ navigation }) {
 
   /**
    * Save `is_event`
-   *
    */
-  const selectEvent = (value) => () =>
+  const selectEvent = (value: BooleanOrEmpty) => () =>
     setSearchOptions({
       ...searchOptions,
       is_event: value
@@ -209,9 +211,8 @@ function SongsScreen({ navigation }) {
 
   /**
    * Save `attribute`
-   *
    */
-  const selectAttribute = (value) => () =>
+  const selectAttribute = (value: AttributeType) => () =>
     setSearchOptions({
       ...searchOptions,
       attribute: value
@@ -219,9 +220,8 @@ function SongsScreen({ navigation }) {
 
   /**
    * Save `main_unit`
-   *
    */
-  const selectMainUnit = (value) => () =>
+  const selectMainUnit = (value: MainUnitNames) => () =>
     setSearchOptions({
       ...searchOptions,
       main_unit: value
@@ -229,9 +229,8 @@ function SongsScreen({ navigation }) {
 
   /**
    * Save ordering
-   *
    */
-  const selectOrdering = (itemValue) =>
+  const selectOrdering = (itemValue: string) =>
     setSearchOptions({
       ...searchOptions,
       selectedOrdering: itemValue
@@ -252,14 +251,10 @@ function SongsScreen({ navigation }) {
     </View>
   );
 
-  if (isLoading) {
-    return <LoadingScreen />;
-  }
   return (
     <View style={AppStyles.screen}>
       {/* HEADER */}
       <Surface style={[AppStyles.header, styles.header]}>
-        <IconButton icon={'menu'} onPress={openDrawer} />
         <View style={AppStyles.searchHeader}>
           <TextInput
             style={AppStyles.searchInput}
@@ -273,33 +268,33 @@ function SongsScreen({ navigation }) {
             placeholder={'Search song...'}
           />
           <IconButton
-            icon={'search'}
+            icon='magnify'
             onPress={onSearch}
             style={AppStyles.searchButton}
           />
         </View>
-        <IconButton icon={'ios-more'} onPress={toggleFilter} />
+        <IconButton icon='dots-horizontal' onPress={toggleFilter} />
       </Surface>
       {/* FILTER */}
       {isFilter && (
         <Surface style={styles.filterContainer}>
           <AttributeRow
-            attribute={searchOptions.attribute}
+            attribute={searchOptions.attribute || ''}
             selectAttribute={selectAttribute}
           />
           <EventRow
-            isEvent={searchOptions.is_event}
+            isEvent={searchOptions.is_event || ''}
             selectEvent={selectEvent}
           />
           <MainUnitRow
-            mainUnit={searchOptions.main_unit}
+            mainUnit={searchOptions.main_unit || ''}
             selectMainUnit={selectMainUnit}
           />
           <OrderingRow
             orderingItem={OrderingGroup.SONG}
             selectedOrdering={searchOptions.selectedOrdering}
             selectOrdering={selectOrdering}
-            isReverse={searchOptions.isReverse}
+            isReverse={searchOptions.isReverse || true}
             toggleReverse={toggleReverse}
           />
           <TouchableRipple onPress={resetFilter} style={styles.resetView}>
@@ -322,6 +317,35 @@ function SongsScreen({ navigation }) {
       />
     </View>
   );
-}
+};
+
+const styles = StyleSheet.create({
+  filterContainer: {
+    backgroundColor: Colors.white,
+    elevation: 5,
+    padding: 10
+  },
+  flatListElement: {
+    margin: 10
+  },
+  header: {
+    backgroundColor: Colors.white,
+    elevation: 5
+  },
+  list: {
+    padding: Metrics.smallMargin
+  },
+  resetText: {
+    ...Fonts.style.white,
+    ...Fonts.style.center
+  },
+  resetView: {
+    alignItems: 'stretch',
+    backgroundColor: Colors.red600,
+    justifyContent: 'center',
+    marginTop: 10,
+    padding: 10
+  }
+});
 
 export default SongsScreen;

@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { View, TextStyle } from 'react-native';
 import { Text } from 'react-native-paper';
 import { Fonts, AppStyles } from '~/Theme';
@@ -11,7 +12,7 @@ type TextRowType = {
   };
   item2: {
     flex: number;
-    text: string;
+    text: string | number;
     textStyle?: TextStyle;
     onPress?: () => void;
   };
@@ -19,11 +20,6 @@ type TextRowType = {
 
 /**
  * TextRow
- *
- * Prop:
- * - item1: {text, flex, textStyle}
- * - item2: {text, flex, textStyle, onPress}
- *
  */
 const TextRow: React.FC<TextRowType> = ({ item1, item2 }) => {
   return (
@@ -40,6 +36,11 @@ const TextRow: React.FC<TextRowType> = ({ item1, item2 }) => {
       </View>
     </View>
   );
+};
+
+TextRow.propTypes = {
+  item1: PropTypes.any,
+  item2: PropTypes.any
 };
 
 export default TextRow;

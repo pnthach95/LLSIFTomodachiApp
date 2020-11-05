@@ -7,7 +7,7 @@ import {
   Image,
   StyleSheet
 } from 'react-native';
-import { IconButton, Surface, Text, TouchableRipple } from 'react-native-paper';
+import { Appbar, Surface, Text, Button } from 'react-native-paper';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
 
@@ -79,11 +79,11 @@ const defaultFilter: FilterType = {
  *
  */
 const SongsScreen: React.FC<SongsScreenProps> = ({ navigation }) => {
+  const [loading, setLoading] = useState(true);
   const [list, setList] = useState<SongObject[]>([]);
   const [isFilter, setIsFilter] = useState(false);
   const [stopSearch, setStopSearch] = useState(false);
   const [searchOptions, setSearchOptions] = useState(defaultFilter);
-  const onEndReached = _.debounce(onEndReaching, 500);
 
   useEffect(() => {
     getSongs();
@@ -115,18 +115,19 @@ const SongsScreen: React.FC<SongsScreenProps> = ({ navigation }) => {
    * Call when scrolling to the end of list.
    * stopSearch prevents calling getCards when no card was found (404).
    */
-  function onEndReaching() {
+  const onEndReaching = () => {
     if (stopSearch) return;
     setSearchOptions({
       ...searchOptions,
       page: searchOptions.page + 1
     });
-  }
+  };
+  const onEndReached = _.debounce(onEndReaching, 500);
 
   /**
    * Fetch song list
    */
-  function getSongs() {
+  const getSongs = () => {
     const ordering =
       (searchOptions.isReverse ? '-' : '') +
       (searchOptions.selectedOrdering || '');
@@ -147,6 +148,7 @@ const SongsScreen: React.FC<SongsScreenProps> = ({ navigation }) => {
       theFilter.main_unit = searchOptions.main_unit;
     if (searchOptions.search !== '') theFilter.search = searchOptions.search;
     // console.log(`Songs.getSongs ${JSON.stringify(theFilter)}`);
+    setLoading(true);
     LLSIFService.fetchSongList(theFilter)
       .then((result) => {
         if (result === 404) {
@@ -166,8 +168,11 @@ const SongsScreen: React.FC<SongsScreenProps> = ({ navigation }) => {
       .catch((err) => {
         // console.log('OK Pressed', err);
         Alert.alert('Error', 'Error when get songs', [{ text: 'OK' }]);
+      })
+      .finally(() => {
+        setLoading(false);
       });
-  }
+  };
 
   /**
    * Filter on/off
@@ -247,34 +252,32 @@ const SongsScreen: React.FC<SongsScreenProps> = ({ navigation }) => {
 
   const renderEmpty = (
     <View style={styles.flatListElement}>
-      <Text style={Fonts.style.center}>No result</Text>
+      <Text style={Fonts.style.center}>
+        {loading ? 'Loading' : 'No result'}
+      </Text>
     </View>
   );
+
+  const onChangeText = (text: string): void =>
+    setSearchOptions({
+      ...searchOptions,
+      search: text
+    });
 
   return (
     <View style={AppStyles.screen}>
       {/* HEADER */}
-      <Surface style={[AppStyles.header, styles.header]}>
-        <View style={AppStyles.searchHeader}>
-          <TextInput
-            style={AppStyles.searchInput}
-            onChangeText={(text) =>
-              setSearchOptions({
-                ...searchOptions,
-                search: text
-              })
-            }
-            onSubmitEditing={onSearch}
-            placeholder={'Search song...'}
-          />
-          <IconButton
-            icon='magnify'
-            onPress={onSearch}
-            style={AppStyles.searchButton}
-          />
-        </View>
-        <IconButton icon='dots-horizontal' onPress={toggleFilter} />
-      </Surface>
+      <Appbar.Header>
+        <Appbar.BackAction />
+        <TextInput
+          style={AppStyles.searchInput}
+          onChangeText={onChangeText}
+          onSubmitEditing={onSearch}
+          placeholder='Search song...'
+        />
+        <Appbar.Action icon='magnify' onPress={onSearch} />
+        <Appbar.Action icon='dots-horizontal' onPress={toggleFilter} />
+      </Appbar.Header>
       {/* FILTER */}
       {isFilter && (
         <Surface style={styles.filterContainer}>
@@ -297,9 +300,9 @@ const SongsScreen: React.FC<SongsScreenProps> = ({ navigation }) => {
             isReverse={searchOptions.isReverse || true}
             toggleReverse={toggleReverse}
           />
-          <TouchableRipple onPress={resetFilter} style={styles.resetView}>
-            <Text style={styles.resetText}>RESET</Text>
-          </TouchableRipple>
+          <Button mode='contained' onPress={resetFilter}>
+            RESET
+          </Button>
         </Surface>
       )}
       <ConnectStatus />
@@ -328,23 +331,8 @@ const styles = StyleSheet.create({
   flatListElement: {
     margin: 10
   },
-  header: {
-    backgroundColor: Colors.white,
-    elevation: 5
-  },
   list: {
     padding: Metrics.smallMargin
-  },
-  resetText: {
-    ...Fonts.style.white,
-    ...Fonts.style.center
-  },
-  resetView: {
-    alignItems: 'stretch',
-    backgroundColor: Colors.red600,
-    justifyContent: 'center',
-    marginTop: 10,
-    padding: 10
   }
 });
 

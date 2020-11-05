@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import { View, StyleSheet } from 'react-native';
 import { Text, Surface, TouchableRipple } from 'react-native-paper';
 import FastImage, { OnLoadEvent } from 'react-native-fast-image';
@@ -34,20 +35,22 @@ const SongItem: React.FC<SongItemType> = ({ item, onPress }) => {
   return (
     <Surface style={[styles.container, { backgroundColor: attColors[0] }]}>
       <TouchableRipple borderless rippleColor={attColors[1]} onPress={onPress}>
-        <FastImage
-          source={{ uri: AddHTTPS(item.image) }}
-          onLoad={onLoad}
-          style={[
-            styles.image,
-            {
-              width: itemWidth,
-              height: (itemWidth * imgSize.height) / imgSize.width
-            }
-          ]}
-        />
-        <View style={styles.info}>
-          <Text style={styles.text}>{getName}</Text>
-        </View>
+        <>
+          <FastImage
+            source={{ uri: AddHTTPS(item.image) }}
+            onLoad={onLoad}
+            style={[
+              styles.image,
+              {
+                width: itemWidth,
+                height: (itemWidth * imgSize.height) / imgSize.width
+              }
+            ]}
+          />
+          <View style={styles.info}>
+            <Text style={styles.text}>{getName}</Text>
+          </View>
+        </>
       </TouchableRipple>
     </Surface>
   );
@@ -76,5 +79,10 @@ const styles = StyleSheet.create({
     ...Fonts.style.center
   }
 });
+
+SongItem.propTypes = {
+  item: PropTypes.any,
+  onPress: PropTypes.any
+};
 
 export default SongItem;

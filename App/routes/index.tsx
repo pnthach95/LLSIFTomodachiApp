@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useEffect } from 'react';
 import { Alert } from 'react-native';
@@ -7,11 +6,13 @@ import firebase from 'react-native-firebase';
 import * as Sentry from '@sentry/react-native';
 import dayjs from 'dayjs';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
+import duration from 'dayjs/plugin/duration';
 
 import { FirebaseTopic } from '~/Config';
 import { UserProvider } from '~/Context/UserContext';
 import Routes from './routes';
 
+dayjs.extend(duration);
 dayjs.extend(localizedFormat);
 
 Sentry.init({

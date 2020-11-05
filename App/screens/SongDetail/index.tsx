@@ -1,59 +1,54 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { Text, View, ScrollView, TouchableOpacity } from 'react-native';
+import { View, ScrollView, StyleSheet } from 'react-native';
 import PropTypes from 'prop-types';
+import {
+  Appbar,
+  TouchableRipple,
+  Button,
+  Text,
+  ProgressBar,
+  useTheme
+} from 'react-native-paper';
 import FastImage from 'react-native-fast-image';
+import { responsiveWidth } from 'react-native-responsive-dimensions';
+import dayjs from 'dayjs';
 
 import UserContext from '~/Context/UserContext';
 import StarBar from '~/Components/StarBar';
-import ProgressBar from '~/Components/ProgressBar';
 import TextRow from '~/Components/TextRow';
-import LoadingScreen from '../Loading';
-import { findColorByAttribute, AddHTTPS } from '~/Utils';
+import { findColorByAttribute, AddHTTPS, setStatusBar } from '~/Utils';
 import { Metrics, AppStyles, Colors, Images } from '~/Theme';
-import styles from './styles';
+import type { SongDetailScreenProps } from '~/Utils/types';
+
+type StatType = [number, number[]];
 
 /**
  * Song Detail Screen
  *
  * From parent screen, pass `item` (Song object) to show detail
  *
- * State:
- * - `item`: [Song object](https://github.com/MagiCircles/SchoolIdolAPI/wiki/API-Songs#objects)
- * - `imgWidth`: Image width
- * - `imgHeight`: Image height
- * - `colors`: Color array
- * - `currentStats`: To show stats when choosing Mode
- * - `buttonID`: ID for choosing Mode button
- * - `easy`: [note number, stars]
- * - `normal`: [note number, stars]
- * - `hard`: [note number, stars]
- * - `expert`: [note number, stars]
- * - `random`: [note number, stars]
- * - `master`: [note number, stars]
- * - `isLoading`: Loading state
+ * [Song object](https://github.com/MagiCircles/SchoolIdolAPI/wiki/API-Songs#objects)
  *
  */
-function SongDetailScreen({ route, navigation }) {
+const SongDetailScreen: React.FC<SongDetailScreenProps> = ({
+  route,
+  navigation
+}) => {
+  const { colors } = useTheme();
   const { item } = route.params;
   const { state } = useContext(UserContext);
-  const [isLoading, setIsLoading] = useState(true);
-  const [imgSize, setImgSize] = useState({
-    height: 0,
-    width: 1
-  });
   const [buttonID, setButtonID] = useState(0);
-  const [currentStats, setCurrentStats] = useState([]);
-  const name =
-    item.name + (item.romaji_name !== null ? `\n${item.romaji_name}` : '');
-  const colors = findColorByAttribute(item.attribute);
-  const [easy, setEasy] = useState([]);
-  const [normal, setNormal] = useState([]);
-  const [hard, setHard] = useState([]);
-  const [expert, setExpert] = useState([]);
-  const [random, setRandom] = useState([]);
-  const [master, setMaster] = useState([]);
+  const [currentStats, setCurrentStats] = useState<StatType>([0, []]);
+  const attributeColors = findColorByAttribute(item.attribute || 'All');
+  const [easy, setEasy] = useState<StatType>([0, []]);
+  const [normal, setNormal] = useState<StatType>([0, []]);
+  const [hard, setHard] = useState<StatType>([0, []]);
+  const [expert, setExpert] = useState<StatType>([0, []]);
+  const [random, setRandom] = useState<StatType>([0, []]);
+  const [master, setMaster] = useState<StatType>([0, []]);
 
   useEffect(() => {
+    setStatusBar(attributeColors[0]);
     const easyArray = [];
     for (let i = 0; i < item.easy_difficulty; i += 1) {
       easyArray.push(setColor(i));
@@ -87,223 +82,214 @@ function SongDetailScreen({ route, navigation }) {
         masterArray.push(setColor(i));
       }
     }
-    setMaster([item.master_notes, masterArray]);
+    setMaster([item.master_notes || 0, masterArray]);
     setCurrentStats([item.easy_notes, easyArray]);
-    const unitIcon = () =>
-      !!item.main_unit && (
-        <FastImage
-          source={Images.mainUnit[item.main_unit]}
-          resizeMode='contain'
-          style={styles.rightHeaderImage}
-        />
-      );
-    navigation.setOptions({
-      headerStyle: { backgroundColor: colors[1] },
-      headerTitle: name,
-      headerRight: unitIcon
-    });
-    setIsLoading(false);
+    return () => setStatusBar(colors.card);
   }, []);
 
   /**
-   * Get width, height of image in FastImage
-   *
-   * @param {*} e
-   */
-  const onLoadFastImage = (e) => {
-    const { width, height } = e.nativeEvent;
-    setImgSize({ width, height });
-  };
-
-  /**
    * Set color for star
-   *
-   * @param {Number} index
    */
-  function setColor(index) {
+  const setColor = (index: number): number => {
     if (index < 3) return 0;
     if (index < 6) return 1;
     if (index < 9) return 2;
     return 3;
-  }
+  };
 
   /**
    * Convert seconds to m:ss
-   *
-   * @param {Number} time
    */
-  function formatTime(time) {
-    const minutes = parseInt(((time / 60) % 60).toString(), 10);
-    let seconds = time % 60;
-    if (seconds < 10) seconds = `0${seconds}`;
-    return `${minutes}:${seconds}`;
-  }
+  const formatTime = (time: number): string => {
+    const duration = dayjs.duration(time, 's');
+    return `${duration.minutes()}:${duration.seconds()}`;
+  };
 
   /**
    * Navigate to Event Detail Screen
-   *
    */
   const navigateToEventDetail = () => {
-    navigation.navigate('EventDetailScreen', { eventName: item.event.name });
+    if (item.event?.japanese_name) {
+      navigation.navigate('EventDetailScreen', {
+        eventName: item.event?.japanese_name
+      });
+    }
   };
 
   /**
    * Render choosing stat button
-   *
-   * @param {Number} id
-   * @param {String} text
-   * @param {Array} stat
-   * @param {Object} style
    */
-  function statButton(id, text, stat, style) {
-    const white = { color: 'white' };
+  const StatButton = ({
+    id,
+    text,
+    stat
+  }: {
+    id: number;
+    text: string;
+    stat: StatType;
+  }) => {
     const onPress = () => {
       setButtonID(id);
       setCurrentStats(stat);
     };
     return (
-      <TouchableOpacity
-        onPress={onPress}
-        style={[
-          styles.button,
-          style,
-          { backgroundColor: buttonID === id ? Colors.violet : Colors.inactive }
-        ]}>
-        <Text style={white}>{text}</Text>
-      </TouchableOpacity>
+      <Button
+        mode='contained'
+        color={buttonID === id ? attributeColors[0] : Colors.inactive}
+        onPress={onPress}>
+        {text}
+      </Button>
     );
-  }
-
-  const progressStat = (stat) => (100 * stat) / state.cachedData.songsMaxStats;
-
-  if (isLoading) return <LoadingScreen />;
+  };
 
   return (
-    <ScrollView
-      showsVerticalScrollIndicator={false}
-      contentContainerStyle={styles.scrollViewContainer}
-      style={AppStyles.screen}>
-      <FastImage
-        source={{ uri: AddHTTPS(item.image) }}
-        onLoad={onLoadFastImage}
-        resizeMode='contain'
-        style={{
-          width: Metrics.screenWidth / 2,
-          height: ((Metrics.screenWidth / 2) * imgSize.height) / imgSize.width
-        }}
-      />
-      <View style={styles.height10} />
-
-      <TextRow
-        item1={{ text: 'Attribute', flex: 1 }}
-        item2={{ text: item.attribute, flex: 1 }}
-      />
-      {Boolean(item.rank) && (
-        <View style={styles.event}>
-          <TextRow
-            item1={{ text: 'Unlock', flex: 1 }}
-            item2={{ text: item.rank, flex: 1 }}
+    <>
+      <Appbar.Header style={{ backgroundColor: attributeColors[1] }}>
+        <Appbar.BackAction />
+        <Appbar.Content title={item.name} subtitle={item.romaji_name} />
+        {!!item.main_unit && (
+          <FastImage
+            source={Images.mainUnit[item.main_unit]}
+            resizeMode='contain'
+            style={styles.rightHeaderImage}
           />
-        </View>
-      )}
-      <TextRow
-        item1={{ text: 'Beats per minute', flex: 1 }}
-        item2={{ text: item.BPM, flex: 1 }}
-      />
-      <TextRow
-        item1={{ text: 'Length', flex: 1 }}
-        item2={{ text: formatTime(item.time), flex: 1 }}
-      />
-      {item.event && (
-        <View style={styles.event}>
-          <TextRow
-            item1={{ text: 'Event', flex: 1 }}
-            item2={{ text: item.event.japanese_name, flex: 1 }}
-          />
-          <TextRow
-            item1={{ text: '', flex: 1 }}
-            item2={{ text: item.event.english_name, flex: 1 }}
-          />
-          <TouchableOpacity
-            onPress={navigateToEventDetail}
-            style={styles.eventButton}>
-            <FastImage
-              source={{ uri: AddHTTPS(item.event.image) }}
-              resizeMode={FastImage.resizeMode.contain}
-              style={styles.eventImage}
-            />
-          </TouchableOpacity>
-        </View>
-      )}
-      {Boolean(item.daily_rotation) && (
-        <View style={styles.event}>
-          <TextRow
-            item1={{ text: 'Daily rotation', flex: 1 }}
-            item2={{
-              text: `${item.daily_rotation} - ${item.daily_rotation_position}`,
-              flex: 1
-            }}
-          />
-        </View>
-      )}
-      <TextRow
-        item1={{ text: 'Currently available', flex: 1 }}
-        item2={{ text: item.available ? 'Yes' : 'No', flex: 1 }}
-      />
-      <View style={styles.buttonRow}>
-        {statButton(0, 'Easy', easy, styles.leftRadius)}
-        {statButton(1, 'Normal', normal)}
-        {statButton(2, 'Hard', hard)}
-        {statButton(
-          3,
-          'Expert',
-          expert,
-          random[1].length === 0 && !master[0] && styles.rightRadius
         )}
-        {random[1].length !== 0 &&
-          statButton(4, 'Random', random, !master[0] && styles.rightRadius)}
-        {master[0] && statButton(5, 'Master', master, styles.rightRadius)}
-      </View>
-      <ProgressBar
-        number={currentStats[0] || 0}
-        progress={progressStat(currentStats[0] || 0)}
-        fillStyle={{ backgroundColor: colors[0] }}
-      />
-      <StarBar array={currentStats[1]} />
-    </ScrollView>
+      </Appbar.Header>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={styles.scrollViewContainer}
+        style={AppStyles.screen}>
+        <FastImage
+          source={{ uri: AddHTTPS(item.image) }}
+          resizeMode='contain'
+          style={styles.image}
+        />
+        <View style={styles.height10} />
+
+        <TextRow
+          item1={{ text: 'Attribute', flex: 1 }}
+          item2={{ text: item.attribute, flex: 1 }}
+        />
+        {!!item.rank && (
+          <View style={styles.event}>
+            <TextRow
+              item1={{ text: 'Unlock', flex: 1 }}
+              item2={{ text: item.rank, flex: 1 }}
+            />
+          </View>
+        )}
+        {!!item.BPM && (
+          <TextRow
+            item1={{ text: 'Beats per minute', flex: 1 }}
+            item2={{ text: item.BPM, flex: 1 }}
+          />
+        )}
+        <TextRow
+          item1={{ text: 'Length', flex: 1 }}
+          item2={{ text: formatTime(item.time), flex: 1 }}
+        />
+        {item.event && (
+          <View style={styles.event}>
+            <TextRow
+              item1={{ text: 'Event', flex: 1 }}
+              item2={{ text: item.event.japanese_name, flex: 1 }}
+            />
+            {!!item.event.english_name && (
+              <TextRow
+                item1={{ text: '', flex: 1 }}
+                item2={{ text: item.event.english_name, flex: 1 }}
+              />
+            )}
+            <TouchableRipple
+              onPress={navigateToEventDetail}
+              style={styles.eventButton}>
+              <FastImage
+                source={{ uri: AddHTTPS(item.event.image) }}
+                resizeMode={FastImage.resizeMode.contain}
+                style={styles.eventImage}
+              />
+            </TouchableRipple>
+          </View>
+        )}
+        {!!item.daily_rotation && !!item.daily_rotation_position && (
+          <View style={styles.event}>
+            <TextRow
+              item1={{ text: 'Daily rotation', flex: 1 }}
+              item2={{
+                text: `${item.daily_rotation} - ${item.daily_rotation_position}`,
+                flex: 1
+              }}
+            />
+          </View>
+        )}
+        <TextRow
+          item1={{ text: 'Currently available', flex: 1 }}
+          item2={{ text: item.available ? 'Yes' : 'No', flex: 1 }}
+        />
+        <View style={styles.buttonRow}>
+          <StatButton id={0} text='Easy' stat={easy} />
+          <StatButton id={1} text='Normal' stat={normal} />
+          <StatButton id={2} text='Hard' stat={hard} />
+          <StatButton id={3} text='Expert' stat={expert} />
+          {random[1].length !== 0 && (
+            <StatButton id={4} text='Random' stat={random} />
+          )}
+          {master[0] > 0 && <StatButton id={5} text='Master' stat={master} />}
+        </View>
+        {currentStats[0] > 0 && (
+          <View style={styles.stretch}>
+            <Text>{currentStats[0]} notes</Text>
+            <ProgressBar
+              color={attributeColors[0]}
+              progress={currentStats[0] / state.cachedData.songsMaxStats}
+            />
+          </View>
+        )}
+        <StarBar array={currentStats[1]} />
+      </ScrollView>
+    </>
   );
-}
+};
+
+const styles = StyleSheet.create({
+  buttonRow: {
+    alignSelf: 'stretch',
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    paddingVertical: Metrics.baseMargin
+  },
+  event: {
+    alignItems: 'center'
+  },
+  eventButton: {
+    alignSelf: 'flex-end',
+    paddingRight: Metrics.baseMargin
+  },
+  eventImage: {
+    height: Metrics.screenWidth / 5,
+    marginVertical: 10,
+    width: (2 * Metrics.screenWidth) / 3
+  },
+  height10: {
+    height: 10
+  },
+  image: {
+    height: responsiveWidth(40),
+    width: responsiveWidth(40)
+  },
+  rightHeaderImage: {
+    height: Metrics.navBarHeight,
+    width: Metrics.navBarHeight
+  },
+  scrollViewContainer: {
+    alignItems: 'center',
+    padding: Metrics.baseMargin
+  },
+  stretch: { alignSelf: 'stretch' }
+});
 
 SongDetailScreen.propTypes = {
-  route: PropTypes.shape({
-    params: PropTypes.shape({
-      item: PropTypes.shape({
-        name: PropTypes.string,
-        romaji_name: PropTypes.string,
-        main_unit: PropTypes.string,
-        attribute: PropTypes.string,
-        easy_notes: PropTypes.number,
-        normal_notes: PropTypes.number,
-        hard_notes: PropTypes.number,
-        expert_notes: PropTypes.number,
-        master_notes: PropTypes.number,
-        easy_difficulty: PropTypes.number,
-        normal_difficulty: PropTypes.number,
-        hard_difficulty: PropTypes.number,
-        expert_difficulty: PropTypes.number,
-        master_difficulty: PropTypes.any,
-        expert_random_difficulty: PropTypes.any,
-        image: PropTypes.string,
-        rank: PropTypes.string,
-        event: PropTypes.object,
-        BPM: PropTypes.number,
-        time: PropTypes.number,
-        daily_rotation: PropTypes.string,
-        daily_rotation_position: PropTypes.any,
-        available: PropTypes.bool
-      })
-    })
-  })
+  route: PropTypes.any
 };
 
 export default SongDetailScreen;

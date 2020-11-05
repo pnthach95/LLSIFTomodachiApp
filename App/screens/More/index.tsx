@@ -114,21 +114,25 @@ const MoreScreen: React.FC<MoreScreenProps> = ({ navigation }) => {
       </View>
       <TouchableRipple onPress={goToIdols}>
         <View style={styles.button}>
-          <Icon name='face-woman' size={iconSize} />
+          <Icon name='face-woman' color={Colors.pink} size={iconSize} />
           <View style={styles.space} />
           <Text>Idols</Text>
         </View>
       </TouchableRipple>
       <TouchableRipple onPress={goToSongs}>
         <View style={styles.button}>
-          <Icon name='music-box-multiple' size={iconSize} />
+          <Icon
+            name='music-box-multiple'
+            color={Colors.green}
+            size={iconSize}
+          />
           <View style={styles.space} />
           <Text>Songs</Text>
         </View>
       </TouchableRipple>
       <TouchableRipple onPress={goToAboutMe}>
         <View style={styles.button}>
-          <Icon name='help-circle' size={iconSize} />
+          <Icon name='help-circle' color={Colors.blue} size={iconSize} />
           <View style={styles.space} />
           <Text>About me</Text>
         </View>

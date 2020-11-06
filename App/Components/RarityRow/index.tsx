@@ -13,11 +13,6 @@ type RarityRowType = {
 
 /**
  * Rarity Row (None, N, R, SR, SSR, UR)
- *
- * Prop:
- * - `selectRarity`: Save `rarity` state
- * - `rarity`: state from parent
- *
  */
 const RarityRow: React.FC<RarityRowType> = ({ rarity, selectRarity }) => {
   const none = () => selectRarity('');

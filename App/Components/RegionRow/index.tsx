@@ -13,10 +13,6 @@ type RegionRowType = {
 
 /**
  * Region Row (None, False, True)
- *
- * - `selectRegion`: Save `japanOnly` state
- * - `japanOnly` state from parent
- *
  */
 const RegionRow: React.FC<RegionRowType> = ({ japanOnly, selectRegion }) => {
   const none = () => selectRegion('');

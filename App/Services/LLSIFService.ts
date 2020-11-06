@@ -1,5 +1,5 @@
 import { create } from 'apisauce';
-import _ from 'lodash/array';
+import { flattenDeep } from 'lodash';
 import { Config } from '../Config';
 import type {
   CardObject,
@@ -63,7 +63,7 @@ const fetchIdolListBySchool = async (schools: any[]): Promise<IdolObject[]> => {
     data.push(response);
   }
   const result = await Promise.all(data);
-  const final = _.flattenDeep(result);
+  const final = flattenDeep(result);
   return final;
 };
 

@@ -25,7 +25,7 @@ import PromoCardRow from '~/Components/PromoCardRow';
 import Card2PicsItem from '~/Components/Card2PicsItem';
 import SpecialCardRow from '~/Components/SpecialCardRow';
 import LLSIFService from '~/Services/LLSIFService';
-import { Metrics, Colors, AppStyles, Images } from '~/Theme';
+import { Metrics, AppStyles, Images } from '~/Theme';
 import UserContext from '~/Context/UserContext';
 import { OrderingGroup } from '~/Config';
 import type {
@@ -407,7 +407,8 @@ const CardsScreen: React.FC<CardsScreenProps> = ({ navigation }) => {
 
       {/* FILTER */}
       {isFilter && (
-        <View style={styles.filterContainer}>
+        <View
+          style={[styles.filterContainer, { backgroundColor: colors.surface }]}>
           <ScrollView contentContainerStyle={styles.contentContainer}>
             <PickerRow
               name='Idol'
@@ -517,7 +518,6 @@ const styles = StyleSheet.create({
     right: 0
   },
   filterContainer: {
-    backgroundColor: Colors.white,
     height: Metrics.screenHeight * 0.35
   },
   flatListElement: {

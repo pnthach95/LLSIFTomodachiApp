@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import { View, StyleSheet } from 'react-native';
-import { Text, TouchableRipple, Surface } from 'react-native-paper';
+import { Text, TouchableRipple, Surface, useTheme } from 'react-native-paper';
 import FastImage, { OnLoadEvent } from 'react-native-fast-image';
 import { Metrics, Colors, Fonts } from '~/Theme';
 import { AddHTTPS } from '~/Utils';
@@ -12,6 +13,9 @@ type EventItemType = {
   onPress: () => void;
 };
 
+const { ONGOING, ANNOUNCED } = EventStatus;
+const { amber400, green300 } = Colors;
+
 /**
  * Event item for Event List Screen
  *
@@ -21,39 +25,22 @@ type EventItemType = {
  *
  */
 const EventItem: React.FC<EventItemType> = ({ item, onPress }) => {
+  const { surface } = useTheme().colors;
   const [imgSize, setImgSize] = useState({
     width: Metrics.widthBanner,
     height: 100
   });
-  const [state, setState] = useState({
-    label: '',
-    color: Colors.finished
-  });
   const getImage = !item.english_image
     ? AddHTTPS(item.image)
     : AddHTTPS(item.english_image);
-  const eventName =
-    (item.english_name ? `${item.english_name}\n` : '') + item.japanese_name;
-
-  useEffect(() => {
-    const ENStatus = item.english_status;
-    const JPStatus = item.japan_status;
-    const isAnnounced =
-      JPStatus === EventStatus.ANNOUNCED || ENStatus === EventStatus.ANNOUNCED;
-    const isOngoing =
-      JPStatus === EventStatus.ONGOING || ENStatus === EventStatus.ONGOING;
-    if (isAnnounced) {
-      setState({
-        label: EventStatus.ANNOUNCED,
-        color: Colors.announced
-      });
-    } else if (isOngoing) {
-      setState({
-        label: EventStatus.ONGOING,
-        color: Colors.ongoing
-      });
-    }
-  }, []);
+  const ENStatus = item.english_status;
+  const JPStatus = item.japan_status;
+  const isAnnounced = JPStatus === ANNOUNCED || ENStatus === ANNOUNCED;
+  const isOngoing = JPStatus === ONGOING || ENStatus === ONGOING;
+  const label = isAnnounced ? ANNOUNCED : isOngoing ? ONGOING : '';
+  const bgColor = {
+    backgroundColor: isAnnounced ? amber400 : isOngoing ? green300 : surface
+  };
 
   const onLoad = (e: OnLoadEvent) => {
     const { width, height } = e.nativeEvent;
@@ -61,30 +48,28 @@ const EventItem: React.FC<EventItemType> = ({ item, onPress }) => {
   };
 
   return (
-    <Surface style={[styles.container, { backgroundColor: state.color }]}>
-      <TouchableRipple borderless rippleColor={state.color} onPress={onPress}>
+    <Surface style={[styles.container, bgColor]}>
+      <TouchableRipple borderless onPress={onPress} style={styles.padding}>
         <>
           <FastImage
             onLoad={onLoad}
-            source={{
-              uri: getImage,
-              priority: FastImage.priority.normal
+            source={{ uri: getImage, priority: 'normal' }}
+            resizeMode='contain'
+            style={{
+              width: Metrics.widthBanner,
+              height: (Metrics.widthBanner * imgSize.height) / imgSize.width
             }}
-            resizeMode={FastImage.resizeMode.contain}
-            style={[
-              styles.image,
-              {
-                width: Metrics.widthBanner,
-                height: (Metrics.widthBanner * imgSize.height) / imgSize.width
-              }
-            ]}
           />
           <View style={styles.textBox}>
-            <Text style={styles.text}>
-              {(state.label.length > 0
-                ? `[${state.label.toUpperCase()}]\n`
-                : '') + eventName}
-            </Text>
+            {label.length > 0 && (
+              <Text style={Fonts.style.center}>
+                {`[${label.toUpperCase()}]`}
+              </Text>
+            )}
+            {!!item.english_name && (
+              <Text style={Fonts.style.center}>{item.english_name}</Text>
+            )}
+            <Text style={Fonts.style.center}>{item.japanese_name}</Text>
           </View>
         </>
       </TouchableRipple>
@@ -94,24 +79,22 @@ const EventItem: React.FC<EventItemType> = ({ item, onPress }) => {
 
 const styles = StyleSheet.create({
   container: {
-    alignItems: 'center',
     borderRadius: 10,
     elevation: 5,
-    justifyContent: 'center',
     margin: Metrics.smallMargin,
-    paddingTop: Metrics.smallMargin,
-    width: Metrics.screenWidth - 20
+    overflow: 'hidden'
   },
-  image: {
-    alignSelf: 'center'
-  },
-  text: {
-    ...Fonts.style.white,
-    ...Fonts.style.center
+  padding: {
+    padding: Metrics.baseMargin
   },
   textBox: {
-    paddingVertical: Metrics.smallMargin
+    paddingTop: Metrics.smallMargin
   }
 });
+
+EventItem.propTypes = {
+  item: PropTypes.any,
+  onPress: PropTypes.any
+};
 
 export default EventItem;

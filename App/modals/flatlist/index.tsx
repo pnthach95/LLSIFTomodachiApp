@@ -85,7 +85,7 @@ const FlatListModal: ListModalComponent = ({ modal }) => {
         style={[
           AppStyles.row,
           styles.header,
-          { backgroundColor: colors.card }
+          { backgroundColor: colors.surface }
         ]}>
         <Subheading style={styles.headerText}>{title}</Subheading>
         <IconButton

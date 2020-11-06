@@ -7,7 +7,7 @@ import {
   Image,
   StyleSheet
 } from 'react-native';
-import { Text, Surface, Button, Appbar, useTheme } from 'react-native-paper';
+import { Text, Button, Appbar, useTheme } from 'react-native-paper';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
 
@@ -18,7 +18,7 @@ import PickerRow from '~/Components/PickerRow';
 import MainUnitRow from '~/Components/MainUnitRow';
 import AttributeRow from '~/Components/AttributeRow';
 import LoadingScreen from '../Loading';
-import { Metrics, Colors, AppStyles, Images } from '~/Theme';
+import { Metrics, AppStyles, Images } from '~/Theme';
 import LLSIFService from '~/Services/LLSIFService';
 import UserContext from '~/Context/UserContext';
 import type {
@@ -289,7 +289,8 @@ const EventsScreen: React.FC<EventsScreenProps> = ({ navigation }) => {
 
       {/* FILTER */}
       {isFilter && (
-        <Surface style={styles.filterContainer}>
+        <View
+          style={[styles.filterContainer, { backgroundColor: colors.surface }]}>
           <PickerRow
             name='Idol'
             value={searchOptions.idol || 'All'}
@@ -307,7 +308,7 @@ const EventsScreen: React.FC<EventsScreenProps> = ({ navigation }) => {
             onSelect={selectSkill}
           />
           <AttributeRow
-            attribute={searchOptions.attribute || 'All'}
+            attribute={searchOptions.attribute || ''}
             selectAttribute={selectAttribute}
           />
           <RegionRow
@@ -317,7 +318,7 @@ const EventsScreen: React.FC<EventsScreenProps> = ({ navigation }) => {
           <Button mode='contained' onPress={resetFilter}>
             RESET
           </Button>
-        </Surface>
+        </View>
       )}
       <ConnectStatus />
       {/* LIST */}
@@ -341,8 +342,6 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   filterContainer: {
-    backgroundColor: Colors.white,
-    elevation: 5,
     padding: 10
   },
   list: {

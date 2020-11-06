@@ -6,12 +6,14 @@ import AnimatedTabBar, {
   TabsConfig,
   BubbleTabBarItemConfig
 } from '@gorhom/animated-tabbar';
+import { ModalProvider } from 'react-native-modalfy';
 import { Provider as PaperProvider, useTheme } from 'react-native-paper';
 import Animated from 'react-native-reanimated';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import { Colors, Dark, Light } from '~/Theme';
 import UserContext from '~/Context/UserContext';
+import Modals from '~/modals';
 
 import SplashScreen from '~/screens/Splash';
 import MainScreen from '~/screens/Main';
@@ -158,63 +160,65 @@ const Routes = (): JSX.Element => {
   const { state } = useContext(UserContext);
   return (
     <PaperProvider theme={state.options.isDark ? Dark : Light}>
-      <NavigationContainer theme={state.options.isDark ? Dark : Light}>
-        <Stack.Navigator>
-          {state.loading ? (
-            <Stack.Screen
-              name='SplashScreen'
-              component={SplashScreen}
-              options={{
-                headerShown: false
-              }}
-            />
-          ) : (
-            <>
+      <ModalProvider stack={Modals}>
+        <NavigationContainer theme={state.options.isDark ? Dark : Light}>
+          <Stack.Navigator>
+            {state.loading ? (
               <Stack.Screen
-                name='Main'
-                component={LLSIFTab}
+                name='SplashScreen'
+                component={SplashScreen}
                 options={{
                   headerShown: false
                 }}
               />
-              <Stack.Screen name='IdolsScreen' component={IdolsScreen} />
-              <Stack.Screen
-                name='SongsScreen'
-                component={SongsScreen}
-                options={{
-                  headerShown: false
-                }}
-              />
-              <Stack.Screen
-                name='CardDetailScreen'
-                component={CardDetailScreen}
-                options={{
-                  headerShown: false
-                }}
-              />
-              <Stack.Screen
-                name='EventDetailScreen'
-                component={EventDetailScreen}
-                options={{
-                  headerShown: false
-                }}
-              />
-              <Stack.Screen
-                name='IdolDetailScreen'
-                component={IdolDetailScreen}
-              />
-              <Stack.Screen
-                name='SongDetailScreen'
-                component={SongDetailScreen}
-                options={{
-                  headerShown: false
-                }}
-              />
-              <Stack.Screen name='AboutMeScreen' component={AboutMeScreen} />
-            </>
-          )}
-        </Stack.Navigator>
-      </NavigationContainer>
+            ) : (
+              <>
+                <Stack.Screen
+                  name='Main'
+                  component={LLSIFTab}
+                  options={{
+                    headerShown: false
+                  }}
+                />
+                <Stack.Screen name='IdolsScreen' component={IdolsScreen} />
+                <Stack.Screen
+                  name='SongsScreen'
+                  component={SongsScreen}
+                  options={{
+                    headerShown: false
+                  }}
+                />
+                <Stack.Screen
+                  name='CardDetailScreen'
+                  component={CardDetailScreen}
+                  options={{
+                    headerShown: false
+                  }}
+                />
+                <Stack.Screen
+                  name='EventDetailScreen'
+                  component={EventDetailScreen}
+                  options={{
+                    headerShown: false
+                  }}
+                />
+                <Stack.Screen
+                  name='IdolDetailScreen'
+                  component={IdolDetailScreen}
+                />
+                <Stack.Screen
+                  name='SongDetailScreen'
+                  component={SongDetailScreen}
+                  options={{
+                    headerShown: false
+                  }}
+                />
+                <Stack.Screen name='AboutMeScreen' component={AboutMeScreen} />
+              </>
+            )}
+          </Stack.Navigator>
+        </NavigationContainer>
+      </ModalProvider>
     </PaperProvider>
   );
 };

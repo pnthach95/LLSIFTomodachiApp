@@ -1,5 +1,5 @@
 import { Alert, Linking, StatusBar } from 'react-native';
-import AsyncStorage from '@react-native-community/async-storage';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import Color from 'color';
 import { Colors } from '~/Theme';
 import { initAppOptions } from '~/Context/Reducer';

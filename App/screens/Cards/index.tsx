@@ -22,12 +22,9 @@ import ConnectStatus from '~/Components/ConnectStatus';
 import YearRow from '~/Components/YearRow';
 import CardItem from '~/Components/CardItem';
 import EventRow from '~/Components/EventRow';
-import SkillRow from '~/Components/SkillRow';
 import RarityRow from '~/Components/RarityRow';
 import RegionRow from '~/Components/RegionRow';
-import SchoolRow from '~/Components/SchoolRow';
-import SubUnitRow from '~/Components/SubUnitRow';
-import IdolNameRow from '~/Components/IdolNameRow';
+import PickerRow from '~/Components/PickerRow';
 import MainUnitRow from '~/Components/MainUnitRow';
 import OrderingRow from '~/Components/OrderingRow';
 import AttributeRow from '~/Components/AttributeRow';
@@ -419,9 +416,11 @@ const CardsScreen: React.FC<CardsScreenProps> = ({ navigation }) => {
       {isFilter && (
         <Surface style={styles.filterContainer}>
           <ScrollView contentContainerStyle={styles.contentContainer}>
-            <IdolNameRow
-              name={searchOptions.name || ''}
-              selectIdol={selectIdol}
+            <PickerRow
+              name='Idol'
+              list={state.cachedData.idols}
+              value={searchOptions.name || ''}
+              onSelect={selectIdol}
             />
             <RarityRow
               rarity={searchOptions.rarity || ''}
@@ -447,21 +446,27 @@ const CardsScreen: React.FC<CardsScreenProps> = ({ navigation }) => {
               isEvent={searchOptions.is_event || ''}
               selectEvent={selectEvent}
             />
-            <SkillRow
-              skill={searchOptions.skill || 'All'}
-              selectSkill={selectSkill}
+            <PickerRow
+              name='Skill'
+              value={searchOptions.skill || 'All'}
+              list={state.cachedData.skills}
+              onSelect={selectSkill}
             />
             <MainUnitRow
               mainUnit={searchOptions.idol_main_unit || ''}
               selectMainUnit={selectMainUnit}
             />
-            <SubUnitRow
-              idolSubUnit={searchOptions.idol_sub_unit || ''}
-              selectSubUnit={selectSubUnit}
+            <PickerRow
+              name='Subunit'
+              value={searchOptions.idol_sub_unit || ''}
+              list={state.cachedData.subUnits}
+              onSelect={selectSubUnit}
             />
-            <SchoolRow
-              idolSchool={searchOptions.idol_school || ''}
-              selectSchool={selectSchool}
+            <PickerRow
+              name='School'
+              value={searchOptions.idol_school || ''}
+              list={state.cachedData.schools}
+              onSelect={selectSchool}
             />
             <YearRow
               idolYear={searchOptions.idol_year || ''}

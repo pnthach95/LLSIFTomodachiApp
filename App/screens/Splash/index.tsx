@@ -10,7 +10,11 @@ import UserContext from '~/Context/UserContext';
 import { AppStyles } from '~/Theme';
 import { loadSettings } from '~/Utils';
 import { FirebaseTopic } from '~/Config';
-import type { SplashScreenProps, CachedDataObject } from '~/Utils/types';
+import type {
+  SplashScreenProps,
+  CachedDataObject,
+  SubUnitNames
+} from '~/Utils/types';
 
 /**
  * Loading Screen
@@ -78,20 +82,13 @@ const SplashScreen: React.FC<SplashScreenProps> = () => {
         const cardsInfo = data.cards_info;
         const idols = cardsInfo.idols.map(({ name }) => name);
         cachedData.idols = idols;
-        const skills = cardsInfo.skills.map((value: { skill: string }) => ({
-          label: value.skill,
-          value: value.skill
-        }));
+        const skills = cardsInfo.skills.map(({ skill }) => skill);
         cachedData.skills = skills;
-        const subUnits = cardsInfo.sub_units.map((value: string) => ({
-          label: value,
-          value
-        }));
+        const subUnits = cardsInfo.sub_units.map(
+          (value) => value
+        ) as SubUnitNames[];
         cachedData.subUnits = subUnits;
-        const schools = cardsInfo.schools.map((value: string) => ({
-          label: value,
-          value
-        }));
+        const schools = cardsInfo.schools.map((value: string) => value);
         cachedData.schools = schools;
         cachedData.maxStats = cardsInfo.max_stats;
         cachedData.songsMaxStats = cardsInfo.songs_max_stats;

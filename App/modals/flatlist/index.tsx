@@ -16,7 +16,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import { Colors, AppStyles, Fonts } from '~/Theme';
-import { ListModalComponent } from '~/Utils/types';
+import { ListModalComponent, SkillType } from '~/Utils/types';
 
 /**
  * Selection modal
@@ -38,11 +38,11 @@ const FlatListModal: ListModalComponent = ({ modal }) => {
 
   const keyExtractor = (item: string, index: number): string => `item${index}`;
 
-  const renderItem = ({ item }: { item: string }) => {
+  const renderItem = ({ item }: { item: SkillType | string }) => {
     const onPressItem = getParam('onPress');
     const onPress = () => {
       closeModal();
-      onPressItem(item);
+      onPressItem(item as SkillType);
     };
 
     return (

@@ -12,10 +12,9 @@ import PropTypes from 'prop-types';
 import _ from 'lodash';
 
 import ConnectStatus from '~/Components/ConnectStatus';
-import SkillRow from '~/Components/SkillRow';
 import EventItem from '~/Components/EventItem';
 import RegionRow from '~/Components/RegionRow';
-import IdolNameRow from '~/Components/IdolNameRow';
+import PickerRow from '~/Components/PickerRow';
 import MainUnitRow from '~/Components/MainUnitRow';
 import AttributeRow from '~/Components/AttributeRow';
 import LoadingScreen from '../Loading';
@@ -290,17 +289,21 @@ const EventsScreen: React.FC<EventsScreenProps> = ({ navigation }) => {
       {/* FILTER */}
       {isFilter && (
         <Surface style={styles.filterContainer}>
-          <IdolNameRow
-            name={searchOptions.idol || ''}
-            selectIdol={selectIdol}
+          <PickerRow
+            name='Idol'
+            value={searchOptions.idol || ''}
+            list={state.cachedData.idols}
+            onSelect={selectIdol}
           />
           <MainUnitRow
             mainUnit={searchOptions.main_unit || ''}
             selectMainUnit={selectMainUnit}
           />
-          <SkillRow
-            skill={searchOptions.skill || 'All'}
-            selectSkill={selectSkill}
+          <PickerRow
+            name='Skill'
+            value={searchOptions.skill || 'All'}
+            list={state.cachedData.skills}
+            onSelect={selectSkill}
           />
           <AttributeRow
             attribute={searchOptions.attribute || 'All'}

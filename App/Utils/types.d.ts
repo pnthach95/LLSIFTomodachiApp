@@ -92,7 +92,7 @@ type ModalStackParamList = {
     title: string;
     selectItem: string;
     data: string[];
-    onPress: (item: string) => void;
+    onPress: <T extends string & SkillType>(item: T) => void;
   };
 };
 
@@ -135,9 +135,9 @@ type SelectionObject = { label: string; value: string };
 
 type CachedDataObject = {
   idols: string[];
-  skills: SelectionObject[];
-  subUnits: SelectionObject[];
-  schools: SelectionObject[];
+  skills: string[];
+  subUnits: SubUnitNames[];
+  schools: string[];
   maxStats: {
     Smile: number;
     Pure: number;

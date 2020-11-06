@@ -361,10 +361,10 @@ const CardsScreen: React.FC<CardsScreenProps> = ({ navigation }) => {
   /**
    * Save ordering
    */
-  const selectOrdering = (itemValue: string) => {
+  const selectOrdering = (value: string) => {
     setSearchOptions({
       ...searchOptions,
-      selectedOrdering: itemValue
+      selectedOrdering: value
     });
   };
 
@@ -473,9 +473,11 @@ const CardsScreen: React.FC<CardsScreenProps> = ({ navigation }) => {
               selectYear={selectYear}
             />
             <OrderingRow
-              orderingItem={OrderingGroup.CARD}
-              selectedOrdering={searchOptions.selectedOrdering}
-              selectOrdering={selectOrdering}
+              list={OrderingGroup.CARD}
+              selectedItem={
+                searchOptions.selectedOrdering || OrderingGroup.CARD[1].value
+              }
+              onSelect={selectOrdering}
               isReverse={searchOptions.isReverse || false}
               toggleReverse={toggleReverse}
             />

@@ -90,8 +90,9 @@ type SongDetailScreenProps = StackScreenProps<
 type ModalStackParamList = {
   list: {
     title: string;
-    selectItem: string;
-    data: string[];
+    selectedItem: string | undefined;
+    data?: string[];
+    objectData?: SelectionObject[];
     onPress: <T extends string & SkillType>(item: T) => void;
   };
 };

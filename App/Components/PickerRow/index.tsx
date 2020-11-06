@@ -27,12 +27,12 @@ const PickerRow: React.FC<Props> = ({ name, value, list, onSelect }) => {
       title: name,
       data: list,
       onPress: onSelect,
-      selectItem: value
+      selectedItem: value
     });
   };
 
   return (
-    <View style={rowStyles.pickerRow}>
+    <View style={rowStyles.row}>
       <View style={rowStyles.leftView}>
         <Text>{name}</Text>
       </View>

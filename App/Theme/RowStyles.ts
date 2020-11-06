@@ -1,4 +1,4 @@
-import { StyleSheet, Platform } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { Metrics, Colors } from './index';
 
 export default StyleSheet.create({
@@ -20,15 +20,11 @@ export default StyleSheet.create({
     justifyContent: 'center',
     marginVertical: Metrics.baseMargin
   },
-  picker: {
-    borderBottomWidth: 1
-  },
-  pickerRow: {
-    flexDirection: 'row',
-    marginVertical: Platform.OS === 'ios' ? 7 : 0
-  },
   rightView: {
     flex: 2,
+    flexDirection: 'row'
+  },
+  row: {
     flexDirection: 'row'
   },
   selectedValue: {

@@ -16,7 +16,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import { Colors, AppStyles, Fonts } from '~/Theme';
-import { ListModalComponent, SkillType } from '~/Utils/types';
+import { ListModalComponent, SelectionObject, SkillType } from '~/Utils/types';
 
 /**
  * Selection modal
@@ -29,14 +29,17 @@ const FlatListModal: ListModalComponent = ({ modal }) => {
   };
   const { closeModal, getParam } = modal;
   const title = getParam('title', '');
-  const selectItem = getParam('selectItem');
-  const data = getParam('data', []);
+  const selectedItem = getParam('selectedItem');
+  const data = getParam('data');
+  const objectData = getParam('objectData');
 
   const listFooter = <View style={bottom} />;
 
   const onClose = () => closeModal();
 
   const keyExtractor = (item: string, index: number): string => `item${index}`;
+  const objKeyExtractor = (item: SelectionObject, index: number): string =>
+    `item${index}`;
 
   const renderItem = ({ item }: { item: SkillType | string }) => {
     const onPressItem = getParam('onPress');
@@ -49,7 +52,26 @@ const FlatListModal: ListModalComponent = ({ modal }) => {
       <TouchableRipple onPress={onPress}>
         <View style={[AppStyles.row, styles.item]}>
           <Text style={Fonts.style.textWrap}>{item}</Text>
-          {!!selectItem && item === selectItem && (
+          {!!selectedItem && item === selectedItem && (
+            <Icon name='check' color={Colors.green400} size={20} />
+          )}
+        </View>
+      </TouchableRipple>
+    );
+  };
+
+  const renderObjectItem = ({ item }: { item: SelectionObject }) => {
+    const onPressItem = getParam('onPress');
+    const onPress = () => {
+      closeModal();
+      onPressItem(item.value as SkillType);
+    };
+
+    return (
+      <TouchableRipple onPress={onPress}>
+        <View style={[AppStyles.row, styles.item]}>
+          <Text style={Fonts.style.textWrap}>{item.label}</Text>
+          {!!selectedItem && item.value === selectedItem && (
             <Icon name='check' color={Colors.green400} size={20} />
           )}
         </View>
@@ -73,12 +95,21 @@ const FlatListModal: ListModalComponent = ({ modal }) => {
           onPress={onClose}
         />
       </View>
-      <FlatList
-        data={data}
-        renderItem={renderItem}
-        ListFooterComponent={listFooter}
-        keyExtractor={keyExtractor}
-      />
+      {data && (
+        <FlatList
+          data={data}
+          renderItem={renderItem}
+          ListFooterComponent={listFooter}
+          keyExtractor={keyExtractor}
+        />
+      )}
+      {objectData && (
+        <FlatList
+          data={objectData}
+          keyExtractor={objKeyExtractor}
+          renderItem={renderObjectItem}
+        />
+      )}
     </View>
   );
 };

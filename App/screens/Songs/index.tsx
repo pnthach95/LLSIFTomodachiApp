@@ -299,9 +299,9 @@ const SongsScreen: React.FC<SongsScreenProps> = ({ navigation }) => {
             selectMainUnit={selectMainUnit}
           />
           <OrderingRow
-            orderingItem={OrderingGroup.SONG}
-            selectedOrdering={searchOptions.selectedOrdering}
-            selectOrdering={selectOrdering}
+            list={OrderingGroup.SONG}
+            selectedItem={searchOptions.selectedOrdering}
+            onSelect={selectOrdering}
             isReverse={searchOptions.isReverse || true}
             toggleReverse={toggleReverse}
           />

@@ -169,12 +169,13 @@ type SkillType =
 
 type LLNETEvent = {
   event_id: number;
+  event_name: string;
   start_date: number;
 };
 
 type LLNETEventInfo = {
-  ww: LLNETEvent[] | null;
-  jp: LLNETEvent[] | null;
+  ww: LLNETEvent[];
+  jp: LLNETEvent[];
 };
 
 type LLSIFnetParams = {
@@ -468,6 +469,7 @@ type CardSearchParams = {
   name?: string;
   rarity?: string;
   attribute?: string;
+  event_japanese_name?: string;
 };
 
 //  -----------------------------------------------

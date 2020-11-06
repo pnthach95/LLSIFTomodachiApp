@@ -11,32 +11,19 @@ import UserContext from '~/Context/UserContext';
 import LoadingScreen from '../Loading';
 import LLSIFService from '~/Services/LLSIFService';
 import LLSIFdotnetService from '~/Services/LLSIFdotnetService';
-import { Config } from '~/Config';
 import { AppStyles } from '~/Theme';
 import type {
+  CardObject,
   EventDetailScreenProps,
   EventObject,
-  LLSIFError
+  LLSIFError,
+  SongObject
 } from '~/Utils/types';
 
 /**
  * Event Detail Screen
  *
- * From parent screen, pass `item` (event object)
- *  or `eventName` (Japanese only) to show event detail
- *
- * State:
- * - `isLoading`: Loading state
- * - `item`: Event object
- * - `WWEventStart`: Time when WW event start
- * - `WWEventEnd`: Time when WW event end
- * - `JPEventStart`: Time when JP event start
- * - `JPEventEnd`: Time when JP event end
- * - `wwTracker`: WW event tracking data
- * - `jpTracker`: JP event tracking data
- * - `selectedTab`: select Information or Tracker tab
- * - `cards`: Card list
- * - `songs`: Song list
+ * From parent screen, pass `eventName` (Japanese only) to show event detail
  *
  * Event object: https://github.com/MagiCircles/SchoolIdolAPI/wiki/API-Events#objects
  *
@@ -52,15 +39,19 @@ const EventDetailScreen: React.FC<EventDetailScreenProps> = ({
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState<LLSIFError | null>(null);
   const [selectedTab, setSelectedTab] = useState(0);
-  const [cards, setCards] = useState([]);
-  const [songs, setSongs] = useState([]);
+  const [cards, setCards] = useState<CardObject[]>([]);
+  const [songs, setSongs] = useState<SongObject[]>([]);
   const [WWEventStart, setWWEventStart] = useState(dayjs());
   const [WWEventEnd, setWWEventEnd] = useState(dayjs());
   const [JPEventStart, setJPEventStart] = useState(dayjs());
   const [JPEventEnd, setJPEventEnd] = useState(dayjs());
-  let wwTracker = null;
-  let jpTracker = null;
-
+  const [trackerData, setTrackerData] = useState<{
+    ww: string[][] | null;
+    jp: string[][] | null;
+  }>({
+    ww: null,
+    jp: null
+  });
   useEffect(() => {
     void getItem();
   }, []);
@@ -81,8 +72,8 @@ const EventDetailScreen: React.FC<EventDetailScreenProps> = ({
     }
   };
 
-  const parseEventTracker = (data) => {
-    const result = [];
+  const parseEventTracker = (data: string) => {
+    const result: string[][] = [];
     const rows = data.split('\n');
     rows.forEach((row) => {
       if (row.indexOf('#') !== 0 && row.length > 0) {
@@ -102,36 +93,45 @@ const EventDetailScreen: React.FC<EventDetailScreenProps> = ({
   const loadData = async (evRes: EventObject) => {
     setWWEventStart(dayjs(evRes.english_beginning));
     setWWEventEnd(dayjs(evRes.english_end));
-    setJPEventStart(dayjs(evRes.beginning, Config.DATETIME_FORMAT_INPUT));
-    setJPEventEnd(dayjs(evRes.end, Config.DATETIME_FORMAT_INPUT));
+    setJPEventStart(dayjs(evRes.beginning));
+    setJPEventEnd(dayjs(evRes.end));
+    let wwTracker: string[][] | null = null;
+    let jpTracker: string[][] | null = null;
     const wwEvent = wwEventInfo.filter(
-      (value) => value.start_date === WWEventStart.unix()
+      (value) => value.event_name === evRes.english_name
     );
     const jpEvent = jpEventInfo.filter(
-      (value) => value.start_date === JPEventStart.unix()
+      (value) => value.event_name === evRes.japanese_name
     );
     if (wwEvent.length > 0) {
       const res = await LLSIFdotnetService.fetchEventData({
         server: 'EN',
         id: wwEvent[0].event_id
       });
-      const data = parseEventTracker(res);
-      wwTracker = data;
+      if (res) {
+        wwTracker = parseEventTracker(res);
+      }
     }
     if (jpEvent.length > 0) {
       const res = await LLSIFdotnetService.fetchEventData({
         server: 'JP',
         id: jpEvent[0].event_id
       });
-      const data = parseEventTracker(res);
-      jpTracker = data;
+      if (res) {
+        jpTracker = parseEventTracker(res);
+      }
     }
+    setTrackerData({ ww: wwTracker, jp: jpTracker });
     const [resCard, resSong] = await Promise.all([
       LLSIFService.fetchCardList({ event_japanese_name: evRes.japanese_name }),
       LLSIFService.fetchSongList({ event: evRes.japanese_name })
     ]);
-    setCards(resCard);
-    setSongs(resSong);
+    if (Array.isArray(resCard)) {
+      setCards(resCard);
+    }
+    if (Array.isArray(resSong)) {
+      setSongs(resSong);
+    }
     setIsLoading(false);
   };
 
@@ -148,6 +148,7 @@ const EventDetailScreen: React.FC<EventDetailScreenProps> = ({
         <SegmentedControlTab
           values={['Information', 'Tier cutoff']}
           selectedIndex={selectedTab}
+          enabled={!isLoading}
           onTabPress={onTabPress}
           tabsContainerStyle={AppStyles.screen}
         />
@@ -171,7 +172,7 @@ const EventDetailScreen: React.FC<EventDetailScreenProps> = ({
           JPEventEnd={JPEventEnd}
         />
       ) : (
-        <Tracker jpTracker={jpTracker} wwTracker={wwTracker} />
+        <Tracker jpTracker={trackerData.jp} wwTracker={trackerData.ww} />
       )}
     </View>
   );

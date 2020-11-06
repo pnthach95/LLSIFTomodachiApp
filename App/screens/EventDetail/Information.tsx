@@ -19,7 +19,7 @@ import { Metrics, Images, Fonts, AppStyles } from '~/Theme';
 import type { CardObject, EventObject, SongObject } from '~/Utils/types';
 
 type Props = {
-  item: EventObject;
+  item: EventObject | null;
   WWEventStart: Dayjs;
   WWEventEnd: Dayjs;
   JPEventStart: Dayjs;
@@ -60,6 +60,7 @@ const Information: React.FC<Props> = ({
     height: (Metrics.widthBanner * imgSize.height) / imgSize.width
   };
 
+  if (!item) return <View />;
   return (
     <ScrollView
       showsVerticalScrollIndicator={false}
@@ -169,10 +170,15 @@ const Information: React.FC<Props> = ({
           </View>
         </View>
       )}
-      <Divider style={{ backgroundColor: colors.text }} />
-      <View style={[AppStyles.center, styles.textBlock]}>
-        <Text>Rewards</Text>
-      </View>
+
+      {cards.length > 0 && (
+        <>
+          <Divider style={{ backgroundColor: colors.text }} />
+          <View style={[AppStyles.center, styles.textBlock]}>
+            <Text>Rewards</Text>
+          </View>
+        </>
+      )}
       {/* CARDS */}
       <View style={styles.cardList}>
         {cards.map((cardItem, index) => (

@@ -15,9 +15,12 @@ const LLSIFnet = create({
 /**
  * Fetch event data
  */
-const fetchEventData = async (params: LLSIFnetParams) => {
-  const response = await LLSIFnet.get(`data/${params.server}/${params.id}.csv`);
-  if (response.ok) {
+const fetchEventData = async (
+  params: LLSIFnetParams
+): Promise<string | null> => {
+  const l = `data/${params.server}/${params.id}.csv`;
+  const response = await LLSIFnet.get<string>(l);
+  if (response.ok && response.data) {
     return response.data;
   }
   return null;
@@ -31,6 +34,7 @@ const parseEvent = (events: Record<string, LLSIFnetEvent>) => {
       const element = events[key];
       result.push({
         event_id: element.event_id,
+        event_name: element.event_name,
         start_date: element.start_date
       });
     }
@@ -47,7 +51,7 @@ const fetchEventInfo = async (): Promise<LLNETEventInfo> => {
     };
     return result;
   }
-  return { ww: null, jp: null };
+  return { ww: [], jp: [] };
 };
 
 export default {

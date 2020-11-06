@@ -15,6 +15,7 @@ import type {
   CachedDataObject,
   SubUnitNames
 } from '~/Utils/types';
+import LLSIFdotnetService from '~/Services/LLSIFdotnetService';
 
 /**
  * Loading Screen
@@ -73,10 +74,11 @@ const SplashScreen: React.FC<SplashScreenProps> = () => {
         ordering: '-beginning',
         page_size: 1
       };
-      const [data, eventEN, eventJP] = await Promise.all([
+      const [data, eventEN, eventJP, evInfo] = await Promise.all([
         LLSIFService.fetchCachedData(),
         LLSIFService.fetchEventList(enParams),
-        LLSIFService.fetchEventList(jpParams)
+        LLSIFService.fetchEventList(jpParams),
+        LLSIFdotnetService.fetchEventInfo()
       ]);
       if (data) {
         const cardsInfo = data.cards_info;
@@ -99,6 +101,7 @@ const SplashScreen: React.FC<SplashScreenProps> = () => {
         if (Array.isArray(eventJP)) {
           cachedData.JPEvent = eventJP[0];
         }
+        cachedData.eventInfo = evInfo;
         dispatch({
           type: 'SAVE_CACHED_DATA',
           data: cachedData

@@ -8,14 +8,7 @@ import {
   Image,
   StyleSheet
 } from 'react-native';
-import {
-  Text,
-  Button,
-  Appbar,
-  Surface,
-  FAB,
-  useTheme
-} from 'react-native-paper';
+import { Text, Button, Appbar, FAB, useTheme } from 'react-native-paper';
 import _ from 'lodash';
 
 import ConnectStatus from '~/Components/ConnectStatus';
@@ -414,7 +407,7 @@ const CardsScreen: React.FC<CardsScreenProps> = ({ navigation }) => {
 
       {/* FILTER */}
       {isFilter && (
-        <Surface style={styles.filterContainer}>
+        <View style={styles.filterContainer}>
           <ScrollView contentContainerStyle={styles.contentContainer}>
             <PickerRow
               name='Idol'
@@ -487,7 +480,7 @@ const CardsScreen: React.FC<CardsScreenProps> = ({ navigation }) => {
               RESET
             </Button>
           </ScrollView>
-        </Surface>
+        </View>
       )}
       <ConnectStatus />
       {/* LIST */}
@@ -525,7 +518,6 @@ const styles = StyleSheet.create({
   },
   filterContainer: {
     backgroundColor: Colors.white,
-    elevation: 5,
     height: Metrics.screenHeight * 0.35
   },
   flatListElement: {

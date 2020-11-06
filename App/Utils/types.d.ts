@@ -6,6 +6,10 @@ import {
   ModalComponentProp
 } from 'react-native-modalfy';
 
+//  -----------------------------------------------
+//  Context
+//  -----------------------------------------------
+
 type AppOptions = {
   isDark: boolean;
   wwEvent: boolean;
@@ -19,10 +23,18 @@ type AppState = {
   options: AppOptions;
 };
 
+//  -----------------------------------------------
+//  Reducer
+//  -----------------------------------------------
+
 type ActionType =
   | { type: 'LOADING'; loading: boolean }
   | { type: 'SAVE_CACHED_DATA'; data: CachedDataObject }
   | { type: 'SAVE_OPTIONS'; data: AppOptions };
+
+//  -----------------------------------------------
+//  Navigation
+//  -----------------------------------------------
 
 type BottomTabList = {
   MainScreen: undefined;
@@ -87,6 +99,10 @@ type SongDetailScreenProps = StackScreenProps<
   'SongDetailScreen'
 >;
 
+//  -----------------------------------------------
+//  Modal
+//  -----------------------------------------------
+
 type ModalStackParamList = {
   list: {
     title: string;
@@ -100,6 +116,12 @@ type ModalStackParamList = {
 type ListModalComponent = ModalComponentWithOptions<
   ModalComponentProp<ModalStackParamList, void, 'list'>
 >;
+
+type SelectionObject = { label: string; value: string };
+
+//  -----------------------------------------------
+//  Union
+//  -----------------------------------------------
 
 type YearType = 'First' | 'Second' | 'Third' | '';
 type MainUnitNames = `μ's` | 'Aqours' | '';
@@ -119,43 +141,41 @@ type RarityType = 'N' | 'R' | 'SR' | 'SSR' | 'UR' | '';
 type SkillType =
   | 'All'
   | 'Score Up'
-  | 'Healer'
   | 'Perfect Lock'
+  | 'Healer'
+  | ''
+  | 'Total Trick'
   | 'Perfect Charm'
+  | 'Total Charm'
   | 'Rhythmical Charm'
   | 'Timer Yell'
-  | 'Timer Charm'
-  | 'Rhythmical Yell'
-  | 'Total Charm'
-  | 'Total Trick'
-  | 'Perfect Yell'
+  | 'Attribute Boost'
   | 'Total Yell'
-  | 'Timer Trick';
+  | 'Perfect Score Up'
+  | 'Rhythmical Yell'
+  | 'Timer Charm'
+  | 'Special'
+  | 'Timer Trick'
+  | 'Mirror'
+  | 'Combo Bonus Up'
+  | 'Perfect Yell'
+  | 'Skill Boost'
+  | 'Encore'
+  | 'Amplify';
 
-type SelectionObject = { label: string; value: string };
-
-type CachedDataObject = {
-  idols: string[];
-  skills: string[];
-  subUnits: SubUnitNames[];
-  schools: string[];
-  maxStats: {
-    Smile: number;
-    Pure: number;
-    Cool: number;
-  };
-  songsMaxStats: number;
-  ENEvent: EventObject;
-  JPEvent: EventObject;
-  eventInfo: LLNETEventInfo;
-};
+//  -----------------------------------------------
+//  API: llsif.net
+//  -----------------------------------------------
 
 type LLNETEvent = {
   event_id: number;
   start_date: number;
 };
 
-type LLNETEventInfo = { ww: LLNETEvent[] | null; jp: LLNETEvent[] | null };
+type LLNETEventInfo = {
+  ww: LLNETEvent[] | null;
+  jp: LLNETEvent[] | null;
+};
 
 type LLSIFnetParams = {
   server: string;
@@ -189,6 +209,26 @@ type LLSIFnetData = {
   current_jp_event: number | null;
   en_events: Record<string, LLSIFnetEvent>;
   jp_events: Record<string, LLSIFnetEvent>;
+};
+
+//  -----------------------------------------------
+//  API: schoolido.lu
+//  -----------------------------------------------
+
+type CachedDataObject = {
+  idols: string[];
+  skills: string[];
+  subUnits: SubUnitNames[];
+  schools: string[];
+  maxStats: {
+    Smile: number;
+    Pure: number;
+    Cool: number;
+  };
+  songsMaxStats: number;
+  ENEvent: EventObject;
+  JPEvent: EventObject;
+  eventInfo: LLNETEventInfo;
 };
 
 type CardObject = {
@@ -372,6 +412,64 @@ type SongObject = {
   website_url?: string;
 };
 
+type LLSIFCacheData = {
+  current_event_en: {
+    image: string;
+    japanese_name: string;
+  };
+  current_event_jp: {
+    image: string;
+    japanese_name: string;
+  };
+  current_contests: {
+    url: string;
+    image: string;
+    homepage_image: string;
+    name: string | null;
+  }[];
+  cards_info: {
+    max_stats: {
+      Smile: number;
+      Pure: number;
+      Cool: number;
+    };
+    en_cards: number[];
+    years: string[];
+    schools: string[];
+    songs_max_stats: number;
+    idols: {
+      total: number;
+      name: string;
+      idol__japanese_name: string;
+    }[];
+    sub_units: string[];
+    total_cards: number;
+    translated_collections: {
+      total: number;
+      translated_collection: string;
+    }[];
+    skills: {
+      skill: string;
+      total: number;
+    }[];
+    collections: {
+      total: number;
+      japanese_collection: string;
+    }[];
+  };
+};
+
+type CardSearchParams = {
+  search?: string;
+  name?: string;
+  rarity?: string;
+  attribute?: string;
+};
+
+//  -----------------------------------------------
+//  API: Github
+//  -----------------------------------------------
+
 type GithubRepoType = {
   url: string;
   assets_url: string;
@@ -443,58 +541,4 @@ type GithubRepoType = {
   tarball_url: string;
   zipball_url: string;
   body: string;
-};
-
-type LLSIFCacheData = {
-  current_event_en: {
-    image: string;
-    japanese_name: string;
-  };
-  current_event_jp: {
-    image: string;
-    japanese_name: string;
-  };
-  current_contests: {
-    url: string;
-    image: string;
-    homepage_image: string;
-    name: string | null;
-  }[];
-  cards_info: {
-    max_stats: {
-      Smile: number;
-      Pure: number;
-      Cool: number;
-    };
-    en_cards: number[];
-    years: string[];
-    schools: string[];
-    songs_max_stats: number;
-    idols: {
-      total: number;
-      name: string;
-      idol__japanese_name: string;
-    }[];
-    sub_units: string[];
-    total_cards: number;
-    translated_collections: {
-      total: number;
-      translated_collection: string;
-    }[];
-    skills: {
-      skill: string;
-      total: number;
-    }[];
-    collections: {
-      total: number;
-      japanese_collection: string;
-    }[];
-  };
-};
-
-type CardSearchParams = {
-  search?: string;
-  name?: string;
-  rarity?: string;
-  attribute?: string;
 };

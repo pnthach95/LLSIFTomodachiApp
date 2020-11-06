@@ -7,7 +7,7 @@ import {
   Image,
   StyleSheet
 } from 'react-native';
-import { Text, Surface, Button, Appbar } from 'react-native-paper';
+import { Text, Surface, Button, Appbar, useTheme } from 'react-native-paper';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
 
@@ -53,6 +53,7 @@ type FilterType = {
  *
  */
 const EventsScreen: React.FC<EventsScreenProps> = ({ navigation }) => {
+  const { colors } = useTheme();
   const { state } = useContext(UserContext);
   const defaultFilter: FilterType = {
     ordering: '-beginning',
@@ -271,9 +272,9 @@ const EventsScreen: React.FC<EventsScreenProps> = ({ navigation }) => {
     });
 
   return (
-    <View style={styles.container}>
+    <View style={AppStyles.screen}>
       {/* HEADER */}
-      <Appbar.Header>
+      <Appbar.Header style={{ backgroundColor: colors.card }}>
         <View style={AppStyles.searchHeader}>
           <TextInput
             onChangeText={onChangeText}
@@ -291,7 +292,7 @@ const EventsScreen: React.FC<EventsScreenProps> = ({ navigation }) => {
         <Surface style={styles.filterContainer}>
           <PickerRow
             name='Idol'
-            value={searchOptions.idol || ''}
+            value={searchOptions.idol || 'All'}
             list={state.cachedData.idols}
             onSelect={selectIdol}
           />
@@ -336,9 +337,6 @@ const EventsScreen: React.FC<EventsScreenProps> = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1
-  },
   content: {
     alignItems: 'center'
   },

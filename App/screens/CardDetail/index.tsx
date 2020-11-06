@@ -1,11 +1,12 @@
-import React, { useContext, useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
+import PropTypes from 'prop-types';
 import { View, ScrollView, StyleSheet } from 'react-native';
 import {
   Text,
   Appbar,
-  ProgressBar,
   Button,
-  TouchableRipple
+  TouchableRipple,
+  useTheme
 } from 'react-native-paper';
 import FastImage from 'react-native-fast-image';
 import ImageView from 'react-native-image-viewing';
@@ -14,11 +15,11 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import dayjs from 'dayjs';
 
 import LoadingScreen from '../Loading';
-import UserContext from '~/Context/UserContext';
+import SPCStats from '~/Components/SPCStats';
 import TextRow from '~/Components/TextRow';
 import { findColorByAttribute, AddHTTPS, setStatusBar } from '~/Utils';
 import { Metrics, Fonts, AppStyles, Colors, Images } from '~/Theme';
-import type { AttributeType, CardDetailScreenProps } from '~/Utils/types';
+import type { CardDetailScreenProps } from '~/Utils/types';
 
 const { itemWidth, cardHeight, cardWidth } = Metrics.images;
 
@@ -30,7 +31,7 @@ const CardDetailScreen: React.FC<CardDetailScreenProps> = ({
   route
 }) => {
   const { item } = route.params;
-  const { state } = useContext(UserContext);
+  const { colors } = useTheme();
   const minStats = [
     item.minimum_statistics_smile || 0,
     item.minimum_statistics_pure || 0,
@@ -46,16 +47,8 @@ const CardDetailScreen: React.FC<CardDetailScreenProps> = ({
     item.idolized_maximum_statistics_pure || 0,
     item.idolized_maximum_statistics_cool || 0
   ];
-  const maxStats = [
-    state.cachedData?.maxStats?.Smile || 0,
-    state.cachedData?.maxStats?.Pure || 0,
-    state.cachedData?.maxStats?.Cool || 0
-  ];
   const [done, setDone] = useState(false);
-  const [imgViewer, setImgViewer] = useState({
-    visible: false,
-    index: 0
-  });
+  const [imgViewer, setImgViewer] = useState({ visible: false, index: 0 });
   const [propertyLine, setPropertyLine] = useState('');
   const [images, setImages] = useState<{ uri: string }[]>([]);
   const [buttonID, setButtonID] = useState(0);
@@ -75,47 +68,8 @@ const CardDetailScreen: React.FC<CardDetailScreenProps> = ({
     if (item.japan_only) tmp.push('Japan only');
     setPropertyLine(tmp.join(' - '));
     setDone(true);
-    return () => setStatusBar(Colors.white);
+    return () => setStatusBar(colors.card);
   }, []);
-
-  const ProgressUnit = ({
-    text,
-    stat,
-    color
-  }: {
-    text: AttributeType;
-    stat: number;
-    color: string;
-  }) => {
-    let progress = 0;
-    switch (text) {
-      case 'Smile':
-        progress = stat / maxStats[0];
-        break;
-      case 'Pure':
-        progress = stat / maxStats[1];
-        break;
-      default:
-        progress = stat / maxStats[2];
-        break;
-    }
-    return (
-      <View style={styles.progressRow}>
-        <Text>{text}</Text>
-        <View style={AppStyles.row}>
-          <FastImage
-            source={Images.attribute[text]}
-            resizeMode='contain'
-            style={[AppStyles.mediumIcon, styles.marginRight10]}
-          />
-          <View style={AppStyles.screen}>
-            <Text>{stat}</Text>
-            <ProgressBar progress={progress} color={color} />
-          </View>
-        </View>
-      </View>
-    );
-  };
 
   const StatButton = ({
     id,
@@ -358,21 +312,9 @@ const CardDetailScreen: React.FC<CardDetailScreenProps> = ({
                     />
                   )}
                 </View>
-                <ProgressUnit
-                  text='Smile'
-                  stat={currentStats[0]}
-                  color={Colors.pink}
-                />
-                <ProgressUnit
-                  text='Pure'
-                  stat={currentStats[1]}
-                  color={Colors.green}
-                />
-                <ProgressUnit
-                  text='Cool'
-                  stat={currentStats[2]}
-                  color={Colors.blue}
-                />
+                <SPCStats text='Smile' stat={currentStats[0]} />
+                <SPCStats text='Pure' stat={currentStats[1]} />
+                <SPCStats text='Cool' stat={currentStats[2]} />
               </>
             )}
           </View>
@@ -415,12 +357,6 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
     paddingVertical: Metrics.doubleBaseMargin
   },
-  marginRight10: {
-    marginRight: Metrics.baseMargin
-  },
-  progressRow: {
-    paddingVertical: Metrics.baseMargin
-  },
   rightHeaderImage: {
     height: 70,
     width: 70
@@ -432,5 +368,9 @@ const styles = StyleSheet.create({
     color: Colors.white
   }
 });
+
+CardDetailScreen.propTypes = {
+  route: PropTypes.any
+};
 
 export default CardDetailScreen;

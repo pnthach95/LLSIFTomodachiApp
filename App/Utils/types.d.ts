@@ -215,6 +215,10 @@ type LLSIFnetData = {
 //  API: schoolido.lu
 //  -----------------------------------------------
 
+type LLSIFError = {
+  detail: string;
+};
+
 type CachedDataObject = {
   idols: string[];
   skills: string[];

@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
+import { View, ScrollView, Image, StyleProp, StyleSheet } from 'react-native';
 import {
-  View,
-  ScrollView,
-  TouchableOpacity,
-  Image,
-  StyleProp
-} from 'react-native';
-import { Divider, Text } from 'react-native-paper';
+  Divider,
+  Text,
+  Title,
+  TouchableRipple,
+  useTheme
+} from 'react-native-paper';
 import PropTypes from 'prop-types';
 import { useNavigation } from '@react-navigation/native';
 import FastImage, { ImageStyle } from 'react-native-fast-image';
@@ -14,20 +14,11 @@ import dayjs, { Dayjs } from 'dayjs';
 
 import TimerCountdown from '~/Components/TimerCountdown';
 import { AddHTTPS } from '~/Utils';
-import { Config, EventStatus } from '~/Config';
-import { Metrics, AppStyles, Images } from '~/Theme';
-import styles from './styles';
-import { CardObject, EventObject, SongObject } from '~/Utils/types';
+import { EventStatus } from '~/Config';
+import { Metrics, Images, Fonts, AppStyles } from '~/Theme';
+import type { CardObject, EventObject, SongObject } from '~/Utils/types';
 
-const Information = ({
-  item,
-  WWEventStart,
-  WWEventEnd,
-  JPEventStart,
-  JPEventEnd,
-  cards,
-  songs
-}: {
+type Props = {
   item: EventObject;
   WWEventStart: Dayjs;
   WWEventEnd: Dayjs;
@@ -35,8 +26,19 @@ const Information = ({
   JPEventEnd: Dayjs;
   cards: CardObject[];
   songs: SongObject[];
-}): JSX.Element => {
+};
+
+const Information: React.FC<Props> = ({
+  item,
+  WWEventStart,
+  WWEventEnd,
+  JPEventStart,
+  JPEventEnd,
+  cards,
+  songs
+}) => {
   const navigation = useNavigation();
+  const { colors } = useTheme();
   const [imgSize, setImgSize] = useState({
     width: 1,
     height: 0
@@ -59,53 +61,51 @@ const Information = ({
   };
 
   return (
-    <View style={styles.container}>
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-        style={AppStyles.screen}
-        contentContainerStyle={styles.content}>
-        {/* ENGLISH BLOCK */}
-        {item.english_name !== null && (
-          <View>
-            <Text style={styles.whiteCenter}>Worldwide</Text>
-            <Text style={[styles.text, styles.title, styles.whiteCenter]}>
-              {item.english_name || item.romaji_name}
-            </Text>
+    <ScrollView
+      showsVerticalScrollIndicator={false}
+      contentContainerStyle={styles.content}>
+      {/* ENGLISH BLOCK */}
+      {!!item.english_name && (
+        <>
+          <View style={AppStyles.center}>
+            <View style={[AppStyles.center, styles.textBlock]}>
+              <Text>Worldwide</Text>
+              <Title style={Fonts.style.center}>
+                {item.english_name || item.romaji_name}
+              </Title>
+            </View>
             <FastImage
               source={{ uri: AddHTTPS(item.english_image || '') }}
               resizeMode={FastImage.resizeMode.contain}
               style={styleFastImage}
             />
-            <Text style={[styles.text, styles.whiteCenter]}>
-              {`Start: ${WWEventStart.format(
-                Config.DATETIME_FORMAT_OUTPUT
-              )}\nEnd: ${WWEventEnd.format(Config.DATETIME_FORMAT_OUTPUT)}`}
-            </Text>
-            {item.world_current && (
-              <Text style={[styles.text, styles.whiteCenter]}>
-                <TimerCountdown
-                  initialSecondsRemaining={WWEventEnd.diff(dayjs())}
-                />
-                {' left'}
-              </Text>
-            )}
-            {item.english_status === EventStatus.ANNOUNCED && (
-              <Text style={[styles.text, styles.whiteCenter]}>
-                {'Starts in '}
-                <TimerCountdown
-                  initialSecondsRemaining={WWEventStart.diff(dayjs())}
-                />
-              </Text>
-            )}
+            <View style={[AppStyles.center, styles.textBlock]}>
+              <Text>{`Start: ${WWEventStart.format('LLL')}`}</Text>
+              <Text>{`End: ${WWEventEnd.format('LLL')}`}</Text>
+              {item.world_current && (
+                <Text>
+                  <TimerCountdown seconds={WWEventEnd.diff(dayjs())} />
+                  {' left'}
+                </Text>
+              )}
+              {item.english_status === EventStatus.ANNOUNCED && (
+                <Text>
+                  {'Starts in '}
+                  <TimerCountdown seconds={WWEventStart.diff(dayjs())} />
+                </Text>
+              )}
+            </View>
           </View>
-        )}
-        {item.english_name !== null && <Divider style={styles.whiteLine} />}
+          <Divider style={{ backgroundColor: colors.text }} />
+        </>
+      )}
 
-        {/* JAPANESE BLOCK */}
-        <Text style={styles.whiteCenter}>Japanese</Text>
-        <Text style={[styles.text, styles.title, styles.whiteCenter]}>
-          {item.romaji_name}
-        </Text>
+      {/* JAPANESE BLOCK */}
+      <View style={AppStyles.center}>
+        <View style={[AppStyles.center, styles.textBlock]}>
+          <Text>Japanese</Text>
+          <Title>{item.romaji_name}</Title>
+        </View>
         <FastImage
           source={{ uri: AddHTTPS(item.image) }}
           resizeMode={FastImage.resizeMode.contain}
@@ -115,38 +115,37 @@ const Information = ({
           }}
           style={styleFastImage}
         />
-        <Text style={[styles.text, styles.whiteCenter]}>
-          {`Start: ${JPEventStart.format(
-            Config.DATETIME_FORMAT_OUTPUT
-          )}\nEnd: ${JPEventEnd.format(Config.DATETIME_FORMAT_OUTPUT)}`}
-        </Text>
-        {item.japan_current && (
-          <Text style={[styles.text, styles.whiteCenter]}>
-            <TimerCountdown
-              initialSecondsRemaining={JPEventEnd.diff(dayjs())}
-            />
-            {' left'}
-          </Text>
-        )}
-        {item.japan_status === EventStatus.ANNOUNCED && (
-          <Text style={[styles.text, styles.whiteCenter]}>
-            {'Starts in '}
-            <TimerCountdown
-              initialSecondsRemaining={JPEventStart.diff(dayjs())}
-            />
-          </Text>
-        )}
-        {songs.length !== 0 && <Divider style={styles.whiteLine} />}
-        {/* SONGS */}
-        {songs.length !== 0 && (
-          <View>
-            <Text style={styles.whiteCenter}>Song</Text>
-            <View style={styles.cardList}>
-              {songs.map((songItem, index) => (
-                <TouchableOpacity
-                  key={`song${index}`}
-                  onPress={navigateTo('SongDetailScreen', songItem)}
-                  style={styles.card}>
+        <View style={[AppStyles.center, styles.textBlock]}>
+          <Text>{`Start: ${JPEventStart.format('LLL')}`}</Text>
+          <Text>{`End: ${JPEventEnd.format('LLL')}`}</Text>
+          {item.japan_current && (
+            <Text>
+              <TimerCountdown seconds={JPEventEnd.diff(dayjs())} />
+              {' left'}
+            </Text>
+          )}
+          {item.japan_status === EventStatus.ANNOUNCED && (
+            <Text>
+              {'Starts in '}
+              <TimerCountdown seconds={JPEventStart.diff(dayjs())} />
+            </Text>
+          )}
+        </View>
+      </View>
+      {/* SONGS */}
+      {songs.length !== 0 && (
+        <View>
+          <Divider style={{ backgroundColor: colors.text }} />
+          <View style={[AppStyles.center, styles.textBlock]}>
+            <Text>Song</Text>
+          </View>
+          <View style={styles.cardList}>
+            {songs.map((songItem, index) => (
+              <TouchableRipple
+                key={`song${index}`}
+                onPress={navigateTo('SongDetailScreen', songItem)}
+                style={styles.card}>
+                <>
                   <FastImage
                     source={{ uri: AddHTTPS(songItem.image) }}
                     style={styles.song}
@@ -156,34 +155,42 @@ const Information = ({
                       source={Images.attribute[songItem.attribute || '']}
                       style={styles.attributeIcon}
                     />
-                    <Text style={styles.whiteCenter}>
-                      {`${songItem.name}${
-                        songItem.romaji_name ? `\n${songItem.romaji_name}` : ''
-                      }`}
-                    </Text>
+                    <View style={styles.width5} />
+                    <View>
+                      <Text>{songItem.name}</Text>
+                      {songItem.romaji_name && (
+                        <Text>{songItem.romaji_name}</Text>
+                      )}
+                    </View>
                   </View>
-                </TouchableOpacity>
-              ))}
-            </View>
+                </>
+              </TouchableRipple>
+            ))}
           </View>
-        )}
-        <Divider style={styles.whiteLine} />
-        <Text style={styles.whiteCenter}>Rewards</Text>
-        {/* CARDS */}
-        <View style={styles.cardList}>
-          {cards.map((cardItem, index) => (
-            <TouchableOpacity
-              key={`card${index}`}
-              onPress={navigateTo('CardDetailScreen', cardItem)}
-              style={styles.card}>
+        </View>
+      )}
+      <Divider style={{ backgroundColor: colors.text }} />
+      <View style={[AppStyles.center, styles.textBlock]}>
+        <Text>Rewards</Text>
+      </View>
+      {/* CARDS */}
+      <View style={styles.cardList}>
+        {cards.map((cardItem, index) => (
+          <TouchableRipple
+            key={`card${index}`}
+            onPress={navigateTo('CardDetailScreen', cardItem)}
+            style={styles.card}>
+            <>
               <View style={styles.cardImage}>
                 {!!cardItem.round_card_image && (
-                  <FastImage
-                    source={{ uri: AddHTTPS(cardItem.round_card_image) }}
-                    style={styles.roundImage}
-                  />
+                  <>
+                    <FastImage
+                      source={{ uri: AddHTTPS(cardItem.round_card_image) }}
+                      style={styles.roundImage}
+                    />
+                    <View style={styles.width5} />
+                  </>
                 )}
-                {!!cardItem.round_card_image && <View style={styles.width5} />}
                 {!!cardItem.round_card_idolized_image && (
                   <FastImage
                     source={{
@@ -195,31 +202,64 @@ const Information = ({
               </View>
               <Text>{cardItem.idol.name}</Text>
               {cardItem.other_event && <Text>(Worldwide only)</Text>}
-            </TouchableOpacity>
-          ))}
-        </View>
-      </ScrollView>
-    </View>
+            </>
+          </TouchableRipple>
+        ))}
+      </View>
+    </ScrollView>
   );
 };
 
+const styles = StyleSheet.create({
+  attributeIcon: {
+    height: 25,
+    width: 25
+  },
+  card: {
+    alignItems: 'center',
+    margin: Metrics.baseMargin
+  },
+  cardImage: {
+    flexDirection: 'row',
+    marginHorizontal: Metrics.baseMargin
+  },
+  cardList: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'center'
+  },
+  content: {
+    paddingHorizontal: Metrics.baseMargin
+  },
+  roundImage: {
+    height: Metrics.screenWidth / 6,
+    width: Metrics.screenWidth / 6
+  },
+  song: {
+    height: Metrics.screenWidth / 3,
+    width: Metrics.screenWidth / 3
+  },
+  songInfo: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    paddingVertical: Metrics.baseMargin
+  },
+  textBlock: {
+    paddingVertical: Metrics.baseMargin
+  },
+  width5: {
+    width: 5
+  }
+});
+
 Information.propTypes = {
-  item: PropTypes.shape({
-    english_name: PropTypes.string,
-    english_image: PropTypes.string,
-    romaji_name: PropTypes.string,
-    world_current: PropTypes.any,
-    english_status: PropTypes.any,
-    image: PropTypes.string,
-    japan_current: PropTypes.any,
-    japan_status: PropTypes.any
-  }),
+  item: PropTypes.any,
   WWEventStart: PropTypes.any,
   WWEventEnd: PropTypes.any,
   JPEventStart: PropTypes.any,
   JPEventEnd: PropTypes.any,
-  cards: PropTypes.array,
-  songs: PropTypes.array
+  cards: PropTypes.any,
+  songs: PropTypes.any
 };
 
 export default Information;

@@ -26,8 +26,7 @@ export default StyleSheet.create({
   },
   content: {
     padding: Metrics.baseMargin,
-    paddingBottom: Metrics.doubleBaseMargin,
-    alignItems: 'center'
+    paddingBottom: Metrics.doubleBaseMargin
   },
   flex2: {
     flex: 2
@@ -72,9 +71,6 @@ export default StyleSheet.create({
   },
   whiteCenter: {
     ...Fonts.style.center
-  },
-  whiteLine: {
-    backgroundColor: Colors.white
   },
   width5: {
     width: 5

@@ -95,12 +95,15 @@ const CardDetailScreen: React.FC<CardDetailScreenProps> = ({
     );
   };
 
-  /**
-   * Navigate to Event Detail Screen
-   */
-  const navigateToEventDetail = (name: string) => () => {
-    navigation.navigate('EventDetailScreen', { eventName: name });
-  };
+  const goToEvent = () =>
+    navigation.navigate('EventDetailScreen', {
+      eventName: item.event?.japanese_name || ''
+    });
+
+  const goToOtherEvent = () =>
+    navigation.navigate('EventDetailScreen', {
+      eventName: item.other_event?.japanese_name || ''
+    });
 
   /**
    * Navigate to Idol Detail Screen
@@ -247,7 +250,7 @@ const CardDetailScreen: React.FC<CardDetailScreenProps> = ({
                 )}
                 <TouchableRipple
                   style={[AppStyles.center, styles.bannerContainer]}
-                  onPress={navigateToEventDetail(item.event.japanese_name)}>
+                  onPress={goToEvent}>
                   <FastImage
                     source={{ uri: AddHTTPS(item.event.image) }}
                     style={styles.banner}
@@ -270,9 +273,7 @@ const CardDetailScreen: React.FC<CardDetailScreenProps> = ({
                     />
                     <TouchableRipple
                       style={[AppStyles.center, styles.bannerContainer]}
-                      onPress={navigateToEventDetail(
-                        item.other_event.japanese_name
-                      )}>
+                      onPress={goToOtherEvent}>
                       <FastImage
                         source={{ uri: AddHTTPS(item.other_event.image) }}
                         style={styles.banner}

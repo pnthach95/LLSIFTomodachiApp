@@ -2,16 +2,18 @@ import React, { useState, useEffect } from 'react';
 import { TextStyle } from 'react-native';
 import { Text } from 'react-native-paper';
 
-const TimerCountdown = ({
-  initialSecondsRemaining,
-  interval = 1000,
-  style
-}: {
-  initialSecondsRemaining: number;
+type Props = {
+  seconds: number;
   interval?: number;
   style?: TextStyle;
-}): JSX.Element => {
-  const [remaining, setRemaining] = useState(initialSecondsRemaining);
+};
+
+const TimerCountdown = ({
+  seconds,
+  interval = 1000,
+  style
+}: Props): JSX.Element => {
+  const [remaining, setRemaining] = useState(seconds);
 
   const getFormattedTime = (t: number) => {
     const remainingSec = Math.round(t / 1000);

@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
+import PropTypes from 'prop-types';
 import { View } from 'react-native';
-import { Appbar } from 'react-native-paper';
+import { Appbar, Text } from 'react-native-paper';
 import SegmentedControlTab from 'react-native-segmented-control-tab';
 import dayjs from 'dayjs';
 
@@ -12,7 +13,11 @@ import LLSIFService from '~/Services/LLSIFService';
 import LLSIFdotnetService from '~/Services/LLSIFdotnetService';
 import { Config } from '~/Config';
 import { AppStyles } from '~/Theme';
-import { EventDetailScreenProps, EventObject } from '~/Utils/types';
+import type {
+  EventDetailScreenProps,
+  EventObject,
+  LLSIFError
+} from '~/Utils/types';
 
 /**
  * Event Detail Screen
@@ -45,6 +50,7 @@ const EventDetailScreen: React.FC<EventDetailScreenProps> = ({
   const jpEventInfo = state.cachedData.eventInfo.jp || [];
   const [item, setItem] = useState<EventObject | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [isError, setIsError] = useState<LLSIFError | null>(null);
   const [selectedTab, setSelectedTab] = useState(0);
   const [cards, setCards] = useState([]);
   const [songs, setSongs] = useState([]);
@@ -60,12 +66,18 @@ const EventDetailScreen: React.FC<EventDetailScreenProps> = ({
   }, []);
 
   const getItem = async () => {
-    const res = await LLSIFService.fetchEventData(
-      encodeURIComponent(route.params.eventName)
-    );
-    setItem(res);
-    if (res) {
-      await loadData(res);
+    try {
+      const res = await LLSIFService.fetchEventData(
+        encodeURIComponent(route.params.eventName)
+      );
+      setItem(res);
+      if (res) {
+        await loadData(res);
+      } else {
+        throw Error('Error');
+      }
+    } catch (error) {
+      setIsError(error);
     }
   };
 
@@ -137,9 +149,16 @@ const EventDetailScreen: React.FC<EventDetailScreenProps> = ({
           values={['Information', 'Tier cutoff']}
           selectedIndex={selectedTab}
           onTabPress={onTabPress}
+          tabsContainerStyle={AppStyles.screen}
         />
+        <Appbar.Action icon='blank' />
       </Appbar.Header>
-      {isLoading ? (
+      {isError ? (
+        <View style={[AppStyles.center, AppStyles.screen]}>
+          <Text>{isError.detail}</Text>
+          <Text>{route.params.eventName}</Text>
+        </View>
+      ) : isLoading ? (
         <LoadingScreen />
       ) : selectedTab === 0 ? (
         <Information
@@ -156,6 +175,10 @@ const EventDetailScreen: React.FC<EventDetailScreenProps> = ({
       )}
     </View>
   );
+};
+
+EventDetailScreen.propTypes = {
+  route: PropTypes.any
 };
 
 export default EventDetailScreen;

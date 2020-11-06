@@ -132,18 +132,14 @@ const MainScreen: React.FC<MainScreenProps> = ({ navigation }) => {
             <Text>{`End: ${ENEventEnd.format('LLL')}`}</Text>
             {ENEvent.world_current && (
               <Text>
-                <TimerCountdown
-                  initialSecondsRemaining={ENEventEnd.diff(dayjs())}
-                />
+                <TimerCountdown seconds={ENEventEnd.diff(dayjs())} />
                 {' left'}
               </Text>
             )}
             {ENEvent.english_status === EventStatus.ANNOUNCED && (
               <Text>
                 {'Starts in '}
-                <TimerCountdown
-                  initialSecondsRemaining={ENEventStart.diff(dayjs())}
-                />
+                <TimerCountdown seconds={ENEventStart.diff(dayjs())} />
               </Text>
             )}
           </>
@@ -166,18 +162,14 @@ const MainScreen: React.FC<MainScreenProps> = ({ navigation }) => {
             <Text>{`End: ${JPEventEnd.format('LLL')}`}</Text>
             {JPEvent.japan_current && (
               <Text>
-                <TimerCountdown
-                  initialSecondsRemaining={JPEventEnd.diff(dayjs())}
-                />
+                <TimerCountdown seconds={JPEventEnd.diff(dayjs())} />
                 {' left'}
               </Text>
             )}
             {JPEvent.japan_status === EventStatus.ANNOUNCED && (
               <Text>
                 {'Starts in '}
-                <TimerCountdown
-                  initialSecondsRemaining={JPEventStart.diff(dayjs())}
-                />
+                <TimerCountdown seconds={JPEventStart.diff(dayjs())} />
               </Text>
             )}
           </>

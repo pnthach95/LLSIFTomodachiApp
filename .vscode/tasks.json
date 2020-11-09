@@ -6,6 +6,15 @@
   },
   "tasks": [
     {
+      "label": "Start",
+      "type": "shell",
+      "group": {
+        "kind": "test",
+        "isDefault": true
+      },
+      "command": "npx react-native start"
+    },
+    {
       "label": "Reconnect",
       "type": "shell",
       "command": "adb reverse tcp:8081 tcp:8081",

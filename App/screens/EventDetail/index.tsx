@@ -1,8 +1,13 @@
 import React, { useState, useEffect, useContext } from 'react';
 import PropTypes from 'prop-types';
-import { View } from 'react-native';
-import { Appbar, Text } from 'react-native-paper';
-import SegmentedControlTab from 'react-native-segmented-control-tab';
+import { View, Dimensions } from 'react-native';
+import { Text, useTheme } from 'react-native-paper';
+import {
+  TabView,
+  TabBar,
+  SceneRendererProps,
+  NavigationState
+} from 'react-native-tab-view';
 import dayjs from 'dayjs';
 
 import Information from './Information';
@@ -20,6 +25,8 @@ import type {
   SongObject
 } from '~/Utils/types';
 
+const initialLayout = { width: Dimensions.get('window').width };
+
 /**
  * Event Detail Screen
  *
@@ -28,17 +35,19 @@ import type {
  * Event object: https://github.com/MagiCircles/SchoolIdolAPI/wiki/API-Events#objects
  *
  */
-const EventDetailScreen: React.FC<EventDetailScreenProps> = ({
-  navigation,
-  route
-}) => {
+const EventDetailScreen: React.FC<EventDetailScreenProps> = ({ route }) => {
   const { state } = useContext(UserContext);
+  const { colors } = useTheme();
   const wwEventInfo = state.cachedData.eventInfo.ww || [];
   const jpEventInfo = state.cachedData.eventInfo.jp || [];
+  const [index, setIndex] = useState(0);
+  const [routes] = useState([
+    { key: 'first', title: 'Information' },
+    { key: 'second', title: 'Tracker' }
+  ]);
   const [item, setItem] = useState<EventObject | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState<LLSIFError | null>(null);
-  const [selectedTab, setSelectedTab] = useState(0);
   const [cards, setCards] = useState<CardObject[]>([]);
   const [songs, setSongs] = useState<SongObject[]>([]);
   const [WWEventStart, setWWEventStart] = useState(dayjs());
@@ -52,6 +61,7 @@ const EventDetailScreen: React.FC<EventDetailScreenProps> = ({
     ww: null,
     jp: null
   });
+
   useEffect(() => {
     void getItem();
   }, []);
@@ -135,44 +145,59 @@ const EventDetailScreen: React.FC<EventDetailScreenProps> = ({
     setIsLoading(false);
   };
 
-  const onTabPress = (index: number) => {
-    if (!isLoading) setSelectedTab(index);
+  const renderScene = ({ route }: { route: typeof routes[0] }) => {
+    switch (route.key) {
+      case 'first':
+        return (
+          <Information
+            item={item}
+            cards={cards}
+            songs={songs}
+            WWEventStart={WWEventStart}
+            WWEventEnd={WWEventEnd}
+            JPEventStart={JPEventStart}
+            JPEventEnd={JPEventEnd}
+          />
+        );
+      case 'second':
+        return (
+          <Tracker jpTracker={trackerData.jp} wwTracker={trackerData.ww} />
+        );
+      default:
+        return null;
+    }
   };
 
-  const goBack = () => navigation.goBack();
+  const renderTabBar = (
+    props: SceneRendererProps & {
+      navigationState: NavigationState<typeof routes[0]>;
+    }
+  ) => (
+    <TabBar
+      {...props}
+      renderLabel={({ route }) => <Text>{route.title}</Text>}
+      indicatorStyle={{ backgroundColor: colors.text }}
+      style={{ backgroundColor: colors.card }}
+    />
+  );
 
   return (
     <View style={AppStyles.screen}>
-      <Appbar.Header>
-        <Appbar.BackAction onPress={goBack} />
-        <SegmentedControlTab
-          values={['Information', 'Tier cutoff']}
-          selectedIndex={selectedTab}
-          enabled={!isLoading}
-          onTabPress={onTabPress}
-          tabsContainerStyle={AppStyles.screen}
-        />
-        <Appbar.Action icon='blank' />
-      </Appbar.Header>
-      {isError ? (
+      {isLoading ? (
+        <LoadingScreen />
+      ) : isError ? (
         <View style={[AppStyles.center, AppStyles.screen]}>
           <Text>{isError.detail}</Text>
           <Text>{route.params.eventName}</Text>
         </View>
-      ) : isLoading ? (
-        <LoadingScreen />
-      ) : selectedTab === 0 ? (
-        <Information
-          item={item}
-          cards={cards}
-          songs={songs}
-          WWEventStart={WWEventStart}
-          WWEventEnd={WWEventEnd}
-          JPEventStart={JPEventStart}
-          JPEventEnd={JPEventEnd}
-        />
       ) : (
-        <Tracker jpTracker={trackerData.jp} wwTracker={trackerData.ww} />
+        <TabView
+          navigationState={{ index, routes }}
+          renderScene={renderScene}
+          renderTabBar={renderTabBar}
+          onIndexChange={setIndex}
+          initialLayout={initialLayout}
+        />
       )}
     </View>
   );

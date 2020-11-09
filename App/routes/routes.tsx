@@ -199,7 +199,7 @@ const Routes = (): JSX.Element => {
                   name='EventDetailScreen'
                   component={EventDetailScreen}
                   options={{
-                    headerShown: false
+                    title: ''
                   }}
                 />
                 <Stack.Screen

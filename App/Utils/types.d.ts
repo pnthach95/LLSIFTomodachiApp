@@ -75,6 +75,7 @@ type RootStackParamList = {
   SongsScreen: undefined;
   CardDetailScreen: { item: CardObject };
   EventDetailScreen: { eventName: string };
+  EventTrackerScreen: { isWW: boolean; name: string };
   IdolDetailScreen: { name: string };
   SongDetailScreen: { item: SongObject };
   AboutMeScreen: undefined;
@@ -89,6 +90,10 @@ type CardDetailScreenProps = StackScreenProps<
 type EventDetailScreenProps = StackScreenProps<
   RootStackParamList,
   'EventDetailScreen'
+>;
+type EventTrackerScreenProps = StackScreenProps<
+  RootStackParamList,
+  'EventTrackerScreen'
 >;
 type IdolDetailScreenProps = StackScreenProps<
   RootStackParamList,

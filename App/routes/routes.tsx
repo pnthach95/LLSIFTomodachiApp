@@ -24,6 +24,7 @@ import SongsScreen from '~/screens/Songs';
 import MoreScreen from '~/screens/More';
 import CardDetailScreen from '~/screens/CardDetail';
 import EventDetailScreen from '~/screens/EventDetail';
+import EventTrackerScreen from '~/screens/EventDetail/Tracker';
 import IdolDetailScreen from '~/screens/IdolDetail';
 import SongDetailScreen from '~/screens/SongDetail';
 import AboutMeScreen from '~/screens/AboutMe';
@@ -198,6 +199,13 @@ const Routes = (): JSX.Element => {
                 <Stack.Screen
                   name='EventDetailScreen'
                   component={EventDetailScreen}
+                  options={{
+                    title: ''
+                  }}
+                />
+                <Stack.Screen
+                  name='EventTrackerScreen'
+                  component={EventTrackerScreen}
                   options={{
                     title: ''
                   }}

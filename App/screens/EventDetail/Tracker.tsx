@@ -1,85 +1,77 @@
-import React, { useState } from 'react';
+import React, { useEffect, useContext, useState } from 'react';
 import PropTypes from 'prop-types';
-import { View, ScrollView, FlatList, StyleSheet } from 'react-native';
-import { Text, useTheme } from 'react-native-paper';
 import {
-  responsiveHeight,
-  responsiveWidth
-} from 'react-native-responsive-dimensions';
-import SegmentedControlTab from 'react-native-segmented-control-tab';
-import { Row } from 'react-native-table-component';
+  View,
+  ScrollView,
+  FlatList,
+  StyleSheet,
+  ViewStyle
+} from 'react-native';
+import { Text, useTheme } from 'react-native-paper';
+import tinycolor from 'color';
 import { VictoryChart, VictoryLine, VictoryAxis } from 'victory-native';
 
-import { AppStyles, Colors, Metrics, Fonts } from '~/Theme';
+import LoadingScreen from '../Loading';
+import UserContext from '~/Context/UserContext';
+import LLSIFdotnetService from '~/Services/LLSIFdotnetService';
+import { AppStyles, Colors, Fonts } from '~/Theme';
+import type { EventTrackerScreenProps } from '~/Utils/types';
 
-type Props = {
-  wwTracker: string[][] | null;
-  jpTracker: string[][] | null;
+type xyObject = { x: string; y: number };
+
+type ChartData = {
+  seriesName: string;
+  data: xyObject[] | null;
+  color: string;
 };
 
-const tableHead = ['Date', 'T1', 'Δ', 'T2', 'Δ', 'T3', 'Δ'];
-const widCell = [130, 80, 80, 80, 80, 80, 80];
+type TrackerDataProps = {
+  table: string[][] | null;
+  chart: ChartData[];
+};
 
-const getLine = (data: string[][] | null, position: number) => {
-  if (data === null) return [];
-  const result = [];
-  for (let i = 0; i < data.length; i += 4) {
-    const element = data[i];
-    result.push({ x: element[0], y: Number(element[position]) });
-  }
-  const last = data[data.length - 1];
-  if (result[result.length - 1].x !== last[0]) {
-    result.push({ x: last[0], y: Number(last[position]) });
-  }
+const chartPadding = { left: 70, top: 20, bottom: 30, right: 20 };
+
+const Row = ({ data, style }: { data: string[]; style?: ViewStyle | null }) => {
+  const { colors } = useTheme();
+  return data ? (
+    <View style={[AppStyles.row, style]}>
+      {data.map((item, i) => {
+        const wth = i === 0 ? 130 : 80;
+        return (
+          <View
+            key={i}
+            style={[styles.border, { width: wth, borderColor: colors.text }]}>
+            <Text>{item}</Text>
+          </View>
+        );
+      })}
+    </View>
+  ) : null;
+};
+
+const parseEventTracker = (data: string) => {
+  const result: string[][] = [];
+  const rows = data.split('\n');
+  rows.forEach((row) => {
+    const rowArr = row.split(',');
+    if (rowArr.length > 10) {
+      result.push(rowArr);
+    }
+  });
   return result;
 };
 
-const Tracker: React.FC<Props> = ({ wwTracker, jpTracker }) => {
+const Tracker: React.FC<EventTrackerScreenProps> = ({ navigation, route }) => {
+  const { state } = useContext(UserContext);
   const { colors } = useTheme();
-  const [selectedTab, setSelectedTab] = useState(wwTracker === null ? 0 : 1);
-  const [maxChartWidth, setMaxChartWidth] = useState(responsiveWidth(90));
-  const chartHeight = responsiveHeight(50);
-  const wwGroup = {
-    table: wwTracker,
-    chart: [
-      {
-        seriesName: 'T1',
-        data: getLine(wwTracker, 1),
-        color: 'red'
-      },
-      {
-        seriesName: 'T2',
-        data: getLine(wwTracker, 3),
-        color: 'green'
-      },
-      {
-        seriesName: 'T3',
-        data: getLine(wwTracker, 5),
-        color: 'blue'
-      }
-    ]
-  };
-  const jpGroup = {
-    table: jpTracker,
-    chart: [
-      {
-        seriesName: 'T1',
-        data: getLine(jpTracker, 1),
-        color: 'red'
-      },
-      {
-        seriesName: 'T2',
-        data: getLine(jpTracker, 3),
-        color: 'green'
-      },
-      {
-        seriesName: 'T3',
-        data: getLine(jpTracker, 5),
-        color: 'blue'
-      }
-    ]
-  };
-
+  const [isLoading, setIsLoading] = useState(true);
+  const [trackerData, setTrackerData] = useState<TrackerDataProps>({
+    table: null,
+    chart: []
+  });
+  const wwEventInfo = state.cachedData.eventInfo.ww || [];
+  const jpEventInfo = state.cachedData.eventInfo.jp || [];
   const axisStyle = {
     tickLabels: {
       // fontSize: Font.normal.fontSize,
@@ -90,103 +82,113 @@ const Tracker: React.FC<Props> = ({ wwTracker, jpTracker }) => {
     }
   };
 
-  const onTabPress = (index: number): void => setSelectedTab(index);
+  useEffect(() => {
+    void getData();
+    navigation.setOptions({
+      title: route.params.name
+    });
+  }, []);
+
+  const getData = async () => {
+    let table: string[][] = [];
+    const { isWW, name } = route.params;
+    const targetEvent = isWW
+      ? wwEventInfo.filter((value) => value.event_name === name)
+      : jpEventInfo.filter((value) => value.event_name === name);
+    if (targetEvent.length > 0) {
+      const res = await LLSIFdotnetService.fetchEventData({
+        server: isWW ? 'EN' : 'JP',
+        id: targetEvent[0].event_id
+      });
+      if (res) {
+        table = parseEventTracker(res);
+      }
+    }
+    const chart = [];
+    for (let i = 2; i < table[0].length; i += 2) {
+      const row: xyObject[] = [];
+      for (let j = 1; j < table.length; j++) {
+        row.push({ x: table[j][0], y: Number(table[j][i]) });
+      }
+      chart.push({
+        seriesName: table[0][i],
+        data: row,
+        color: tinycolor({ r: 25 * i, g: 17 * i, b: 37 * i })
+          .rotate(5 * i)
+          .hex()
+      });
+    }
+    setTrackerData({ table, chart });
+    setIsLoading(false);
+  };
 
   const keyExtractor = (item: string[], index: number): string =>
     `data ${index}`;
 
-  const renderItem = ({ item }: { item: string[] }) => (
-    <Row data={item} widthArr={widCell} textStyle={styles.text} />
+  const renderItem = ({ item, index }: { item: string[]; index: number }) => (
+    <Row data={item} style={index === 0 ? styles.head : null} />
   );
 
-  const renderGroup = (data: typeof jpGroup) =>
-    data.table !== null ? (
-      <View style={AppStyles.screen}>
-        {data.chart !== undefined && (
-          <ScrollView
-            horizontal
-            style={{ height: responsiveHeight(50) }}
-            showsHorizontalScrollIndicator={false}>
-            <VictoryChart width={maxChartWidth} height={chartHeight}>
-              <VictoryLine
-                data={data.chart[0].data}
-                style={{
-                  data: { stroke: data.chart[0].color },
-                  parent: { border: '1px solid #ccc' }
-                }}
-              />
-              <VictoryLine
-                data={data.chart[1].data}
-                style={{
-                  data: { stroke: data.chart[1].color },
-                  parent: { border: '1px solid #ccc' }
-                }}
-              />
-              <VictoryLine
-                data={data.chart[2].data}
-                style={{
-                  data: { stroke: data.chart[2].color },
-                  parent: { border: '1px solid #ccc' }
-                }}
-              />
-              <VictoryAxis dependentAxis style={axisStyle} />
-              <VictoryAxis style={axisStyle} />
-            </VictoryChart>
-          </ScrollView>
-        )}
-        <Text style={Fonts.style.center}>Data from llsif.net</Text>
-        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-          <View>
-            <Row
-              data={tableHead}
-              widthArr={widCell}
-              style={styles.head}
-              textStyle={styles.text}
-            />
-            <FlatList
-              data={data.table}
-              showsVerticalScrollIndicator={false}
-              keyExtractor={keyExtractor}
-              renderItem={renderItem}
-            />
-          </View>
-        </ScrollView>
-      </View>
-    ) : (
-      <Text style={Fonts.style.center}>No data</Text>
-    );
+  if (isLoading) {
+    return <LoadingScreen />;
+  }
 
   return (
-    <View style={AppStyles.screen}>
-      <View style={[AppStyles.center, styles.region]}>
-        <SegmentedControlTab
-          values={['Japanese', 'Worldwide']}
-          selectedIndex={selectedTab}
-          onTabPress={onTabPress}
-        />
-      </View>
-      {selectedTab === 0 ? renderGroup(jpGroup) : renderGroup(wwGroup)}
-    </View>
+    <>
+      {trackerData.table !== null ? (
+        <>
+          <Text style={Fonts.style.center}>Data from llsif.net</Text>
+          {trackerData.chart !== undefined && (
+            <View style={AppStyles.screen}>
+              <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+                <VictoryChart padding={chartPadding}>
+                  {trackerData.chart.map((value) => (
+                    <VictoryLine
+                      key={value.seriesName}
+                      data={value.data || []}
+                      style={{
+                        data: { stroke: value.color }
+                      }}
+                    />
+                  ))}
+                  <VictoryAxis dependentAxis style={axisStyle} />
+                  <VictoryAxis style={axisStyle} fixLabelOverlap={true} />
+                </VictoryChart>
+              </ScrollView>
+            </View>
+          )}
+          <View style={AppStyles.screen}>
+            <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+              <View>
+                <FlatList
+                  data={trackerData.table}
+                  stickyHeaderIndices={[0]}
+                  showsVerticalScrollIndicator={false}
+                  keyExtractor={keyExtractor}
+                  renderItem={renderItem}
+                />
+              </View>
+            </ScrollView>
+          </View>
+        </>
+      ) : (
+        <Text style={Fonts.style.center}>No data</Text>
+      )}
+    </>
   );
 };
 
 const styles = StyleSheet.create({
+  border: {
+    borderWidth: StyleSheet.hairlineWidth
+  },
   head: {
-    backgroundColor: Colors.grey400,
-    height: 40
-  },
-  region: {
-    height: Metrics.navBarHeight,
-    marginHorizontal: Metrics.doubleBaseMargin
-  },
-  text: {
-    margin: 6
+    backgroundColor: Colors.grey400
   }
 });
 
 Tracker.propTypes = {
-  jpTracker: PropTypes.any,
-  wwTracker: PropTypes.any
+  route: PropTypes.any
 };
 
 export default Tracker;

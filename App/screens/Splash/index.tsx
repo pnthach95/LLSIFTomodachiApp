@@ -1,14 +1,15 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { View, StyleSheet } from 'react-native';
-import { Text, Button } from 'react-native-paper';
+import { Text, Button, useTheme } from 'react-native-paper';
 import firebase from 'react-native-firebase';
+import RNBootSplash from 'react-native-bootsplash';
 
 import { initCachedData } from '~/Context/Reducer';
 import LLSIFService from '~/Services/LLSIFService';
 import LoadingScreen from '../Loading';
 import UserContext from '~/Context/UserContext';
 import { AppStyles } from '~/Theme';
-import { loadSettings } from '~/Utils';
+import { loadSettings, setStatusBar } from '~/Utils';
 import { FirebaseTopic } from '~/Config';
 import type {
   SplashScreenProps,
@@ -22,6 +23,7 @@ import LLSIFdotnetService from '~/Services/LLSIFdotnetService';
  *
  */
 const SplashScreen: React.FC<SplashScreenProps> = () => {
+  const { colors } = useTheme();
   const { dispatch } = useContext(UserContext);
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -41,6 +43,10 @@ const SplashScreen: React.FC<SplashScreenProps> = () => {
   }, [loading]);
 
   useEffect(() => {
+    if (loadedAppOptions) {
+      setStatusBar(colors.card);
+      RNBootSplash.hide();
+    }
     if (loadedAppOptions && loadedCached) {
       dispatch({ type: 'LOADING', loading: false });
     }

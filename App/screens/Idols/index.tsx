@@ -1,13 +1,13 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { View, SectionList, FlatList, Alert, StyleSheet } from 'react-native';
-import { Text, Divider, useTheme } from 'react-native-paper';
+import { Title, Divider, useTheme } from 'react-native-paper';
 
 import UserContext from '~/Context/UserContext';
 import ConnectStatus from '~/Components/ConnectStatus';
 import IdolItem from '~/Components/IdolItem';
 import LLSIFService from '~/Services/LLSIFService';
 import LoadingScreen from '../Loading';
-import { AppStyles, Metrics, Colors } from '~/Theme';
+import { AppStyles, Metrics } from '~/Theme';
 import type { IdolObject, IdolsScreenProps } from '~/Utils/types';
 
 type SchoolData = {
@@ -33,10 +33,10 @@ const IdolsScreen: React.FC<IdolsScreenProps> = ({ navigation }) => {
     void loadData();
   }, []);
 
-  const loadData = () => {
+  const loadData = async () => {
     const { schools } = state.cachedData;
     try {
-      const res = LLSIFService.fetchIdolList(schools);
+      const res = await LLSIFService.fetchIdolList();
       const array: SchoolObject[] = [];
       schools.forEach((school) => {
         const item = {
@@ -55,7 +55,7 @@ const IdolsScreen: React.FC<IdolsScreenProps> = ({ navigation }) => {
         data: [
           {
             key: 'Other',
-            list: res.filter((value) => value.school === null)
+            list: res.filter((value) => !value.school)
           }
         ]
       };
@@ -71,7 +71,6 @@ const IdolsScreen: React.FC<IdolsScreenProps> = ({ navigation }) => {
 
   /**
    * Render item in FlatList
-   *
    */
   const renderItem = ({ item }: { item: IdolObject }) => {
     /**
@@ -108,17 +107,25 @@ const IdolsScreen: React.FC<IdolsScreenProps> = ({ navigation }) => {
     `School${index}`;
 
   const renderSectionHeader = ({ section }: { section: SchoolObject }) => (
-    <Text style={styles.sectionText}>{section.title}</Text>
+    <Title style={styles.sectionText}>{section.title}</Title>
   );
+
+  const sectionSeparator = (data: { leadingItem: { key: string } }) => {
+    if (data.leadingItem && data.leadingItem.key === 'Other') return null;
+    const styleSeperator = {
+      backgroundColor: 'white',
+      marginBottom: data.leadingItem ? 20 : 0
+    };
+    return <Divider style={styleSeperator} />;
+  };
 
   if (isLoading) {
     return <LoadingScreen />;
   }
 
   return (
-    <View style={[AppStyles.screen, styles.container]}>
+    <View style={AppStyles.screen}>
       <ConnectStatus />
-      {/* BODY */}
       <SectionList
         sections={list}
         initialNumToRender={9}
@@ -128,14 +135,7 @@ const IdolsScreen: React.FC<IdolsScreenProps> = ({ navigation }) => {
         stickySectionHeadersEnabled={false}
         ListHeaderComponent={<View style={styles.height10} />}
         ListFooterComponent={<View style={styles.height10} />}
-        SectionSeparatorComponent={(data) => {
-          if (data.leadingItem && data.leadingItem.key === 'Other') return null;
-          const styleSeperator = {
-            backgroundColor: 'white',
-            marginBottom: data.leadingItem ? 20 : 0
-          };
-          return <Divider style={styleSeperator} />;
-        }}
+        SectionSeparatorComponent={sectionSeparator}
         renderItem={renderFlatList}
       />
     </View>
@@ -143,10 +143,6 @@ const IdolsScreen: React.FC<IdolsScreenProps> = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    backgroundColor: Colors.blue,
-    elevation: 5
-  },
   height10: {
     height: 10
   },
@@ -154,9 +150,7 @@ const styles = StyleSheet.create({
     padding: Metrics.smallMargin
   },
   sectionText: {
-    color: Colors.white,
-    fontSize: 20,
-    fontWeight: 'bold'
+    paddingLeft: Metrics.baseMargin
   }
 });
 

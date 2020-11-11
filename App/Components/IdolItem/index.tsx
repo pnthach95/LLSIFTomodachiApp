@@ -3,14 +3,17 @@ import PropTypes from 'prop-types';
 import { View, StyleSheet } from 'react-native';
 import { Text, TouchableRipple, Surface } from 'react-native-paper';
 import FastImage, { OnLoadEvent } from 'react-native-fast-image';
-import { Metrics, Fonts } from '~/Theme';
+import { Metrics, Fonts, AppStyles } from '~/Theme';
 import { findColorByAttribute } from '~/Utils';
 import type { IdolObject } from '~/Utils/types';
 
-type IdolItemType = {
+type Props = {
   item: IdolObject;
   onPress: () => void;
 };
+
+const { smallItemWidth } = Metrics.images;
+const cImgSize = smallItemWidth - Metrics.baseMargin;
 
 /**
  * Idol item for Idol List Screen
@@ -20,25 +23,25 @@ type IdolItemType = {
  * - `onPress`: onPress function
  *
  */
-const IdolItem: React.FC<IdolItemType> = ({ item, onPress }) => {
+const IdolItem: React.FC<Props> = ({ item, onPress }) => {
   const attColors = findColorByAttribute(item.attribute || '');
   const [imgSize, setImgSize] = useState({
-    height: Metrics.images.smallItemWidth,
-    width: Metrics.images.smallItemWidth
+    height: cImgSize,
+    width: cImgSize
   });
 
   const onLoad = (e: OnLoadEvent) => {
     const { width, height } = e.nativeEvent;
     setImgSize({
       ...imgSize,
-      height: (Metrics.images.smallItemWidth * height) / width
+      height: (cImgSize * height) / width
     });
   };
 
   return (
     <Surface style={[styles.container, { backgroundColor: attColors[1] }]}>
       <TouchableRipple borderless rippleColor={attColors[0]} onPress={onPress}>
-        <>
+        <View style={AppStyles.center}>
           <FastImage
             source={{
               uri: item.chibi,
@@ -48,10 +51,8 @@ const IdolItem: React.FC<IdolItemType> = ({ item, onPress }) => {
             resizeMode='contain'
             style={imgSize}
           />
-          <View style={styles.info}>
-            <Text style={Fonts.style.center}>{item.name}</Text>
-          </View>
-        </>
+          <Text style={Fonts.style.center}>{item.name}</Text>
+        </View>
       </TouchableRipple>
     </Surface>
   );
@@ -59,17 +60,11 @@ const IdolItem: React.FC<IdolItemType> = ({ item, onPress }) => {
 
 const styles = StyleSheet.create({
   container: {
-    alignItems: 'center',
     borderRadius: 5,
     elevation: 5,
     margin: Metrics.smallMargin,
-    width: Metrics.images.smallItemWidth
-  },
-  info: {
-    alignItems: 'center',
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    margin: Metrics.smallMargin
+    padding: Metrics.smallMargin,
+    width: smallItemWidth
   }
 });
 

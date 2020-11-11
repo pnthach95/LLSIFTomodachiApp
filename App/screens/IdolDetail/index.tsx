@@ -1,106 +1,83 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { View, ScrollView, StatusBar } from 'react-native';
-import { Text } from 'react-native-paper';
+import { View, ScrollView, StyleSheet } from 'react-native';
+import { Appbar, Text, useTheme } from 'react-native-paper';
 import FastImage from 'react-native-fast-image';
 import dayjs from 'dayjs';
 
 import LoadingScreen from '../Loading';
 import InfoLine from '~/Components/InfoLine';
 import LLSIFService from '~/Services/LLSIFService';
-import { findColorByAttribute, AddHTTPS } from '~/Utils';
-import { Metrics, AppStyles, Colors, Images } from '~/Theme';
-import styles from './styles';
+import { findColorByAttribute, AddHTTPS, setStatusBar } from '~/Utils';
+import { Metrics, AppStyles, Images } from '~/Theme';
+import type { IdolDetailScreenProps, IdolObject } from '~/Utils/types';
+
+type FilterOptions = {
+  search: string;
+  page_size: number;
+  name: string;
+  japanese_name: string;
+};
 
 /**
  * Idol Detail Screen
  *
- * From parent screen, pass `name` to get Idol object
+ * From parent screen, pass `name` to get Idol object.
  *
- * State:
- * - `item`: [Idol object](https://github.com/MagiCircles/SchoolIdolAPI/wiki/API-Idols#objects)
- * - `colors`: Color array
- * - `images`: Image array
- * - `isLoading`: Loading state
- *
+ * [Idol object](https://github.com/MagiCircles/SchoolIdolAPI/wiki/API-Idols#objects)
  */
-function IdolDetailScreen({ route, navigation }) {
+const IdolDetailScreen: React.FC<IdolDetailScreenProps> = ({
+  route,
+  navigation
+}) => {
+  const { colors } = useTheme();
   const [isLoading, setIsLoading] = useState(true);
-  const [images, setImages] = useState([]);
-  const [item, setItem] = useState(null);
-  const [colors, setColors] = useState([]);
+  const [images, setImages] = useState<string[]>([]);
+  const [item, setItem] = useState<IdolObject | null>(null);
+  const [idolColors, setIdolColors] = useState<string[]>([]);
 
   useEffect(() => {
-    StatusBar.setBackgroundColor(Colors.blue);
-    StatusBar.setBarStyle('light-content');
-    navigation.setOptions({
-      headerStyle: { backgroundColor: Colors.blue },
-      headerTitle: 'Loading'
-    });
-    loadItem();
+    setStatusBar(colors.card);
+    void loadItem();
+    return () => setStatusBar(route.params.prevStatusBarColor);
   }, []);
 
   useEffect(() => {
-    if (item && colors.length > 0) {
-      const headerTitle = () => (
-        <View>
-          <Text>{item.name}</Text>
-          {item.japanese_name !== null && <Text>{item.japanese_name}</Text>}
-        </View>
-      );
-
-      const headerRight = () => (
-        <View style={AppStyles.row}>
-          {!!item.main_unit && (
-            <FastImage
-              source={Images.mainUnit[item.main_unit]}
-              resizeMode='contain'
-              style={styles.rightHeaderImage}
-            />
-          )}
-          {!!item.sub_unit && (
-            <FastImage
-              source={Images.subUnit[item.sub_unit]}
-              resizeMode='contain'
-              style={styles.rightHeaderImage}
-            />
-          )}
-        </View>
-      );
-      StatusBar.setBackgroundColor(colors[1]);
-      StatusBar.setBarStyle('dark-content');
-      navigation.setOptions({
-        headerStyle: { backgroundColor: colors[1] },
-        headerTitle,
-        headerRight
-      });
+    if (idolColors.length > 0) {
+      setStatusBar(idolColors[1]);
     }
-  }, [item, colors]);
+  }, [idolColors]);
 
   const loadItem = async () => {
     const { name } = route.params;
-    const theFilter = {
+    const theFilter: Partial<FilterOptions> = {
       search: name,
       page_size: 1
     };
     try {
       const res1 = await LLSIFService.fetchIdol(name);
-      setItem(res1);
-      setColors(findColorByAttribute(res1.attribute));
-      const res2 = await LLSIFService.fetchCardList(theFilter);
-      if (res2.length === 0) {
-        theFilter.name = res1.name;
-        theFilter.japanese_name = '';
-        const res3 = await LLSIFService.fetchCardList(theFilter);
-        setImages([
-          res3[0].transparent_image,
-          res3[0].transparent_idolized_image
-        ]);
-      } else {
-        setImages([
-          res2[0].transparent_image,
-          res2[0].transparent_idolized_image
-        ]);
+      if (res1) {
+        setItem(res1);
+        setIdolColors(findColorByAttribute(res1.attribute || 'All'));
+        const res2 = await LLSIFService.fetchCardList(theFilter);
+        if (Array.isArray(res2)) {
+          if (res2.length === 0) {
+            theFilter.name = res1.name;
+            theFilter.japanese_name = '';
+            const res3 = await LLSIFService.fetchCardList(theFilter);
+            if (Array.isArray(res3)) {
+              setImages([
+                res3[0].transparent_image || '',
+                res3[0].transparent_idolized_image || ''
+              ]);
+            }
+          } else {
+            setImages([
+              res2[0].transparent_image || '',
+              res2[0].transparent_idolized_image || ''
+            ]);
+          }
+        }
       }
     } catch (error) {
       //
@@ -109,96 +86,141 @@ function IdolDetailScreen({ route, navigation }) {
     }
   };
 
-  if (isLoading) return <LoadingScreen bgColor={Colors.blue} />;
+  const goBack = () => navigation.goBack();
+
   return (
-    <ScrollView showsVerticalScrollIndicator={false}>
-      <View style={styles.imageRow}>
-        {images[0] && images[0].includes('.png') && (
-          <FastImage
-            source={{
-              uri: AddHTTPS(images[0]),
-              priority: FastImage.priority.high
-            }}
-            resizeMode={FastImage.resizeMode.contain}
-            style={{
-              width: Metrics.images.itemWidth * 1.5,
-              height: Metrics.images.itemWidth * 1.5
-            }}
-          />
-        )}
-        <FastImage
-          source={{
-            uri: AddHTTPS(images[1]),
-            priority: FastImage.priority.high
-          }}
-          resizeMode={FastImage.resizeMode.contain}
-          style={{
-            width: Metrics.images.itemWidth * 1.5,
-            height: Metrics.images.itemWidth * 1.5
-          }}
+    <View style={AppStyles.screen}>
+      <Appbar.Header style={{ backgroundColor: idolColors[1] }}>
+        <Appbar.BackAction onPress={goBack} />
+        <Appbar.Content
+          title={route.params.name}
+          subtitle={item?.japanese_name}
         />
-      </View>
-      <View style={styles.scrollView}>
-        {item.school !== null && (
-          <InfoLine title={'School'} content={item.school} />
+        {item && (
+          <View style={AppStyles.row}>
+            {!!item.main_unit && (
+              <FastImage
+                source={Images.mainUnit[item.main_unit]}
+                resizeMode='contain'
+                style={styles.rightHeaderImage}
+              />
+            )}
+            {!!item.sub_unit && (
+              <FastImage
+                source={Images.subUnit[item.sub_unit]}
+                resizeMode='contain'
+                style={styles.rightHeaderImage}
+              />
+            )}
+          </View>
         )}
-        <InfoLine title={'Attribute'} content={item.attribute} />
-        {item.birthday !== null && (
-          <InfoLine
-            title={'Birthday'}
-            content={dayjs(item.birthday, 'MM-DD').format('MMM Do')}
-          />
-        )}
-        {item.astrological_sign !== null && (
-          <InfoLine
-            title={'Astrological Sign'}
-            content={item.astrological_sign}
-          />
-        )}
-        {item.blood !== null && (
-          <InfoLine title={'Blood Type'} content={item.blood} />
-        )}
-        {item.height !== null && (
-          <InfoLine title={'Height'} content={`${item.height} cm`} />
-        )}
-        {item.measurements !== null && (
-          <InfoLine title={'Measurements'} content={item.measurements} />
-        )}
-        {item.favorite_food !== null && (
-          <InfoLine title={'Favorite Food'} content={item.favorite_food} />
-        )}
-        {item.least_favorite_food !== null && (
-          <InfoLine
-            title={'Least Favorite Food'}
-            content={item.least_favorite_food}
-          />
-        )}
-        {item.hobbies !== null && (
-          <InfoLine title={'Hobbies'} content={item.hobbies} />
-        )}
-        {item.year && <InfoLine title={'Year'} content={item.year} />}
-        {item.cv !== null && (
-          <InfoLine
-            title={'CV'}
-            content={`${item.cv.name} (${item.cv.nickname})`}
-            twitter={item.cv.twitter}
-            instagram={item.cv.instagram}
-            myanimelist={item.cv.url}
-          />
-        )}
-        {item.summary !== null && (
-          <InfoLine title={'Summary'} content={item.summary} />
-        )}
-      </View>
-    </ScrollView>
+      </Appbar.Header>
+      {isLoading ? (
+        <LoadingScreen />
+      ) : item ? (
+        <ScrollView showsVerticalScrollIndicator={false}>
+          <View style={styles.imageRow}>
+            {images[0] && images[0].includes('.png') && (
+              <FastImage
+                source={{
+                  uri: AddHTTPS(images[0]),
+                  priority: FastImage.priority.high
+                }}
+                resizeMode={FastImage.resizeMode.contain}
+                style={{
+                  width: Metrics.images.itemWidth * 1.5,
+                  height: Metrics.images.itemWidth * 1.5
+                }}
+              />
+            )}
+            <FastImage
+              source={{
+                uri: AddHTTPS(images[1]),
+                priority: FastImage.priority.high
+              }}
+              resizeMode={FastImage.resizeMode.contain}
+              style={{
+                width: Metrics.images.itemWidth * 1.5,
+                height: Metrics.images.itemWidth * 1.5
+              }}
+            />
+          </View>
+          <View style={styles.scrollView}>
+            {!!item.school && (
+              <InfoLine title={'School'} content={item.school} />
+            )}
+            <InfoLine title={'Attribute'} content={item.attribute as string} />
+            {!!item.birthday && (
+              <InfoLine
+                title={'Birthday'}
+                content={dayjs(item.birthday, 'MM-DD').format('MMM Do')}
+              />
+            )}
+            {!!item.astrological_sign && (
+              <InfoLine
+                title={'Astrological Sign'}
+                content={item.astrological_sign}
+              />
+            )}
+            {!!item.blood && (
+              <InfoLine title={'Blood Type'} content={item.blood} />
+            )}
+            {!!item.height && (
+              <InfoLine title={'Height'} content={`${item.height} cm`} />
+            )}
+            {!!item.measurements && (
+              <InfoLine title={'Measurements'} content={item.measurements} />
+            )}
+            {!!item.favorite_food && (
+              <InfoLine title={'Favorite Food'} content={item.favorite_food} />
+            )}
+            {!!item.least_favorite_food && (
+              <InfoLine
+                title={'Least Favorite Food'}
+                content={item.least_favorite_food}
+              />
+            )}
+            {!!item.hobbies && (
+              <InfoLine title={'Hobbies'} content={item.hobbies} />
+            )}
+            {item.year && <InfoLine title={'Year'} content={item.year} />}
+            {!!item.cv && (
+              <InfoLine
+                title={'CV'}
+                content={`${item.cv.name} (${item.cv.nickname})`}
+                twitter={item.cv.twitter}
+                instagram={item.cv.instagram}
+                myanimelist={item.cv.url}
+              />
+            )}
+            {!!item.summary && (
+              <InfoLine title={'Summary'} content={item.summary} />
+            )}
+          </View>
+        </ScrollView>
+      ) : (
+        <Text>Error</Text>
+      )}
+    </View>
   );
-}
+};
+
+const styles = StyleSheet.create({
+  imageRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-around'
+  },
+  rightHeaderImage: {
+    height: 70,
+    width: 70
+  },
+  scrollView: {
+    margin: Metrics.doubleBaseMargin
+  }
+});
+
 IdolDetailScreen.propTypes = {
-  route: PropTypes.shape({
-    params: PropTypes.shape({
-      name: PropTypes.string
-    })
-  })
+  route: PropTypes.any
 };
 
 export default IdolDetailScreen;

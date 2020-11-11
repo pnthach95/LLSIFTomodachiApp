@@ -3,10 +3,10 @@ import PropTypes from 'prop-types';
 import { View, ScrollView, StyleSheet } from 'react-native';
 import {
   Text,
+  Caption,
   Appbar,
   Button,
-  TouchableRipple,
-  useTheme
+  TouchableRipple
 } from 'react-native-paper';
 import FastImage from 'react-native-fast-image';
 import ImageView from 'react-native-image-viewing';
@@ -18,7 +18,7 @@ import LoadingScreen from '../Loading';
 import SPCStats from '~/Components/SPCStats';
 import TextRow from '~/Components/TextRow';
 import { findColorByAttribute, AddHTTPS, setStatusBar } from '~/Utils';
-import { Metrics, Fonts, AppStyles, Colors, Images } from '~/Theme';
+import { Metrics, AppStyles, Colors, Images } from '~/Theme';
 import type { CardDetailScreenProps } from '~/Utils/types';
 
 const { itemWidth, cardHeight, cardWidth } = Metrics.images;
@@ -31,7 +31,6 @@ const CardDetailScreen: React.FC<CardDetailScreenProps> = ({
   route
 }) => {
   const { item } = route.params;
-  const { colors } = useTheme();
   const minStats = [
     item.minimum_statistics_smile || 0,
     item.minimum_statistics_pure || 0,
@@ -68,7 +67,7 @@ const CardDetailScreen: React.FC<CardDetailScreenProps> = ({
     if (item.japan_only) tmp.push('Japan only');
     setPropertyLine(tmp.join(' - '));
     setDone(true);
-    return () => setStatusBar(colors.card);
+    return () => setStatusBar(route.params.prevStatusBarColor);
   }, []);
 
   const StatButton = ({
@@ -97,19 +96,24 @@ const CardDetailScreen: React.FC<CardDetailScreenProps> = ({
 
   const goToEvent = () =>
     navigation.navigate('EventDetailScreen', {
-      eventName: item.event?.japanese_name || ''
+      eventName: item.event?.japanese_name || '',
+      prevStatusBarColor: cardColors[0]
     });
 
   const goToOtherEvent = () =>
     navigation.navigate('EventDetailScreen', {
-      eventName: item.other_event?.japanese_name || ''
+      eventName: item.other_event?.japanese_name || '',
+      prevStatusBarColor: cardColors[0]
     });
 
   /**
    * Navigate to Idol Detail Screen
    */
   const navigateToIdolDetail = () => {
-    navigation.navigate('IdolDetailScreen', { name: item.idol.name });
+    navigation.navigate('IdolDetailScreen', {
+      name: item.idol.name,
+      prevStatusBarColor: cardColors[0]
+    });
   };
 
   const RenderImage = ({
@@ -188,7 +192,7 @@ const CardDetailScreen: React.FC<CardDetailScreenProps> = ({
                 text: dayjs(item.release_date).format('LL')
               }}
             />
-            {Boolean(propertyLine) && <Text>{propertyLine}</Text>}
+            {Boolean(propertyLine) && <Caption>{propertyLine}</Caption>}
 
             {!!item.skill && (
               <>
@@ -200,8 +204,7 @@ const CardDetailScreen: React.FC<CardDetailScreenProps> = ({
                   item1={{ flex: 1, text: '' }}
                   item2={{
                     flex: 2,
-                    text: item.skill_details || '',
-                    textStyle: styles.subtitleText
+                    text: item.skill_details || ''
                   }}
                 />
               </>
@@ -217,8 +220,7 @@ const CardDetailScreen: React.FC<CardDetailScreenProps> = ({
                   item1={{ flex: 1, text: '' }}
                   item2={{
                     flex: 2,
-                    text: item.center_skill_details || '',
-                    textStyle: styles.subtitleText
+                    text: item.center_skill_details || ''
                   }}
                 />
               </>
@@ -229,22 +231,19 @@ const CardDetailScreen: React.FC<CardDetailScreenProps> = ({
                 <TextRow
                   item1={{
                     text: 'Event',
-                    flex: 1,
-                    textStyle: Fonts.style.normal
+                    flex: 1
                   }}
                   item2={{
                     text: item.event.japanese_name,
-                    flex: 4,
-                    textStyle: Fonts.style.normal
+                    flex: 2
                   }}
                 />
                 {item.event.english_name !== null && (
                   <TextRow
-                    item1={{ text: '', flex: 1, textStyle: Fonts.style.normal }}
+                    item1={{ text: '', flex: 1 }}
                     item2={{
                       text: item.event.english_name || '',
-                      flex: 4,
-                      textStyle: Fonts.style.normal
+                      flex: 2
                     }}
                   />
                 )}
@@ -262,13 +261,11 @@ const CardDetailScreen: React.FC<CardDetailScreenProps> = ({
                     <TextRow
                       item1={{
                         text: '',
-                        flex: 1,
-                        textStyle: Fonts.style.normal
+                        flex: 1
                       }}
                       item2={{
                         text: item.other_event.english_name || '',
-                        flex: 4,
-                        textStyle: Fonts.style.normal
+                        flex: 2
                       }}
                     />
                     <TouchableRipple
@@ -291,10 +288,10 @@ const CardDetailScreen: React.FC<CardDetailScreenProps> = ({
                 <View style={AppStyles.row}>
                   <Icon
                     name='ios-heart'
-                    size={Metrics.icons.medium}
+                    size={Metrics.icons.small}
                     color={Colors.red600}
                   />
-                  <Text style={Fonts.style.normal}> : {item.hp}</Text>
+                  <Text>: {item.hp}</Text>
                 </View>
                 <View style={styles.buttonRow}>
                   <StatButton id={0} text='Level 1' stats={minStats} />
@@ -361,9 +358,6 @@ const styles = StyleSheet.create({
   rightHeaderImage: {
     height: 70,
     width: 70
-  },
-  subtitleText: {
-    fontSize: Fonts.size.medium
   },
   whiteText: {
     color: Colors.white

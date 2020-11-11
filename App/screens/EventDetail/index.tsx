@@ -99,14 +99,20 @@ const EventDetailScreen: React.FC<EventDetailScreenProps> = ({
    * Navigate to destination screen
    */
   const goToSongDetail = (song: SongObject) => () => {
-    navigation.navigate('SongDetailScreen', { item: song });
+    navigation.navigate('SongDetailScreen', {
+      item: song,
+      prevStatusBarColor: colors.card
+    });
   };
 
   /**
    * Navigate to destination screen
    */
   const goToCardDetail = (card: CardObject) => () => {
-    navigation.navigate('CardDetailScreen', { item: card });
+    navigation.navigate('CardDetailScreen', {
+      item: card,
+      prevStatusBarColor: colors.card
+    });
   };
 
   const goToEnTracker = () => {

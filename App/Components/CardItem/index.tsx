@@ -97,21 +97,22 @@ const CardItem: React.FC<CardItemType> = ({ item, onPress }) => {
 
 const styles = StyleSheet.create({
   container: {
-    borderRadius: 4,
+    borderRadius: Metrics.smallMargin,
     elevation: 5,
     margin: Metrics.smallMargin,
+    overflow: 'hidden',
     width: itemWidth
   },
   info: {
-    borderBottomLeftRadius: 4,
-    borderBottomRightRadius: 4,
+    borderBottomLeftRadius: Metrics.smallMargin,
+    borderBottomRightRadius: Metrics.smallMargin,
     flexDirection: 'row',
     justifyContent: 'space-around',
     padding: Metrics.smallMargin
   },
   topRadius: {
-    borderTopLeftRadius: 4,
-    borderTopRightRadius: 4
+    borderTopLeftRadius: Metrics.smallMargin,
+    borderTopRightRadius: Metrics.smallMargin
   }
 });
 

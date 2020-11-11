@@ -47,10 +47,12 @@ export default StyleSheet.create({
   },
   searchHeader: {
     backgroundColor: Colors.grey200,
+    borderRadius: Metrics.baseMargin,
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginVertical: 6
+    marginLeft: Metrics.baseMargin,
+    marginVertical: Metrics.smallMargin
   },
   searchInput: {
     paddingLeft: 10,

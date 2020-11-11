@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { View, StyleSheet } from 'react-native';
 import { Text, TouchableRipple, Surface } from 'react-native-paper';
 import FastImage, { OnLoadEvent } from 'react-native-fast-image';
+
 import { Metrics, Fonts, AppStyles } from '~/Theme';
 import { findColorByAttribute } from '~/Utils';
 import type { IdolObject } from '~/Utils/types';
@@ -39,8 +40,8 @@ const IdolItem: React.FC<Props> = ({ item, onPress }) => {
   };
 
   return (
-    <Surface style={[styles.container, { backgroundColor: attColors[1] }]}>
-      <TouchableRipple borderless rippleColor={attColors[0]} onPress={onPress}>
+    <Surface style={[styles.container, { backgroundColor: attColors[0] }]}>
+      <TouchableRipple borderless rippleColor={attColors[1]} onPress={onPress}>
         <View style={[AppStyles.center, styles.content]}>
           <FastImage
             source={{

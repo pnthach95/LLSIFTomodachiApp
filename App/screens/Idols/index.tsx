@@ -1,6 +1,6 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { View, SectionList, FlatList, Alert, StyleSheet } from 'react-native';
-import { Title, Divider, useTheme } from 'react-native-paper';
+import { Title, useTheme } from 'react-native-paper';
 
 import UserContext from '~/Context/UserContext';
 import ConnectStatus from '~/Components/ConnectStatus';
@@ -112,15 +112,6 @@ const IdolsScreen: React.FC<IdolsScreenProps> = ({ navigation }) => {
     <Title style={styles.sectionText}>{section.title}</Title>
   );
 
-  const sectionSeparator = (data: { leadingItem: { key: string } }) => {
-    if (data.leadingItem && data.leadingItem.key === 'Other') return null;
-    const styleSeperator = {
-      backgroundColor: 'white',
-      marginBottom: data.leadingItem ? 20 : 0
-    };
-    return <Divider style={styleSeperator} />;
-  };
-
   if (isLoading) {
     return <LoadingScreen />;
   }
@@ -137,7 +128,6 @@ const IdolsScreen: React.FC<IdolsScreenProps> = ({ navigation }) => {
         stickySectionHeadersEnabled={false}
         ListHeaderComponent={<View style={styles.height10} />}
         ListFooterComponent={<View style={styles.height10} />}
-        SectionSeparatorComponent={sectionSeparator}
         renderItem={renderFlatList}
       />
     </View>
@@ -146,13 +136,14 @@ const IdolsScreen: React.FC<IdolsScreenProps> = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   height10: {
-    height: 10
+    height: Metrics.baseMargin
   },
   list: {
     padding: Metrics.smallMargin
   },
   sectionText: {
-    paddingLeft: Metrics.baseMargin
+    paddingLeft: Metrics.baseMargin,
+    paddingTop: Metrics.doubleBaseMargin
   }
 });
 

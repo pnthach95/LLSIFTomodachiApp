@@ -8,11 +8,13 @@ import * as Sentry from '@sentry/react-native';
 import dayjs from 'dayjs';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
 import duration from 'dayjs/plugin/duration';
+import customParseFormat from 'dayjs/plugin/customParseFormat';
 
 import { FirebaseTopic } from '~/Config';
 import { UserProvider } from '~/Context/UserContext';
 import Routes from './routes';
 
+dayjs.extend(customParseFormat);
 dayjs.extend(duration);
 dayjs.extend(localizedFormat);
 

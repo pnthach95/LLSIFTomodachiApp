@@ -120,7 +120,7 @@ const IdolDetailScreen: React.FC<IdolDetailScreenProps> = ({
       ) : item ? (
         <ScrollView showsVerticalScrollIndicator={false}>
           <View style={styles.imageRow}>
-            {images[0] && images[0].includes('.png') && (
+            {!!images[0] && images[0].includes('.png') && (
               <FastImage
                 source={{
                   uri: AddHTTPS(images[0]),
@@ -133,27 +133,31 @@ const IdolDetailScreen: React.FC<IdolDetailScreenProps> = ({
                 }}
               />
             )}
-            <FastImage
-              source={{
-                uri: AddHTTPS(images[1]),
-                priority: FastImage.priority.high
-              }}
-              resizeMode={FastImage.resizeMode.contain}
-              style={{
-                width: Metrics.images.itemWidth * 1.5,
-                height: Metrics.images.itemWidth * 1.5
-              }}
-            />
+            {!!images[1] && images[1].includes('.png') && (
+              <FastImage
+                source={{
+                  uri: AddHTTPS(images[1]),
+                  priority: FastImage.priority.high
+                }}
+                resizeMode={FastImage.resizeMode.contain}
+                style={{
+                  width: Metrics.images.itemWidth * 1.5,
+                  height: Metrics.images.itemWidth * 1.5
+                }}
+              />
+            )}
           </View>
           <View style={styles.scrollView}>
             {!!item.school && (
               <InfoLine title={'School'} content={item.school} />
             )}
-            <InfoLine title={'Attribute'} content={item.attribute as string} />
+            {!!item.attribute && (
+              <InfoLine title={'Attribute'} content={item.attribute} />
+            )}
             {!!item.birthday && (
               <InfoLine
                 title={'Birthday'}
-                content={dayjs(item.birthday, 'MM-DD').format('MMM Do')}
+                content={dayjs(item.birthday, 'MM-DD').format('MMMM DD')}
               />
             )}
             {!!item.astrological_sign && (
@@ -211,7 +215,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around'
   },
   rightHeaderImage: {
-    height: 70,
+    height: 40,
     width: 70
   },
   scrollView: {

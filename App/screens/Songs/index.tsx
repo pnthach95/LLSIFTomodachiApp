@@ -103,7 +103,10 @@ const SongsScreen: React.FC<SongsScreenProps> = ({ navigation }) => {
      * Navigate to Song Detail Screen
      */
     const navigateToSongDetail = () => {
-      navigation.navigate('SongDetailScreen', { item });
+      navigation.navigate('SongDetailScreen', {
+        item,
+        prevStatusBarColor: colors.card
+      });
     };
 
     return <SongItem item={item} onPress={navigateToSongDetail} />;

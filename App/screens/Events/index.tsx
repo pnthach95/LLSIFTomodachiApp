@@ -95,7 +95,8 @@ const EventsScreen: React.FC<EventsScreenProps> = ({ navigation }) => {
      */
     const navigateToEventDetail = () => {
       navigation.navigate('EventDetailScreen', {
-        eventName: item.japanese_name
+        eventName: item.japanese_name,
+        prevStatusBarColor: colors.card
       });
     };
 

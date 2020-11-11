@@ -116,7 +116,10 @@ const CardsScreen: React.FC<CardsScreenProps> = ({ navigation }) => {
      * Navigate to Card Detail Screen
      */
     const navigateToCardDetail = () => {
-      navigation.navigate('CardDetailScreen', { item });
+      navigation.navigate('CardDetailScreen', {
+        item,
+        prevStatusBarColor: colors.card
+      });
     };
 
     if (column === 1) {

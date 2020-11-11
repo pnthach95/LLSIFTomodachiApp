@@ -6,8 +6,7 @@ import {
   TouchableRipple,
   Button,
   Text,
-  ProgressBar,
-  useTheme
+  ProgressBar
 } from 'react-native-paper';
 import FastImage from 'react-native-fast-image';
 import { responsiveWidth } from 'react-native-responsive-dimensions';
@@ -34,7 +33,6 @@ const SongDetailScreen: React.FC<SongDetailScreenProps> = ({
   route,
   navigation
 }) => {
-  const { colors } = useTheme();
   const { item } = route.params;
   const { state } = useContext(UserContext);
   const [buttonID, setButtonID] = useState(0);
@@ -84,7 +82,7 @@ const SongDetailScreen: React.FC<SongDetailScreenProps> = ({
     }
     setMaster([item.master_notes || 0, masterArray]);
     setCurrentStats([item.easy_notes, easyArray]);
-    return () => setStatusBar(colors.card);
+    return () => setStatusBar(route.params.prevStatusBarColor);
   }, []);
 
   /**
@@ -111,7 +109,8 @@ const SongDetailScreen: React.FC<SongDetailScreenProps> = ({
   const navigateToEventDetail = () => {
     if (item.event?.japanese_name) {
       navigation.navigate('EventDetailScreen', {
-        eventName: item.event?.japanese_name
+        eventName: item.event?.japanese_name,
+        prevStatusBarColor: attributeColors[0]
       });
     }
   };

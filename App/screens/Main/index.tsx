@@ -1,6 +1,12 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { View, ScrollView, Platform, StyleSheet } from 'react-native';
-import { Text, Title, Divider, TouchableRipple } from 'react-native-paper';
+import {
+  Text,
+  Title,
+  Divider,
+  TouchableRipple,
+  useTheme
+} from 'react-native-paper';
 import FastImage, { OnLoadEvent } from 'react-native-fast-image';
 import VersionNumber from 'react-native-version-number';
 import dayjs from 'dayjs';
@@ -18,6 +24,7 @@ import type { EventObject, MainScreenProps } from '~/Utils/types';
  * Main Screen
  */
 const MainScreen: React.FC<MainScreenProps> = ({ navigation }) => {
+  const { colors } = useTheme();
   const { state } = useContext(UserContext);
   const { ENEvent, JPEvent } = state.cachedData;
   const [version, setVersion] = useState<{
@@ -85,7 +92,8 @@ const MainScreen: React.FC<MainScreenProps> = ({ navigation }) => {
    */
   const navigateToEventDetail = (event: EventObject) => {
     navigation.navigate('EventDetailScreen', {
-      eventName: event.japanese_name
+      eventName: event.japanese_name,
+      prevStatusBarColor: colors.card
     });
   };
 

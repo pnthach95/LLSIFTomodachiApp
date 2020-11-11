@@ -1,19 +1,24 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { View, ScrollView, StyleSheet } from 'react-native';
-import { Text, Switch, TouchableRipple } from 'react-native-paper';
+import { Text, Switch, TouchableRipple, useTheme } from 'react-native-paper';
 import firebase from 'react-native-firebase';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import VersionNumber from 'react-native-version-number';
 
 import UserContext from '~/Context/UserContext';
 import { Fonts, Metrics, Colors } from '~/Theme';
-import { saveSettings } from '~/Utils';
+import { saveSettings, setStatusBar } from '~/Utils';
 import type { AppOptions, MoreScreenProps } from '~/Utils/types';
 
 const iconSize = 30;
 
 const MoreScreen: React.FC<MoreScreenProps> = ({ navigation }) => {
   const { state, dispatch } = useContext(UserContext);
+  const { colors } = useTheme();
+
+  useEffect(() => {
+    setStatusBar(colors.card);
+  }, [state.options.isDark]);
 
   /**
    * Toggle worldwide option

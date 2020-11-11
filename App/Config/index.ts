@@ -47,6 +47,7 @@ export const RELEASE_NOTE = `This app is free and open-source.
 Change log:
 - Version 0.4.0:
   • Rework UI.
+  • Support dark theme.
 
 - Version 0.3.4:
   • Small bugfix.

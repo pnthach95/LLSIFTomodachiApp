@@ -73,15 +73,16 @@ type RootStackParamList = {
   SplashScreen: undefined;
   IdolsScreen: undefined;
   SongsScreen: undefined;
-  CardDetailScreen: { item: CardObject };
-  EventDetailScreen: { eventName: string };
+  CardDetailScreen: { item: CardObject; prevStatusBarColor: string };
+  EventDetailScreen: { eventName: string; prevStatusBarColor: string };
   EventTrackerScreen: { isWW: boolean; name: string };
-  IdolDetailScreen: { name: string };
-  SongDetailScreen: { item: SongObject };
+  IdolDetailScreen: { name: string; prevStatusBarColor: string };
+  SongDetailScreen: { item: SongObject; prevStatusBarColor: string };
   AboutMeScreen: undefined;
 };
 
 type SplashScreenProps = StackScreenProps<RootStackParamList, 'SplashScreen'>;
+type IdolsScreenProps = StackScreenProps<RootStackParamList, 'IdolsScreen'>;
 type SongsScreenProps = StackScreenProps<RootStackParamList, 'SongsScreen'>;
 type CardDetailScreenProps = StackScreenProps<
   RootStackParamList,
@@ -373,8 +374,8 @@ type IdolObject = {
   hobbies?: string;
   attribute?: AttributeType;
   year?: string;
-  main_unit?: string;
-  sub_unit?: string;
+  main_unit?: MainUnitNames;
+  sub_unit?: SubUnitNames;
   cv?: CVObject;
   summary?: string;
   website_url: string;

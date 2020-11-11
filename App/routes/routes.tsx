@@ -181,7 +181,13 @@ const Routes = (): JSX.Element => {
                     headerShown: false
                   }}
                 />
-                <Stack.Screen name='IdolsScreen' component={IdolsScreen} />
+                <Stack.Screen
+                  name='IdolsScreen'
+                  component={IdolsScreen}
+                  options={{
+                    title: 'School Idols'
+                  }}
+                />
                 <Stack.Screen
                   name='SongsScreen'
                   component={SongsScreen}

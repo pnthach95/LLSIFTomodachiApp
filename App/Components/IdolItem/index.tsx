@@ -41,7 +41,7 @@ const IdolItem: React.FC<Props> = ({ item, onPress }) => {
   return (
     <Surface style={[styles.container, { backgroundColor: attColors[1] }]}>
       <TouchableRipple borderless rippleColor={attColors[0]} onPress={onPress}>
-        <View style={AppStyles.center}>
+        <View style={[AppStyles.center, styles.content]}>
           <FastImage
             source={{
               uri: item.chibi,
@@ -63,8 +63,11 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     elevation: 5,
     margin: Metrics.smallMargin,
-    padding: Metrics.smallMargin,
+    overflow: 'hidden',
     width: smallItemWidth
+  },
+  content: {
+    padding: Metrics.smallMargin
   }
 });
 

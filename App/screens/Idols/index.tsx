@@ -39,16 +39,18 @@ const IdolsScreen: React.FC<IdolsScreenProps> = ({ navigation }) => {
       const res = await LLSIFService.fetchIdolList();
       const array: SchoolObject[] = [];
       schools.forEach((school) => {
-        const item = {
-          title: school,
-          data: [
-            {
-              key: school,
-              list: res.filter((value) => value?.school === school)
-            }
-          ]
-        };
-        if (item.data[0].list.length !== 0) array.push(item);
+        if (school.length > 0) {
+          const item = {
+            title: school,
+            data: [
+              {
+                key: school,
+                list: res.filter((value) => value?.school === school)
+              }
+            ]
+          };
+          if (item.data[0].list.length !== 0) array.push(item);
+        }
       });
       const item = {
         title: 'Other',

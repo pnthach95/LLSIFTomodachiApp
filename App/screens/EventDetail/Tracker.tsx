@@ -8,13 +8,13 @@ import {
   ViewStyle
 } from 'react-native';
 import { Text, useTheme } from 'react-native-paper';
-import tinycolor from 'color';
+import { responsiveHeight } from 'react-native-responsive-dimensions';
 import { VictoryChart, VictoryLine, VictoryAxis } from 'victory-native';
 
 import LoadingScreen from '../Loading';
 import UserContext from '~/Context/UserContext';
 import LLSIFdotnetService from '~/Services/LLSIFdotnetService';
-import { AppStyles, Colors, Fonts } from '~/Theme';
+import { AppStyles, Colors, Fonts, Metrics } from '~/Theme';
 import type { EventTrackerScreenProps } from '~/Utils/types';
 
 type xyObject = { x: string; y: number };
@@ -31,6 +31,18 @@ type TrackerDataProps = {
 };
 
 const chartPadding = { left: 70, top: 20, bottom: 30, right: 20 };
+const colorArr = [
+  Colors.red400,
+  Colors.blue500,
+  Colors.green500,
+  Colors.orange500,
+  Colors.purpleA400,
+  Colors.teal500,
+  Colors.lime600,
+  Colors.lightGreen600,
+  Colors.cyan700,
+  Colors.indigo600
+];
 
 const Row = ({ data, style }: { data: string[]; style?: ViewStyle | null }) => {
   const { colors } = useTheme();
@@ -105,18 +117,20 @@ const Tracker: React.FC<EventTrackerScreenProps> = ({ navigation, route }) => {
       }
     }
     const chart = [];
+    let colorCount = 0;
     for (let i = 2; i < table[0].length; i += 2) {
-      const row: xyObject[] = [];
-      for (let j = 1; j < table.length; j++) {
-        row.push({ x: table[j][0], y: Number(table[j][i]) });
+      if (table[0][i].startsWith('t')) {
+        const row: xyObject[] = [];
+        for (let j = 1; j < table.length; j++) {
+          row.push({ x: table[j][0], y: Number(table[j][i]) });
+        }
+        chart.push({
+          seriesName: table[0][i],
+          data: row,
+          color: colorArr[colorCount]
+        });
+        colorCount += 1;
       }
-      chart.push({
-        seriesName: table[0][i],
-        data: row,
-        color: tinycolor({ r: 25 * i, g: 17 * i, b: 37 * i })
-          .rotate(5 * i)
-          .hex()
-      });
     }
     setTrackerData({ table, chart });
     setIsLoading(false);
@@ -140,21 +154,31 @@ const Tracker: React.FC<EventTrackerScreenProps> = ({ navigation, route }) => {
           <Text style={Fonts.style.center}>Data from llsif.net</Text>
           {trackerData.chart !== undefined && (
             <View style={AppStyles.screen}>
-              <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-                <VictoryChart padding={chartPadding}>
-                  {trackerData.chart.map((value) => (
-                    <VictoryLine
-                      key={value.seriesName}
-                      data={value.data || []}
-                      style={{
-                        data: { stroke: value.color }
-                      }}
+              <VictoryChart
+                padding={chartPadding}
+                height={responsiveHeight(33)}>
+                {trackerData.chart.map((value) => (
+                  <VictoryLine
+                    key={value.seriesName}
+                    data={value.data || []}
+                    style={{
+                      data: { stroke: value.color }
+                    }}
+                  />
+                ))}
+                <VictoryAxis dependentAxis style={axisStyle} />
+                <VictoryAxis style={axisStyle} fixLabelOverlap={true} />
+              </VictoryChart>
+              <View style={styles.row}>
+                {trackerData.chart.map((value) => (
+                  <View key={value.seriesName} style={AppStyles.row}>
+                    <View
+                      style={[styles.block, { backgroundColor: value.color }]}
                     />
-                  ))}
-                  <VictoryAxis dependentAxis style={axisStyle} />
-                  <VictoryAxis style={axisStyle} fixLabelOverlap={true} />
-                </VictoryChart>
-              </ScrollView>
+                    <Text>{value.seriesName}</Text>
+                  </View>
+                ))}
+              </View>
             </View>
           )}
           <View style={AppStyles.screen}>
@@ -179,11 +203,23 @@ const Tracker: React.FC<EventTrackerScreenProps> = ({ navigation, route }) => {
 };
 
 const styles = StyleSheet.create({
+  block: {
+    height: Metrics.doubleBaseMargin,
+    marginRight: Metrics.baseMargin,
+    width: Metrics.doubleBaseMargin
+  },
   border: {
     borderWidth: StyleSheet.hairlineWidth
   },
   head: {
     backgroundColor: Colors.grey400
+  },
+  row: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-around',
+    padding: Metrics.baseMargin
   }
 });
 

@@ -96,13 +96,15 @@ const fetchIdolListByPageSize = async () => {
 /**
  * [Fetch idol list](https://github.com/MagiCircles/SchoolIdolAPI/wiki/API-Idols#get-the-list-of-idols)
  */
-const fetchIdolList = (schools: string[] | null = null): IdolObject[] => {
+const fetchIdolList = async (
+  schools: string[] | null = null
+): Promise<IdolObject[]> => {
   if (schools === null) {
-    const res = fetchIdolListByPageSize();
+    const res = await fetchIdolListByPageSize();
     if (Array.isArray(res)) return res;
     throw Error('Failed to get idol list');
   } else {
-    const res = fetchIdolListBySchool(schools);
+    const res = await fetchIdolListBySchool(schools);
     if (Array.isArray(res)) return res;
     throw Error('Failed to get idol list');
   }

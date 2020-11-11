@@ -121,6 +121,7 @@ const LLSIFTab = () => {
 
   return (
     <Tab.Navigator
+      backBehavior='initialRoute'
       tabBar={(props) => (
         //@ts-ignore
         <AnimatedTabBar tabs={tabs} style={tabStyle} {...props} />

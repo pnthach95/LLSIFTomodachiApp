@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { View, TextStyle } from 'react-native';
-import { Text } from 'react-native-paper';
-import { Fonts, AppStyles } from '~/Theme';
+import { Paragraph } from 'react-native-paper';
+import { AppStyles } from '~/Theme';
 
 type TextRowType = {
   item1: {
@@ -25,14 +25,12 @@ const TextRow: React.FC<TextRowType> = ({ item1, item2 }) => {
   return (
     <View style={AppStyles.row}>
       <View style={{ flex: item1.flex }}>
-        <Text style={[Fonts.style.normal, item1.textStyle]}>{item1.text}</Text>
+        <Paragraph style={item1.textStyle}>{item1.text}</Paragraph>
       </View>
       <View style={{ flex: item2.flex }}>
-        <Text
-          onPress={item2.onPress}
-          style={[Fonts.style.normal, item2.textStyle]}>
+        <Paragraph onPress={item2.onPress} style={item2.textStyle}>
           {item2.text}
-        </Text>
+        </Paragraph>
       </View>
     </View>
   );

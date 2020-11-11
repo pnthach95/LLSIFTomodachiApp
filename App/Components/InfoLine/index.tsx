@@ -1,15 +1,16 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { View, StyleSheet } from 'react-native';
-import { Text } from 'react-native-paper';
+import { Text, Caption } from 'react-native-paper';
 import { openLink } from '~/Utils';
-import { Metrics, Fonts } from '~/Theme';
+import { Metrics } from '~/Theme';
 
 type InfoLineType = {
   title: string;
   content: string;
-  twitter: string | null;
-  instagram: string | null;
-  myanimelist: string | null;
+  twitter?: string | null;
+  instagram?: string | null;
+  myanimelist?: string | null;
 };
 
 /**
@@ -32,11 +33,13 @@ const InfoLine: React.FC<InfoLineType> = ({
       openLink(`https://www.instagram.com/${instagram}`);
     }
   };
-  const openMAL = () => openLink(myanimelist);
+  const openMAL = () => {
+    if (myanimelist) openLink(myanimelist);
+  };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>{title}</Text>
+      <Caption>{title}</Caption>
       <Text selectable style={styles.content}>
         {content}
       </Text>
@@ -73,16 +76,19 @@ const styles = StyleSheet.create({
     marginVertical: Metrics.smallMargin
   },
   content: {
-    ...Fonts.style.normal,
     textAlign: 'justify'
   },
   link: {
     textDecorationLine: 'underline'
-  },
-  title: {
-    fontSize: Fonts.size.small,
-    fontWeight: 'bold'
   }
 });
+
+InfoLine.propTypes = {
+  content: PropTypes.any,
+  instagram: PropTypes.any,
+  myanimelist: PropTypes.any,
+  title: PropTypes.any,
+  twitter: PropTypes.any
+};
 
 export default InfoLine;

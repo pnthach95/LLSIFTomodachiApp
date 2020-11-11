@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { Text, View, ScrollView, StatusBar } from 'react-native';
+import { View, ScrollView, StatusBar } from 'react-native';
+import { Text } from 'react-native-paper';
 import FastImage from 'react-native-fast-image';
 import dayjs from 'dayjs';
 

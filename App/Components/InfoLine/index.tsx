@@ -74,14 +74,12 @@ const styles = StyleSheet.create({
   },
   content: {
     ...Fonts.style.normal,
-    ...Fonts.style.black,
     textAlign: 'justify'
   },
   link: {
     textDecorationLine: 'underline'
   },
   title: {
-    ...Fonts.style.black,
     fontSize: Fonts.size.small,
     fontWeight: 'bold'
   }

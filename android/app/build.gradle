@@ -132,8 +132,8 @@ android {
         applicationId "com.pnthach95.llsiftomodachi"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 13
-        versionName "0.3.4"
+        versionCode 15
+        versionName "0.4.0"
         multiDexEnabled true
     }
     splits {

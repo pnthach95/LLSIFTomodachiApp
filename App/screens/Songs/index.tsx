@@ -18,7 +18,7 @@ import MainUnitRow from '~/Components/MainUnitRow';
 import OrderingRow from '~/Components/OrderingRow';
 import AttributeRow from '~/Components/AttributeRow';
 import LLSIFService from '~/Services/LLSIFService';
-import { AppStyles, Images, Metrics, Colors, Fonts } from '~/Theme';
+import { AppStyles, Images, Metrics, Fonts } from '~/Theme';
 import { OrderingGroup } from '~/Config';
 import type {
   AttributeType,
@@ -332,7 +332,6 @@ const SongsScreen: React.FC<SongsScreenProps> = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   filterContainer: {
-    backgroundColor: Colors.white,
     elevation: 5,
     padding: 10
   },

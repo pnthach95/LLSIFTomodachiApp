@@ -45,7 +45,7 @@ const fetchCardList = async (
   return null;
 };
 
-const getIdols = async (school): Promise<IdolObject[]> => {
+const getIdols = async (school: string): Promise<IdolObject[]> => {
   const response = await LLSIFApiClient.get<{ results: IdolObject[] }>(
     Config.IDOLS,
     { school }
@@ -56,7 +56,9 @@ const getIdols = async (school): Promise<IdolObject[]> => {
   return [];
 };
 
-const fetchIdolListBySchool = async (schools: any[]): Promise<IdolObject[]> => {
+const fetchIdolListBySchool = async (
+  schools: string[]
+): Promise<IdolObject[]> => {
   const data = [];
   for (let i = 0; i < schools.length; i += 1) {
     const school = schools[i];
@@ -94,20 +96,16 @@ const fetchIdolListByPageSize = async () => {
 /**
  * [Fetch idol list](https://github.com/MagiCircles/SchoolIdolAPI/wiki/API-Idols#get-the-list-of-idols)
  */
-const fetchIdolList = (schools = null) => {
-  return new Promise((resolve, reject) => {
-    if (schools === null) {
-      fetchIdolListByPageSize().then((res) => {
-        if (res.length === 0) reject(Error('Failed to get idol list'));
-        resolve(res);
-      });
-    } else {
-      fetchIdolListBySchool(schools).then((res) => {
-        if (res.length === 0) reject(Error('Failed to get idol list'));
-        resolve(res);
-      });
-    }
-  });
+const fetchIdolList = (schools: string[] | null = null): IdolObject[] => {
+  if (schools === null) {
+    const res = fetchIdolListByPageSize();
+    if (Array.isArray(res)) return res;
+    throw Error('Failed to get idol list');
+  } else {
+    const res = fetchIdolListBySchool(schools);
+    if (Array.isArray(res)) return res;
+    throw Error('Failed to get idol list');
+  }
 };
 
 /**

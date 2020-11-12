@@ -1,6 +1,6 @@
 # Love Live School Idol Festival Tomodachi app
 
-This project is a Love Live School Idol Festival app using data from [School Idol Tomodachi](http://schoolido.lu/)
+This project is a Love Live School Idol Festival app using data from [School Idol Tomodachi](https://schoolido.lu/) and [LLSIF.net](https://llsif.net/)
 
 [![Download APK file here](https://img.shields.io/github/downloads/pnthach95/LLSIFTomodachiApp/total.svg?style=flat-square)](https://github.com/pnthach95/LLSIFTomodachiApp/releases)
 [![GitHub issues](https://img.shields.io/github/issues/pnthach95/LLSIFTomodachiApp.svg?style=flat-square)](https://github.com/pnthach95/LLSIFTomodachiApp/issues)
@@ -10,9 +10,9 @@ This project is a Love Live School Idol Festival app using data from [School Ido
 The project contains:
 
 - [React Native](https://reactnative.dev/) (v0.63.3)
-- [React Navigation](https://reactnavigation.org/) (v5.8.6)
+- [React Navigation](https://reactnavigation.org/) (v5.8.9)
 - [Animated TabBar](https://github.com/gorhom/react-native-animated-tabbar) (v2.1.0)
-- [React Native Paper](https://callstack.github.io/react-native-paper/) (v4.3.0)
+- [React Native Paper](https://callstack.github.io/react-native-paper/) (v4.3.1)
 - [apisauce](https://github.com/infinitered/apisauce) (v2.0.0)
 - [React Native Firebase](http://rnfirebase.io) (v5.6.0, for push notification)
 - [React Native Fast Image](https://github.com/DylanVann/react-native-fast-image) (v8.3.3)
@@ -23,7 +23,7 @@ The project contains:
 - [React Native Version Number](https://github.com/APSL/react-native-version-number) (v0.3.6)
 - [React Native Async Storage](https://react-native-async-storage.github.io/async-storage/) (v1.13.2)
 - [react-native-modalfy](https://colorfy-software.gitbook.io/react-native-modalfy/) (v2.1.0)
-- [dayjs](https://day.js.org/) (v1.9.5)
+- [dayjs](https://day.js.org/) (v1.9.6)
 - And more...
 
 ## Directory layout
@@ -56,22 +56,19 @@ Assuming you have all the requirements installed, you can setup and run the proj
 
 ## Review
 
-![01](docs/images/0.2.3/01.png)
-![02](docs/images/0.2.3/02.png)
-![03](docs/images/0.2.3/03.png)
-![04](docs/images/0.2.3/04.png)
-![05](docs/images/0.2.3/05.png)
-![06](docs/images/0.2.3/06.png)
-![07](docs/images/0.2.3/07.png)
-![08](docs/images/0.2.3/08.png)
-![09](docs/images/0.2.3/09.png)
-![10](docs/images/0.2.3/10.png)
-![11](docs/images/0.2.3/11.png)
-![12](docs/images/0.2.3/12.png)
-
-## WIP:
-
-- Dark mode.
+| Light                           | Dark                                 |
+| ------------------------------- | ------------------------------------ |
+| ![01](docs/images/0.4.0/01.png) | ![01](docs/images/0.4.0/01_dark.png) |
+| ![02](docs/images/0.4.0/02.png) | ![02](docs/images/0.4.0/02_dark.png) |
+| ![03](docs/images/0.4.0/03.png) | ![03](docs/images/0.4.0/03_dark.png) |
+| ![04](docs/images/0.4.0/04.png) | ![04](docs/images/0.4.0/04_dark.png) |
+| ![05](docs/images/0.4.0/05.png) | ![05](docs/images/0.4.0/05_dark.png) |
+| ![06](docs/images/0.4.0/06.png) | ![06](docs/images/0.4.0/06_dark.png) |
+| ![07](docs/images/0.4.0/07.png) | ![07](docs/images/0.4.0/07_dark.png) |
+| ![08](docs/images/0.4.0/08.png) | ![08](docs/images/0.4.0/08_dark.png) |
+| ![09](docs/images/0.4.0/09.png) | ![09](docs/images/0.4.0/09_dark.png) |
+| ![10](docs/images/0.4.0/10.png) | ![10](docs/images/0.4.0/10_dark.png) |
+| ![11](docs/images/0.4.0/11.png) | ![11](docs/images/0.4.0/11_dark.png) |
 
 ## Author
 

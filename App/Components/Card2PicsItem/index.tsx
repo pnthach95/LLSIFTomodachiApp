@@ -108,14 +108,15 @@ const Card2PicsItem: React.FC<Card2PicsItemType> = ({ item, onPress }) => {
 
 const styles = StyleSheet.create({
   container: {
-    borderRadius: 4,
+    borderRadius: Metrics.smallMargin,
     elevation: 5,
     margin: Metrics.smallMargin,
+    overflow: 'hidden',
     width: Metrics.screenWidth - Metrics.smallMargin * 4
   },
   info: {
-    borderBottomLeftRadius: 4,
-    borderBottomRightRadius: 4,
+    borderBottomLeftRadius: Metrics.smallMargin,
+    borderBottomRightRadius: Metrics.smallMargin,
     flexDirection: 'row'
   },
   infoRight: {

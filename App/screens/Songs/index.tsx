@@ -8,7 +8,6 @@ import {
   StyleSheet
 } from 'react-native';
 import { Appbar, Surface, Text, Button, useTheme } from 'react-native-paper';
-import PropTypes from 'prop-types';
 import _ from 'lodash';
 
 import ConnectStatus from '~/Components/ConnectStatus';
@@ -25,25 +24,11 @@ import type {
   BooleanOrEmpty,
   MainUnitNames,
   SongObject,
+  SongSearchParams,
   SongsScreenProps
 } from '~/Utils/types';
 
-type FilterType = {
-  ordering: string;
-  page_size: number;
-  page: number;
-  expand_event: string;
-  selectedOrdering?: string;
-  isReverse?: boolean;
-  search?: string;
-  attribute?: AttributeType;
-  is_event?: BooleanOrEmpty;
-  is_daily_rotation?: BooleanOrEmpty;
-  available?: BooleanOrEmpty;
-  main_unit?: MainUnitNames;
-};
-
-const defaultFilter: FilterType = {
+const defaultFilter: SongSearchParams = {
   selectedOrdering: OrderingGroup.SONG[0].value,
   isReverse: true,
   ordering: '-id',
@@ -60,34 +45,18 @@ const defaultFilter: FilterType = {
 
 /**
  * [Song List Screen](https://github.com/MagiCircles/SchoolIdolAPI/wiki/API-Songs#get-the-list-of-songs)
- *
- * State:
- * - `isLoading`: Loading state
- * - `list`: Data for FlatList
- * - `isFilter`: Filter on/off
- * - `ordering`: Ordering by any field (See link above)
- * - `page_size`: Number of object per API call
- * - `page`: Page number
- * - `expand_event`: Will return the full Event object in the event field
- * - `search`: Keyword for search
- * - `attribute`: Attribute (None, Smile, Pure, Cool, All)
- * - `is_event`: Is event (None, True, False)
- * - `is_daily_rotation`: *TODO*
- * - `available`: *TODO*
- * - `main_unit`: Main unit (None, μ's, Aqours)
- * - `stopSearch`: Prevent calling API
- *
  */
 const SongsScreen: React.FC<SongsScreenProps> = ({ navigation }) => {
   const { colors } = useTheme();
   const [loading, setLoading] = useState(true);
   const [list, setList] = useState<SongObject[]>([]);
   const [isFilter, setIsFilter] = useState(false);
-  const [stopSearch, setStopSearch] = useState(false);
   const [searchOptions, setSearchOptions] = useState(defaultFilter);
 
   useEffect(() => {
-    getSongs();
+    if (searchOptions.page > 0) {
+      void getSongs();
+    }
   }, [searchOptions.page]);
 
   /**
@@ -111,31 +80,30 @@ const SongsScreen: React.FC<SongsScreenProps> = ({ navigation }) => {
 
     return <SongItem item={item} onPress={navigateToSongDetail} />;
   };
-  renderItem.propTypes = {
-    item: PropTypes.object.isRequired
-  };
 
   /**
    * Call when scrolling to the end of list.
    * stopSearch prevents calling getCards when no card was found (404).
    */
   const onEndReaching = () => {
-    if (stopSearch) return;
-    setSearchOptions({
-      ...searchOptions,
-      page: searchOptions.page + 1
-    });
+    if (searchOptions.page > 0) {
+      setSearchOptions({
+        ...searchOptions,
+        page: searchOptions.page + 1
+      });
+    }
   };
+
   const onEndReached = _.debounce(onEndReaching, 500);
 
   /**
    * Fetch song list
    */
-  const getSongs = () => {
+  const getSongs = async () => {
     const ordering =
       (searchOptions.isReverse ? '-' : '') +
       (searchOptions.selectedOrdering || '');
-    const theFilter: FilterType = {
+    const params: SongSearchParams = {
       ordering,
       page_size: searchOptions.page_size,
       page: searchOptions.page,
@@ -143,39 +111,44 @@ const SongsScreen: React.FC<SongsScreenProps> = ({ navigation }) => {
       // is_daily_rotation: this.state.is_daily_rotation
     };
     if (searchOptions.attribute !== '')
-      theFilter.attribute = searchOptions.attribute;
+      params.attribute = searchOptions.attribute;
     if (searchOptions.available !== '')
-      theFilter.available = searchOptions.available;
-    if (searchOptions.is_event !== '')
-      theFilter.is_event = searchOptions.is_event;
+      params.available = searchOptions.available;
+    if (searchOptions.is_event !== '') params.is_event = searchOptions.is_event;
     if (searchOptions.main_unit !== '')
-      theFilter.main_unit = searchOptions.main_unit;
-    if (searchOptions.search !== '') theFilter.search = searchOptions.search;
+      params.main_unit = searchOptions.main_unit;
+    if (searchOptions.search !== '') params.search = searchOptions.search;
     // console.log(`Songs.getSongs ${JSON.stringify(theFilter)}`);
     setLoading(true);
-    LLSIFService.fetchSongList(theFilter)
-      .then((result) => {
-        if (result === 404) {
-          setStopSearch(true);
-        } else if (Array.isArray(result)) {
-          let x = [...list, ...result];
-          x = x.filter(
-            (thing, ind, self) =>
-              ind === self.findIndex((t) => t.name === thing.name)
-          );
-          setList(x);
+    try {
+      const result = await LLSIFService.fetchSongList(params);
+      if (result === 404) {
+        setSearchOptions({ ...searchOptions, page: 0 });
+      } else if (Array.isArray(result)) {
+        let x = [];
+        if (searchOptions.page === 1) {
+          x = [...result];
         } else {
-          throw Error('null');
+          x = [...list, ...result];
         }
-      })
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      .catch((err) => {
-        // console.log('OK Pressed', err);
-        Alert.alert('Error', 'Error when get songs', [{ text: 'OK' }]);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
+        x = x.filter(
+          (song, ind, self) =>
+            ind === self.findIndex((t) => t.name === song.name)
+        );
+        if (x.length === 0) {
+          setSearchOptions({ ...searchOptions, page: 0 });
+        }
+        setList(x);
+      } else {
+        setSearchOptions({ ...searchOptions, page: 0 });
+        throw Error('null');
+      }
+    } catch (err) {
+      // console.log('OK Pressed', err);
+      Alert.alert('Error', 'Error when get songs', [{ text: 'OK' }]);
+    } finally {
+      setLoading(false);
+    }
   };
 
   /**
@@ -187,10 +160,7 @@ const SongsScreen: React.FC<SongsScreenProps> = ({ navigation }) => {
    * Reverse search on/off
    */
   const toggleReverse = () =>
-    setSearchOptions({
-      ...searchOptions,
-      isReverse: !searchOptions.isReverse
-    });
+    setSearchOptions({ ...searchOptions, isReverse: !searchOptions.isReverse });
 
   /**
    * Call when pressing search button
@@ -198,52 +168,38 @@ const SongsScreen: React.FC<SongsScreenProps> = ({ navigation }) => {
   const onSearch = () => {
     setList([]);
     setIsFilter(false);
-    setStopSearch(false);
     setSearchOptions({ ...searchOptions, page: 1 });
   };
 
   /**
    * Reset filter variables
    */
-  const resetFilter = () => {
-    setSearchOptions(defaultFilter);
-  };
+  const resetFilter = () =>
+    setSearchOptions({ ...defaultFilter, page: searchOptions.page });
 
   /**
    * Save `is_event`
    */
   const selectEvent = (value: BooleanOrEmpty) =>
-    setSearchOptions({
-      ...searchOptions,
-      is_event: value
-    });
+    setSearchOptions({ ...searchOptions, is_event: value });
 
   /**
    * Save `attribute`
    */
   const selectAttribute = (value: AttributeType) =>
-    setSearchOptions({
-      ...searchOptions,
-      attribute: value
-    });
+    setSearchOptions({ ...searchOptions, attribute: value });
 
   /**
    * Save `main_unit`
    */
   const selectMainUnit = (value: MainUnitNames) =>
-    setSearchOptions({
-      ...searchOptions,
-      main_unit: value
-    });
+    setSearchOptions({ ...searchOptions, main_unit: value });
 
   /**
    * Save ordering
    */
   const selectOrdering = (itemValue: string) =>
-    setSearchOptions({
-      ...searchOptions,
-      selectedOrdering: itemValue
-    });
+    setSearchOptions({ ...searchOptions, selectedOrdering: itemValue });
 
   /**
    * Render footer in FlatList
@@ -262,11 +218,8 @@ const SongsScreen: React.FC<SongsScreenProps> = ({ navigation }) => {
     </View>
   );
 
-  const onChangeText = (text: string): void =>
-    setSearchOptions({
-      ...searchOptions,
-      search: text
-    });
+  const onChangeText = (text: string) =>
+    setSearchOptions({ ...searchOptions, search: text });
 
   const goBack = () => navigation.goBack();
 
@@ -277,6 +230,7 @@ const SongsScreen: React.FC<SongsScreenProps> = ({ navigation }) => {
         <Appbar.BackAction onPress={goBack} />
         <View style={AppStyles.searchHeader}>
           <TextInput
+            value={searchOptions.search}
             style={AppStyles.searchInput}
             onChangeText={onChangeText}
             onSubmitEditing={onSearch}

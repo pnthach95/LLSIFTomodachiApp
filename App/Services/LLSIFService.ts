@@ -9,7 +9,8 @@ import type {
   LLSIFCacheData,
   SongObject,
   LLSIFError,
-  EventSearchParams
+  EventSearchParams,
+  SongSearchParams
 } from '~/Utils/types';
 
 const LLSIFApiClient = create({
@@ -125,7 +126,9 @@ const fetchIdol = async (name: string): Promise<IdolObject | null> => {
 /**
  * [Fetch song list](https://github.com/MagiCircles/SchoolIdolAPI/wiki/API-Songs#get-the-list-of-songs)
  */
-const fetchSongList = async (filter): Promise<SongObject[] | number | null> => {
+const fetchSongList = async (
+  filter: SongSearchParams
+): Promise<SongObject[] | number | null> => {
   const newFilter = { ...filter, expand_event: '' };
   const response = await LLSIFApiClient.get<{ results: SongObject[] }>(
     Config.SONGS,

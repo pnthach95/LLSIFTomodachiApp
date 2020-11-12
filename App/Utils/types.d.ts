@@ -530,6 +530,29 @@ type EventSearchParams = {
   is_english?: BooleanOrEmpty;
 };
 
+type SongSearchParams = {
+  /** Ordering by any field */
+  ordering: string;
+  /** Number of object per API call */
+  page_size: number;
+  /** Page number */
+  page: number;
+  /** Will return the full Event object in the event field */
+  expand_event: string;
+  selectedOrdering?: string;
+  isReverse?: boolean;
+  /** Keyword for search */
+  search?: string;
+  /** Attribute (None, Smile, Pure, Cool, All) */
+  attribute?: AttributeType;
+  /** Is event (None, True, False) */
+  is_event?: BooleanOrEmpty;
+  is_daily_rotation?: BooleanOrEmpty;
+  available?: BooleanOrEmpty;
+  /** Main unit (None, μ's, Aqours) */
+  main_unit?: MainUnitNames;
+};
+
 //  -----------------------------------------------
 //  API: Github
 //  -----------------------------------------------

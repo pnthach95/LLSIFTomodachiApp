@@ -63,7 +63,7 @@
       "group": "build",
       "type": "shell",
       "windows": {
-        "command": "cd android && gradlew assembleRelease"
+        "command": "npx jetify && cd android && gradlew assembleRelease"
       },
       "linux": {
         "command": "cd android && ./gradlew assembleRelease"

@@ -70,10 +70,11 @@ const CardsScreen: React.FC<CardsScreenProps> = ({ navigation }) => {
   const [column, setColumn] = useState(2);
   const [list, setList] = useState<CardObject[]>([]);
   const [isFilter, setIsFilter] = useState(false);
-  const [stopSearch, setStopSearch] = useState(false);
 
   useEffect(() => {
-    void getCards();
+    if (searchOptions.page > 0) {
+      void getCards();
+    }
   }, [searchOptions.page]);
 
   /**
@@ -139,7 +140,7 @@ const CardsScreen: React.FC<CardsScreenProps> = ({ navigation }) => {
       const result = await LLSIFService.fetchCardList(filter);
       if (result === 404) {
         // console.log('LLSIFService.fetchCardList 404');
-        setStopSearch(true);
+        setSearchOptions({ ...searchOptions, page: 0 });
       } else if (Array.isArray(result)) {
         let x = [];
         if (searchOptions.page === 1) {
@@ -151,8 +152,12 @@ const CardsScreen: React.FC<CardsScreenProps> = ({ navigation }) => {
           (card, index, self) =>
             index === self.findIndex((t) => t.id === card.id)
         );
+        if (x.length === 0) {
+          setSearchOptions({ ...searchOptions, page: 0 });
+        }
         setList(x);
       } else {
+        setSearchOptions({ ...searchOptions, page: 0 });
         throw Error('null');
       }
     } catch (err) {
@@ -169,7 +174,6 @@ const CardsScreen: React.FC<CardsScreenProps> = ({ navigation }) => {
   const onSearch = () => {
     setList([]);
     setIsFilter(false);
-    setStopSearch(false);
     setSearchOptions({ ...searchOptions, page: 1 });
   };
 
@@ -178,11 +182,12 @@ const CardsScreen: React.FC<CardsScreenProps> = ({ navigation }) => {
    * stopSearch prevents calling getCards when no card was found (404).
    */
   const onEndReaching = () => {
-    if (stopSearch) return;
-    setSearchOptions({
-      ...searchOptions,
-      page: (searchOptions.page || 1) + 1
-    });
+    if (searchOptions.page > 0) {
+      setSearchOptions({
+        ...searchOptions,
+        page: searchOptions.page + 1
+      });
+    }
   };
 
   const onEndReached = _.debounce(onEndReaching, 1000);

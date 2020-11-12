@@ -265,11 +265,10 @@ const SongsScreen: React.FC<SongsScreenProps> = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   filterContainer: {
-    elevation: 5,
-    padding: 10
+    padding: Metrics.baseMargin
   },
   flatListElement: {
-    margin: 10
+    margin: Metrics.baseMargin
   },
   list: {
     padding: Metrics.smallMargin

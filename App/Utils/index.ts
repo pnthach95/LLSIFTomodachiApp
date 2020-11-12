@@ -1,4 +1,4 @@
-import { Alert, Linking, StatusBar } from 'react-native';
+import { Alert, Linking, StatusBar, Platform } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Color from 'color';
 import { Colors } from '~/Theme';
@@ -76,5 +76,7 @@ export const openLink = (link: string): void => {
 export const setStatusBar = (c: string): void => {
   const cc = Color(c);
   StatusBar.setBarStyle(cc.isDark() ? 'light-content' : 'dark-content');
-  StatusBar.setBackgroundColor(c);
+  if (Platform.OS === 'android') {
+    StatusBar.setBackgroundColor(c);
+  }
 };

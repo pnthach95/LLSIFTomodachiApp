@@ -9,6 +9,7 @@ import {
   Button,
   useTheme
 } from 'react-native-paper';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import FastImage, { ImageStyle } from 'react-native-fast-image';
 import dayjs from 'dayjs';
 
@@ -20,10 +21,12 @@ import LLSIFService from '~/Services/LLSIFService';
 import { Metrics, Images, Fonts, AppStyles } from '~/Theme';
 import type {
   CardObject,
+  CardSearchParams,
   EventDetailScreenProps,
   EventObject,
   LLSIFError,
-  SongObject
+  SongObject,
+  SongSearchParams
 } from '~/Utils/types';
 
 /**
@@ -38,6 +41,7 @@ const EventDetailScreen: React.FC<EventDetailScreenProps> = ({
   navigation,
   route
 }) => {
+  const insets = useSafeAreaInsets();
   const { colors } = useTheme();
   const [item, setItem] = useState<EventObject | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -52,6 +56,7 @@ const EventDetailScreen: React.FC<EventDetailScreenProps> = ({
     width: 1,
     height: 0
   });
+  const bottom = { paddingBottom: insets.bottom };
 
   useEffect(() => {
     setStatusBar(colors.card);
@@ -84,9 +89,19 @@ const EventDetailScreen: React.FC<EventDetailScreenProps> = ({
     setWWEventEnd(dayjs(evRes.english_end));
     setJPEventStart(dayjs(evRes.beginning));
     setJPEventEnd(dayjs(evRes.end));
+    const cardParams: CardSearchParams = {
+      page: 1,
+      page_size: 30,
+      event_japanese_name: evRes.japanese_name
+    };
+    const songParams: SongSearchParams = {
+      page: 1,
+      page_size: 30,
+      event: evRes.japanese_name
+    };
     const [resCard, resSong] = await Promise.all([
-      LLSIFService.fetchCardList({ event_japanese_name: evRes.japanese_name }),
-      LLSIFService.fetchSongList({ event: evRes.japanese_name })
+      LLSIFService.fetchCardList(cardParams),
+      LLSIFService.fetchSongList(songParams)
     ]);
     if (Array.isArray(resCard)) {
       setCards(resCard);
@@ -149,7 +164,7 @@ const EventDetailScreen: React.FC<EventDetailScreenProps> = ({
       ) : (
         <ScrollView
           showsVerticalScrollIndicator={false}
-          contentContainerStyle={styles.content}>
+          contentContainerStyle={[styles.content, bottom]}>
           {/* ENGLISH BLOCK */}
           {!!item.english_name && (
             <>

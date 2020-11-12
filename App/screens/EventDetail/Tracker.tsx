@@ -8,6 +8,7 @@ import {
   ViewStyle
 } from 'react-native';
 import { Text, useTheme } from 'react-native-paper';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { responsiveHeight } from 'react-native-responsive-dimensions';
 import { VictoryChart, VictoryLine, VictoryAxis } from 'victory-native';
 
@@ -75,6 +76,7 @@ const parseEventTracker = (data: string) => {
 };
 
 const Tracker: React.FC<EventTrackerScreenProps> = ({ navigation, route }) => {
+  const insets = useSafeAreaInsets();
   const { state } = useContext(UserContext);
   const { colors } = useTheme();
   const [isLoading, setIsLoading] = useState(true);
@@ -86,13 +88,13 @@ const Tracker: React.FC<EventTrackerScreenProps> = ({ navigation, route }) => {
   const jpEventInfo = state.cachedData.eventInfo.jp || [];
   const axisStyle = {
     tickLabels: {
-      // fontSize: Font.normal.fontSize,
       fill: colors.text
     },
     axis: {
       stroke: colors.text
     }
   };
+  const bottom = { height: insets.bottom };
 
   useEffect(() => {
     void getData();
@@ -194,6 +196,7 @@ const Tracker: React.FC<EventTrackerScreenProps> = ({ navigation, route }) => {
               </View>
             </ScrollView>
           </View>
+          <View style={bottom} />
         </>
       ) : (
         <Text style={Fonts.style.center}>No data</Text>

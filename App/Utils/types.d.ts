@@ -507,6 +507,7 @@ type CardSearchParams = {
   idol_year?: YearType;
   ordering?: string;
   event_japanese_name?: string;
+  japanese_name?: string;
 };
 
 type EventSearchParams = {
@@ -532,13 +533,13 @@ type EventSearchParams = {
 
 type SongSearchParams = {
   /** Ordering by any field */
-  ordering: string;
+  ordering?: string;
   /** Number of object per API call */
   page_size: number;
   /** Page number */
   page: number;
   /** Will return the full Event object in the event field */
-  expand_event: string;
+  expand_event?: string;
   selectedOrdering?: string;
   isReverse?: boolean;
   /** Keyword for search */
@@ -551,6 +552,7 @@ type SongSearchParams = {
   available?: BooleanOrEmpty;
   /** Main unit (None, μ's, Aqours) */
   main_unit?: MainUnitNames;
+  event?: string;
 };
 
 //  -----------------------------------------------

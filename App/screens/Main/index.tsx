@@ -7,6 +7,7 @@ import {
   TouchableRipple,
   useTheme
 } from 'react-native-paper';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import FastImage, { OnLoadEvent } from 'react-native-fast-image';
 import VersionNumber from 'react-native-version-number';
 import dayjs from 'dayjs';
@@ -24,6 +25,7 @@ import type { EventObject, MainScreenProps } from '~/Utils/types';
  * Main Screen
  */
 const MainScreen: React.FC<MainScreenProps> = ({ navigation }) => {
+  const { top } = useSafeAreaInsets();
   const { colors } = useTheme();
   const { state } = useContext(UserContext);
   const { ENEvent, JPEvent } = state.cachedData;
@@ -101,9 +103,9 @@ const MainScreen: React.FC<MainScreenProps> = ({ navigation }) => {
 
   const goToJPEvent = () => navigateToEventDetail(JPEvent);
   return (
-    <View style={styles.container}>
+    <View style={AppStyles.screen}>
       {/* HEADER */}
-      <View style={styles.header}>
+      <View style={[styles.header, { paddingTop: top }]}>
         <FastImage
           source={Images.logo}
           resizeMode='contain'
@@ -191,9 +193,6 @@ const styles = StyleSheet.create({
   block: {
     alignItems: 'center',
     width: Metrics.screenWidth
-  },
-  container: {
-    flex: 1
   },
   content: {
     alignItems: 'center',

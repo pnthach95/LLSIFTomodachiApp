@@ -108,6 +108,7 @@ const FlatListModal: ListModalComponent = ({ modal }) => {
           data={objectData}
           keyExtractor={objKeyExtractor}
           renderItem={renderObjectItem}
+          ListFooterComponent={listFooter}
         />
       )}
     </View>

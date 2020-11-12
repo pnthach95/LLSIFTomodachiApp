@@ -1,6 +1,7 @@
 import React from 'react';
 import { ScrollView, View, StyleSheet } from 'react-native';
 import { Text, TouchableRipple, Divider, useTheme } from 'react-native-paper';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 import { AppStyles, Fonts, Metrics } from '~/Theme';
@@ -13,9 +14,11 @@ const openSchoolido = () => openLink(Config.SCHOOLIDO);
 
 const AboutMeScreen: React.FC<null> = () => {
   const { colors } = useTheme();
+  const insets = useSafeAreaInsets();
+  const bottom = { paddingBottom: insets.bottom };
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
+    <ScrollView contentContainerStyle={[styles.container, bottom]}>
       <View style={AppStyles.center}>
         <Text style={Fonts.style.center}>
           {'Powered by '}

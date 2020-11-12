@@ -1,6 +1,7 @@
 import React, { useContext, useEffect } from 'react';
 import { View, ScrollView, StyleSheet } from 'react-native';
 import { Text, Switch, TouchableRipple, useTheme } from 'react-native-paper';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import firebase from 'react-native-firebase';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import VersionNumber from 'react-native-version-number';
@@ -14,8 +15,10 @@ import type { AppOptions, MoreScreenProps } from '~/Utils/types';
 const iconSize = 30;
 
 const MoreScreen: React.FC<MoreScreenProps> = ({ navigation }) => {
+  const insets = useSafeAreaInsets();
   const { state, dispatch } = useContext(UserContext);
   const { colors } = useTheme();
+  const top = { paddingTop: insets.top };
 
   useEffect(() => {
     setStatusBar(colors.card);
@@ -85,7 +88,9 @@ const MoreScreen: React.FC<MoreScreenProps> = ({ navigation }) => {
   const goToAboutMe = () => navigation.navigate('AboutMeScreen');
 
   return (
-    <ScrollView showsVerticalScrollIndicator={false}>
+    <ScrollView
+      showsVerticalScrollIndicator={false}
+      contentContainerStyle={top}>
       <View style={styles.group}>
         <Text style={styles.headline}>Options</Text>
       </View>

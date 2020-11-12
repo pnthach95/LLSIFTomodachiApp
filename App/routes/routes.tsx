@@ -30,7 +30,7 @@ const Routes = (): JSX.Element => {
     <PaperProvider theme={state.options.isDark ? Dark : Light}>
       <ModalProvider stack={Modals}>
         <NavigationContainer theme={state.options.isDark ? Dark : Light}>
-          <Stack.Navigator>
+          <Stack.Navigator screenOptions={{ headerBackTitle: 'Back' }}>
             {state.loading ? (
               <Stack.Screen
                 name='SplashScreen'

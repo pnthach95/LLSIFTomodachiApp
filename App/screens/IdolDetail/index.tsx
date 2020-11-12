@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { View, ScrollView, StyleSheet } from 'react-native';
 import { Appbar, Text, useTheme } from 'react-native-paper';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import FastImage from 'react-native-fast-image';
 import dayjs from 'dayjs';
 
@@ -10,14 +11,11 @@ import InfoLine from '~/Components/InfoLine';
 import LLSIFService from '~/Services/LLSIFService';
 import { findColorByAttribute, AddHTTPS, setStatusBar } from '~/Utils';
 import { Metrics, AppStyles, Images } from '~/Theme';
-import type { IdolDetailScreenProps, IdolObject } from '~/Utils/types';
-
-type FilterOptions = {
-  search: string;
-  page_size: number;
-  name: string;
-  japanese_name: string;
-};
+import type {
+  CardSearchParams,
+  IdolDetailScreenProps,
+  IdolObject
+} from '~/Utils/types';
 
 /**
  * Idol Detail Screen
@@ -30,11 +28,13 @@ const IdolDetailScreen: React.FC<IdolDetailScreenProps> = ({
   route,
   navigation
 }) => {
+  const insets = useSafeAreaInsets();
   const { colors } = useTheme();
   const [isLoading, setIsLoading] = useState(true);
   const [images, setImages] = useState<string[]>([]);
   const [item, setItem] = useState<IdolObject | null>(null);
   const [idolColors, setIdolColors] = useState<string[]>([]);
+  const bottom = { paddingBottom: insets.bottom };
 
   useEffect(() => {
     setStatusBar(colors.card);
@@ -50,7 +50,8 @@ const IdolDetailScreen: React.FC<IdolDetailScreenProps> = ({
 
   const loadItem = async () => {
     const { name } = route.params;
-    const theFilter: Partial<FilterOptions> = {
+    const params: CardSearchParams = {
+      page: 1,
       search: name,
       page_size: 1
     };
@@ -59,12 +60,12 @@ const IdolDetailScreen: React.FC<IdolDetailScreenProps> = ({
       if (res1) {
         setItem(res1);
         setIdolColors(findColorByAttribute(res1.attribute || 'All'));
-        const res2 = await LLSIFService.fetchCardList(theFilter);
+        const res2 = await LLSIFService.fetchCardList(params);
         if (Array.isArray(res2)) {
           if (res2.length === 0) {
-            theFilter.name = res1.name;
-            theFilter.japanese_name = '';
-            const res3 = await LLSIFService.fetchCardList(theFilter);
+            params.name = res1.name;
+            params.japanese_name = '';
+            const res3 = await LLSIFService.fetchCardList(params);
             if (Array.isArray(res3)) {
               setImages([
                 res3[0].transparent_image || '',
@@ -95,6 +96,7 @@ const IdolDetailScreen: React.FC<IdolDetailScreenProps> = ({
         <Appbar.Content
           title={route.params.name}
           subtitle={item?.japanese_name}
+          style={styles.flexStart}
         />
         {item && (
           <View style={AppStyles.row}>
@@ -118,7 +120,9 @@ const IdolDetailScreen: React.FC<IdolDetailScreenProps> = ({
       {isLoading ? (
         <LoadingScreen />
       ) : item ? (
-        <ScrollView showsVerticalScrollIndicator={false}>
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={bottom}>
           <View style={styles.imageRow}>
             {!!images[0] && images[0].includes('.png') && (
               <FastImage
@@ -210,6 +214,9 @@ const IdolDetailScreen: React.FC<IdolDetailScreenProps> = ({
 };
 
 const styles = StyleSheet.create({
+  flexStart: {
+    alignItems: 'flex-start'
+  },
   imageRow: {
     flexDirection: 'row',
     justifyContent: 'space-around'

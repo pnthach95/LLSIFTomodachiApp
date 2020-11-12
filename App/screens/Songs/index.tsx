@@ -8,6 +8,7 @@ import {
   StyleSheet
 } from 'react-native';
 import { Appbar, Surface, Text, Button, useTheme } from 'react-native-paper';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import _ from 'lodash';
 
 import ConnectStatus from '~/Components/ConnectStatus';
@@ -47,11 +48,13 @@ const defaultFilter: SongSearchParams = {
  * [Song List Screen](https://github.com/MagiCircles/SchoolIdolAPI/wiki/API-Songs#get-the-list-of-songs)
  */
 const SongsScreen: React.FC<SongsScreenProps> = ({ navigation }) => {
+  const insets = useSafeAreaInsets();
   const { colors } = useTheme();
   const [loading, setLoading] = useState(true);
   const [list, setList] = useState<SongObject[]>([]);
   const [isFilter, setIsFilter] = useState(false);
   const [searchOptions, setSearchOptions] = useState(defaultFilter);
+  const bottom = { paddingBottom: insets.bottom };
 
   useEffect(() => {
     if (searchOptions.page > 0) {
@@ -279,6 +282,7 @@ const SongsScreen: React.FC<SongsScreenProps> = ({ navigation }) => {
         ListEmptyComponent={renderEmpty}
         ListFooterComponent={renderFooter}
         renderItem={renderItem}
+        contentContainerStyle={bottom}
       />
     </View>
   );

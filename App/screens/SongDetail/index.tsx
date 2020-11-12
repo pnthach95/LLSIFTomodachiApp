@@ -8,6 +8,7 @@ import {
   Text,
   ProgressBar
 } from 'react-native-paper';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import FastImage from 'react-native-fast-image';
 import { responsiveWidth } from 'react-native-responsive-dimensions';
 import dayjs from 'dayjs';
@@ -34,6 +35,7 @@ const SongDetailScreen: React.FC<SongDetailScreenProps> = ({
   navigation
 }) => {
   const { item } = route.params;
+  const insets = useSafeAreaInsets();
   const { state } = useContext(UserContext);
   const [buttonID, setButtonID] = useState(0);
   const [currentStats, setCurrentStats] = useState<StatType>([0, []]);
@@ -44,6 +46,7 @@ const SongDetailScreen: React.FC<SongDetailScreenProps> = ({
   const [expert, setExpert] = useState<StatType>([0, []]);
   const [random, setRandom] = useState<StatType>([0, []]);
   const [master, setMaster] = useState<StatType>([0, []]);
+  const bottom = { paddingBottom: insets.bottom };
 
   useEffect(() => {
     setStatusBar(attributeColors[0]);
@@ -135,6 +138,7 @@ const SongDetailScreen: React.FC<SongDetailScreenProps> = ({
       <Button
         mode='contained'
         color={buttonID === id ? attributeColors[0] : Colors.inactive}
+        style={styles.button}
         onPress={onPress}>
         {text}
       </Button>
@@ -158,7 +162,7 @@ const SongDetailScreen: React.FC<SongDetailScreenProps> = ({
       </Appbar.Header>
       <ScrollView
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={styles.scrollViewContainer}
+        contentContainerStyle={[styles.scrollViewContainer, bottom]}
         style={AppStyles.screen}>
         <FastImage
           source={{ uri: AddHTTPS(item.image) }}
@@ -253,9 +257,13 @@ const SongDetailScreen: React.FC<SongDetailScreenProps> = ({
 };
 
 const styles = StyleSheet.create({
+  button: {
+    marginVertical: Metrics.smallMargin
+  },
   buttonRow: {
     alignSelf: 'stretch',
     flexDirection: 'row',
+    flexWrap: 'wrap',
     justifyContent: 'space-around',
     paddingVertical: Metrics.baseMargin
   },

@@ -8,6 +8,7 @@ import {
   Button,
   TouchableRipple
 } from 'react-native-paper';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import FastImage from 'react-native-fast-image';
 import ImageView from 'react-native-image-viewing';
 import { responsiveWidth } from 'react-native-responsive-dimensions';
@@ -46,6 +47,7 @@ const CardDetailScreen: React.FC<CardDetailScreenProps> = ({
     item.idolized_maximum_statistics_pure || 0,
     item.idolized_maximum_statistics_cool || 0
   ];
+  const insets = useSafeAreaInsets();
   const [done, setDone] = useState(false);
   const [imgViewer, setImgViewer] = useState({ visible: false, index: 0 });
   const [propertyLine, setPropertyLine] = useState('');
@@ -53,6 +55,7 @@ const CardDetailScreen: React.FC<CardDetailScreenProps> = ({
   const [buttonID, setButtonID] = useState(0);
   const [currentStats, setCurrentStats] = useState(minStats);
   const cardColors = findColorByAttribute(item.attribute);
+  const bottom = { paddingBottom: insets.bottom };
 
   useEffect(() => {
     setStatusBar(cardColors[0]);
@@ -171,7 +174,9 @@ const CardDetailScreen: React.FC<CardDetailScreenProps> = ({
         )}
       </Appbar.Header>
       {done ? (
-        <ScrollView showsVerticalScrollIndicator={false}>
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={bottom}>
           {/* CARD IMAGES */}
           <View style={styles.imageRow}>
             {done &&

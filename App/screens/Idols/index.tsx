@@ -1,6 +1,7 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { View, SectionList, FlatList, Alert, StyleSheet } from 'react-native';
 import { Title, useTheme } from 'react-native-paper';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import UserContext from '~/Context/UserContext';
 import ConnectStatus from '~/Components/ConnectStatus';
@@ -24,10 +25,12 @@ type SchoolObject = {
  * Idol List Screen
  */
 const IdolsScreen: React.FC<IdolsScreenProps> = ({ navigation }) => {
+  const insets = useSafeAreaInsets();
   const { colors } = useTheme();
   const { state } = useContext(UserContext);
   const [isLoading, setIsLoading] = useState(true);
   const [list, setList] = useState<SchoolObject[]>([]);
+  const bottom = { paddingBottom: insets.bottom };
 
   useEffect(() => {
     void loadData();
@@ -129,6 +132,7 @@ const IdolsScreen: React.FC<IdolsScreenProps> = ({ navigation }) => {
         ListHeaderComponent={<View style={styles.height10} />}
         ListFooterComponent={<View style={styles.height10} />}
         renderItem={renderFlatList}
+        contentContainerStyle={bottom}
       />
     </View>
   );

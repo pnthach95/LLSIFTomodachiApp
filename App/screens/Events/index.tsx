@@ -121,6 +121,7 @@ const EventsScreen: React.FC<EventsScreenProps> = ({ navigation }) => {
     if (searchOptions.search !== '') params.search = searchOptions.search;
     // console.log(`Events.getEvents ${JSON.stringify(theFilter)}`);
     try {
+      setIsLoading(true);
       const result = await LLSIFService.fetchEventList(params);
       if (result === 404) {
         // console.log('LLSIFService.fetchEventList 404');

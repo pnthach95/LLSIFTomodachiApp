@@ -8,6 +8,7 @@ import VersionNumber from 'react-native-version-number';
 import UserContext from '~/Context/UserContext';
 import { Fonts, Metrics, Colors } from '~/Theme';
 import { saveSettings, setStatusBar } from '~/Utils';
+import ThemeModule from '~/Utils/ThemeModule';
 import type { AppOptions, MoreScreenProps } from '~/Utils/types';
 
 const iconSize = 30;
@@ -18,6 +19,7 @@ const MoreScreen: React.FC<MoreScreenProps> = ({ navigation }) => {
 
   useEffect(() => {
     setStatusBar(colors.card);
+    ThemeModule.setColor(colors.background);
   }, [state.options.isDark]);
 
   /**

@@ -10,6 +10,7 @@ import LoadingScreen from '../Loading';
 import UserContext from '~/Context/UserContext';
 import { AppStyles } from '~/Theme';
 import { loadSettings, setStatusBar } from '~/Utils';
+import ThemeModule from '~/Utils/ThemeModule';
 import { FirebaseTopic } from '~/Config';
 import type {
   SplashScreenProps,
@@ -45,6 +46,7 @@ const SplashScreen: React.FC<SplashScreenProps> = () => {
   useEffect(() => {
     if (loadedAppOptions) {
       setStatusBar(colors.card);
+      ThemeModule.setColor(colors.background);
       RNBootSplash.hide();
     }
     if (loadedAppOptions && loadedCached) {

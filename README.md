@@ -14,7 +14,7 @@ The project contains:
 - [Animated TabBar](https://github.com/gorhom/react-native-animated-tabbar) (v2.1.0)
 - [React Native Paper](https://callstack.github.io/react-native-paper/) (v4.3.1)
 - [apisauce](https://github.com/infinitered/apisauce) (v2.0.0)
-- [React Native Firebase](http://rnfirebase.io) (v5.6.0, for push notification)
+- [React Native Firebase](https://v5.rnfirebase.io/docs/v5.x.x/getting-started) (v5.6.0, for push notification)
 - [React Native Fast Image](https://github.com/DylanVann/react-native-fast-image) (v8.3.3)
 - [React Native Image Viewing](https://github.com/jobtoday/react-native-image-viewing) (v0.2.0)
 - [React Native Sentry](https://sentry.io) (v1.9.0)
@@ -34,7 +34,7 @@ The project contains:
 - [`App/Context`](App/Context): react context
 - [`App/hooks`](App/hooks): custom react hooks
 - [`App/Images`](App/Images): images used by the application
-- [`App/modals](App/modals): modals
+- [`App/modals`](App/modals): modals
 - [`App/Services`](App/Services): application services, e.g. API clients
 - [`App/Theme`](App/Theme): base styles for the application
 - [`App/Utils`](App/Utils): some utility tools

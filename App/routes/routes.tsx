@@ -97,7 +97,11 @@ const Routes = (): JSX.Element => {
                     headerShown: false
                   }}
                 />
-                <Stack.Screen name='AboutMeScreen' component={AboutMeScreen} />
+                <Stack.Screen
+                  name='AboutMeScreen'
+                  component={AboutMeScreen}
+                  options={{ title: 'About me' }}
+                />
               </>
             )}
           </Stack.Navigator>

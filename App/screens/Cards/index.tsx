@@ -2,13 +2,19 @@ import React, { useState, useEffect, useContext } from 'react';
 import {
   View,
   FlatList,
-  TextInput,
   Alert,
   ScrollView,
   Image,
   StyleSheet
 } from 'react-native';
-import { Text, Button, Appbar, FAB, useTheme } from 'react-native-paper';
+import {
+  Text,
+  Button,
+  Appbar,
+  FAB,
+  Searchbar,
+  useTheme
+} from 'react-native-paper';
 import _ from 'lodash';
 
 import ConnectStatus from '~/Components/ConnectStatus';
@@ -69,22 +75,19 @@ const CardsScreen: React.FC<CardsScreenProps> = ({ navigation }) => {
   const [searchOptions, setSearchOptions] = useState(defaultFilter);
   const [column, setColumn] = useState(2);
   const [list, setList] = useState<CardObject[]>([]);
-  const [isFilter, setIsFilter] = useState(false);
+  const [showFilter, setShowFilter] = useState(false);
+  const [runSearch, setRunSearch] = useState(0);
 
   useEffect(() => {
     if (searchOptions.page > 0) {
       void getCards();
     }
-  }, [searchOptions.page]);
+  }, [searchOptions.page, runSearch]);
 
-  /**
-   * Key extractor in FlatList
-   */
+  /** Key extractor in FlatList */
   const keyExtractor = (item: CardObject) => `card ${item.id}`;
 
-  /**
-   * Render item in FlatList
-   */
+  /** Render item in FlatList */
   const renderItem = ({ item }: { item: CardObject }) => {
     /**
      * Navigate to Card Detail Screen
@@ -102,9 +105,7 @@ const CardsScreen: React.FC<CardsScreenProps> = ({ navigation }) => {
     return <CardItem item={item} onPress={navigateToCardDetail} />;
   };
 
-  /**
-   * Get card list
-   */
+  /** Get card list */
   const getCards = async () => {
     const ordering =
       (searchOptions?.isReverse ? '-' : '') +
@@ -168,12 +169,13 @@ const CardsScreen: React.FC<CardsScreenProps> = ({ navigation }) => {
     }
   };
 
-  /**
-   * Call when pressing search button
-   */
+  /** Call when pressing search button */
   const onSearch = () => {
     setList([]);
-    setIsFilter(false);
+    setShowFilter(false);
+    if (searchOptions.page === 1) {
+      setRunSearch(runSearch + 1);
+    }
     setSearchOptions({ ...searchOptions, page: 1 });
   };
 
@@ -183,118 +185,79 @@ const CardsScreen: React.FC<CardsScreenProps> = ({ navigation }) => {
    */
   const onEndReaching = () => {
     if (searchOptions.page > 0) {
-      setSearchOptions({
-        ...searchOptions,
-        page: searchOptions.page + 1
-      });
+      setSearchOptions({ ...searchOptions, page: searchOptions.page + 1 });
     }
   };
 
   const onEndReached = _.debounce(onEndReaching, 1000);
 
-  /**
-   * Filter on/off
-   */
-  const toggleFilter = () => setIsFilter(!isFilter);
+  /** Filter on/off */
+  const toggleFilter = () => setShowFilter(!showFilter);
 
-  /**
-   * Reverse search on/off
-   */
+  /** Reverse search on/off */
   const toggleReverse = () =>
     setSearchOptions({ ...searchOptions, isReverse: !searchOptions.isReverse });
 
-  /**
-   * Switch 1 column and 2 columns
-   */
+  /** Switch 1 column and 2 columns */
   const switchColumn = () => setColumn(column === 1 ? 2 : 1);
 
-  /**
-   * Save is_promo
-   */
+  /** Save is_promo */
   const selectPromo = (value: BooleanOrEmpty) =>
     setSearchOptions({ ...searchOptions, is_promo: value });
 
-  /**
-   * Save is_special
-   */
+  /** Save is_special */
   const selectSpecial = (value: BooleanOrEmpty) =>
     setSearchOptions({ ...searchOptions, is_special: value });
 
-  /**
-   * Save is_event
-   */
+  /** Save is_event */
   const selectEvent = (value: BooleanOrEmpty) =>
     setSearchOptions({ ...searchOptions, is_event: value });
 
-  /**
-   * Save idol_main_unit
-   */
+  /** Save idol_main_unit */
   const selectMainUnit = (value: MainUnitNames) =>
     setSearchOptions({ ...searchOptions, idol_main_unit: value });
 
-  /**
-   * Save rarity
-   */
+  /** Save rarity */
   const selectRarity = (value: RarityType) =>
     setSearchOptions({ ...searchOptions, rarity: value });
 
-  /**
-   * Save attribute
-   */
+  /** Save attribute */
   const selectAttribute = (value: AttributeType) =>
     setSearchOptions({ ...searchOptions, attribute: value });
 
-  /**
-   * Save idol_year
-   */
+  /** Save idol_year */
   const selectYear = (value: YearType) =>
     setSearchOptions({ ...searchOptions, idol_year: value });
 
-  /**
-   * Save region
-   */
+  /** Save region */
   const selectRegion = (value: BooleanOrEmpty) =>
     setSearchOptions({ ...searchOptions, japan_only: value });
 
-  /**
-   * Save idol_sub_unit
-   */
+  /** Save idol_sub_unit */
   const selectSubUnit = (itemValue: string) =>
     setSearchOptions({ ...searchOptions, idol_sub_unit: itemValue });
 
-  /**
-   * Save idol name
-   */
+  /** Save idol name */
   const selectIdol = (itemValue: string) =>
     setSearchOptions({ ...searchOptions, name: itemValue });
 
-  /**
-   * Save school
-   */
+  /** Save school */
   const selectSchool = (itemValue: string) =>
     setSearchOptions({ ...searchOptions, idol_school: itemValue });
 
-  /**
-   * Save skill
-   */
+  /** Save skill */
   const selectSkill = (itemValue: SkillType) =>
     setSearchOptions({ ...searchOptions, skill: itemValue });
 
-  /**
-   * Save ordering
-   */
+  /** Save ordering */
   const selectOrdering = (value: string) =>
     setSearchOptions({ ...searchOptions, selectedOrdering: value });
 
-  /**
-   * Reset filter variables
-   */
+  /** Reset filter variables */
   const resetFilter = () =>
     setSearchOptions({ ...defaultFilter, page: searchOptions.page });
 
-  /**
-   * Render footer of FlatList
-   */
+  /** Render footer of FlatList */
   const renderFooter = (
     <View style={[AppStyles.center, styles.flatListElement]}>
       <Image source={Images.alpaca} />
@@ -315,19 +278,20 @@ const CardsScreen: React.FC<CardsScreenProps> = ({ navigation }) => {
       {/* HEADER */}
       <Appbar.Header style={{ backgroundColor: colors.card }}>
         <View style={AppStyles.searchHeader}>
-          <TextInput
+          <Searchbar
+            value={searchOptions.search || ''}
             onChangeText={onChangeText}
             onSubmitEditing={onSearch}
+            onIconPress={onSearch}
             placeholder='Search card...'
-            style={AppStyles.searchInput}
+            style={AppStyles.noElevation}
           />
         </View>
-        <Appbar.Action icon='magnify' onPress={onSearch} />
         <Appbar.Action icon='dots-horizontal' onPress={toggleFilter} />
       </Appbar.Header>
 
       {/* FILTER */}
-      {isFilter && (
+      {showFilter && (
         <View
           style={[styles.filterContainer, { backgroundColor: colors.surface }]}>
           <ScrollView contentContainerStyle={styles.contentContainer}>

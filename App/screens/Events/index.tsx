@@ -1,13 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
-import {
-  View,
-  FlatList,
-  TextInput,
-  Alert,
-  Image,
-  StyleSheet
-} from 'react-native';
-import { Text, Button, Appbar, useTheme } from 'react-native-paper';
+import { View, FlatList, Alert, Image, StyleSheet } from 'react-native';
+import { Text, Button, Appbar, Searchbar, useTheme } from 'react-native-paper';
 import _ from 'lodash';
 
 import ConnectStatus from '~/Components/ConnectStatus';
@@ -49,31 +42,22 @@ const EventsScreen: React.FC<EventsScreenProps> = ({ navigation }) => {
 
   const [isLoading, setIsLoading] = useState(true);
   const [list, setList] = useState<EventObject[]>([]);
-  const [isFilter, setIsFilter] = useState(false);
+  const [showFilter, setShowFilter] = useState(false);
   const [searchOptions, setSearchOptions] = useState(defaultFilter);
-  const onEndReached = _.debounce(onEndReaching, 500);
+  const [runSearch, setRunSearch] = useState(0);
 
   useEffect(() => {
     if (searchOptions.page > 0) {
       void getEvents();
     }
-  }, [searchOptions.page]);
+  }, [searchOptions.page, runSearch]);
 
-  /**
-   * Key extractor for FlatList
-   *
-   */
+  /** Key extractor for FlatList */
   const keyExtractor = (item: EventObject) => `event ${item.japanese_name}`;
 
-  /**
-   * Render item in FlatList
-   *
-   */
+  /** Render item in FlatList */
   const renderItem = ({ item }: { item: EventObject }) => {
-    /**
-     * Navigate to Event Detail Screen
-     *
-     */
+    /** Navigate to Event Detail Screen */
     const navigateToEventDetail = () => {
       navigation.navigate('EventDetailScreen', {
         eventName: item.japanese_name,
@@ -86,20 +70,17 @@ const EventsScreen: React.FC<EventsScreenProps> = ({ navigation }) => {
 
   /**
    * Call when scrolling to the end of list.
-   * stopSearch prevents calling getCards when no card was found (404).
+   * stopSearch prevents calling getEvents when no event was found (404).
    */
-  function onEndReaching() {
+  const onEndReaching = () => {
     if (searchOptions.page > 0) {
-      setSearchOptions({
-        ...searchOptions,
-        page: searchOptions.page + 1
-      });
+      setSearchOptions({ ...searchOptions, page: searchOptions.page + 1 });
     }
-  }
+  };
 
-  /**
-   * Get event list
-   */
+  const onEndReached = _.debounce(onEndReaching, 500);
+
+  /** Get event list */
   const getEvents = async () => {
     const params: EventSearchParams = {
       ordering: searchOptions.ordering,
@@ -119,7 +100,7 @@ const EventsScreen: React.FC<EventsScreenProps> = ({ navigation }) => {
     if (searchOptions.attribute !== '')
       params.attribute = searchOptions.attribute;
     if (searchOptions.search !== '') params.search = searchOptions.search;
-    // console.log(`Events.getEvents ${JSON.stringify(theFilter)}`);
+    // console.log(`Events.getEvents ${JSON.stringify(params)}`);
     try {
       setIsLoading(true);
       const result = await LLSIFService.fetchEventList(params);
@@ -148,65 +129,50 @@ const EventsScreen: React.FC<EventsScreenProps> = ({ navigation }) => {
       }
     } catch (err) {
       Alert.alert('Error', 'Error when get songs', [{ text: 'OK' }]);
-      // console.log('OK Pressed', err);
+      // console.log('error', err);
     } finally {
       setIsLoading(false);
     }
   };
 
-  /**
-   * Call when pressing search button
-   */
+  /** Call when pressing search button */
   const onSearch = () => {
     setList([]);
-    setIsFilter(false);
+    setShowFilter(false);
+    if (searchOptions.page === 1) {
+      setRunSearch(runSearch + 1);
+    }
     setSearchOptions({ ...searchOptions, page: 1 });
   };
 
-  /**
-   * Reset filter
-   */
+  /** Reset filter */
   const resetFilter = () =>
     setSearchOptions({ ...defaultFilter, page: searchOptions.page });
 
-  /**
-   * Filter on/off
-   */
-  const toggleFilter = () => setIsFilter(!isFilter);
+  /** Filter on/off */
+  const toggleFilter = () => setShowFilter(!showFilter);
 
-  /**
-   * Save `attribute`
-   */
+  /** Save `attribute` */
   const selectAttribute = (value: AttributeType) =>
     setSearchOptions({ ...searchOptions, attribute: value });
 
-  /**
-   * Save `main_unit`
-   */
+  /** Save `main_unit` */
   const selectMainUnit = (value: MainUnitNames) =>
     setSearchOptions({ ...searchOptions, main_unit: value });
 
-  /**
-   * Save `is_english`
-   */
+  /** Save `is_english` */
   const selectRegion = (value: BooleanOrEmpty) =>
     setSearchOptions({ ...searchOptions, is_english: value });
 
-  /**
-   * Save `skill`
-   */
+  /** Save `skill` */
   const selectSkill = (itemValue: SkillType) =>
     setSearchOptions({ ...searchOptions, skill: itemValue });
 
-  /**
-   * Save `idol`
-   */
+  /** Save `idol` */
   const selectIdol = (itemValue: string) =>
     setSearchOptions({ ...searchOptions, idol: itemValue });
 
-  /**
-   * Render footer of FlatList
-   */
+  /** Render footer of FlatList */
   const renderFooter = (
     <View style={[AppStyles.center, styles.margin10]}>
       <Image source={Images.alpaca} />
@@ -227,19 +193,20 @@ const EventsScreen: React.FC<EventsScreenProps> = ({ navigation }) => {
       {/* HEADER */}
       <Appbar.Header style={{ backgroundColor: colors.card }}>
         <View style={AppStyles.searchHeader}>
-          <TextInput
+          <Searchbar
+            value={searchOptions.search || ''}
             onChangeText={onChangeText}
             onSubmitEditing={onSearch}
+            onIconPress={onSearch}
             placeholder='Search event...'
-            style={AppStyles.searchInput}
+            style={AppStyles.noElevation}
           />
         </View>
-        <Appbar.Action icon='magnify' onPress={onSearch} />
         <Appbar.Action icon='dots-horizontal' onPress={toggleFilter} />
       </Appbar.Header>
 
       {/* FILTER */}
-      {isFilter && (
+      {showFilter && (
         <View
           style={[styles.filterContainer, { backgroundColor: colors.surface }]}>
           <PickerRow

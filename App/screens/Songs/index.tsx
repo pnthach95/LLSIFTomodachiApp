@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
+import { View, FlatList, Alert, Image, StyleSheet } from 'react-native';
 import {
-  View,
-  FlatList,
-  TextInput,
-  Alert,
-  Image,
-  StyleSheet
-} from 'react-native';
-import { Appbar, Surface, Text, Button, useTheme } from 'react-native-paper';
+  Appbar,
+  Surface,
+  Text,
+  Button,
+  Searchbar,
+  useTheme
+} from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import _ from 'lodash';
 
@@ -52,28 +52,23 @@ const SongsScreen: React.FC<SongsScreenProps> = ({ navigation }) => {
   const { colors } = useTheme();
   const [loading, setLoading] = useState(true);
   const [list, setList] = useState<SongObject[]>([]);
-  const [isFilter, setIsFilter] = useState(false);
+  const [showFilter, setShowFilter] = useState(false);
   const [searchOptions, setSearchOptions] = useState(defaultFilter);
+  const [runSearch, setRunSearch] = useState(0);
   const bottom = { paddingBottom: insets.bottom };
 
   useEffect(() => {
     if (searchOptions.page > 0) {
       void getSongs();
     }
-  }, [searchOptions.page]);
+  }, [searchOptions.page, runSearch]);
 
-  /**
-   * Key extractor for FlatList
-   */
+  /** Key extractor for FlatList */
   const keyExtractor = (item: SongObject) => `song ${item.name}`;
 
-  /**
-   * Render item in FlatList
-   */
+  /** Render item in FlatList */
   const renderItem = ({ item }: { item: SongObject }) => {
-    /**
-     * Navigate to Song Detail Screen
-     */
+    /** Navigate to Song Detail Screen */
     const navigateToSongDetail = () => {
       navigation.navigate('SongDetailScreen', {
         item,
@@ -90,18 +85,13 @@ const SongsScreen: React.FC<SongsScreenProps> = ({ navigation }) => {
    */
   const onEndReaching = () => {
     if (searchOptions.page > 0) {
-      setSearchOptions({
-        ...searchOptions,
-        page: searchOptions.page + 1
-      });
+      setSearchOptions({ ...searchOptions, page: searchOptions.page + 1 });
     }
   };
 
   const onEndReached = _.debounce(onEndReaching, 500);
 
-  /**
-   * Fetch song list
-   */
+  /** Fetch song list */
   const getSongs = async () => {
     const ordering =
       (searchOptions.isReverse ? '-' : '') +
@@ -154,59 +144,44 @@ const SongsScreen: React.FC<SongsScreenProps> = ({ navigation }) => {
     }
   };
 
-  /**
-   * Filter on/off
-   */
-  const toggleFilter = () => setIsFilter(!isFilter);
+  /** Filter on/off */
+  const toggleFilter = () => setShowFilter(!showFilter);
 
-  /**
-   * Reverse search on/off
-   */
+  /** Reverse search on/off */
   const toggleReverse = () =>
     setSearchOptions({ ...searchOptions, isReverse: !searchOptions.isReverse });
 
-  /**
-   * Call when pressing search button
-   */
+  /** Call when pressing search button */
   const onSearch = () => {
     setList([]);
-    setIsFilter(false);
+    setShowFilter(false);
+    if (searchOptions.page === 1) {
+      setRunSearch(runSearch + 1);
+    }
     setSearchOptions({ ...searchOptions, page: 1 });
   };
 
-  /**
-   * Reset filter variables
-   */
+  /** Reset filter variables */
   const resetFilter = () =>
     setSearchOptions({ ...defaultFilter, page: searchOptions.page });
 
-  /**
-   * Save `is_event`
-   */
+  /** Save `is_event` */
   const selectEvent = (value: BooleanOrEmpty) =>
     setSearchOptions({ ...searchOptions, is_event: value });
 
-  /**
-   * Save `attribute`
-   */
+  /** Save `attribute` */
   const selectAttribute = (value: AttributeType) =>
     setSearchOptions({ ...searchOptions, attribute: value });
 
-  /**
-   * Save `main_unit`
-   */
+  /** Save `main_unit` */
   const selectMainUnit = (value: MainUnitNames) =>
     setSearchOptions({ ...searchOptions, main_unit: value });
 
-  /**
-   * Save ordering
-   */
+  /** Save ordering */
   const selectOrdering = (itemValue: string) =>
     setSearchOptions({ ...searchOptions, selectedOrdering: itemValue });
 
-  /**
-   * Render footer in FlatList
-   */
+  /** Render footer in FlatList */
   const renderFooter = (
     <View style={[AppStyles.center, styles.flatListElement]}>
       <Image source={Images.alpaca} />
@@ -232,19 +207,19 @@ const SongsScreen: React.FC<SongsScreenProps> = ({ navigation }) => {
       <Appbar.Header style={{ backgroundColor: colors.card }}>
         <Appbar.BackAction onPress={goBack} />
         <View style={AppStyles.searchHeader}>
-          <TextInput
-            value={searchOptions.search}
-            style={AppStyles.searchInput}
+          <Searchbar
+            value={searchOptions.search || ''}
+            style={AppStyles.noElevation}
             onChangeText={onChangeText}
             onSubmitEditing={onSearch}
+            onIconPress={onSearch}
             placeholder='Search song...'
           />
         </View>
-        <Appbar.Action icon='magnify' onPress={onSearch} />
         <Appbar.Action icon='dots-horizontal' onPress={toggleFilter} />
       </Appbar.Header>
       {/* FILTER */}
-      {isFilter && (
+      {showFilter && (
         <Surface style={styles.filterContainer}>
           <AttributeRow
             attribute={searchOptions.attribute || ''}

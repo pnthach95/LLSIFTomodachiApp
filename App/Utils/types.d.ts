@@ -471,10 +471,41 @@ type LLSIFCacheData = {
 };
 
 type CardSearchParams = {
+  /** Keyword for search */
   search?: string;
+  /** Selected ordering option {label: string, value: string} */
+  selectedOrdering?: string;
+  /** Is reverse (boolean) */
+  isReverse?: boolean;
+  /** Number of object per API call */
+  page_size: number;
+  /** Page number */
+  page: number;
+  /** Idol name */
   name?: string;
-  rarity?: string;
-  attribute?: string;
+  /** Rarity (None, N, R, SR, SSR, UR) */
+  rarity?: RarityType;
+  /** Attribute (None, Smile, Pure, Cool, All) */
+  attribute?: AttributeType;
+  /** Japan only (None, False, True) */
+  japan_only?: BooleanOrEmpty;
+  /** Is promo (None, True, False) */
+  is_promo?: BooleanOrEmpty;
+  /** Is special (None, True, False) */
+  is_special?: BooleanOrEmpty;
+  /** Is event (None, True, False) */
+  is_event?: BooleanOrEmpty;
+  /** Skill name */
+  skill?: SkillType;
+  /** Main unit (None, μ's, Aqours) */
+  idol_main_unit?: MainUnitNames;
+  /** Sub unit */
+  idol_sub_unit?: string;
+  /** School name */
+  idol_school?: string;
+  /** Year (None, First, Second, Third) */
+  idol_year?: YearType;
+  ordering?: string;
   event_japanese_name?: string;
 };
 

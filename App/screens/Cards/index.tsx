@@ -32,6 +32,7 @@ import type {
   AttributeType,
   BooleanOrEmpty,
   CardObject,
+  CardSearchParams,
   CardsScreenProps,
   MainUnitNames,
   RarityType,
@@ -39,41 +40,13 @@ import type {
   YearType
 } from '~/Utils/types';
 
-type FilterType = {
-  search?: string; // Keyword for search
-  selectedOrdering?: string; // Selected ordering option {label: string, value: string}
-  isReverse?: boolean; // Is reverse (boolean)
-  page_size: number; // Number of object per API call
-  page: number; // Page number
-  name?: string; // Idol name
-  rarity?: RarityType; // Rarity (None, N, R, SR, SSR, UR)
-  attribute?: AttributeType; // Attribute (None, Smile, Pure, Cool, All)
-  japan_only?: BooleanOrEmpty; // Japan only (None, False, True)
-  is_promo?: BooleanOrEmpty; // Is promo (None, True, False)
-  is_special?: BooleanOrEmpty; // Is special (None, True, False)
-  is_event?: BooleanOrEmpty; // Is event (None, True, False)
-  skill?: SkillType; // Skill name
-  idol_main_unit?: MainUnitNames; // Main unit (None, μ's, Aqours)
-  idol_sub_unit?: string; // Sub unit
-  idol_school?: string; // School name
-  idol_year?: YearType; // Year (None, First, Second, Third)
-  ordering?: string;
-};
-
 /**
  * [Card List Screen](https://github.com/MagiCircles/SchoolIdolAPI/wiki/API-Cards#get-the-list-of-cards)
- *
- * State:
- * - `isLoading`: Loading state
- * - `list`: Data for FlatList
- * - `isFilter`: Filter on/off
- * - `stopSearch`: Prevent calling API
- *
  */
 const CardsScreen: React.FC<CardsScreenProps> = ({ navigation }) => {
   const { colors } = useTheme();
   const { state } = useContext(UserContext);
-  const defaultFilter: FilterType = {
+  const defaultFilter: CardSearchParams = {
     search: '',
     selectedOrdering: OrderingGroup.CARD[1].value,
     isReverse: true,
@@ -135,45 +108,48 @@ const CardsScreen: React.FC<CardsScreenProps> = ({ navigation }) => {
     const ordering =
       (searchOptions?.isReverse ? '-' : '') +
       (searchOptions.selectedOrdering || '');
-    const theFilter: FilterType = {
+    const filter: CardSearchParams = {
       ordering,
       page_size: searchOptions.page_size,
       page: searchOptions.page
     };
     if (searchOptions.attribute !== '')
-      theFilter.attribute = searchOptions.attribute;
+      filter.attribute = searchOptions.attribute;
     if (searchOptions.idol_main_unit !== '')
-      theFilter.idol_main_unit = searchOptions.idol_main_unit;
+      filter.idol_main_unit = searchOptions.idol_main_unit;
     if (searchOptions.idol_sub_unit !== 'All')
-      theFilter.idol_sub_unit = searchOptions.idol_sub_unit;
+      filter.idol_sub_unit = searchOptions.idol_sub_unit;
     if (searchOptions.idol_school !== 'All')
-      theFilter.idol_school = searchOptions.idol_school;
-    if (searchOptions.name !== 'All') theFilter.name = searchOptions.name;
-    if (searchOptions.skill !== 'All') theFilter.skill = searchOptions.skill;
-    if (searchOptions.is_event !== '')
-      theFilter.is_event = searchOptions.is_event;
-    if (searchOptions.is_promo !== '')
-      theFilter.is_promo = searchOptions.is_promo;
+      filter.idol_school = searchOptions.idol_school;
+    if (searchOptions.name !== 'All') filter.name = searchOptions.name;
+    if (searchOptions.skill !== 'All') filter.skill = searchOptions.skill;
+    if (searchOptions.is_event !== '') filter.is_event = searchOptions.is_event;
+    if (searchOptions.is_promo !== '') filter.is_promo = searchOptions.is_promo;
     if (searchOptions.japan_only !== '')
-      theFilter.japan_only = searchOptions.japan_only;
+      filter.japan_only = searchOptions.japan_only;
     if (searchOptions.idol_year !== '')
-      theFilter.idol_year = searchOptions.idol_year;
+      filter.idol_year = searchOptions.idol_year;
     if (searchOptions.is_special !== '')
-      theFilter.is_special = searchOptions.is_special;
-    if (searchOptions.rarity !== '') theFilter.rarity = searchOptions.rarity;
-    if (searchOptions.search !== '') theFilter.search = searchOptions.search;
+      filter.is_special = searchOptions.is_special;
+    if (searchOptions.rarity !== '') filter.rarity = searchOptions.rarity;
+    if (searchOptions.search !== '') filter.search = searchOptions.search;
     // console.log(`Cards.getCards: ${JSON.stringify(theFilter)}`);
     try {
       setIsLoading(true);
-      const result = await LLSIFService.fetchCardList(theFilter);
+      const result = await LLSIFService.fetchCardList(filter);
       if (result === 404) {
         // console.log('LLSIFService.fetchCardList 404');
         setStopSearch(true);
       } else if (Array.isArray(result)) {
-        let x = [...list, ...result];
+        let x = [];
+        if (searchOptions.page === 1) {
+          x = [...result];
+        } else {
+          x = [...list, ...result];
+        }
         x = x.filter(
-          (thing, index, self) =>
-            index === self.findIndex((t) => t.id === thing.id)
+          (card, index, self) =>
+            index === self.findIndex((t) => t.id === card.id)
         );
         setList(x);
       } else {
@@ -194,7 +170,7 @@ const CardsScreen: React.FC<CardsScreenProps> = ({ navigation }) => {
     setList([]);
     setIsFilter(false);
     setStopSearch(false);
-    void getCards();
+    setSearchOptions({ ...searchOptions, page: 1 });
   };
 
   /**
@@ -368,7 +344,7 @@ const CardsScreen: React.FC<CardsScreenProps> = ({ navigation }) => {
    * Reset filter variables
    */
   const resetFilter = () => {
-    setSearchOptions(defaultFilter);
+    setSearchOptions({ ...defaultFilter, page: searchOptions.page });
   };
 
   /**

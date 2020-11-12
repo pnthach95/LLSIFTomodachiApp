@@ -1,6 +1,4 @@
 export const Config = {
-  DATETIME_FORMAT_OUTPUT: 'HH:mm MMM Do YYYY',
-  DATE_FORMAT_OUTPUT: 'MMM Do YYYY',
   DATETIME_FORMAT_INPUT: 'YYYY-MM-DDTHH:mm:ssZ',
   API_URL: 'https://schoolido.lu/api/',
   SCHOOLIDO: 'https://schoolido.lu',
@@ -13,8 +11,7 @@ export const Config = {
   CARDIDS: 'cardids/',
   GITHUB_API: 'https://api.github.com/repos/',
   REPO: 'pnthach95/LLSIFTomodachiApp/releases',
-  GITHUB_PROJECT: 'https://github.com/pnthach95/LLSIFTomodachiApp',
-  DEFAULT_BACKGROUND: '//i.schoolido.lu/c/1722idolizedRuby.png'
+  GITHUB_PROJECT: 'https://github.com/pnthach95/LLSIFTomodachiApp'
 };
 
 export const OrderingGroup = {

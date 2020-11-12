@@ -6,6 +6,15 @@
   },
   "tasks": [
     {
+      "label": "Start",
+      "type": "shell",
+      "group": {
+        "kind": "test",
+        "isDefault": true
+      },
+      "command": "npx react-native start"
+    },
+    {
       "label": "Reconnect",
       "type": "shell",
       "command": "adb reverse tcp:8081 tcp:8081",
@@ -54,7 +63,7 @@
       "group": "build",
       "type": "shell",
       "windows": {
-        "command": "cd android && gradlew assembleRelease"
+        "command": "npx jetify && cd android && gradlew assembleRelease"
       },
       "linux": {
         "command": "cd android && ./gradlew assembleRelease"

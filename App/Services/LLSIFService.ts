@@ -8,7 +8,8 @@ import type {
   IdolObject,
   LLSIFCacheData,
   SongObject,
-  LLSIFError
+  LLSIFError,
+  EventSearchParams
 } from '~/Utils/types';
 
 const LLSIFApiClient = create({
@@ -143,7 +144,7 @@ const fetchSongList = async (filter): Promise<SongObject[] | number | null> => {
  * [Fetch event list](https://github.com/MagiCircles/SchoolIdolAPI/wiki/API-Events)
  */
 const fetchEventList = async (
-  filter
+  filter: EventSearchParams
 ): Promise<EventObject[] | number | null> => {
   const response = await LLSIFApiClient.get<{ results: EventObject[] }>(
     Config.EVENTS,

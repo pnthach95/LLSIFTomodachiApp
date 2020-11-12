@@ -509,6 +509,27 @@ type CardSearchParams = {
   event_japanese_name?: string;
 };
 
+type EventSearchParams = {
+  /** Ordering by any field */
+  ordering: string;
+  /** Number of object per API call */
+  page_size: number;
+  /** Page number */
+  page: number;
+  /** Idol name */
+  idol?: string;
+  /** Keyword for search */
+  search?: string;
+  /** Main unit (None, μ's, Aqours) */
+  main_unit?: MainUnitNames;
+  /** Skill name */
+  skill?: SkillType;
+  /** Attribute (None, Smile, Pure, Cool, All) */
+  attribute?: AttributeType;
+  /** Is English */
+  is_english?: BooleanOrEmpty;
+};
+
 //  -----------------------------------------------
 //  API: Github
 //  -----------------------------------------------

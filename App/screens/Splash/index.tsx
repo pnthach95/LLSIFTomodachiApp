@@ -15,7 +15,8 @@ import { FirebaseTopic } from '~/Config';
 import type {
   SplashScreenProps,
   CachedDataObject,
-  SubUnitNames
+  SubUnitNames,
+  EventSearchParams
 } from '~/Utils/types';
 import LLSIFdotnetService from '~/Services/LLSIFdotnetService';
 
@@ -74,11 +75,13 @@ const SplashScreen: React.FC<SplashScreenProps> = () => {
     setError(false);
     try {
       const cachedData: CachedDataObject = { ...initCachedData };
-      const enParams = {
+      const enParams: EventSearchParams = {
+        page: 1,
         ordering: '-english_beginning',
         page_size: 1
       };
-      const jpParams = {
+      const jpParams: EventSearchParams = {
+        page: 1,
         ordering: '-beginning',
         page_size: 1
       };

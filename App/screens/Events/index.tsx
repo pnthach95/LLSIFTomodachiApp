@@ -8,7 +8,6 @@ import {
   StyleSheet
 } from 'react-native';
 import { Text, Button, Appbar, useTheme } from 'react-native-paper';
-import PropTypes from 'prop-types';
 import _ from 'lodash';
 
 import ConnectStatus from '~/Components/ConnectStatus';
@@ -17,11 +16,11 @@ import RegionRow from '~/Components/RegionRow';
 import PickerRow from '~/Components/PickerRow';
 import MainUnitRow from '~/Components/MainUnitRow';
 import AttributeRow from '~/Components/AttributeRow';
-import LoadingScreen from '../Loading';
 import { Metrics, AppStyles, Images } from '~/Theme';
 import LLSIFService from '~/Services/LLSIFService';
 import UserContext from '~/Context/UserContext';
 import type {
+  EventSearchParams,
   EventsScreenProps,
   EventObject,
   AttributeType,
@@ -30,32 +29,13 @@ import type {
   SkillType
 } from '~/Utils/types';
 
-type FilterType = {
-  ordering: string; // Ordering by any field (See link above)
-  page_size: number; // Number of object per API call
-  page: number; // Page number
-  idol?: string; // Idol name
-  search?: string; // Keyword for search
-  main_unit?: MainUnitNames; // Main unit (None, μ's, Aqours)
-  skill?: SkillType; // Skill name
-  attribute?: AttributeType; // Attribute (None, Smile, Pure, Cool, All)
-  is_english?: BooleanOrEmpty; // Is English
-};
-
 /**
  * [Event List Screen](https://github.com/MagiCircles/SchoolIdolAPI/wiki/API-Events#get-the-list-of-events)
- *
- * State:
- * - `isLoading`: Loading state
- * - `list`: Data for FlatList
- * - `isFilter`: Filter on/off
- * - `stopSearch`: Prevent calling API
- *
  */
 const EventsScreen: React.FC<EventsScreenProps> = ({ navigation }) => {
   const { colors } = useTheme();
   const { state } = useContext(UserContext);
-  const defaultFilter: FilterType = {
+  const defaultFilter: EventSearchParams = {
     ordering: '-beginning',
     page_size: 30,
     page: 1,
@@ -70,12 +50,13 @@ const EventsScreen: React.FC<EventsScreenProps> = ({ navigation }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [list, setList] = useState<EventObject[]>([]);
   const [isFilter, setIsFilter] = useState(false);
-  const [stopSearch, setStopSearch] = useState(false);
   const [searchOptions, setSearchOptions] = useState(defaultFilter);
   const onEndReached = _.debounce(onEndReaching, 500);
 
   useEffect(() => {
-    getEvents();
+    if (searchOptions.page > 0) {
+      void getEvents();
+    }
   }, [searchOptions.page]);
 
   /**
@@ -102,79 +83,75 @@ const EventsScreen: React.FC<EventsScreenProps> = ({ navigation }) => {
 
     return <EventItem item={item} onPress={navigateToEventDetail} />;
   };
-  renderItem.propTypes = {
-    item: PropTypes.shape({
-      japanese_name: PropTypes.string.isRequired
-    })
-  };
 
   /**
    * Call when scrolling to the end of list.
    * stopSearch prevents calling getCards when no card was found (404).
-   *
    */
   function onEndReaching() {
-    if (stopSearch) return;
-    setSearchOptions({
-      ...searchOptions,
-      page: searchOptions.page + 1
-    });
+    if (searchOptions.page > 0) {
+      setSearchOptions({
+        ...searchOptions,
+        page: searchOptions.page + 1
+      });
+    }
   }
 
   /**
    * Get event list
    */
-  function getEvents() {
-    const theFilter: FilterType = {
+  const getEvents = async () => {
+    const params: EventSearchParams = {
       ordering: searchOptions.ordering,
       page_size: searchOptions.page_size,
       page: searchOptions.page
     };
-    if (searchOptions.idol !== 'All') theFilter.idol = searchOptions.idol;
-    if (searchOptions.skill !== 'All') theFilter.skill = searchOptions.skill;
+    if (searchOptions.idol !== 'All') params.idol = searchOptions.idol;
+    if (searchOptions.skill !== 'All') params.skill = searchOptions.skill;
     let isEnglish = searchOptions.is_english;
     if (isEnglish !== '') {
       if (isEnglish === 'True') isEnglish = 'False';
       else isEnglish = 'True';
-      theFilter.is_english = isEnglish;
+      params.is_english = isEnglish;
     }
     if (searchOptions.main_unit !== '')
-      theFilter.main_unit = searchOptions.main_unit;
+      params.main_unit = searchOptions.main_unit;
     if (searchOptions.attribute !== '')
-      theFilter.attribute = searchOptions.attribute;
-    if (searchOptions.search !== '') theFilter.search = searchOptions.search;
-    // eslint-disable-next-line no-console
-    console.log(`Events.getEvents ${JSON.stringify(theFilter)}`);
-    LLSIFService.fetchEventList(theFilter)
-      .then((result) => {
-        if (result === 404) {
-          // console.log('LLSIFService.fetchEventList 404');
-          setStopSearch(true);
-        } else if (Array.isArray(result)) {
-          let x = [...list, ...result];
-          // eslint-disable-next-line max-len
-          x = x.filter(
-            (thing, index, self) =>
-              index ===
-              self.findIndex((t) => t.japanese_name === thing.japanese_name)
-          );
-          setList(x);
+      params.attribute = searchOptions.attribute;
+    if (searchOptions.search !== '') params.search = searchOptions.search;
+    // console.log(`Events.getEvents ${JSON.stringify(theFilter)}`);
+    try {
+      const result = await LLSIFService.fetchEventList(params);
+      if (result === 404) {
+        // console.log('LLSIFService.fetchEventList 404');
+        setSearchOptions({ ...searchOptions, page: 0 });
+      } else if (Array.isArray(result)) {
+        let x = [];
+        if (searchOptions.page === 1) {
+          x = [...result];
         } else {
-          throw Error('null');
+          x = [...list, ...result];
         }
-      })
-      .catch((err) => {
-        Alert.alert(
-          'Error',
-          'Error when get songs',
-          // eslint-disable-next-line no-console
-          [{ text: 'OK', onPress: () => console.log('OK Pressed', err) }]
+        x = x.filter(
+          (thing, index, self) =>
+            index ===
+            self.findIndex((t) => t.japanese_name === thing.japanese_name)
         );
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
-  }
+        if (x.length === 0) {
+          setSearchOptions({ ...searchOptions, page: 0 });
+        }
+        setList(x);
+      } else {
+        setSearchOptions({ ...searchOptions, page: 0 });
+        throw Error('null');
+      }
+    } catch (err) {
+      Alert.alert('Error', 'Error when get songs', [{ text: 'OK' }]);
+      // console.log('OK Pressed', err);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   /**
    * Call when pressing search button
@@ -182,20 +159,14 @@ const EventsScreen: React.FC<EventsScreenProps> = ({ navigation }) => {
   const onSearch = () => {
     setList([]);
     setIsFilter(false);
-    setStopSearch(false);
-    setSearchOptions({
-      ...searchOptions,
-      page: 1
-    });
-    getEvents();
+    setSearchOptions({ ...searchOptions, page: 1 });
   };
 
   /**
    * Reset filter
    */
-  const resetFilter = () => {
-    setSearchOptions(defaultFilter);
-  };
+  const resetFilter = () =>
+    setSearchOptions({ ...defaultFilter, page: searchOptions.page });
 
   /**
    * Filter on/off
@@ -205,47 +176,32 @@ const EventsScreen: React.FC<EventsScreenProps> = ({ navigation }) => {
   /**
    * Save `attribute`
    */
-  const selectAttribute = (value: AttributeType) => () =>
-    setSearchOptions({
-      ...searchOptions,
-      attribute: value
-    });
+  const selectAttribute = (value: AttributeType) =>
+    setSearchOptions({ ...searchOptions, attribute: value });
 
   /**
    * Save `main_unit`
    */
-  const selectMainUnit = (value: MainUnitNames) => () =>
-    setSearchOptions({
-      ...searchOptions,
-      main_unit: value
-    });
+  const selectMainUnit = (value: MainUnitNames) =>
+    setSearchOptions({ ...searchOptions, main_unit: value });
 
   /**
    * Save `is_english`
    */
-  const selectRegion = (value: BooleanOrEmpty) => () =>
-    setSearchOptions({
-      ...searchOptions,
-      is_english: value
-    });
+  const selectRegion = (value: BooleanOrEmpty) =>
+    setSearchOptions({ ...searchOptions, is_english: value });
 
   /**
    * Save `skill`
    */
   const selectSkill = (itemValue: SkillType) =>
-    setSearchOptions({
-      ...searchOptions,
-      skill: itemValue
-    });
+    setSearchOptions({ ...searchOptions, skill: itemValue });
 
   /**
    * Save `idol`
    */
   const selectIdol = (itemValue: string) =>
-    setSearchOptions({
-      ...searchOptions,
-      idol: itemValue
-    });
+    setSearchOptions({ ...searchOptions, idol: itemValue });
 
   /**
    * Render footer of FlatList
@@ -257,20 +213,13 @@ const EventsScreen: React.FC<EventsScreenProps> = ({ navigation }) => {
   );
 
   const renderEmpty = (
-    <View style={styles.margin10}>
-      <Text>No result</Text>
+    <View style={[AppStyles.center, styles.flatListElement]}>
+      <Text>{isLoading ? 'Loading' : 'No result'}</Text>
     </View>
   );
 
-  if (isLoading) {
-    return <LoadingScreen />;
-  }
-
-  const onChangeText = (text: string): void =>
-    setSearchOptions({
-      ...searchOptions,
-      search: text
-    });
+  const onChangeText = (text: string) =>
+    setSearchOptions({ ...searchOptions, search: text });
 
   return (
     <View style={AppStyles.screen}>
@@ -344,6 +293,9 @@ const styles = StyleSheet.create({
   },
   filterContainer: {
     padding: 10
+  },
+  flatListElement: {
+    margin: Metrics.baseMargin
   },
   list: {
     padding: Metrics.smallMargin

@@ -6,7 +6,7 @@ import styles from '~/Theme/RowStyles';
 import { AppStyles } from '~/Theme';
 import type { BooleanOrEmpty } from '~/Utils/types';
 
-type PromoCardRowType = {
+type Props = {
   isPromo: BooleanOrEmpty;
   selectPromo: (isPromo: BooleanOrEmpty) => void;
 };
@@ -17,9 +17,8 @@ type PromoCardRowType = {
  * Prop:
  * - `selectPromo`: Save `isPromo` state
  * - `isPromo`: state from parent
- *
  */
-const PromoCardRow: React.FC<PromoCardRowType> = ({ isPromo, selectPromo }) => {
+const PromoCardRow: React.FC<Props> = ({ isPromo, selectPromo }) => {
   const none = () => selectPromo('');
   const sTrue = () => selectPromo('True');
   const sFalse = () => selectPromo('False');
@@ -35,7 +34,7 @@ const PromoCardRow: React.FC<PromoCardRowType> = ({ isPromo, selectPromo }) => {
           style={[
             styles.textButton,
             styles.standardButton,
-            isPromo === '' && styles.selectedValue
+            isPromo === '' && styles.selectedValue,
           ]}>
           <Text>All</Text>
         </TouchableRipple>
@@ -44,7 +43,7 @@ const PromoCardRow: React.FC<PromoCardRowType> = ({ isPromo, selectPromo }) => {
           style={[
             styles.textButton,
             styles.standardButton,
-            isPromo === 'True' && styles.selectedValue
+            isPromo === 'True' && styles.selectedValue,
           ]}>
           <Text>Only</Text>
         </TouchableRipple>
@@ -53,7 +52,7 @@ const PromoCardRow: React.FC<PromoCardRowType> = ({ isPromo, selectPromo }) => {
           style={[
             styles.textButton,
             styles.standardButton,
-            isPromo === 'False' && styles.selectedValue
+            isPromo === 'False' && styles.selectedValue,
           ]}>
           <Text>None</Text>
         </TouchableRipple>
@@ -64,7 +63,7 @@ const PromoCardRow: React.FC<PromoCardRowType> = ({ isPromo, selectPromo }) => {
 
 PromoCardRow.propTypes = {
   isPromo: PropTypes.any,
-  selectPromo: PropTypes.any
+  selectPromo: PropTypes.any,
 };
 
 export default PromoCardRow;

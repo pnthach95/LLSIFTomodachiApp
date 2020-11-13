@@ -19,7 +19,7 @@ dayjs.extend(duration);
 dayjs.extend(localizedFormat);
 
 Sentry.init({
-  dsn: 'https://ac9aa894ab9341fba115b29731378b6b@sentry.io/1330276'
+  dsn: 'https://ac9aa894ab9341fba115b29731378b6b@sentry.io/1330276',
 });
 
 const MainContainer: React.FC<null> = () => {
@@ -54,7 +54,7 @@ const MainContainer: React.FC<null> = () => {
     const channel = new firebase.notifications.Android.Channel(
       'notifications',
       'Default channel',
-      firebase.notifications.Android.Importance.High
+      firebase.notifications.Android.Importance.High,
     ).enableLights(false);
     void firebase.notifications().android.createChannel(channel);
     const notificationDisplayedListener = firebase

@@ -6,7 +6,7 @@ import styles from '~/Theme/RowStyles';
 import { AppStyles } from '~/Theme';
 import type { BooleanOrEmpty } from '~/Utils/types';
 
-type SpecialCardRowType = {
+type Props = {
   isSpecial: BooleanOrEmpty;
   selectSpecial: (isSpecial: BooleanOrEmpty) => void;
 };
@@ -17,12 +17,8 @@ type SpecialCardRowType = {
  * Prop:
  * - `selectSpecial`: Save `isSpecial` state
  * - `isSpecial`: state from parent
- *
  */
-const SpecialCardRow: React.FC<SpecialCardRowType> = ({
-  isSpecial,
-  selectSpecial
-}) => {
+const SpecialCardRow: React.FC<Props> = ({ isSpecial, selectSpecial }) => {
   const none = () => selectSpecial('');
   const sTrue = () => selectSpecial('True');
   const sFalse = () => selectSpecial('False');
@@ -38,7 +34,7 @@ const SpecialCardRow: React.FC<SpecialCardRowType> = ({
           style={[
             styles.textButton,
             styles.standardButton,
-            isSpecial === '' && styles.selectedValue
+            isSpecial === '' && styles.selectedValue,
           ]}>
           <Text>All</Text>
         </TouchableRipple>
@@ -47,7 +43,7 @@ const SpecialCardRow: React.FC<SpecialCardRowType> = ({
           style={[
             styles.textButton,
             styles.standardButton,
-            isSpecial === 'True' && styles.selectedValue
+            isSpecial === 'True' && styles.selectedValue,
           ]}>
           <Text>Only</Text>
         </TouchableRipple>
@@ -56,7 +52,7 @@ const SpecialCardRow: React.FC<SpecialCardRowType> = ({
           style={[
             styles.textButton,
             styles.standardButton,
-            isSpecial === 'False' && styles.selectedValue
+            isSpecial === 'False' && styles.selectedValue,
           ]}>
           <Text>None</Text>
         </TouchableRipple>
@@ -67,7 +63,7 @@ const SpecialCardRow: React.FC<SpecialCardRowType> = ({
 
 SpecialCardRow.propTypes = {
   isSpecial: PropTypes.any,
-  selectSpecial: PropTypes.any
+  selectSpecial: PropTypes.any,
 };
 
 export default SpecialCardRow;

@@ -12,11 +12,11 @@ const modalConfig: ModalStackConfig = {
     position: 'bottom',
     animateInConfig: {
       easing: Easing.bezier(0.42, -0.03, 0.27, 0.95),
-      duration: 450
+      duration: 450,
     },
     animateOutConfig: {
       easing: Easing.bezier(0.42, -0.03, 0.27, 0.95),
-      duration: 450
+      duration: 450,
     },
     transitionOptions: (animatedValue) => ({
       transform: [
@@ -26,15 +26,15 @@ const modalConfig: ModalStackConfig = {
             outputRange: [
               responsiveScreenHeight(100),
               0,
-              responsiveScreenHeight(100)
-            ]
-          })
-        }
-      ]
-    })
-  }
+              responsiveScreenHeight(100),
+            ],
+          }),
+        },
+      ],
+    }),
+  },
 };
 
 export default createModalStack<ModalStackParamList>(modalConfig, {
-  backBehavior: 'none'
+  backBehavior: 'none',
 });

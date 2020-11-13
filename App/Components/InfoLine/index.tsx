@@ -5,7 +5,7 @@ import { Text, Caption } from 'react-native-paper';
 import { openLink } from '~/Utils';
 import { Metrics } from '~/Theme';
 
-type InfoLineType = {
+type Props = {
   title: string;
   content: string;
   twitter?: string | null;
@@ -16,12 +16,12 @@ type InfoLineType = {
 /**
  * InfoLine
  */
-const InfoLine: React.FC<InfoLineType> = ({
+const InfoLine: React.FC<Props> = ({
   title,
   content,
   twitter,
   instagram,
-  myanimelist
+  myanimelist,
 }) => {
   const openTwitter = () => {
     if (twitter) {
@@ -73,14 +73,14 @@ const InfoLine: React.FC<InfoLineType> = ({
 
 const styles = StyleSheet.create({
   container: {
-    marginVertical: Metrics.smallMargin
+    marginVertical: Metrics.smallMargin,
   },
   content: {
-    textAlign: 'justify'
+    textAlign: 'justify',
   },
   link: {
-    textDecorationLine: 'underline'
-  }
+    textDecorationLine: 'underline',
+  },
 });
 
 InfoLine.propTypes = {
@@ -88,7 +88,7 @@ InfoLine.propTypes = {
   instagram: PropTypes.any,
   myanimelist: PropTypes.any,
   title: PropTypes.any,
-  twitter: PropTypes.any
+  twitter: PropTypes.any,
 };
 
 export default InfoLine;

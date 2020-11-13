@@ -8,7 +8,7 @@ import { AddHTTPS } from '~/Utils';
 import { EventStatus } from '~/Config';
 import type { EventObject } from '~/Utils/types';
 
-type EventItemType = {
+type Props = {
   item: EventObject;
   onPress: () => void;
 };
@@ -22,13 +22,12 @@ const { amber400, green300 } = Colors;
  * Prop:
  * - `item`: [Event object](https://github.com/MagiCircles/SchoolIdolAPI/wiki/API-Events#objects)
  * - `onPress`: onPress function
- *
  */
-const EventItem: React.FC<EventItemType> = ({ item, onPress }) => {
+const EventItem: React.FC<Props> = ({ item, onPress }) => {
   const { surface } = useTheme().colors;
   const [imgSize, setImgSize] = useState({
     width: Metrics.widthBanner,
-    height: 100
+    height: 100,
   });
   const getImage = !item.english_image
     ? AddHTTPS(item.image)
@@ -39,7 +38,7 @@ const EventItem: React.FC<EventItemType> = ({ item, onPress }) => {
   const isOngoing = JPStatus === ONGOING || ENStatus === ONGOING;
   const label = isAnnounced ? ANNOUNCED : isOngoing ? ONGOING : '';
   const bgColor = {
-    backgroundColor: isAnnounced ? amber400 : isOngoing ? green300 : surface
+    backgroundColor: isAnnounced ? amber400 : isOngoing ? green300 : surface,
   };
 
   const onLoad = (e: OnLoadEvent) => {
@@ -57,7 +56,7 @@ const EventItem: React.FC<EventItemType> = ({ item, onPress }) => {
             resizeMode='contain'
             style={{
               width: Metrics.widthBanner,
-              height: (Metrics.widthBanner * imgSize.height) / imgSize.width
+              height: (Metrics.widthBanner * imgSize.height) / imgSize.width,
             }}
           />
           <View style={styles.textBox}>
@@ -79,22 +78,22 @@ const EventItem: React.FC<EventItemType> = ({ item, onPress }) => {
 
 const styles = StyleSheet.create({
   container: {
-    borderRadius: 10,
+    borderRadius: Metrics.baseMargin,
     elevation: 5,
     margin: Metrics.smallMargin,
-    overflow: 'hidden'
+    overflow: 'hidden',
   },
   padding: {
-    padding: Metrics.baseMargin
+    padding: Metrics.baseMargin,
   },
   textBox: {
-    paddingTop: Metrics.smallMargin
-  }
+    paddingTop: Metrics.smallMargin,
+  },
 });
 
 EventItem.propTypes = {
   item: PropTypes.any,
-  onPress: PropTypes.any
+  onPress: PropTypes.any,
 };
 
 export default EventItem;

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import { TextStyle } from 'react-native';
 import { Text } from 'react-native-paper';
 
@@ -8,11 +9,11 @@ type Props = {
   style?: TextStyle;
 };
 
-const TimerCountdown = ({
+const TimerCountdown: React.FC<Props> = ({
   seconds,
   interval = 1000,
-  style
-}: Props): JSX.Element => {
+  style,
+}) => {
   const [remaining, setRemaining] = useState(seconds);
 
   const getFormattedTime = (t: number) => {
@@ -40,6 +41,12 @@ const TimerCountdown = ({
   });
 
   return <Text style={style}>{getFormattedTime(remaining)}</Text>;
+};
+
+TimerCountdown.propTypes = {
+  interval: PropTypes.any,
+  seconds: PropTypes.any,
+  style: PropTypes.any,
 };
 
 export default TimerCountdown;

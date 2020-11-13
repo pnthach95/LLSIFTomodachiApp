@@ -2,7 +2,7 @@ import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import AnimatedTabBar, {
   TabsConfig,
-  BubbleTabBarItemConfig
+  BubbleTabBarItemConfig,
 } from '@gorhom/animated-tabbar';
 import { useTheme } from 'react-native-paper';
 import Animated from 'react-native-reanimated';
@@ -42,67 +42,65 @@ const moreIcon = ({ size, color }: IconProps) => (
 const tabs: TabsConfig<BubbleTabBarItemConfig, BottomTabList> = {
   MainScreen: {
     labelStyle: {
-      color: Colors.pink
+      color: Colors.pink,
     },
     icon: {
       component: homeIcon,
       activeColor: Colors.pink,
-      inactiveColor: Colors.grey600
+      inactiveColor: Colors.grey600,
     },
     background: {
       activeColor: Colors.lightPink,
-      inactiveColor: Colors.transparent
-    }
+      inactiveColor: Colors.transparent,
+    },
   },
   CardsScreen: {
     labelStyle: {
-      color: Colors.green
+      color: Colors.green,
     },
     icon: {
       component: cardIcon,
       activeColor: Colors.green,
-      inactiveColor: Colors.grey600
+      inactiveColor: Colors.grey600,
     },
     background: {
       activeColor: Colors.lightGreen,
-      inactiveColor: Colors.transparent
-    }
+      inactiveColor: Colors.transparent,
+    },
   },
   EventsScreen: {
     labelStyle: {
-      color: Colors.blue
+      color: Colors.blue,
     },
     icon: {
       component: eventIcon,
       activeColor: Colors.blue,
-      inactiveColor: Colors.grey600
+      inactiveColor: Colors.grey600,
     },
     background: {
       activeColor: Colors.lightBlue,
-      inactiveColor: Colors.transparent
-    }
+      inactiveColor: Colors.transparent,
+    },
   },
   MoreScreen: {
     labelStyle: {
-      color: Colors.yellow900
+      color: Colors.yellow900,
     },
     icon: {
       component: moreIcon,
       activeColor: Colors.yellow900,
-      inactiveColor: Colors.grey600
+      inactiveColor: Colors.grey600,
     },
     background: {
       activeColor: Colors.yellow200,
-      inactiveColor: Colors.transparent
-    }
-  }
+      inactiveColor: Colors.transparent,
+    },
+  },
 };
 
 const LLSIFTab = (): JSX.Element => {
   const { colors } = useTheme();
-  const tabStyle = {
-    backgroundColor: colors.card
-  };
+  const tabStyle = { backgroundColor: colors.card };
 
   return (
     <Tab.Navigator
@@ -114,30 +112,22 @@ const LLSIFTab = (): JSX.Element => {
       <Tab.Screen
         name='MainScreen'
         component={MainScreen}
-        options={{
-          tabBarLabel: 'Home'
-        }}
+        options={{ tabBarLabel: 'Home' }}
       />
       <Tab.Screen
         name='CardsScreen'
         component={CardsScreen}
-        options={{
-          tabBarLabel: 'Cards'
-        }}
+        options={{ tabBarLabel: 'Cards' }}
       />
       <Tab.Screen
         name='EventsScreen'
         component={EventsScreen}
-        options={{
-          tabBarLabel: 'Events'
-        }}
+        options={{ tabBarLabel: 'Events' }}
       />
       <Tab.Screen
         name='MoreScreen'
         component={MoreScreen}
-        options={{
-          tabBarLabel: 'More'
-        }}
+        options={{ tabBarLabel: 'More' }}
       />
     </Tab.Navigator>
   );

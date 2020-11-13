@@ -7,10 +7,11 @@ import {
   Title,
   TouchableRipple,
   Button,
-  useTheme
+  useTheme,
 } from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import FastImage, { ImageStyle } from 'react-native-fast-image';
+import { responsiveWidth } from 'react-native-responsive-dimensions';
 import dayjs from 'dayjs';
 
 import TimerCountdown from '~/Components/TimerCountdown';
@@ -26,7 +27,7 @@ import type {
   EventObject,
   LLSIFError,
   SongObject,
-  SongSearchParams
+  SongSearchParams,
 } from '~/Utils/types';
 
 /**
@@ -39,7 +40,7 @@ import type {
  */
 const EventDetailScreen: React.FC<EventDetailScreenProps> = ({
   navigation,
-  route
+  route,
 }) => {
   const insets = useSafeAreaInsets();
   const { colors } = useTheme();
@@ -52,10 +53,7 @@ const EventDetailScreen: React.FC<EventDetailScreenProps> = ({
   const [WWEventEnd, setWWEventEnd] = useState(dayjs());
   const [JPEventStart, setJPEventStart] = useState(dayjs());
   const [JPEventEnd, setJPEventEnd] = useState(dayjs());
-  const [imgSize, setImgSize] = useState({
-    width: 1,
-    height: 0
-  });
+  const [imgSize, setImgSize] = useState({ width: 1, height: 0 });
   const bottom = { paddingBottom: insets.bottom };
 
   useEffect(() => {
@@ -67,7 +65,7 @@ const EventDetailScreen: React.FC<EventDetailScreenProps> = ({
   const getItem = async () => {
     try {
       const res = await LLSIFService.fetchEventData(
-        encodeURIComponent(route.params.eventName)
+        encodeURIComponent(route.params.eventName),
       );
       setItem(res);
       if (res) {
@@ -80,10 +78,7 @@ const EventDetailScreen: React.FC<EventDetailScreenProps> = ({
     }
   };
 
-  /**
-   * Load card list, song list in event
-   *
-   */
+  /** Load card list, song list in event */
   const loadData = async (evRes: EventObject) => {
     setWWEventStart(dayjs(evRes.english_beginning));
     setWWEventEnd(dayjs(evRes.english_end));
@@ -92,16 +87,16 @@ const EventDetailScreen: React.FC<EventDetailScreenProps> = ({
     const cardParams: CardSearchParams = {
       page: 1,
       page_size: 30,
-      event_japanese_name: evRes.japanese_name
+      event_japanese_name: evRes.japanese_name,
     };
     const songParams: SongSearchParams = {
       page: 1,
       page_size: 30,
-      event: evRes.japanese_name
+      event: evRes.japanese_name,
     };
     const [resCard, resSong] = await Promise.all([
       LLSIFService.fetchCardList(cardParams),
-      LLSIFService.fetchSongList(songParams)
+      LLSIFService.fetchSongList(songParams),
     ]);
     if (Array.isArray(resCard)) {
       setCards(resCard);
@@ -112,44 +107,40 @@ const EventDetailScreen: React.FC<EventDetailScreenProps> = ({
     setIsLoading(false);
   };
 
-  /**
-   * Navigate to destination screen
-   */
+  /** Navigate to destination screen */
   const goToSongDetail = (song: SongObject) => () => {
     navigation.navigate('SongDetailScreen', {
       item: song,
-      prevStatusBarColor: colors.card
+      prevStatusBarColor: colors.card,
     });
   };
 
-  /**
-   * Navigate to destination screen
-   */
+  /** Navigate to destination screen */
   const goToCardDetail = (card: CardObject) => () => {
     navigation.navigate('CardDetailScreen', {
       item: card,
-      prevStatusBarColor: colors.card
+      prevStatusBarColor: colors.card,
     });
   };
 
   const goToEnTracker = () => {
     navigation.navigate('EventTrackerScreen', {
       isWW: true,
-      name: item?.english_name || ''
+      name: item?.english_name || '',
     });
   };
 
   const goToJpTracker = () => {
     navigation.navigate('EventTrackerScreen', {
       isWW: false,
-      name: item?.japanese_name || ''
+      name: item?.japanese_name || '',
     });
   };
 
   const styleFastImage: StyleProp<ImageStyle> = {
     alignSelf: 'center',
     width: Metrics.widthBanner,
-    height: (Metrics.widthBanner * imgSize.height) / imgSize.width
+    height: (Metrics.widthBanner * imgSize.height) / imgSize.width,
   };
 
   return (
@@ -306,7 +297,7 @@ const EventDetailScreen: React.FC<EventDetailScreenProps> = ({
                     {!!cardItem.round_card_idolized_image && (
                       <FastImage
                         source={{
-                          uri: AddHTTPS(cardItem.round_card_idolized_image)
+                          uri: AddHTTPS(cardItem.round_card_idolized_image),
                         }}
                         style={styles.roundImage}
                       />
@@ -327,47 +318,47 @@ const EventDetailScreen: React.FC<EventDetailScreenProps> = ({
 const styles = StyleSheet.create({
   attributeIcon: {
     height: 25,
-    width: 25
+    width: 25,
   },
   card: {
     alignItems: 'center',
-    margin: Metrics.baseMargin
+    margin: Metrics.baseMargin,
   },
   cardImage: {
     flexDirection: 'row',
-    marginHorizontal: Metrics.baseMargin
+    marginHorizontal: Metrics.baseMargin,
   },
   cardList: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   content: {
-    paddingHorizontal: Metrics.baseMargin
+    paddingHorizontal: Metrics.baseMargin,
   },
   roundImage: {
-    height: Metrics.screenWidth / 6,
-    width: Metrics.screenWidth / 6
+    height: responsiveWidth(16),
+    width: responsiveWidth(16),
   },
   song: {
-    height: Metrics.screenWidth / 3,
-    width: Metrics.screenWidth / 3
+    height: responsiveWidth(33),
+    width: responsiveWidth(33),
   },
   songInfo: {
     alignItems: 'center',
     flexDirection: 'row',
-    paddingVertical: Metrics.baseMargin
+    paddingVertical: Metrics.baseMargin,
   },
   textBlock: {
-    paddingVertical: Metrics.baseMargin
+    paddingVertical: Metrics.baseMargin,
   },
   width5: {
-    width: 5
-  }
+    width: 5,
+  },
 });
 
 EventDetailScreen.propTypes = {
-  route: PropTypes.any
+  route: PropTypes.any,
 };
 
 export default EventDetailScreen;

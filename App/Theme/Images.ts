@@ -35,7 +35,7 @@ const skill = [scoreUp, perfectLock, healer, special];
 const region = [japan, world];
 const mainUnit = {
   "μ's": mainUnit0,
-  Aqours: mainUnit1
+  Aqours: mainUnit1,
 };
 
 const subUnit = {
@@ -46,7 +46,7 @@ const subUnit = {
   AZALEA: sub4,
   'Guilty Kiss': sub5,
   'Saint Snow': sub6,
-  'A-RISE': sub7
+  'A-RISE': sub7,
 };
 
 const attribute = {
@@ -54,7 +54,7 @@ const attribute = {
   Pure: attribute1,
   Cool: attribute2,
   All: attribute3,
-  '': null
+  '': null,
 };
 
 const rarity = [n, r, sr, ssr, ur];
@@ -70,5 +70,5 @@ export default {
   mainUnit,
   subUnit,
   attribute,
-  rarity
+  rarity,
 };

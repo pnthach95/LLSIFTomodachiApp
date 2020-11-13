@@ -2,11 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { View } from 'react-native';
 import { Text, TouchableRipple } from 'react-native-paper';
-import styles from '~/Theme/RowStyles';
+import rowStyles from '~/Theme/RowStyles';
 import { AppStyles } from '~/Theme';
 import type { BooleanOrEmpty } from '~/Utils/types';
 
-type RegionRowType = {
+type Props = {
   japanOnly: BooleanOrEmpty;
   selectRegion: (japanOnly: BooleanOrEmpty) => void;
 };
@@ -14,41 +14,41 @@ type RegionRowType = {
 /**
  * Region Row (None, False, True)
  */
-const RegionRow: React.FC<RegionRowType> = ({ japanOnly, selectRegion }) => {
+const RegionRow: React.FC<Props> = ({ japanOnly, selectRegion }) => {
   const none = () => selectRegion('');
   const sFalse = () => selectRegion('False');
   const sTrue = () => selectRegion('True');
 
   return (
     <View style={AppStyles.row}>
-      <View style={styles.leftView}>
+      <View style={rowStyles.leftView}>
         <Text>Region</Text>
       </View>
-      <View style={styles.rightView}>
+      <View style={rowStyles.rightView}>
         <TouchableRipple
           onPress={none}
           style={[
-            styles.textButton,
-            styles.standardButton,
-            japanOnly === '' && styles.selectedValue
+            rowStyles.textButton,
+            rowStyles.standardButton,
+            japanOnly === '' && rowStyles.selectedValue,
           ]}>
           <Text>All</Text>
         </TouchableRipple>
         <TouchableRipple
           onPress={sFalse}
           style={[
-            styles.textButton,
-            styles.standardButton,
-            japanOnly === 'False' && styles.selectedValue
+            rowStyles.textButton,
+            rowStyles.standardButton,
+            japanOnly === 'False' && rowStyles.selectedValue,
           ]}>
           <Text>EN Only</Text>
         </TouchableRipple>
         <TouchableRipple
           onPress={sTrue}
           style={[
-            styles.textButton,
-            styles.standardButton,
-            japanOnly === 'True' && styles.selectedValue
+            rowStyles.textButton,
+            rowStyles.standardButton,
+            japanOnly === 'True' && rowStyles.selectedValue,
           ]}>
           <Text>JP Only</Text>
         </TouchableRipple>
@@ -59,7 +59,7 @@ const RegionRow: React.FC<RegionRowType> = ({ japanOnly, selectRegion }) => {
 
 RegionRow.propTypes = {
   japanOnly: PropTypes.any,
-  selectRegion: PropTypes.any
+  selectRegion: PropTypes.any,
 };
 
 export default RegionRow;

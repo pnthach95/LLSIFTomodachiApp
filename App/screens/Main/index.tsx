@@ -5,10 +5,11 @@ import {
   Title,
   Divider,
   TouchableRipple,
-  useTheme
+  useTheme,
 } from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import FastImage, { OnLoadEvent } from 'react-native-fast-image';
+import { responsiveWidth } from 'react-native-responsive-dimensions';
 import VersionNumber from 'react-native-version-number';
 import dayjs from 'dayjs';
 
@@ -21,6 +22,12 @@ import { Metrics, Colors, Images, AppStyles } from '~/Theme';
 import UserContext from '~/Context/UserContext';
 import type { EventObject, MainScreenProps } from '~/Utils/types';
 
+type GithubVersion = {
+  tag: string;
+  filename: string;
+  link: string;
+};
+
 /**
  * Main Screen
  */
@@ -29,11 +36,7 @@ const MainScreen: React.FC<MainScreenProps> = ({ navigation }) => {
   const { colors } = useTheme();
   const { state } = useContext(UserContext);
   const { ENEvent, JPEvent } = state.cachedData;
-  const [version, setVersion] = useState<{
-    tag: string;
-    filename: string;
-    link: string;
-  } | null>(null);
+  const [version, setVersion] = useState<GithubVersion | null>(null);
   const [imgSize, setImgSize] = useState({ width: 1, height: 1 });
 
   /** Start time of Worldwide event */
@@ -59,7 +62,7 @@ const MainScreen: React.FC<MainScreenProps> = ({ navigation }) => {
         setVersion({
           tag: result.tag_name,
           filename: result.assets[0].name,
-          link: result.assets[0].browser_download_url
+          link: result.assets[0].browser_download_url,
         });
       }
     } catch (error) {
@@ -81,21 +84,17 @@ const MainScreen: React.FC<MainScreenProps> = ({ navigation }) => {
     return false;
   };
 
-  /**
-   * Get width, height of image in FastImage
-   */
+  /** Get width, height of image in FastImage */
   const onLoadFastImage = (e: OnLoadEvent) => {
     const { width, height } = e.nativeEvent;
     setImgSize({ width, height });
   };
 
-  /**
-   * Navigate to Event Detail Screen
-   */
+  /** Navigate to Event Detail Screen */
   const navigateToEventDetail = (event: EventObject) => {
     navigation.navigate('EventDetailScreen', {
       eventName: event.japanese_name,
-      prevStatusBarColor: colors.card
+      prevStatusBarColor: colors.card,
     });
   };
 
@@ -135,7 +134,7 @@ const MainScreen: React.FC<MainScreenProps> = ({ navigation }) => {
               resizeMode='contain'
               style={{
                 width: Metrics.widthBanner,
-                height: (Metrics.widthBanner * imgSize.height) / imgSize.width
+                height: (Metrics.widthBanner * imgSize.height) / imgSize.width,
               }}
             />
             <Text>{`Start: ${ENEventStart.format('LLL')}`}</Text>
@@ -165,7 +164,7 @@ const MainScreen: React.FC<MainScreenProps> = ({ navigation }) => {
               resizeMode='contain'
               style={{
                 width: Metrics.widthBanner,
-                height: (Metrics.widthBanner * imgSize.height) / imgSize.width
+                height: (Metrics.widthBanner * imgSize.height) / imgSize.width,
               }}
             />
             <Text>{`Start: ${JPEventStart.format('LLL')}`}</Text>
@@ -192,25 +191,25 @@ const MainScreen: React.FC<MainScreenProps> = ({ navigation }) => {
 const styles = StyleSheet.create({
   block: {
     alignItems: 'center',
-    width: Metrics.screenWidth
+    width: responsiveWidth(100),
   },
   content: {
     alignItems: 'center',
-    padding: Metrics.baseMargin
+    padding: Metrics.baseMargin,
   },
   divider: {
-    paddingVertical: 10
+    paddingVertical: Metrics.baseMargin,
   },
   header: {
-    alignItems: 'center'
+    alignItems: 'center',
   },
   update: {
     alignItems: 'center',
     alignSelf: 'center',
     backgroundColor: Colors.lightGreen,
-    padding: 5,
-    width: Metrics.screenWidth * 0.9
-  }
+    padding: Metrics.smallMargin,
+    width: responsiveWidth(90),
+  },
 });
 
 export default MainScreen;

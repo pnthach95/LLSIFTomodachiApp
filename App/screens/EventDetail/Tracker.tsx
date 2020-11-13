@@ -5,7 +5,7 @@ import {
   ScrollView,
   FlatList,
   StyleSheet,
-  ViewStyle
+  ViewStyle,
 } from 'react-native';
 import { Text, useTheme } from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -42,7 +42,7 @@ const colorArr = [
   Colors.lime600,
   Colors.lightGreen600,
   Colors.cyan700,
-  Colors.indigo600
+  Colors.indigo600,
 ];
 
 const Row = ({ data, style }: { data: string[]; style?: ViewStyle | null }) => {
@@ -82,25 +82,23 @@ const Tracker: React.FC<EventTrackerScreenProps> = ({ navigation, route }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [trackerData, setTrackerData] = useState<TrackerDataProps>({
     table: null,
-    chart: []
+    chart: [],
   });
   const wwEventInfo = state.cachedData.eventInfo.ww || [];
   const jpEventInfo = state.cachedData.eventInfo.jp || [];
   const axisStyle = {
     tickLabels: {
-      fill: colors.text
+      fill: colors.text,
     },
     axis: {
-      stroke: colors.text
-    }
+      stroke: colors.text,
+    },
   };
   const bottom = { height: insets.bottom };
 
   useEffect(() => {
+    navigation.setOptions({ title: route.params.name });
     void getData();
-    navigation.setOptions({
-      title: route.params.name
-    });
   }, []);
 
   const getData = async () => {
@@ -112,7 +110,7 @@ const Tracker: React.FC<EventTrackerScreenProps> = ({ navigation, route }) => {
     if (targetEvent.length > 0) {
       const res = await LLSIFdotnetService.fetchEventData({
         server: isWW ? 'EN' : 'JP',
-        id: targetEvent[0].event_id
+        id: targetEvent[0].event_id,
       });
       if (res) {
         table = parseEventTracker(res);
@@ -129,7 +127,7 @@ const Tracker: React.FC<EventTrackerScreenProps> = ({ navigation, route }) => {
         chart.push({
           seriesName: table[0][i],
           data: row,
-          color: colorArr[colorCount]
+          color: colorArr[colorCount],
         });
         colorCount += 1;
       }
@@ -163,9 +161,7 @@ const Tracker: React.FC<EventTrackerScreenProps> = ({ navigation, route }) => {
                   <VictoryLine
                     key={value.seriesName}
                     data={value.data || []}
-                    style={{
-                      data: { stroke: value.color }
-                    }}
+                    style={{ data: { stroke: value.color } }}
                   />
                 ))}
                 <VictoryAxis dependentAxis style={axisStyle} />
@@ -209,25 +205,25 @@ const styles = StyleSheet.create({
   block: {
     height: Metrics.doubleBaseMargin,
     marginRight: Metrics.baseMargin,
-    width: Metrics.doubleBaseMargin
+    width: Metrics.doubleBaseMargin,
   },
   border: {
-    borderWidth: StyleSheet.hairlineWidth
+    borderWidth: StyleSheet.hairlineWidth,
   },
   head: {
-    backgroundColor: Colors.grey400
+    backgroundColor: Colors.grey400,
   },
   row: {
     alignItems: 'center',
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'space-around',
-    padding: Metrics.baseMargin
-  }
+    padding: Metrics.baseMargin,
+  },
 });
 
 Tracker.propTypes = {
-  route: PropTypes.any
+  route: PropTypes.any,
 };
 
 export default Tracker;

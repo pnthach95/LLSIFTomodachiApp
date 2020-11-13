@@ -23,6 +23,8 @@ import type { RootStackParamList } from '~/Utils/types';
 
 const Stack = createStackNavigator<RootStackParamList>();
 
+const noHeader = { headerShown: false };
+
 const Routes = (): JSX.Element => {
   const { state } = useContext(UserContext);
 
@@ -35,67 +37,49 @@ const Routes = (): JSX.Element => {
               <Stack.Screen
                 name='SplashScreen'
                 component={SplashScreen}
-                options={{
-                  headerShown: false
-                }}
+                options={noHeader}
               />
             ) : (
               <>
                 <Stack.Screen
                   name='Main'
                   component={LLSIFTab}
-                  options={{
-                    headerShown: false
-                  }}
+                  options={noHeader}
                 />
                 <Stack.Screen
                   name='IdolsScreen'
                   component={IdolsScreen}
-                  options={{
-                    title: 'School Idols'
-                  }}
+                  options={{ title: 'School Idols' }}
                 />
                 <Stack.Screen
                   name='SongsScreen'
                   component={SongsScreen}
-                  options={{
-                    headerShown: false
-                  }}
+                  options={noHeader}
                 />
                 <Stack.Screen
                   name='CardDetailScreen'
                   component={CardDetailScreen}
-                  options={{
-                    headerShown: false
-                  }}
+                  options={noHeader}
                 />
                 <Stack.Screen
                   name='EventDetailScreen'
                   component={EventDetailScreen}
-                  options={{
-                    title: ''
-                  }}
+                  options={{ title: '' }}
                 />
                 <Stack.Screen
                   name='EventTrackerScreen'
                   component={EventTrackerScreen}
-                  options={{
-                    title: ''
-                  }}
+                  options={{ title: '' }}
                 />
                 <Stack.Screen
                   name='IdolDetailScreen'
                   component={IdolDetailScreen}
-                  options={{
-                    headerShown: false
-                  }}
+                  options={noHeader}
                 />
                 <Stack.Screen
                   name='SongDetailScreen'
                   component={SongDetailScreen}
-                  options={{
-                    headerShown: false
-                  }}
+                  options={noHeader}
                 />
                 <Stack.Screen
                   name='AboutMeScreen'

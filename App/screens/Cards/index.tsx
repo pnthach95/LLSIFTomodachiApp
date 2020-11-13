@@ -5,7 +5,7 @@ import {
   Alert,
   ScrollView,
   Image,
-  StyleSheet
+  StyleSheet,
 } from 'react-native';
 import {
   Text,
@@ -13,8 +13,9 @@ import {
   Appbar,
   FAB,
   Searchbar,
-  useTheme
+  useTheme,
 } from 'react-native-paper';
+import { responsiveHeight } from 'react-native-responsive-dimensions';
 import _ from 'lodash';
 
 import ConnectStatus from '~/Components/ConnectStatus';
@@ -43,7 +44,7 @@ import type {
   MainUnitNames,
   RarityType,
   SkillType,
-  YearType
+  YearType,
 } from '~/Utils/types';
 
 /**
@@ -52,7 +53,7 @@ import type {
 const CardsScreen: React.FC<CardsScreenProps> = ({ navigation }) => {
   const { colors } = useTheme();
   const { state } = useContext(UserContext);
-  const defaultFilter: CardSearchParams = {
+  const defaultParams: CardSearchParams = {
     search: '',
     selectedOrdering: OrderingGroup.CARD[1].value,
     isReverse: true,
@@ -69,33 +70,31 @@ const CardsScreen: React.FC<CardsScreenProps> = ({ navigation }) => {
     idol_main_unit: '',
     idol_sub_unit: 'All',
     idol_school: 'All',
-    idol_year: ''
+    idol_year: '',
   };
   const [isLoading, setIsLoading] = useState(true);
-  const [searchOptions, setSearchOptions] = useState(defaultFilter);
+  const [searchParams, setSearchParams] = useState(defaultParams);
   const [column, setColumn] = useState(2);
   const [list, setList] = useState<CardObject[]>([]);
   const [showFilter, setShowFilter] = useState(false);
   const [runSearch, setRunSearch] = useState(0);
 
   useEffect(() => {
-    if (searchOptions.page > 0) {
+    if (searchParams.page > 0) {
       void getCards();
     }
-  }, [searchOptions.page, runSearch]);
+  }, [searchParams.page, runSearch]);
 
   /** Key extractor in FlatList */
   const keyExtractor = (item: CardObject) => `card ${item.id}`;
 
   /** Render item in FlatList */
   const renderItem = ({ item }: { item: CardObject }) => {
-    /**
-     * Navigate to Card Detail Screen
-     */
+    /** Navigate to Card Detail Screen */
     const navigateToCardDetail = () => {
       navigation.navigate('CardDetailScreen', {
         item,
-        prevStatusBarColor: colors.card
+        prevStatusBarColor: colors.card,
       });
     };
 
@@ -108,57 +107,57 @@ const CardsScreen: React.FC<CardsScreenProps> = ({ navigation }) => {
   /** Get card list */
   const getCards = async () => {
     const ordering =
-      (searchOptions?.isReverse ? '-' : '') +
-      (searchOptions.selectedOrdering || '');
+      (searchParams?.isReverse ? '-' : '') +
+      (searchParams.selectedOrdering || '');
     const params: CardSearchParams = {
       ordering,
-      page_size: searchOptions.page_size,
-      page: searchOptions.page
+      page_size: searchParams.page_size,
+      page: searchParams.page,
     };
-    if (searchOptions.attribute !== '')
-      params.attribute = searchOptions.attribute;
-    if (searchOptions.idol_main_unit !== '')
-      params.idol_main_unit = searchOptions.idol_main_unit;
-    if (searchOptions.idol_sub_unit !== 'All')
-      params.idol_sub_unit = searchOptions.idol_sub_unit;
-    if (searchOptions.idol_school !== 'All')
-      params.idol_school = searchOptions.idol_school;
-    if (searchOptions.name !== 'All') params.name = searchOptions.name;
-    if (searchOptions.skill !== 'All') params.skill = searchOptions.skill;
-    if (searchOptions.is_event !== '') params.is_event = searchOptions.is_event;
-    if (searchOptions.is_promo !== '') params.is_promo = searchOptions.is_promo;
-    if (searchOptions.japan_only !== '')
-      params.japan_only = searchOptions.japan_only;
-    if (searchOptions.idol_year !== '')
-      params.idol_year = searchOptions.idol_year;
-    if (searchOptions.is_special !== '')
-      params.is_special = searchOptions.is_special;
-    if (searchOptions.rarity !== '') params.rarity = searchOptions.rarity;
-    if (searchOptions.search !== '') params.search = searchOptions.search;
+    if (searchParams.attribute !== '')
+      params.attribute = searchParams.attribute;
+    if (searchParams.idol_main_unit !== '')
+      params.idol_main_unit = searchParams.idol_main_unit;
+    if (searchParams.idol_sub_unit !== 'All')
+      params.idol_sub_unit = searchParams.idol_sub_unit;
+    if (searchParams.idol_school !== 'All')
+      params.idol_school = searchParams.idol_school;
+    if (searchParams.name !== 'All') params.name = searchParams.name;
+    if (searchParams.skill !== 'All') params.skill = searchParams.skill;
+    if (searchParams.is_event !== '') params.is_event = searchParams.is_event;
+    if (searchParams.is_promo !== '') params.is_promo = searchParams.is_promo;
+    if (searchParams.japan_only !== '')
+      params.japan_only = searchParams.japan_only;
+    if (searchParams.idol_year !== '')
+      params.idol_year = searchParams.idol_year;
+    if (searchParams.is_special !== '')
+      params.is_special = searchParams.is_special;
+    if (searchParams.rarity !== '') params.rarity = searchParams.rarity;
+    if (searchParams.search !== '') params.search = searchParams.search;
     // console.log(`Cards.getCards: ${JSON.stringify(theFilter)}`);
     try {
       setIsLoading(true);
       const result = await LLSIFService.fetchCardList(params);
       if (result === 404) {
         // console.log('LLSIFService.fetchCardList 404');
-        setSearchOptions({ ...searchOptions, page: 0 });
+        setSearchParams({ ...searchParams, page: 0 });
       } else if (Array.isArray(result)) {
         let x = [];
-        if (searchOptions.page === 1) {
+        if (searchParams.page === 1) {
           x = [...result];
         } else {
           x = [...list, ...result];
         }
         x = x.filter(
           (card, index, self) =>
-            index === self.findIndex((t) => t.id === card.id)
+            index === self.findIndex((t) => t.id === card.id),
         );
         if (x.length === 0) {
-          setSearchOptions({ ...searchOptions, page: 0 });
+          setSearchParams({ ...searchParams, page: 0 });
         }
         setList(x);
       } else {
-        setSearchOptions({ ...searchOptions, page: 0 });
+        setSearchParams({ ...searchParams, page: 0 });
         throw Error('null');
       }
     } catch (err) {
@@ -173,10 +172,10 @@ const CardsScreen: React.FC<CardsScreenProps> = ({ navigation }) => {
   const onSearch = () => {
     setList([]);
     setShowFilter(false);
-    if (searchOptions.page === 1) {
+    if (searchParams.page === 1) {
       setRunSearch(runSearch + 1);
     }
-    setSearchOptions({ ...searchOptions, page: 1 });
+    setSearchParams({ ...searchParams, page: 1 });
   };
 
   /**
@@ -184,8 +183,8 @@ const CardsScreen: React.FC<CardsScreenProps> = ({ navigation }) => {
    * stopSearch prevents calling getCards when no card was found (404).
    */
   const onEndReaching = () => {
-    if (searchOptions.page > 0) {
-      setSearchOptions({ ...searchOptions, page: searchOptions.page + 1 });
+    if (searchParams.page > 0) {
+      setSearchParams({ ...searchParams, page: searchParams.page + 1 });
     }
   };
 
@@ -196,66 +195,66 @@ const CardsScreen: React.FC<CardsScreenProps> = ({ navigation }) => {
 
   /** Reverse search on/off */
   const toggleReverse = () =>
-    setSearchOptions({ ...searchOptions, isReverse: !searchOptions.isReverse });
+    setSearchParams({ ...searchParams, isReverse: !searchParams.isReverse });
 
   /** Switch 1 column and 2 columns */
   const switchColumn = () => setColumn(column === 1 ? 2 : 1);
 
   /** Save is_promo */
   const selectPromo = (value: BooleanOrEmpty) =>
-    setSearchOptions({ ...searchOptions, is_promo: value });
+    setSearchParams({ ...searchParams, is_promo: value });
 
   /** Save is_special */
   const selectSpecial = (value: BooleanOrEmpty) =>
-    setSearchOptions({ ...searchOptions, is_special: value });
+    setSearchParams({ ...searchParams, is_special: value });
 
   /** Save is_event */
   const selectEvent = (value: BooleanOrEmpty) =>
-    setSearchOptions({ ...searchOptions, is_event: value });
+    setSearchParams({ ...searchParams, is_event: value });
 
   /** Save idol_main_unit */
   const selectMainUnit = (value: MainUnitNames) =>
-    setSearchOptions({ ...searchOptions, idol_main_unit: value });
+    setSearchParams({ ...searchParams, idol_main_unit: value });
 
   /** Save rarity */
   const selectRarity = (value: RarityType) =>
-    setSearchOptions({ ...searchOptions, rarity: value });
+    setSearchParams({ ...searchParams, rarity: value });
 
   /** Save attribute */
   const selectAttribute = (value: AttributeType) =>
-    setSearchOptions({ ...searchOptions, attribute: value });
+    setSearchParams({ ...searchParams, attribute: value });
 
   /** Save idol_year */
   const selectYear = (value: YearType) =>
-    setSearchOptions({ ...searchOptions, idol_year: value });
+    setSearchParams({ ...searchParams, idol_year: value });
 
   /** Save region */
   const selectRegion = (value: BooleanOrEmpty) =>
-    setSearchOptions({ ...searchOptions, japan_only: value });
+    setSearchParams({ ...searchParams, japan_only: value });
 
   /** Save idol_sub_unit */
   const selectSubUnit = (itemValue: string) =>
-    setSearchOptions({ ...searchOptions, idol_sub_unit: itemValue });
+    setSearchParams({ ...searchParams, idol_sub_unit: itemValue });
 
   /** Save idol name */
   const selectIdol = (itemValue: string) =>
-    setSearchOptions({ ...searchOptions, name: itemValue });
+    setSearchParams({ ...searchParams, name: itemValue });
 
   /** Save school */
   const selectSchool = (itemValue: string) =>
-    setSearchOptions({ ...searchOptions, idol_school: itemValue });
+    setSearchParams({ ...searchParams, idol_school: itemValue });
 
   /** Save skill */
   const selectSkill = (itemValue: SkillType) =>
-    setSearchOptions({ ...searchOptions, skill: itemValue });
+    setSearchParams({ ...searchParams, skill: itemValue });
 
   /** Save ordering */
   const selectOrdering = (value: string) =>
-    setSearchOptions({ ...searchOptions, selectedOrdering: value });
+    setSearchParams({ ...searchParams, selectedOrdering: value });
 
   /** Reset filter variables */
   const resetFilter = () =>
-    setSearchOptions({ ...defaultFilter, page: searchOptions.page });
+    setSearchParams({ ...defaultParams, page: searchParams.page });
 
   /** Render footer of FlatList */
   const renderFooter = (
@@ -271,7 +270,7 @@ const CardsScreen: React.FC<CardsScreenProps> = ({ navigation }) => {
   );
 
   const onChangeText = (text: string) =>
-    setSearchOptions({ ...searchOptions, search: text });
+    setSearchParams({ ...searchParams, search: text });
 
   return (
     <View style={AppStyles.screen}>
@@ -279,7 +278,7 @@ const CardsScreen: React.FC<CardsScreenProps> = ({ navigation }) => {
       <Appbar.Header style={{ backgroundColor: colors.card }}>
         <View style={AppStyles.searchHeader}>
           <Searchbar
-            value={searchOptions.search || ''}
+            value={searchParams.search || ''}
             onChangeText={onChangeText}
             onSubmitEditing={onSearch}
             onIconPress={onSearch}
@@ -298,66 +297,66 @@ const CardsScreen: React.FC<CardsScreenProps> = ({ navigation }) => {
             <PickerRow
               name='Idol'
               list={state.cachedData.idols}
-              value={searchOptions.name || ''}
+              value={searchParams.name || ''}
               onSelect={selectIdol}
             />
             <RarityRow
-              rarity={searchOptions.rarity || ''}
+              rarity={searchParams.rarity || ''}
               selectRarity={selectRarity}
             />
             <AttributeRow
-              attribute={searchOptions.attribute || ''}
+              attribute={searchParams.attribute || ''}
               selectAttribute={selectAttribute}
             />
             <RegionRow
-              japanOnly={searchOptions.japan_only || ''}
+              japanOnly={searchParams.japan_only || ''}
               selectRegion={selectRegion}
             />
             <PromoCardRow
-              isPromo={searchOptions.is_promo || ''}
+              isPromo={searchParams.is_promo || ''}
               selectPromo={selectPromo}
             />
             <SpecialCardRow
-              isSpecial={searchOptions.is_special || ''}
+              isSpecial={searchParams.is_special || ''}
               selectSpecial={selectSpecial}
             />
             <EventRow
-              isEvent={searchOptions.is_event || ''}
+              isEvent={searchParams.is_event || ''}
               selectEvent={selectEvent}
             />
             <PickerRow
               name='Skill'
-              value={searchOptions.skill || 'All'}
+              value={searchParams.skill || 'All'}
               list={state.cachedData.skills}
               onSelect={selectSkill}
             />
             <MainUnitRow
-              mainUnit={searchOptions.idol_main_unit || ''}
+              mainUnit={searchParams.idol_main_unit || ''}
               selectMainUnit={selectMainUnit}
             />
             <PickerRow
               name='Subunit'
-              value={searchOptions.idol_sub_unit || ''}
+              value={searchParams.idol_sub_unit || ''}
               list={state.cachedData.subUnits}
               onSelect={selectSubUnit}
             />
             <PickerRow
               name='School'
-              value={searchOptions.idol_school || ''}
+              value={searchParams.idol_school || ''}
               list={state.cachedData.schools}
               onSelect={selectSchool}
             />
             <YearRow
-              idolYear={searchOptions.idol_year || ''}
+              idolYear={searchParams.idol_year || ''}
               selectYear={selectYear}
             />
             <OrderingRow
               list={OrderingGroup.CARD}
               selectedItem={
-                searchOptions.selectedOrdering || OrderingGroup.CARD[1].value
+                searchParams.selectedOrdering || OrderingGroup.CARD[1].value
               }
               onSelect={selectOrdering}
-              isReverse={searchOptions.isReverse || false}
+              isReverse={searchParams.isReverse || false}
               toggleReverse={toggleReverse}
             />
 
@@ -394,23 +393,23 @@ const CardsScreen: React.FC<CardsScreenProps> = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   contentContainer: {
-    padding: Metrics.baseMargin
+    padding: Metrics.baseMargin,
   },
   fab: {
     bottom: 0,
     margin: 16,
     position: 'absolute',
-    right: 0
+    right: 0,
   },
   filterContainer: {
-    height: Metrics.screenHeight * 0.35
+    height: responsiveHeight(35),
   },
   flatListElement: {
-    margin: Metrics.baseMargin
+    margin: Metrics.baseMargin,
   },
   list: {
-    padding: Metrics.smallMargin
-  }
+    padding: Metrics.smallMargin,
+  },
 });
 
 export default CardsScreen;

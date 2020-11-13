@@ -6,7 +6,7 @@ import { Images, AppStyles } from '~/Theme';
 import rowStyles from '~/Theme/RowStyles';
 import type { AttributeType } from '~/Utils/types';
 
-type AttributeRowType = {
+type Props = {
   attribute: AttributeType;
   selectAttribute: (attribute: AttributeType) => void;
 };
@@ -14,10 +14,7 @@ type AttributeRowType = {
 /**
  * Attribute Row (None, Smile, Pure, Cool, All)
  */
-const AttributeRow: React.FC<AttributeRowType> = ({
-  attribute,
-  selectAttribute
-}) => {
+const AttributeRow: React.FC<Props> = ({ attribute, selectAttribute }) => {
   const none = () => selectAttribute('');
   const smile = () => selectAttribute('Smile');
   const pure = () => selectAttribute('Pure');
@@ -35,7 +32,7 @@ const AttributeRow: React.FC<AttributeRowType> = ({
             onPress={none}
             style={[
               rowStyles.standardButton,
-              attribute === '' && rowStyles.selectedValue1
+              attribute === '' && rowStyles.selectedValue1,
             ]}>
             <Image source={Images.empty} style={rowStyles.buttonImage} />
           </TouchableRipple>
@@ -43,7 +40,7 @@ const AttributeRow: React.FC<AttributeRowType> = ({
             onPress={smile}
             style={[
               rowStyles.standardButton,
-              attribute === 'Smile' && rowStyles.selectedValue1
+              attribute === 'Smile' && rowStyles.selectedValue1,
             ]}>
             <Image
               source={Images.attribute.Smile}
@@ -54,7 +51,7 @@ const AttributeRow: React.FC<AttributeRowType> = ({
             onPress={pure}
             style={[
               rowStyles.standardButton,
-              attribute === 'Pure' && rowStyles.selectedValue1
+              attribute === 'Pure' && rowStyles.selectedValue1,
             ]}>
             <Image
               source={Images.attribute.Pure}
@@ -65,7 +62,7 @@ const AttributeRow: React.FC<AttributeRowType> = ({
             onPress={cool}
             style={[
               rowStyles.standardButton,
-              attribute === 'Cool' && rowStyles.selectedValue1
+              attribute === 'Cool' && rowStyles.selectedValue1,
             ]}>
             <Image
               source={Images.attribute.Cool}
@@ -76,7 +73,7 @@ const AttributeRow: React.FC<AttributeRowType> = ({
             onPress={all}
             style={[
               rowStyles.standardButton,
-              attribute === 'All' && rowStyles.selectedValue1
+              attribute === 'All' && rowStyles.selectedValue1,
             ]}>
             <Image
               source={Images.attribute.All}
@@ -91,7 +88,7 @@ const AttributeRow: React.FC<AttributeRowType> = ({
 
 AttributeRow.propTypes = {
   attribute: PropTypes.any,
-  selectAttribute: PropTypes.any
+  selectAttribute: PropTypes.any,
 };
 
 export default AttributeRow;

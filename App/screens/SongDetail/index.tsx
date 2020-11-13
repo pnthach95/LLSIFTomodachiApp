@@ -6,7 +6,7 @@ import {
   TouchableRipple,
   Button,
   Text,
-  ProgressBar
+  ProgressBar,
 } from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import FastImage from 'react-native-fast-image';
@@ -22,6 +22,12 @@ import type { SongDetailScreenProps } from '~/Utils/types';
 
 type StatType = [number, number[]];
 
+type StatButtonProps = {
+  id: number;
+  text: string;
+  stat: StatType;
+};
+
 /**
  * Song Detail Screen
  *
@@ -32,7 +38,7 @@ type StatType = [number, number[]];
  */
 const SongDetailScreen: React.FC<SongDetailScreenProps> = ({
   route,
-  navigation
+  navigation,
 }) => {
   const { item } = route.params;
   const insets = useSafeAreaInsets();
@@ -88,9 +94,7 @@ const SongDetailScreen: React.FC<SongDetailScreenProps> = ({
     return () => setStatusBar(route.params.prevStatusBarColor);
   }, []);
 
-  /**
-   * Set color for star
-   */
+  /** Set color for star */
   const setColor = (index: number): number => {
     if (index < 3) return 0;
     if (index < 6) return 1;
@@ -98,38 +102,24 @@ const SongDetailScreen: React.FC<SongDetailScreenProps> = ({
     return 3;
   };
 
-  /**
-   * Convert seconds to m:ss
-   */
+  /** Convert seconds to m:ss */
   const formatTime = (time: number): string => {
     const duration = dayjs.duration(time, 's');
     return `${duration.minutes()}:${duration.seconds()}`;
   };
 
-  /**
-   * Navigate to Event Detail Screen
-   */
+  /** Navigate to Event Detail Screen */
   const navigateToEventDetail = () => {
     if (item.event?.japanese_name) {
       navigation.navigate('EventDetailScreen', {
         eventName: item.event?.japanese_name,
-        prevStatusBarColor: attributeColors[0]
+        prevStatusBarColor: attributeColors[0],
       });
     }
   };
 
-  /**
-   * Render choosing stat button
-   */
-  const StatButton = ({
-    id,
-    text,
-    stat
-  }: {
-    id: number;
-    text: string;
-    stat: StatType;
-  }) => {
+  /** Render choosing stat button */
+  const StatButton = ({ id, text, stat }: StatButtonProps) => {
     const onPress = () => {
       setButtonID(id);
       setCurrentStats(stat);
@@ -222,7 +212,7 @@ const SongDetailScreen: React.FC<SongDetailScreenProps> = ({
               item1={{ text: 'Daily rotation', flex: 1 }}
               item2={{
                 text: `${item.daily_rotation} - ${item.daily_rotation_position}`,
-                flex: 1
+                flex: 1,
               }}
             />
           </View>
@@ -258,47 +248,47 @@ const SongDetailScreen: React.FC<SongDetailScreenProps> = ({
 
 const styles = StyleSheet.create({
   button: {
-    marginVertical: Metrics.smallMargin
+    marginVertical: Metrics.smallMargin,
   },
   buttonRow: {
     alignSelf: 'stretch',
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'space-around',
-    paddingVertical: Metrics.baseMargin
+    paddingVertical: Metrics.baseMargin,
   },
   event: {
-    alignItems: 'center'
+    alignItems: 'center',
   },
   eventButton: {
     alignSelf: 'flex-end',
-    paddingRight: Metrics.baseMargin
+    paddingRight: Metrics.baseMargin,
   },
   eventImage: {
-    height: Metrics.screenWidth / 5,
+    height: responsiveWidth(20),
     marginVertical: 10,
-    width: (2 * Metrics.screenWidth) / 3
+    width: responsiveWidth(66),
   },
   height10: {
-    height: 10
+    height: 10,
   },
   image: {
     height: responsiveWidth(40),
-    width: responsiveWidth(40)
+    width: responsiveWidth(40),
   },
   rightHeaderImage: {
     height: Metrics.navBarHeight,
-    width: Metrics.navBarHeight
+    width: Metrics.navBarHeight,
   },
   scrollViewContainer: {
     alignItems: 'center',
-    padding: Metrics.baseMargin
+    padding: Metrics.baseMargin,
   },
-  stretch: { alignSelf: 'stretch' }
+  stretch: { alignSelf: 'stretch' },
 });
 
 SongDetailScreen.propTypes = {
-  route: PropTypes.any
+  route: PropTypes.any,
 };
 
 export default SongDetailScreen;

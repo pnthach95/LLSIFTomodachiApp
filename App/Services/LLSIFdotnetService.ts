@@ -4,19 +4,14 @@ import {
   LLSIFnetData,
   LLNETEvent,
   LLNETEventInfo,
-  LLSIFnetParams
+  LLSIFnetParams,
 } from '~/Utils/types';
 
-const LLSIFnet = create({
-  baseURL: 'https://llsif.net/',
-  timeout: 10000
-});
+const LLSIFnet = create({ baseURL: 'https://llsif.net/', timeout: 10000 });
 
-/**
- * Fetch event data
- */
+/** Fetch event data */
 const fetchEventData = async (
-  params: LLSIFnetParams
+  params: LLSIFnetParams,
 ): Promise<string | null> => {
   const l = `data/${params.server}/${params.id}.csv`;
   const response = await LLSIFnet.get<string>(l);
@@ -35,7 +30,7 @@ const parseEvent = (events: Record<string, LLSIFnetEvent>) => {
       result.push({
         event_id: element.event_id,
         event_name: element.event_name,
-        start_date: element.start_date
+        start_date: element.start_date,
       });
     }
   });
@@ -47,14 +42,11 @@ const fetchEventInfo = async (): Promise<LLNETEventInfo> => {
   if (response.ok && response.data) {
     const result = {
       ww: parseEvent(response.data.en_events),
-      jp: parseEvent(response.data.jp_events)
+      jp: parseEvent(response.data.jp_events),
     };
     return result;
   }
   return { ww: [], jp: [] };
 };
 
-export default {
-  fetchEventData,
-  fetchEventInfo
-};
+export default { fetchEventData, fetchEventInfo };

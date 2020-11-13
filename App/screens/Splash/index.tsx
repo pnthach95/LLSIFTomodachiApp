@@ -6,9 +6,10 @@ import RNBootSplash from 'react-native-bootsplash';
 
 import { initCachedData } from '~/Context/Reducer';
 import LLSIFService from '~/Services/LLSIFService';
+import LLSIFdotnetService from '~/Services/LLSIFdotnetService';
 import LoadingScreen from '../Loading';
 import UserContext from '~/Context/UserContext';
-import { AppStyles } from '~/Theme';
+import { AppStyles, Metrics } from '~/Theme';
 import { loadSettings, setStatusBar } from '~/Utils';
 import ThemeModule from '~/Utils/ThemeModule';
 import { FirebaseTopic } from '~/Config';
@@ -16,13 +17,11 @@ import type {
   SplashScreenProps,
   CachedDataObject,
   SubUnitNames,
-  EventSearchParams
+  EventSearchParams,
 } from '~/Utils/types';
-import LLSIFdotnetService from '~/Services/LLSIFdotnetService';
 
 /**
  * Loading Screen
- *
  */
 const SplashScreen: React.FC<SplashScreenProps> = () => {
   const { colors } = useTheme();
@@ -78,18 +77,18 @@ const SplashScreen: React.FC<SplashScreenProps> = () => {
       const enParams: EventSearchParams = {
         page: 1,
         ordering: '-english_beginning',
-        page_size: 1
+        page_size: 1,
       };
       const jpParams: EventSearchParams = {
         page: 1,
         ordering: '-beginning',
-        page_size: 1
+        page_size: 1,
       };
       const [data, eventEN, eventJP, evInfo] = await Promise.all([
         LLSIFService.fetchCachedData(),
         LLSIFService.fetchEventList(enParams),
         LLSIFService.fetchEventList(jpParams),
-        LLSIFdotnetService.fetchEventInfo()
+        LLSIFdotnetService.fetchEventInfo(),
       ]);
       if (data) {
         const cardsInfo = data.cards_info;
@@ -98,7 +97,7 @@ const SplashScreen: React.FC<SplashScreenProps> = () => {
         const skills = cardsInfo.skills.map(({ skill }) => skill);
         cachedData.skills = skills;
         const subUnits = cardsInfo.sub_units.map(
-          (value) => value
+          (value) => value,
         ) as SubUnitNames[];
         cachedData.subUnits = subUnits;
         const schools = cardsInfo.schools.map((value: string) => value);
@@ -115,7 +114,7 @@ const SplashScreen: React.FC<SplashScreenProps> = () => {
         cachedData.eventInfo = evInfo;
         dispatch({
           type: 'SAVE_CACHED_DATA',
-          data: cachedData
+          data: cachedData,
         });
         setLoadedC(true);
       } else {
@@ -149,8 +148,8 @@ const SplashScreen: React.FC<SplashScreenProps> = () => {
 
 const styles = StyleSheet.create({
   textBox: {
-    marginHorizontal: 10
-  }
+    marginHorizontal: Metrics.baseMargin,
+  },
 });
 
 export default SplashScreen;

@@ -25,25 +25,21 @@ const MoreScreen: React.FC<MoreScreenProps> = ({ navigation }) => {
     ThemeModule.setColor(colors.background);
   }, [state.options.isDark]);
 
-  /**
-   * Toggle worldwide option
-   */
+  /** Toggle worldwide option */
   const worldwideToggle = () => {
     const data: AppOptions = {
       ...state.options,
-      worldwideOnly: !state.options.worldwideOnly
+      worldwideOnly: !state.options.worldwideOnly,
     };
     dispatch({ type: 'SAVE_OPTIONS', data });
     saveSettings(data);
   };
 
-  /**
-   * Toggle receiving worldwide event notification option
-   */
+  /** Toggle receiving worldwide event notification option */
   const wwEventToggle = () => {
     const data: AppOptions = {
       ...state.options,
-      wwEvent: !state.options.wwEvent
+      wwEvent: !state.options.wwEvent,
     };
     if (data.wwEvent) {
       firebase.messaging().subscribeToTopic('ww_event');
@@ -54,13 +50,11 @@ const MoreScreen: React.FC<MoreScreenProps> = ({ navigation }) => {
     saveSettings(data);
   };
 
-  /**
-   * Toggle receiving japanese event notification option
-   */
+  /** Toggle receiving japanese event notification option */
   const jpEventToggle = () => {
     const data: AppOptions = {
       ...state.options,
-      jpEvent: !state.options.jpEvent
+      jpEvent: !state.options.jpEvent,
     };
     if (data.jpEvent) {
       firebase.messaging().subscribeToTopic('jp_event');
@@ -71,13 +65,11 @@ const MoreScreen: React.FC<MoreScreenProps> = ({ navigation }) => {
     saveSettings(data);
   };
 
-  /**
-   * Toggle dark theme
-   */
+  /** Toggle dark theme */
   const themeToggle = () => {
     const data: AppOptions = {
       ...state.options,
-      isDark: !state.options.isDark
+      isDark: !state.options.isDark,
     };
     dispatch({ type: 'SAVE_OPTIONS', data });
     saveSettings(data);
@@ -158,7 +150,7 @@ const styles = StyleSheet.create({
   button: {
     alignItems: 'center',
     flexDirection: 'row',
-    padding: Metrics.baseMargin
+    padding: Metrics.baseMargin,
   },
   group: {
     alignItems: 'center',
@@ -166,21 +158,21 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingBottom: Metrics.baseMargin,
     paddingHorizontal: Metrics.doubleBaseMargin,
-    paddingTop: Metrics.doubleBaseMargin
+    paddingTop: Metrics.doubleBaseMargin,
   },
   headline: {
     color: Colors.blue600,
-    fontWeight: 'bold'
+    fontWeight: 'bold',
   },
   settingRow: {
     alignItems: 'center',
     flexDirection: 'row',
     justifyContent: 'space-between',
-    padding: Metrics.baseMargin
+    padding: Metrics.baseMargin,
   },
   space: {
-    width: Metrics.baseMargin
-  }
+    width: Metrics.baseMargin,
+  },
 });
 
 export default MoreScreen;

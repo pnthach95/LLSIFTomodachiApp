@@ -10,7 +10,7 @@ type ContextProps = {
 const UserContext = React.createContext({} as ContextProps);
 
 export const UserProvider = ({
-  children
+  children,
 }: {
   children: JSX.Element;
 }): JSX.Element => {
@@ -18,9 +18,9 @@ export const UserProvider = ({
   const userReducer = useMemo<ContextProps>(
     () => ({
       state,
-      dispatch
+      dispatch,
     }),
-    [state, dispatch]
+    [state, dispatch],
   );
 
   return (

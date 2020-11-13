@@ -25,7 +25,7 @@ const OrderingRow: React.FC<Props> = ({
   list,
   onSelect,
   selectedItem,
-  toggleReverse
+  toggleReverse,
 }) => {
   const { colors } = useTheme();
   const { openModal } = useModal<ModalStackParamList>();
@@ -35,7 +35,7 @@ const OrderingRow: React.FC<Props> = ({
       title: 'Ordering',
       selectedItem,
       objectData: list,
-      onPress: onSelect
+      onPress: onSelect,
     });
   };
 
@@ -74,11 +74,11 @@ const OrderingRow: React.FC<Props> = ({
 
 const styles = StyleSheet.create({
   marginRight: {
-    marginRight: Metrics.baseMargin
+    marginRight: Metrics.baseMargin,
   },
   padding: {
-    padding: Metrics.baseMargin
-  }
+    padding: Metrics.baseMargin,
+  },
 });
 
 OrderingRow.propTypes = {
@@ -86,7 +86,7 @@ OrderingRow.propTypes = {
   onSelect: PropTypes.any,
   list: PropTypes.any,
   selectedItem: PropTypes.any,
-  toggleReverse: PropTypes.any
+  toggleReverse: PropTypes.any,
 };
 
 export default OrderingRow;

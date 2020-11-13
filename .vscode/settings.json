@@ -50,5 +50,6 @@
   },
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": true
-  }
+  },
+  "god.tsconfig": "./tsconfig.json"
 }

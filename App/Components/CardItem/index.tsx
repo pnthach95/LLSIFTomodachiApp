@@ -7,7 +7,7 @@ import { Metrics, AppStyles, Images } from '~/Theme';
 import { AddHTTPS, findColorByAttribute, findSkill } from '~/Utils';
 import type { CardObject } from '~/Utils/types';
 
-type CardItemType = {
+type Props = {
   item: CardObject;
   onPress: () => void;
 };
@@ -20,15 +20,14 @@ const { itemWidth } = Metrics.images;
  * Prop:
  * - `item`: [Card object](https://github.com/MagiCircles/SchoolIdolAPI/wiki/API-Cards#objects)
  * - `onPress`: onPress function
- *
  */
-const CardItem: React.FC<CardItemType> = ({ item, onPress }) => {
+const CardItem: React.FC<Props> = ({ item, onPress }) => {
   const card = item.card_image || item.card_idolized_image;
   const cardColors = findColorByAttribute(item.attribute);
   const [imgSize, setImgSize] = useState({ width: 1, height: 0 });
   const styleSeperator = {
     backgroundColor: cardColors[0],
-    marginVertical: 0
+    marginVertical: 0,
   };
 
   const onLoad = (e: OnLoadEvent) => {
@@ -40,20 +39,20 @@ const CardItem: React.FC<CardItemType> = ({ item, onPress }) => {
     <Surface style={styles.container}>
       <TouchableRipple borderless rippleColor={cardColors[0]} onPress={onPress}>
         <>
-          {card && (
+          {!!card && (
             <FastImage
               onLoad={onLoad}
               source={{
                 uri: AddHTTPS(card),
-                priority: FastImage.priority.normal
+                priority: FastImage.priority.normal,
               }}
               resizeMode='contain'
               style={[
                 styles.topRadius,
                 {
                   width: itemWidth,
-                  height: (itemWidth * imgSize.height) / imgSize.width
-                }
+                  height: (itemWidth * imgSize.height) / imgSize.width,
+                },
               ]}
             />
           )}
@@ -82,7 +81,7 @@ const CardItem: React.FC<CardItemType> = ({ item, onPress }) => {
                 style={[AppStyles.mediumIcon, { tintColor: cardColors[0] }]}
               />
             )}
-            {item.event !== null && (
+            {!!item.event && (
               <Image
                 source={Images.event}
                 style={[AppStyles.mediumIcon, { tintColor: cardColors[0] }]}
@@ -101,24 +100,24 @@ const styles = StyleSheet.create({
     elevation: 5,
     margin: Metrics.smallMargin,
     overflow: 'hidden',
-    width: itemWidth
+    width: itemWidth,
   },
   info: {
     borderBottomLeftRadius: Metrics.smallMargin,
     borderBottomRightRadius: Metrics.smallMargin,
     flexDirection: 'row',
     justifyContent: 'space-around',
-    padding: Metrics.smallMargin
+    padding: Metrics.smallMargin,
   },
   topRadius: {
     borderTopLeftRadius: Metrics.smallMargin,
-    borderTopRightRadius: Metrics.smallMargin
-  }
+    borderTopRightRadius: Metrics.smallMargin,
+  },
 });
 
 CardItem.propTypes = {
   item: PropTypes.any,
-  onPress: PropTypes.any
+  onPress: PropTypes.any,
 };
 
 export default CardItem;

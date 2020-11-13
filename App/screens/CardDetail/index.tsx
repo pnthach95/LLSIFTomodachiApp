@@ -6,7 +6,7 @@ import {
   Caption,
   Appbar,
   Button,
-  TouchableRipple
+  TouchableRipple,
 } from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import FastImage from 'react-native-fast-image';
@@ -19,7 +19,7 @@ import LoadingScreen from '../Loading';
 import SPCStats from '~/Components/SPCStats';
 import TextRow from '~/Components/TextRow';
 import { findColorByAttribute, AddHTTPS, setStatusBar } from '~/Utils';
-import { Metrics, AppStyles, Colors, Images } from '~/Theme';
+import { Metrics, AppStyles, Colors, Images, Fonts } from '~/Theme';
 import type { CardDetailScreenProps } from '~/Utils/types';
 
 const { itemWidth, cardHeight, cardWidth } = Metrics.images;
@@ -29,23 +29,23 @@ const { itemWidth, cardHeight, cardWidth } = Metrics.images;
  */
 const CardDetailScreen: React.FC<CardDetailScreenProps> = ({
   navigation,
-  route
+  route,
 }) => {
   const { item } = route.params;
   const minStats = [
     item.minimum_statistics_smile || 0,
     item.minimum_statistics_pure || 0,
-    item.minimum_statistics_cool || 0
+    item.minimum_statistics_cool || 0,
   ];
   const nonIdolMaxStats = [
     item.non_idolized_maximum_statistics_smile || 0,
     item.non_idolized_maximum_statistics_pure || 0,
-    item.non_idolized_maximum_statistics_cool || 0
+    item.non_idolized_maximum_statistics_cool || 0,
   ];
   const idolMaxStats = [
     item.idolized_maximum_statistics_smile || 0,
     item.idolized_maximum_statistics_pure || 0,
-    item.idolized_maximum_statistics_cool || 0
+    item.idolized_maximum_statistics_cool || 0,
   ];
   const insets = useSafeAreaInsets();
   const [done, setDone] = useState(false);
@@ -76,7 +76,7 @@ const CardDetailScreen: React.FC<CardDetailScreenProps> = ({
   const StatButton = ({
     id,
     text,
-    stats
+    stats,
   }: {
     id: number;
     text: string;
@@ -92,7 +92,7 @@ const CardDetailScreen: React.FC<CardDetailScreenProps> = ({
         mode='contained'
         color={buttonID === id ? Colors.violet : Colors.inactive}
         onPress={saveStat}>
-        <Text style={styles.whiteText}>{text}</Text>
+        <Text style={Fonts.style.white}>{text}</Text>
       </Button>
     );
   };
@@ -100,13 +100,13 @@ const CardDetailScreen: React.FC<CardDetailScreenProps> = ({
   const goToEvent = () =>
     navigation.navigate('EventDetailScreen', {
       eventName: item.event?.japanese_name || '',
-      prevStatusBarColor: cardColors[0]
+      prevStatusBarColor: cardColors[0],
     });
 
   const goToOtherEvent = () =>
     navigation.navigate('EventDetailScreen', {
       eventName: item.other_event?.japanese_name || '',
-      prevStatusBarColor: cardColors[0]
+      prevStatusBarColor: cardColors[0],
     });
 
   /**
@@ -115,13 +115,13 @@ const CardDetailScreen: React.FC<CardDetailScreenProps> = ({
   const navigateToIdolDetail = () => {
     navigation.navigate('IdolDetailScreen', {
       name: item.idol.name,
-      prevStatusBarColor: cardColors[0]
+      prevStatusBarColor: cardColors[0],
     });
   };
 
   const RenderImage = ({
     index,
-    value
+    value,
   }: {
     index: number;
     value: { uri: string };
@@ -146,9 +146,9 @@ const CardDetailScreen: React.FC<CardDetailScreenProps> = ({
     () =>
       setImgViewer({
         ...imgViewer,
-        visible: false
+        visible: false,
       }),
-    []
+    [],
   );
 
   const goBack = () => navigation.goBack();
@@ -194,7 +194,7 @@ const CardDetailScreen: React.FC<CardDetailScreenProps> = ({
               item1={{ flex: 1, text: 'Release date' }}
               item2={{
                 flex: 2,
-                text: dayjs(item.release_date).format('LL')
+                text: dayjs(item.release_date).format('LL'),
               }}
             />
             {Boolean(propertyLine) && <Caption>{propertyLine}</Caption>}
@@ -209,7 +209,7 @@ const CardDetailScreen: React.FC<CardDetailScreenProps> = ({
                   item1={{ flex: 1, text: '' }}
                   item2={{
                     flex: 2,
-                    text: item.skill_details || ''
+                    text: item.skill_details || '',
                   }}
                 />
               </>
@@ -225,7 +225,7 @@ const CardDetailScreen: React.FC<CardDetailScreenProps> = ({
                   item1={{ flex: 1, text: '' }}
                   item2={{
                     flex: 2,
-                    text: item.center_skill_details || ''
+                    text: item.center_skill_details || '',
                   }}
                 />
               </>
@@ -236,11 +236,11 @@ const CardDetailScreen: React.FC<CardDetailScreenProps> = ({
                 <TextRow
                   item1={{
                     text: 'Event',
-                    flex: 1
+                    flex: 1,
                   }}
                   item2={{
                     text: item.event.japanese_name,
-                    flex: 2
+                    flex: 2,
                   }}
                 />
                 {item.event.english_name !== null && (
@@ -248,7 +248,7 @@ const CardDetailScreen: React.FC<CardDetailScreenProps> = ({
                     item1={{ text: '', flex: 1 }}
                     item2={{
                       text: item.event.english_name || '',
-                      flex: 2
+                      flex: 2,
                     }}
                   />
                 )}
@@ -266,11 +266,11 @@ const CardDetailScreen: React.FC<CardDetailScreenProps> = ({
                     <TextRow
                       item1={{
                         text: '',
-                        flex: 1
+                        flex: 1,
                       }}
                       item2={{
                         text: item.other_event.english_name || '',
-                        flex: 2
+                        flex: 2,
                       }}
                     />
                     <TouchableRipple
@@ -338,39 +338,36 @@ const CardDetailScreen: React.FC<CardDetailScreenProps> = ({
 const styles = StyleSheet.create({
   banner: {
     height: 100,
-    width: responsiveWidth(80)
+    width: responsiveWidth(80),
   },
   bannerContainer: {
-    paddingVertical: Metrics.baseMargin
+    paddingVertical: Metrics.baseMargin,
   },
   buttonRow: {
     flexDirection: 'row',
     justifyContent: 'space-around',
-    paddingVertical: Metrics.baseMargin
+    paddingVertical: Metrics.baseMargin,
   },
   card: {
     height: (itemWidth * cardHeight) / cardWidth,
-    width: itemWidth
+    width: itemWidth,
   },
   container: {
-    paddingHorizontal: Metrics.doubleBaseMargin
+    paddingHorizontal: Metrics.doubleBaseMargin,
   },
   imageRow: {
     flexDirection: 'row',
     justifyContent: 'space-around',
-    paddingVertical: Metrics.doubleBaseMargin
+    paddingVertical: Metrics.doubleBaseMargin,
   },
   rightHeaderImage: {
-    height: 70,
-    width: 70
+    height: Metrics.navBarHeight,
+    width: 70,
   },
-  whiteText: {
-    color: Colors.white
-  }
 });
 
 CardDetailScreen.propTypes = {
-  route: PropTypes.any
+  route: PropTypes.any,
 };
 
 export default CardDetailScreen;

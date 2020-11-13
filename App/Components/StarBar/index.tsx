@@ -1,9 +1,11 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { View, StyleSheet } from 'react-native';
+import { responsiveWidth } from 'react-native-responsive-dimensions';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { Metrics, Colors } from '~/Theme';
 
-type StarBarType = {
+type Props = {
   array: number[];
 };
 
@@ -12,16 +14,15 @@ type StarBarType = {
  *
  * Prop:
  * - array: Star array
- *
  */
-const StarBar: React.FC<StarBarType> = ({ array }) => {
+const StarBar: React.FC<Props> = ({ array }) => {
   return (
     <View style={styles.container}>
       {array.map((item, index) => (
         <Icon
           key={`star${index}`}
           name={'md-star'}
-          size={Metrics.screenWidth / 15}
+          size={responsiveWidth(6)}
           color={Colors.star[item]}
           style={styles.star}
         />
@@ -33,11 +34,15 @@ const StarBar: React.FC<StarBarType> = ({ array }) => {
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    marginVertical: Metrics.baseMargin
+    marginVertical: Metrics.baseMargin,
   },
   star: {
-    paddingHorizontal: 2
-  }
+    paddingHorizontal: 2,
+  },
 });
+
+StarBar.propTypes = {
+  array: PropTypes.any,
+};
 
 export default StarBar;

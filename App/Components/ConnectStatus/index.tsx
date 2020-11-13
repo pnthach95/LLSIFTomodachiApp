@@ -28,11 +28,11 @@ const ConnectStatus = (): React.ReactElement => {
 const styles = StyleSheet.create({
   box: {
     backgroundColor: Colors.red600,
-    padding: 10
+    padding: 10,
   },
   zero: {
-    height: 0
-  }
+    height: 0,
+  },
 });
 
 export default ConnectStatus;

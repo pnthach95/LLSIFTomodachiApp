@@ -6,7 +6,7 @@ import {
   Text,
   Button,
   Searchbar,
-  useTheme
+  useTheme,
 } from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import _ from 'lodash';
@@ -26,10 +26,10 @@ import type {
   MainUnitNames,
   SongObject,
   SongSearchParams,
-  SongsScreenProps
+  SongsScreenProps,
 } from '~/Utils/types';
 
-const defaultFilter: SongSearchParams = {
+const defaultParams: SongSearchParams = {
   selectedOrdering: OrderingGroup.SONG[0].value,
   isReverse: true,
   ordering: '-id',
@@ -41,7 +41,7 @@ const defaultFilter: SongSearchParams = {
   is_event: '',
   is_daily_rotation: '',
   available: '',
-  main_unit: ''
+  main_unit: '',
 };
 
 /**
@@ -53,15 +53,15 @@ const SongsScreen: React.FC<SongsScreenProps> = ({ navigation }) => {
   const [loading, setLoading] = useState(true);
   const [list, setList] = useState<SongObject[]>([]);
   const [showFilter, setShowFilter] = useState(false);
-  const [searchOptions, setSearchOptions] = useState(defaultFilter);
+  const [searchParams, setSearchParams] = useState(defaultParams);
   const [runSearch, setRunSearch] = useState(0);
   const bottom = { paddingBottom: insets.bottom };
 
   useEffect(() => {
-    if (searchOptions.page > 0) {
+    if (searchParams.page > 0) {
       void getSongs();
     }
-  }, [searchOptions.page, runSearch]);
+  }, [searchParams.page, runSearch]);
 
   /** Key extractor for FlatList */
   const keyExtractor = (item: SongObject) => `song ${item.name}`;
@@ -72,7 +72,7 @@ const SongsScreen: React.FC<SongsScreenProps> = ({ navigation }) => {
     const navigateToSongDetail = () => {
       navigation.navigate('SongDetailScreen', {
         item,
-        prevStatusBarColor: colors.card
+        prevStatusBarColor: colors.card,
       });
     };
 
@@ -84,8 +84,8 @@ const SongsScreen: React.FC<SongsScreenProps> = ({ navigation }) => {
    * stopSearch prevents calling getCards when no card was found (404).
    */
   const onEndReaching = () => {
-    if (searchOptions.page > 0) {
-      setSearchOptions({ ...searchOptions, page: searchOptions.page + 1 });
+    if (searchParams.page > 0) {
+      setSearchParams({ ...searchParams, page: searchParams.page + 1 });
     }
   };
 
@@ -94,46 +94,46 @@ const SongsScreen: React.FC<SongsScreenProps> = ({ navigation }) => {
   /** Fetch song list */
   const getSongs = async () => {
     const ordering =
-      (searchOptions.isReverse ? '-' : '') +
-      (searchOptions.selectedOrdering || '');
+      (searchParams.isReverse ? '-' : '') +
+      (searchParams.selectedOrdering || '');
     const params: SongSearchParams = {
       ordering,
-      page_size: searchOptions.page_size,
-      page: searchOptions.page,
-      expand_event: searchOptions.expand_event
+      page_size: searchParams.page_size,
+      page: searchParams.page,
+      expand_event: searchParams.expand_event,
       // is_daily_rotation: this.state.is_daily_rotation
     };
-    if (searchOptions.attribute !== '')
-      params.attribute = searchOptions.attribute;
-    if (searchOptions.available !== '')
-      params.available = searchOptions.available;
-    if (searchOptions.is_event !== '') params.is_event = searchOptions.is_event;
-    if (searchOptions.main_unit !== '')
-      params.main_unit = searchOptions.main_unit;
-    if (searchOptions.search !== '') params.search = searchOptions.search;
+    if (searchParams.attribute !== '')
+      params.attribute = searchParams.attribute;
+    if (searchParams.available !== '')
+      params.available = searchParams.available;
+    if (searchParams.is_event !== '') params.is_event = searchParams.is_event;
+    if (searchParams.main_unit !== '')
+      params.main_unit = searchParams.main_unit;
+    if (searchParams.search !== '') params.search = searchParams.search;
     // console.log(`Songs.getSongs ${JSON.stringify(theFilter)}`);
     setLoading(true);
     try {
       const result = await LLSIFService.fetchSongList(params);
       if (result === 404) {
-        setSearchOptions({ ...searchOptions, page: 0 });
+        setSearchParams({ ...searchParams, page: 0 });
       } else if (Array.isArray(result)) {
         let x = [];
-        if (searchOptions.page === 1) {
+        if (searchParams.page === 1) {
           x = [...result];
         } else {
           x = [...list, ...result];
         }
         x = x.filter(
           (song, ind, self) =>
-            ind === self.findIndex((t) => t.name === song.name)
+            ind === self.findIndex((t) => t.name === song.name),
         );
         if (x.length === 0) {
-          setSearchOptions({ ...searchOptions, page: 0 });
+          setSearchParams({ ...searchParams, page: 0 });
         }
         setList(x);
       } else {
-        setSearchOptions({ ...searchOptions, page: 0 });
+        setSearchParams({ ...searchParams, page: 0 });
         throw Error('null');
       }
     } catch (err) {
@@ -149,37 +149,37 @@ const SongsScreen: React.FC<SongsScreenProps> = ({ navigation }) => {
 
   /** Reverse search on/off */
   const toggleReverse = () =>
-    setSearchOptions({ ...searchOptions, isReverse: !searchOptions.isReverse });
+    setSearchParams({ ...searchParams, isReverse: !searchParams.isReverse });
 
   /** Call when pressing search button */
   const onSearch = () => {
     setList([]);
     setShowFilter(false);
-    if (searchOptions.page === 1) {
+    if (searchParams.page === 1) {
       setRunSearch(runSearch + 1);
     }
-    setSearchOptions({ ...searchOptions, page: 1 });
+    setSearchParams({ ...searchParams, page: 1 });
   };
 
   /** Reset filter variables */
   const resetFilter = () =>
-    setSearchOptions({ ...defaultFilter, page: searchOptions.page });
+    setSearchParams({ ...defaultParams, page: searchParams.page });
 
   /** Save `is_event` */
   const selectEvent = (value: BooleanOrEmpty) =>
-    setSearchOptions({ ...searchOptions, is_event: value });
+    setSearchParams({ ...searchParams, is_event: value });
 
   /** Save `attribute` */
   const selectAttribute = (value: AttributeType) =>
-    setSearchOptions({ ...searchOptions, attribute: value });
+    setSearchParams({ ...searchParams, attribute: value });
 
   /** Save `main_unit` */
   const selectMainUnit = (value: MainUnitNames) =>
-    setSearchOptions({ ...searchOptions, main_unit: value });
+    setSearchParams({ ...searchParams, main_unit: value });
 
   /** Save ordering */
   const selectOrdering = (itemValue: string) =>
-    setSearchOptions({ ...searchOptions, selectedOrdering: itemValue });
+    setSearchParams({ ...searchParams, selectedOrdering: itemValue });
 
   /** Render footer in FlatList */
   const renderFooter = (
@@ -197,7 +197,7 @@ const SongsScreen: React.FC<SongsScreenProps> = ({ navigation }) => {
   );
 
   const onChangeText = (text: string) =>
-    setSearchOptions({ ...searchOptions, search: text });
+    setSearchParams({ ...searchParams, search: text });
 
   const goBack = () => navigation.goBack();
 
@@ -208,7 +208,7 @@ const SongsScreen: React.FC<SongsScreenProps> = ({ navigation }) => {
         <Appbar.BackAction onPress={goBack} />
         <View style={AppStyles.searchHeader}>
           <Searchbar
-            value={searchOptions.search || ''}
+            value={searchParams.search || ''}
             style={AppStyles.noElevation}
             onChangeText={onChangeText}
             onSubmitEditing={onSearch}
@@ -222,22 +222,22 @@ const SongsScreen: React.FC<SongsScreenProps> = ({ navigation }) => {
       {showFilter && (
         <Surface style={styles.filterContainer}>
           <AttributeRow
-            attribute={searchOptions.attribute || ''}
+            attribute={searchParams.attribute || ''}
             selectAttribute={selectAttribute}
           />
           <EventRow
-            isEvent={searchOptions.is_event || ''}
+            isEvent={searchParams.is_event || ''}
             selectEvent={selectEvent}
           />
           <MainUnitRow
-            mainUnit={searchOptions.main_unit || ''}
+            mainUnit={searchParams.main_unit || ''}
             selectMainUnit={selectMainUnit}
           />
           <OrderingRow
             list={OrderingGroup.SONG}
-            selectedItem={searchOptions.selectedOrdering}
+            selectedItem={searchParams.selectedOrdering}
             onSelect={selectOrdering}
-            isReverse={searchOptions.isReverse || true}
+            isReverse={searchParams.isReverse || true}
             toggleReverse={toggleReverse}
           />
           <Button mode='contained' onPress={resetFilter}>
@@ -265,14 +265,14 @@ const SongsScreen: React.FC<SongsScreenProps> = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   filterContainer: {
-    padding: Metrics.baseMargin
+    padding: Metrics.baseMargin,
   },
   flatListElement: {
-    margin: Metrics.baseMargin
+    margin: Metrics.baseMargin,
   },
   list: {
-    padding: Metrics.smallMargin
-  }
+    padding: Metrics.smallMargin,
+  },
 });
 
 export default SongsScreen;

@@ -18,7 +18,7 @@ const SPCStats: React.FC<Props> = ({ text, stat }) => {
   const maxStats = [
     state.cachedData?.maxStats?.Smile || 0,
     state.cachedData?.maxStats?.Pure || 0,
-    state.cachedData?.maxStats?.Cool || 0
+    state.cachedData?.maxStats?.Cool || 0,
   ];
   let progress = 0;
   let color = Colors.pink;
@@ -36,6 +36,7 @@ const SPCStats: React.FC<Props> = ({ text, stat }) => {
       color = Colors.blue;
       break;
   }
+
   return (
     <View style={styles.progressRow}>
       <Text>{text}</Text>
@@ -56,16 +57,16 @@ const SPCStats: React.FC<Props> = ({ text, stat }) => {
 
 const styles = StyleSheet.create({
   marginRight: {
-    marginRight: Metrics.baseMargin
+    marginRight: Metrics.baseMargin,
   },
   progressRow: {
-    paddingVertical: Metrics.baseMargin
-  }
+    paddingVertical: Metrics.baseMargin,
+  },
 });
 
 SPCStats.propTypes = {
   text: PropTypes.any,
-  stat: PropTypes.any
+  stat: PropTypes.any,
 };
 
 export default SPCStats;

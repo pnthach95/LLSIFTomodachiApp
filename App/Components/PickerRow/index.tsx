@@ -27,7 +27,7 @@ const PickerRow: React.FC<Props> = ({ name, value, list, onSelect }) => {
       title: name,
       data: list,
       onPress: onSelect,
-      selectedItem: value
+      selectedItem: value,
     });
   };
 
@@ -50,7 +50,7 @@ PickerRow.propTypes = {
   name: PropTypes.any,
   value: PropTypes.any,
   list: PropTypes.any,
-  onSelect: PropTypes.any
+  onSelect: PropTypes.any,
 };
 
 export default PickerRow;

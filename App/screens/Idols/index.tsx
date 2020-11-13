@@ -48,9 +48,9 @@ const IdolsScreen: React.FC<IdolsScreenProps> = ({ navigation }) => {
             data: [
               {
                 key: school,
-                list: res.filter((value) => value?.school === school)
-              }
-            ]
+                list: res.filter((value) => value?.school === school),
+              },
+            ],
           };
           if (item.data[0].list.length !== 0) array.push(item);
         }
@@ -60,9 +60,9 @@ const IdolsScreen: React.FC<IdolsScreenProps> = ({ navigation }) => {
         data: [
           {
             key: 'Other',
-            list: res.filter((value) => !value.school)
-          }
-        ]
+            list: res.filter((value) => !value.school),
+          },
+        ],
       };
       if (item.data[0].list.length !== 0) array.push(item);
       setList(array);
@@ -74,17 +74,13 @@ const IdolsScreen: React.FC<IdolsScreenProps> = ({ navigation }) => {
     }
   };
 
-  /**
-   * Render item in FlatList
-   */
+  /** Render item in FlatList */
   const renderItem = ({ item }: { item: IdolObject }) => {
-    /**
-     * Navigate to Idol Detail Screen
-     */
+    /** Navigate to Idol Detail Screen */
     const navigateToIdolDetail = () => {
       navigation.navigate('IdolDetailScreen', {
         name: item.name,
-        prevStatusBarColor: colors.card
+        prevStatusBarColor: colors.card,
       });
     };
 
@@ -92,9 +88,7 @@ const IdolsScreen: React.FC<IdolsScreenProps> = ({ navigation }) => {
   };
 
   const renderFlatList = ({ item }: { item: SchoolData }) => {
-    /**
-     * Key extractor for FlatList
-     */
+    /** Key extractor for FlatList */
     const keyExtractor = (fItem: IdolObject): string => `idol${fItem.name}`;
 
     return (
@@ -140,15 +134,15 @@ const IdolsScreen: React.FC<IdolsScreenProps> = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   height10: {
-    height: Metrics.baseMargin
+    height: Metrics.baseMargin,
   },
   list: {
-    padding: Metrics.smallMargin
+    padding: Metrics.smallMargin,
   },
   sectionText: {
     paddingLeft: Metrics.baseMargin,
-    paddingTop: Metrics.doubleBaseMargin
-  }
+    paddingTop: Metrics.doubleBaseMargin,
+  },
 });
 
 export default IdolsScreen;

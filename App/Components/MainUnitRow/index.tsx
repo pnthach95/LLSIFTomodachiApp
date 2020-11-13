@@ -6,7 +6,7 @@ import { Images, AppStyles } from '~/Theme';
 import styles from '~/Theme/RowStyles';
 import type { MainUnitNames } from '~/Utils/types';
 
-type MainUnitRowType = {
+type Props = {
   mainUnit: MainUnitNames;
   selectMainUnit: (mainUnit: MainUnitNames) => void;
 };
@@ -17,15 +17,12 @@ type MainUnitRowType = {
  * Prop:
  * - `selectMainUnit`: Save `mainUnit` state
  * - `mainUnit`: state from parent
- *
  */
-const MainUnitRow: React.FC<MainUnitRowType> = ({
-  mainUnit,
-  selectMainUnit
-}) => {
+const MainUnitRow: React.FC<Props> = ({ mainUnit, selectMainUnit }) => {
   const none = () => selectMainUnit('');
   const muse = () => selectMainUnit(`μ's`);
   const aqours = () => selectMainUnit('Aqours');
+
   return (
     <View style={AppStyles.row}>
       <View style={styles.leftView}>
@@ -37,7 +34,7 @@ const MainUnitRow: React.FC<MainUnitRowType> = ({
           style={[
             styles.textButton,
             styles.standardButton,
-            mainUnit === '' && styles.selectedValue
+            mainUnit === '' && styles.selectedValue,
           ]}>
           <Text>All</Text>
         </TouchableRipple>
@@ -45,7 +42,7 @@ const MainUnitRow: React.FC<MainUnitRowType> = ({
           onPress={muse}
           style={[
             styles.standardButton,
-            mainUnit === "μ's" && styles.selectedValue1
+            mainUnit === "μ's" && styles.selectedValue1,
           ]}>
           <Image source={Images.mainUnit["μ's"]} style={styles.buttonImage1} />
         </TouchableRipple>
@@ -53,7 +50,7 @@ const MainUnitRow: React.FC<MainUnitRowType> = ({
           onPress={aqours}
           style={[
             styles.standardButton,
-            mainUnit === 'Aqours' && styles.selectedValue1
+            mainUnit === 'Aqours' && styles.selectedValue1,
           ]}>
           <Image source={Images.mainUnit.Aqours} style={styles.buttonImage1} />
         </TouchableRipple>
@@ -64,7 +61,7 @@ const MainUnitRow: React.FC<MainUnitRowType> = ({
 
 MainUnitRow.propTypes = {
   mainUnit: PropTypes.any,
-  selectMainUnit: PropTypes.any
+  selectMainUnit: PropTypes.any,
 };
 
 export default MainUnitRow;

@@ -3,11 +3,12 @@ import PropTypes from 'prop-types';
 import { View, Image, StyleSheet } from 'react-native';
 import { Surface, TouchableRipple, Divider } from 'react-native-paper';
 import FastImage, { OnLoadEvent } from 'react-native-fast-image';
+import { responsiveWidth } from 'react-native-responsive-dimensions';
 import { Metrics, AppStyles, Images } from '~/Theme';
 import { AddHTTPS, findColorByAttribute, findSkill } from '~/Utils';
 import type { CardObject } from '~/Utils/types';
 
-type Card2PicsItemType = {
+type Props = {
   item: CardObject;
   onPress: () => void;
 };
@@ -20,15 +21,14 @@ const { itemWidth } = Metrics.images;
  * Prop:
  * - `item`: [Card object](https://github.com/MagiCircles/SchoolIdolAPI/wiki/API-Cards#objects)
  * - `onPress`: onPress function
- *
  */
-const Card2PicsItem: React.FC<Card2PicsItemType> = ({ item, onPress }) => {
+const Card2PicsItem: React.FC<Props> = ({ item, onPress }) => {
   const cardColors = findColorByAttribute(item.attribute);
   const [images, setImages] = useState<string[]>([]);
   const [imgSize, setImgSize] = useState({ width: 1, height: 0 });
   const styleSeperator = {
     backgroundColor: cardColors[0],
-    marginVertical: 0
+    marginVertical: 0,
   };
 
   useEffect(() => {
@@ -56,7 +56,7 @@ const Card2PicsItem: React.FC<Card2PicsItemType> = ({ item, onPress }) => {
                 resizeMode='contain'
                 style={{
                   width: itemWidth,
-                  height: (itemWidth * imgSize.height) / imgSize.width
+                  height: (itemWidth * imgSize.height) / imgSize.width,
                 }}
               />
             ))}
@@ -72,27 +72,23 @@ const Card2PicsItem: React.FC<Card2PicsItemType> = ({ item, onPress }) => {
                   style={[AppStyles.mediumIcon, { tintColor: cardColors[0] }]}
                 />
               )}
-
               <Image
                 source={item.japan_only ? Images.region[0] : Images.region[1]}
                 style={[AppStyles.mediumIcon, { tintColor: cardColors[0] }]}
               />
-
               {item.is_promo && (
                 <Image
                   source={Images.promo}
                   style={[AppStyles.mediumIcon, { tintColor: cardColors[0] }]}
                 />
               )}
-
               {item.is_special && (
                 <Image
                   source={Images.skill[3]}
                   style={[AppStyles.mediumIcon, { tintColor: cardColors[0] }]}
                 />
               )}
-
-              {item.event !== null && (
+              {!!item.event && (
                 <Image
                   source={Images.event}
                   style={[AppStyles.mediumIcon, { tintColor: cardColors[0] }]}
@@ -112,27 +108,27 @@ const styles = StyleSheet.create({
     elevation: 5,
     margin: Metrics.smallMargin,
     overflow: 'hidden',
-    width: Metrics.screenWidth - Metrics.smallMargin * 4
+    width: responsiveWidth(100) - Metrics.smallMargin * 4,
   },
   info: {
     borderBottomLeftRadius: Metrics.smallMargin,
     borderBottomRightRadius: Metrics.smallMargin,
-    flexDirection: 'row'
+    flexDirection: 'row',
   },
   infoRight: {
     flexDirection: 'row',
     justifyContent: 'space-around',
-    padding: Metrics.smallMargin
+    padding: Metrics.smallMargin,
   },
   row: {
     flexDirection: 'row',
-    justifyContent: 'space-around'
-  }
+    justifyContent: 'space-around',
+  },
 });
 
 Card2PicsItem.propTypes = {
   item: PropTypes.any,
-  onPress: PropTypes.any
+  onPress: PropTypes.any,
 };
 
 export default Card2PicsItem;

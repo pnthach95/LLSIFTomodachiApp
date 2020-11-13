@@ -14,7 +14,7 @@ import { Metrics, AppStyles, Images } from '~/Theme';
 import type {
   CardSearchParams,
   IdolDetailScreenProps,
-  IdolObject
+  IdolObject,
 } from '~/Utils/types';
 
 /**
@@ -26,7 +26,7 @@ import type {
  */
 const IdolDetailScreen: React.FC<IdolDetailScreenProps> = ({
   route,
-  navigation
+  navigation,
 }) => {
   const insets = useSafeAreaInsets();
   const { colors } = useTheme();
@@ -53,7 +53,7 @@ const IdolDetailScreen: React.FC<IdolDetailScreenProps> = ({
     const params: CardSearchParams = {
       page: 1,
       search: name,
-      page_size: 1
+      page_size: 1,
     };
     try {
       const res1 = await LLSIFService.fetchIdol(name);
@@ -69,13 +69,13 @@ const IdolDetailScreen: React.FC<IdolDetailScreenProps> = ({
             if (Array.isArray(res3)) {
               setImages([
                 res3[0].transparent_image || '',
-                res3[0].transparent_idolized_image || ''
+                res3[0].transparent_idolized_image || '',
               ]);
             }
           } else {
             setImages([
               res2[0].transparent_image || '',
-              res2[0].transparent_idolized_image || ''
+              res2[0].transparent_idolized_image || '',
             ]);
           }
         }
@@ -128,12 +128,12 @@ const IdolDetailScreen: React.FC<IdolDetailScreenProps> = ({
               <FastImage
                 source={{
                   uri: AddHTTPS(images[0]),
-                  priority: FastImage.priority.high
+                  priority: FastImage.priority.high,
                 }}
                 resizeMode={FastImage.resizeMode.contain}
                 style={{
                   width: Metrics.images.itemWidth * 1.5,
-                  height: Metrics.images.itemWidth * 1.5
+                  height: Metrics.images.itemWidth * 1.5,
                 }}
               />
             )}
@@ -141,12 +141,12 @@ const IdolDetailScreen: React.FC<IdolDetailScreenProps> = ({
               <FastImage
                 source={{
                   uri: AddHTTPS(images[1]),
-                  priority: FastImage.priority.high
+                  priority: FastImage.priority.high,
                 }}
                 resizeMode={FastImage.resizeMode.contain}
                 style={{
                   width: Metrics.images.itemWidth * 1.5,
-                  height: Metrics.images.itemWidth * 1.5
+                  height: Metrics.images.itemWidth * 1.5,
                 }}
               />
             )}
@@ -215,23 +215,23 @@ const IdolDetailScreen: React.FC<IdolDetailScreenProps> = ({
 
 const styles = StyleSheet.create({
   flexStart: {
-    alignItems: 'flex-start'
+    alignItems: 'flex-start',
   },
   imageRow: {
     flexDirection: 'row',
-    justifyContent: 'space-around'
+    justifyContent: 'space-around',
   },
   rightHeaderImage: {
     height: 40,
-    width: 70
+    width: 70,
   },
   scrollView: {
-    margin: Metrics.doubleBaseMargin
-  }
+    margin: Metrics.doubleBaseMargin,
+  },
 });
 
 IdolDetailScreen.propTypes = {
-  route: PropTypes.any
+  route: PropTypes.any,
 };
 
 export default IdolDetailScreen;

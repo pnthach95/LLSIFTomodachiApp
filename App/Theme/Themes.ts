@@ -3,7 +3,7 @@ import { DefaultTheme, DarkTheme } from '@react-navigation/native';
 import {
   Colors,
   DefaultTheme as PaperDefaultTheme,
-  DarkTheme as PaperDarkTheme
+  DarkTheme as PaperDarkTheme,
 } from 'react-native-paper';
 
 declare global {
@@ -19,8 +19,8 @@ export const Light = {
   ...PaperDefaultTheme,
   colors: {
     ...DefaultTheme.colors,
-    ...PaperDefaultTheme.colors
-  }
+    ...PaperDefaultTheme.colors,
+  },
 };
 export const Dark = {
   ...DarkTheme,
@@ -28,6 +28,6 @@ export const Dark = {
   colors: {
     ...DarkTheme.colors,
     ...PaperDarkTheme.colors,
-    surface: Colors.grey800
-  }
+    surface: Colors.grey800,
+  },
 };

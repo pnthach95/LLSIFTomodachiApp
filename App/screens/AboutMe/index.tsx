@@ -53,17 +53,17 @@ const AboutMeScreen: React.FC<null> = () => {
 
 const styles = StyleSheet.create({
   changelog: {
-    padding: Metrics.baseMargin
+    padding: Metrics.baseMargin,
   },
   container: {
-    paddingVertical: Metrics.baseMargin
+    paddingVertical: Metrics.baseMargin,
   },
   divider: {
-    marginVertical: Metrics.baseMargin
+    marginVertical: Metrics.baseMargin,
   },
   textUnderline: {
-    textDecorationLine: 'underline'
-  }
+    textDecorationLine: 'underline',
+  },
 });
 
 export default AboutMeScreen;

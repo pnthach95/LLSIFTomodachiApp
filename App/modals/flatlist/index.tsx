@@ -6,17 +6,21 @@ import {
   IconButton,
   TouchableRipple,
   Subheading,
-  useTheme
+  useTheme,
 } from 'react-native-paper';
 import {
   responsiveHeight,
-  responsiveScreenWidth
+  responsiveScreenWidth,
 } from 'react-native-responsive-dimensions';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import { Colors, AppStyles, Fonts } from '~/Theme';
-import { ListModalComponent, SelectionObject, SkillType } from '~/Utils/types';
+import type {
+  ListModalComponent,
+  SelectionObject,
+  SkillType,
+} from '~/Utils/types';
 
 /**
  * Selection modal
@@ -24,9 +28,7 @@ import { ListModalComponent, SelectionObject, SkillType } from '~/Utils/types';
 const FlatListModal: ListModalComponent = ({ modal }) => {
   const { colors } = useTheme();
   const insets = useSafeAreaInsets();
-  const bottom = {
-    height: insets.bottom
-  };
+  const bottom = { height: insets.bottom };
   const { closeModal, getParam } = modal;
   const title = getParam('title', '');
   const selectedItem = getParam('selectedItem');
@@ -85,7 +87,7 @@ const FlatListModal: ListModalComponent = ({ modal }) => {
         style={[
           AppStyles.row,
           styles.header,
-          { backgroundColor: colors.surface }
+          { backgroundColor: colors.surface },
         ]}>
         <Subheading style={styles.headerText}>{title}</Subheading>
         <IconButton
@@ -121,23 +123,23 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 10,
     maxHeight: responsiveHeight(40),
     overflow: 'hidden',
-    width: responsiveScreenWidth(100)
+    width: responsiveScreenWidth(100),
   },
   header: {
     alignItems: 'center',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
   },
   headerText: {
-    paddingHorizontal: 10
+    paddingHorizontal: 10,
   },
   item: {
     justifyContent: 'space-between',
-    padding: 10
-  }
+    padding: 10,
+  },
 });
 
 FlatListModal.propTypes = {
-  modal: PropTypes.any
+  modal: PropTypes.any,
 };
 
 export default FlatListModal;

@@ -19,7 +19,7 @@ import type {
   AttributeType,
   MainUnitNames,
   BooleanOrEmpty,
-  SkillType
+  SkillType,
 } from '~/Utils/types';
 
 /**
@@ -28,7 +28,7 @@ import type {
 const EventsScreen: React.FC<EventsScreenProps> = ({ navigation }) => {
   const { colors } = useTheme();
   const { state } = useContext(UserContext);
-  const defaultFilter: EventSearchParams = {
+  const defaultParams: EventSearchParams = {
     ordering: '-beginning',
     page_size: 30,
     page: 1,
@@ -37,20 +37,20 @@ const EventsScreen: React.FC<EventsScreenProps> = ({ navigation }) => {
     main_unit: '',
     skill: 'All',
     attribute: '',
-    is_english: state.options.worldwideOnly ? 'False' : ''
+    is_english: state.options.worldwideOnly ? 'False' : '',
   };
 
   const [isLoading, setIsLoading] = useState(true);
   const [list, setList] = useState<EventObject[]>([]);
   const [showFilter, setShowFilter] = useState(false);
-  const [searchOptions, setSearchOptions] = useState(defaultFilter);
+  const [searchParams, setSearchParams] = useState(defaultParams);
   const [runSearch, setRunSearch] = useState(0);
 
   useEffect(() => {
-    if (searchOptions.page > 0) {
+    if (searchParams.page > 0) {
       void getEvents();
     }
-  }, [searchOptions.page, runSearch]);
+  }, [searchParams.page, runSearch]);
 
   /** Key extractor for FlatList */
   const keyExtractor = (item: EventObject) => `event ${item.japanese_name}`;
@@ -61,7 +61,7 @@ const EventsScreen: React.FC<EventsScreenProps> = ({ navigation }) => {
     const navigateToEventDetail = () => {
       navigation.navigate('EventDetailScreen', {
         eventName: item.japanese_name,
-        prevStatusBarColor: colors.card
+        prevStatusBarColor: colors.card,
       });
     };
 
@@ -73,8 +73,8 @@ const EventsScreen: React.FC<EventsScreenProps> = ({ navigation }) => {
    * stopSearch prevents calling getEvents when no event was found (404).
    */
   const onEndReaching = () => {
-    if (searchOptions.page > 0) {
-      setSearchOptions({ ...searchOptions, page: searchOptions.page + 1 });
+    if (searchParams.page > 0) {
+      setSearchParams({ ...searchParams, page: searchParams.page + 1 });
     }
   };
 
@@ -83,33 +83,33 @@ const EventsScreen: React.FC<EventsScreenProps> = ({ navigation }) => {
   /** Get event list */
   const getEvents = async () => {
     const params: EventSearchParams = {
-      ordering: searchOptions.ordering,
-      page_size: searchOptions.page_size,
-      page: searchOptions.page
+      ordering: searchParams.ordering,
+      page_size: searchParams.page_size,
+      page: searchParams.page,
     };
-    if (searchOptions.idol !== 'All') params.idol = searchOptions.idol;
-    if (searchOptions.skill !== 'All') params.skill = searchOptions.skill;
-    let isEnglish = searchOptions.is_english;
+    if (searchParams.idol !== 'All') params.idol = searchParams.idol;
+    if (searchParams.skill !== 'All') params.skill = searchParams.skill;
+    let isEnglish = searchParams.is_english;
     if (isEnglish !== '') {
       if (isEnglish === 'True') isEnglish = 'False';
       else isEnglish = 'True';
       params.is_english = isEnglish;
     }
-    if (searchOptions.main_unit !== '')
-      params.main_unit = searchOptions.main_unit;
-    if (searchOptions.attribute !== '')
-      params.attribute = searchOptions.attribute;
-    if (searchOptions.search !== '') params.search = searchOptions.search;
+    if (searchParams.main_unit !== '')
+      params.main_unit = searchParams.main_unit;
+    if (searchParams.attribute !== '')
+      params.attribute = searchParams.attribute;
+    if (searchParams.search !== '') params.search = searchParams.search;
     // console.log(`Events.getEvents ${JSON.stringify(params)}`);
     try {
       setIsLoading(true);
       const result = await LLSIFService.fetchEventList(params);
       if (result === 404) {
         // console.log('LLSIFService.fetchEventList 404');
-        setSearchOptions({ ...searchOptions, page: 0 });
+        setSearchParams({ ...searchParams, page: 0 });
       } else if (Array.isArray(result)) {
         let x = [];
-        if (searchOptions.page === 1) {
+        if (searchParams.page === 1) {
           x = [...result];
         } else {
           x = [...list, ...result];
@@ -117,14 +117,14 @@ const EventsScreen: React.FC<EventsScreenProps> = ({ navigation }) => {
         x = x.filter(
           (thing, index, self) =>
             index ===
-            self.findIndex((t) => t.japanese_name === thing.japanese_name)
+            self.findIndex((t) => t.japanese_name === thing.japanese_name),
         );
         if (x.length === 0) {
-          setSearchOptions({ ...searchOptions, page: 0 });
+          setSearchParams({ ...searchParams, page: 0 });
         }
         setList(x);
       } else {
-        setSearchOptions({ ...searchOptions, page: 0 });
+        setSearchParams({ ...searchParams, page: 0 });
         throw Error('null');
       }
     } catch (err) {
@@ -139,38 +139,38 @@ const EventsScreen: React.FC<EventsScreenProps> = ({ navigation }) => {
   const onSearch = () => {
     setList([]);
     setShowFilter(false);
-    if (searchOptions.page === 1) {
+    if (searchParams.page === 1) {
       setRunSearch(runSearch + 1);
     }
-    setSearchOptions({ ...searchOptions, page: 1 });
+    setSearchParams({ ...searchParams, page: 1 });
   };
 
   /** Reset filter */
   const resetFilter = () =>
-    setSearchOptions({ ...defaultFilter, page: searchOptions.page });
+    setSearchParams({ ...defaultParams, page: searchParams.page });
 
   /** Filter on/off */
   const toggleFilter = () => setShowFilter(!showFilter);
 
   /** Save `attribute` */
   const selectAttribute = (value: AttributeType) =>
-    setSearchOptions({ ...searchOptions, attribute: value });
+    setSearchParams({ ...searchParams, attribute: value });
 
   /** Save `main_unit` */
   const selectMainUnit = (value: MainUnitNames) =>
-    setSearchOptions({ ...searchOptions, main_unit: value });
+    setSearchParams({ ...searchParams, main_unit: value });
 
   /** Save `is_english` */
   const selectRegion = (value: BooleanOrEmpty) =>
-    setSearchOptions({ ...searchOptions, is_english: value });
+    setSearchParams({ ...searchParams, is_english: value });
 
   /** Save `skill` */
   const selectSkill = (itemValue: SkillType) =>
-    setSearchOptions({ ...searchOptions, skill: itemValue });
+    setSearchParams({ ...searchParams, skill: itemValue });
 
   /** Save `idol` */
   const selectIdol = (itemValue: string) =>
-    setSearchOptions({ ...searchOptions, idol: itemValue });
+    setSearchParams({ ...searchParams, idol: itemValue });
 
   /** Render footer of FlatList */
   const renderFooter = (
@@ -186,7 +186,7 @@ const EventsScreen: React.FC<EventsScreenProps> = ({ navigation }) => {
   );
 
   const onChangeText = (text: string) =>
-    setSearchOptions({ ...searchOptions, search: text });
+    setSearchParams({ ...searchParams, search: text });
 
   return (
     <View style={AppStyles.screen}>
@@ -194,7 +194,7 @@ const EventsScreen: React.FC<EventsScreenProps> = ({ navigation }) => {
       <Appbar.Header style={{ backgroundColor: colors.card }}>
         <View style={AppStyles.searchHeader}>
           <Searchbar
-            value={searchOptions.search || ''}
+            value={searchParams.search || ''}
             onChangeText={onChangeText}
             onSubmitEditing={onSearch}
             onIconPress={onSearch}
@@ -211,26 +211,26 @@ const EventsScreen: React.FC<EventsScreenProps> = ({ navigation }) => {
           style={[styles.filterContainer, { backgroundColor: colors.surface }]}>
           <PickerRow
             name='Idol'
-            value={searchOptions.idol || 'All'}
+            value={searchParams.idol || 'All'}
             list={state.cachedData.idols}
             onSelect={selectIdol}
           />
           <MainUnitRow
-            mainUnit={searchOptions.main_unit || ''}
+            mainUnit={searchParams.main_unit || ''}
             selectMainUnit={selectMainUnit}
           />
           <PickerRow
             name='Skill'
-            value={searchOptions.skill || 'All'}
+            value={searchParams.skill || 'All'}
             list={state.cachedData.skills}
             onSelect={selectSkill}
           />
           <AttributeRow
-            attribute={searchOptions.attribute || ''}
+            attribute={searchParams.attribute || ''}
             selectAttribute={selectAttribute}
           />
           <RegionRow
-            japanOnly={searchOptions.is_english || ''}
+            japanOnly={searchParams.is_english || ''}
             selectRegion={selectRegion}
           />
           <Button mode='contained' onPress={resetFilter}>
@@ -257,20 +257,20 @@ const EventsScreen: React.FC<EventsScreenProps> = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   content: {
-    alignItems: 'center'
+    alignItems: 'center',
   },
   filterContainer: {
-    padding: 10
+    padding: 10,
   },
   flatListElement: {
-    margin: Metrics.baseMargin
+    margin: Metrics.baseMargin,
   },
   list: {
-    padding: Metrics.smallMargin
+    padding: Metrics.smallMargin,
   },
   margin10: {
-    margin: 10
-  }
+    margin: 10,
+  },
 });
 
 export default EventsScreen;

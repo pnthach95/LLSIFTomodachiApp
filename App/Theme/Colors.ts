@@ -12,5 +12,5 @@ export default {
   blue: '#00a2ff',
   lightBlue: '#87d3ff',
   star: ['#D8FD53', '#F7FB34', '#FBAAC3', '#F33256'],
-  transparent: '#0000'
+  transparent: '#0000',
 };

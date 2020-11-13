@@ -3,7 +3,7 @@ import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
 import { StackScreenProps, StackNavigationProp } from '@react-navigation/stack';
 import {
   ModalComponentWithOptions,
-  ModalComponentProp
+  ModalComponentProp,
 } from 'react-native-modalfy';
 
 //  -----------------------------------------------

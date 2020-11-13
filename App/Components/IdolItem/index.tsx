@@ -22,20 +22,19 @@ const cImgSize = smallItemWidth - Metrics.baseMargin;
  * Prop:
  * - `item`: [Idol object](https://github.com/MagiCircles/SchoolIdolAPI/wiki/API-Idols#objects)
  * - `onPress`: onPress function
- *
  */
 const IdolItem: React.FC<Props> = ({ item, onPress }) => {
   const attColors = findColorByAttribute(item.attribute || '');
   const [imgSize, setImgSize] = useState({
     height: cImgSize,
-    width: cImgSize
+    width: cImgSize,
   });
 
   const onLoad = (e: OnLoadEvent) => {
     const { width, height } = e.nativeEvent;
     setImgSize({
       ...imgSize,
-      height: (cImgSize * height) / width
+      height: (cImgSize * height) / width,
     });
   };
 
@@ -44,10 +43,7 @@ const IdolItem: React.FC<Props> = ({ item, onPress }) => {
       <TouchableRipple borderless rippleColor={attColors[1]} onPress={onPress}>
         <View style={[AppStyles.center, styles.content]}>
           <FastImage
-            source={{
-              uri: item.chibi,
-              priority: FastImage.priority.normal
-            }}
+            source={{ uri: item.chibi, priority: 'normal' }}
             onLoad={onLoad}
             resizeMode='contain'
             style={imgSize}
@@ -65,16 +61,16 @@ const styles = StyleSheet.create({
     elevation: 5,
     margin: Metrics.smallMargin,
     overflow: 'hidden',
-    width: smallItemWidth
+    width: smallItemWidth,
   },
   content: {
-    padding: Metrics.smallMargin
-  }
+    padding: Metrics.smallMargin,
+  },
 });
 
 IdolItem.propTypes = {
   item: PropTypes.any,
-  onPress: PropTypes.any
+  onPress: PropTypes.any,
 };
 
 export default IdolItem;

@@ -24,8 +24,8 @@ const LoadingScreen: React.FC<unknown> = () => {
 const styles = StyleSheet.create({
   logo: {
     height: responsiveScreenWidth(50),
-    width: responsiveScreenWidth(70)
-  }
+    width: responsiveScreenWidth(70),
+  },
 });
 
 export default LoadingScreen;

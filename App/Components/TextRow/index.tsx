@@ -4,7 +4,7 @@ import { View, TextStyle } from 'react-native';
 import { Paragraph } from 'react-native-paper';
 import { AppStyles } from '~/Theme';
 
-type TextRowType = {
+type Props = {
   item1: {
     flex: number;
     text: string;
@@ -21,7 +21,7 @@ type TextRowType = {
 /**
  * TextRow
  */
-const TextRow: React.FC<TextRowType> = ({ item1, item2 }) => {
+const TextRow: React.FC<Props> = ({ item1, item2 }) => {
   return (
     <View style={AppStyles.row}>
       <View style={{ flex: item1.flex }}>
@@ -38,7 +38,7 @@ const TextRow: React.FC<TextRowType> = ({ item1, item2 }) => {
 
 TextRow.propTypes = {
   item1: PropTypes.any,
-  item2: PropTypes.any
+  item2: PropTypes.any,
 };
 
 export default TextRow;

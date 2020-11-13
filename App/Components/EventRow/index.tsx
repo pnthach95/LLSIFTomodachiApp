@@ -6,7 +6,7 @@ import styles from '~/Theme/RowStyles';
 import { AppStyles } from '~/Theme';
 import type { BooleanOrEmpty } from '~/Utils/types';
 
-type EventRowType = {
+type Props = {
   isEvent: BooleanOrEmpty;
   selectEvent: (isEvent: BooleanOrEmpty) => void;
 };
@@ -18,7 +18,7 @@ type EventRowType = {
  * - `selectEvent`: Save `isEvent` state
  * - `isEvent`: state from parent
  */
-const EventRow: React.FC<EventRowType> = ({ isEvent, selectEvent }) => {
+const EventRow: React.FC<Props> = ({ isEvent, selectEvent }) => {
   const none = () => selectEvent('');
   const sTrue = () => selectEvent('True');
   const sFalse = () => selectEvent('False');
@@ -34,7 +34,7 @@ const EventRow: React.FC<EventRowType> = ({ isEvent, selectEvent }) => {
           style={[
             styles.textButton,
             styles.standardButton,
-            isEvent === '' && styles.selectedValue
+            isEvent === '' && styles.selectedValue,
           ]}>
           <Text>All</Text>
         </TouchableRipple>
@@ -43,7 +43,7 @@ const EventRow: React.FC<EventRowType> = ({ isEvent, selectEvent }) => {
           style={[
             styles.textButton,
             styles.standardButton,
-            isEvent === 'True' && styles.selectedValue
+            isEvent === 'True' && styles.selectedValue,
           ]}>
           <Text>Only</Text>
         </TouchableRipple>
@@ -52,7 +52,7 @@ const EventRow: React.FC<EventRowType> = ({ isEvent, selectEvent }) => {
           style={[
             styles.textButton,
             styles.standardButton,
-            isEvent === 'False' && styles.selectedValue
+            isEvent === 'False' && styles.selectedValue,
           ]}>
           <Text>None</Text>
         </TouchableRipple>
@@ -63,7 +63,7 @@ const EventRow: React.FC<EventRowType> = ({ isEvent, selectEvent }) => {
 
 EventRow.propTypes = {
   isEvent: PropTypes.any,
-  selectEvent: PropTypes.any
+  selectEvent: PropTypes.any,
 };
 
 export default EventRow;

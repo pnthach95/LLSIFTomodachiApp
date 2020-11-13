@@ -5,14 +5,10 @@ import { Colors } from '~/Theme';
 import { initAppOptions } from '~/Context/Reducer';
 import type { AppOptions, AttributeType } from './types';
 
-/**
- * Add `https:` for image link
- */
+/** Add `https:` for image link */
 export const AddHTTPS = (link: string): string => `https:${link}`;
 
-/**
- * Find color by attribute
- */
+/** Find color by attribute */
 export const findColorByAttribute = (key: AttributeType): string[] => {
   switch (key) {
     case 'Smile':
@@ -26,9 +22,7 @@ export const findColorByAttribute = (key: AttributeType): string[] => {
   }
 };
 
-/**
- * Find image for skill
- */
+/** Find image for skill */
 export const findSkill = (key: string): number => {
   switch (key) {
     case 'Score Up':
@@ -69,7 +63,7 @@ export const saveSettings = (settings: AppOptions): void => {
 export const openLink = (link: string): void => {
   Alert.alert('Open link', link, [
     { text: 'Cancel', style: 'cancel' },
-    { text: 'OK', onPress: () => Linking.openURL(link) }
+    { text: 'OK', onPress: () => Linking.openURL(link) },
   ]);
 };
 

@@ -4,23 +4,21 @@ import { View, Image, ScrollView } from 'react-native';
 import { Text, TouchableRipple } from 'react-native-paper';
 import { Images, AppStyles } from '~/Theme';
 import rowStyles from '~/Theme/RowStyles';
-import type { RarityType } from '~/Utils/types';
-
-type Props = {
-  rarity: RarityType;
-  selectRarity: (rarity: RarityType) => void;
-};
+import type { FCSelectionProps, RarityType } from '~/Utils/types';
 
 /**
  * Rarity Row (None, N, R, SR, SSR, UR)
  */
-const RarityRow: React.FC<Props> = ({ rarity, selectRarity }) => {
-  const none = () => selectRarity('');
-  const n = () => selectRarity('N');
-  const r = () => selectRarity('R');
-  const sr = () => selectRarity('SR');
-  const ssr = () => selectRarity('SSR');
-  const ur = () => selectRarity('UR');
+const RarityRow: React.FC<FCSelectionProps<RarityType>> = ({
+  value,
+  setValue,
+}) => {
+  const none = () => setValue('');
+  const n = () => setValue('N');
+  const r = () => setValue('R');
+  const sr = () => setValue('SR');
+  const ssr = () => setValue('SSR');
+  const ur = () => setValue('UR');
 
   return (
     <View style={AppStyles.row}>
@@ -33,7 +31,7 @@ const RarityRow: React.FC<Props> = ({ rarity, selectRarity }) => {
             onPress={none}
             style={[
               rowStyles.standardButton,
-              rarity === '' && rowStyles.selectedValue1,
+              value === '' && rowStyles.selectedValue1,
             ]}>
             <Image source={Images.empty} style={rowStyles.buttonImage} />
           </TouchableRipple>
@@ -41,7 +39,7 @@ const RarityRow: React.FC<Props> = ({ rarity, selectRarity }) => {
             onPress={n}
             style={[
               rowStyles.standardButton,
-              rarity === 'N' && rowStyles.selectedValue1,
+              value === 'N' && rowStyles.selectedValue1,
             ]}>
             <Image source={Images.rarity[0]} style={rowStyles.buttonImage} />
           </TouchableRipple>
@@ -49,7 +47,7 @@ const RarityRow: React.FC<Props> = ({ rarity, selectRarity }) => {
             onPress={r}
             style={[
               rowStyles.standardButton,
-              rarity === 'R' && rowStyles.selectedValue1,
+              value === 'R' && rowStyles.selectedValue1,
             ]}>
             <Image source={Images.rarity[1]} style={rowStyles.buttonImage} />
           </TouchableRipple>
@@ -57,7 +55,7 @@ const RarityRow: React.FC<Props> = ({ rarity, selectRarity }) => {
             onPress={sr}
             style={[
               rowStyles.standardButton,
-              rarity === 'SR' && rowStyles.selectedValue1,
+              value === 'SR' && rowStyles.selectedValue1,
             ]}>
             <Image source={Images.rarity[2]} style={rowStyles.buttonImage} />
           </TouchableRipple>
@@ -65,7 +63,7 @@ const RarityRow: React.FC<Props> = ({ rarity, selectRarity }) => {
             onPress={ssr}
             style={[
               rowStyles.standardButton,
-              rarity === 'SSR' && rowStyles.selectedValue1,
+              value === 'SSR' && rowStyles.selectedValue1,
             ]}>
             <Image source={Images.rarity[3]} style={rowStyles.buttonImage} />
           </TouchableRipple>
@@ -73,7 +71,7 @@ const RarityRow: React.FC<Props> = ({ rarity, selectRarity }) => {
             onPress={ur}
             style={[
               rowStyles.standardButton,
-              rarity === 'UR' && rowStyles.selectedValue1,
+              value === 'UR' && rowStyles.selectedValue1,
             ]}>
             <Image source={Images.rarity[4]} style={rowStyles.buttonImage} />
           </TouchableRipple>
@@ -84,8 +82,8 @@ const RarityRow: React.FC<Props> = ({ rarity, selectRarity }) => {
 };
 
 RarityRow.propTypes = {
-  rarity: PropTypes.any,
-  selectRarity: PropTypes.any,
+  value: PropTypes.any,
+  setValue: PropTypes.any,
 };
 
 export default RarityRow;

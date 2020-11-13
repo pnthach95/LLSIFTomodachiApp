@@ -6,12 +6,7 @@ import FastImage, { OnLoadEvent } from 'react-native-fast-image';
 
 import { Metrics, Fonts, AppStyles } from '~/Theme';
 import { findColorByAttribute } from '~/Utils';
-import type { IdolObject } from '~/Utils/types';
-
-type Props = {
-  item: IdolObject;
-  onPress: () => void;
-};
+import type { FCItemProps, IdolObject } from '~/Utils/types';
 
 const { smallItemWidth } = Metrics.images;
 const cImgSize = smallItemWidth - Metrics.baseMargin;
@@ -23,7 +18,7 @@ const cImgSize = smallItemWidth - Metrics.baseMargin;
  * - `item`: [Idol object](https://github.com/MagiCircles/SchoolIdolAPI/wiki/API-Idols#objects)
  * - `onPress`: onPress function
  */
-const IdolItem: React.FC<Props> = ({ item, onPress }) => {
+const IdolItem: React.FC<FCItemProps<IdolObject>> = ({ item, onPress }) => {
   const attColors = findColorByAttribute(item.attribute || '');
   const [imgSize, setImgSize] = useState({
     height: cImgSize,

@@ -4,22 +4,20 @@ import { View, Image, ScrollView } from 'react-native';
 import { Text, TouchableRipple } from 'react-native-paper';
 import { Images, AppStyles } from '~/Theme';
 import rowStyles from '~/Theme/RowStyles';
-import type { AttributeType } from '~/Utils/types';
-
-type Props = {
-  attribute: AttributeType;
-  selectAttribute: (attribute: AttributeType) => void;
-};
+import type { AttributeType, FCSelectionProps } from '~/Utils/types';
 
 /**
  * Attribute Row (None, Smile, Pure, Cool, All)
  */
-const AttributeRow: React.FC<Props> = ({ attribute, selectAttribute }) => {
-  const none = () => selectAttribute('');
-  const smile = () => selectAttribute('Smile');
-  const pure = () => selectAttribute('Pure');
-  const cool = () => selectAttribute('Cool');
-  const all = () => selectAttribute('All');
+const AttributeRow: React.FC<FCSelectionProps<AttributeType>> = ({
+  value,
+  setValue,
+}) => {
+  const none = () => setValue('');
+  const smile = () => setValue('Smile');
+  const pure = () => setValue('Pure');
+  const cool = () => setValue('Cool');
+  const all = () => setValue('All');
 
   return (
     <View style={AppStyles.row}>
@@ -32,7 +30,7 @@ const AttributeRow: React.FC<Props> = ({ attribute, selectAttribute }) => {
             onPress={none}
             style={[
               rowStyles.standardButton,
-              attribute === '' && rowStyles.selectedValue1,
+              value === '' && rowStyles.selectedValue1,
             ]}>
             <Image source={Images.empty} style={rowStyles.buttonImage} />
           </TouchableRipple>
@@ -40,7 +38,7 @@ const AttributeRow: React.FC<Props> = ({ attribute, selectAttribute }) => {
             onPress={smile}
             style={[
               rowStyles.standardButton,
-              attribute === 'Smile' && rowStyles.selectedValue1,
+              value === 'Smile' && rowStyles.selectedValue1,
             ]}>
             <Image
               source={Images.attribute.Smile}
@@ -51,7 +49,7 @@ const AttributeRow: React.FC<Props> = ({ attribute, selectAttribute }) => {
             onPress={pure}
             style={[
               rowStyles.standardButton,
-              attribute === 'Pure' && rowStyles.selectedValue1,
+              value === 'Pure' && rowStyles.selectedValue1,
             ]}>
             <Image
               source={Images.attribute.Pure}
@@ -62,7 +60,7 @@ const AttributeRow: React.FC<Props> = ({ attribute, selectAttribute }) => {
             onPress={cool}
             style={[
               rowStyles.standardButton,
-              attribute === 'Cool' && rowStyles.selectedValue1,
+              value === 'Cool' && rowStyles.selectedValue1,
             ]}>
             <Image
               source={Images.attribute.Cool}
@@ -73,7 +71,7 @@ const AttributeRow: React.FC<Props> = ({ attribute, selectAttribute }) => {
             onPress={all}
             style={[
               rowStyles.standardButton,
-              attribute === 'All' && rowStyles.selectedValue1,
+              value === 'All' && rowStyles.selectedValue1,
             ]}>
             <Image
               source={Images.attribute.All}
@@ -87,8 +85,8 @@ const AttributeRow: React.FC<Props> = ({ attribute, selectAttribute }) => {
 };
 
 AttributeRow.propTypes = {
-  attribute: PropTypes.any,
-  selectAttribute: PropTypes.any,
+  value: PropTypes.any,
+  setValue: PropTypes.any,
 };
 
 export default AttributeRow;

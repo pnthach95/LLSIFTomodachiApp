@@ -4,20 +4,18 @@ import { View } from 'react-native';
 import { Text, TouchableRipple } from 'react-native-paper';
 import rowStyles from '~/Theme/RowStyles';
 import { AppStyles } from '~/Theme';
-import type { BooleanOrEmpty } from '~/Utils/types';
-
-type Props = {
-  japanOnly: BooleanOrEmpty;
-  selectRegion: (japanOnly: BooleanOrEmpty) => void;
-};
+import type { FCSelectionProps, BooleanOrEmpty } from '~/Utils/types';
 
 /**
  * Region Row (None, False, True)
  */
-const RegionRow: React.FC<Props> = ({ japanOnly, selectRegion }) => {
-  const none = () => selectRegion('');
-  const sFalse = () => selectRegion('False');
-  const sTrue = () => selectRegion('True');
+const RegionRow: React.FC<FCSelectionProps<BooleanOrEmpty>> = ({
+  value,
+  setValue,
+}) => {
+  const none = () => setValue('');
+  const sFalse = () => setValue('False');
+  const sTrue = () => setValue('True');
 
   return (
     <View style={AppStyles.row}>
@@ -30,7 +28,7 @@ const RegionRow: React.FC<Props> = ({ japanOnly, selectRegion }) => {
           style={[
             rowStyles.textButton,
             rowStyles.standardButton,
-            japanOnly === '' && rowStyles.selectedValue,
+            value === '' && rowStyles.selectedValue,
           ]}>
           <Text>All</Text>
         </TouchableRipple>
@@ -39,7 +37,7 @@ const RegionRow: React.FC<Props> = ({ japanOnly, selectRegion }) => {
           style={[
             rowStyles.textButton,
             rowStyles.standardButton,
-            japanOnly === 'False' && rowStyles.selectedValue,
+            value === 'False' && rowStyles.selectedValue,
           ]}>
           <Text>EN Only</Text>
         </TouchableRipple>
@@ -48,7 +46,7 @@ const RegionRow: React.FC<Props> = ({ japanOnly, selectRegion }) => {
           style={[
             rowStyles.textButton,
             rowStyles.standardButton,
-            japanOnly === 'True' && rowStyles.selectedValue,
+            value === 'True' && rowStyles.selectedValue,
           ]}>
           <Text>JP Only</Text>
         </TouchableRipple>
@@ -58,8 +56,8 @@ const RegionRow: React.FC<Props> = ({ japanOnly, selectRegion }) => {
 };
 
 RegionRow.propTypes = {
-  japanOnly: PropTypes.any,
-  selectRegion: PropTypes.any,
+  value: PropTypes.any,
+  setValue: PropTypes.any,
 };
 
 export default RegionRow;

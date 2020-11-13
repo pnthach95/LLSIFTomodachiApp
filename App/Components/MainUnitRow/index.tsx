@@ -4,24 +4,18 @@ import { View, Image } from 'react-native';
 import { Text, TouchableRipple } from 'react-native-paper';
 import { Images, AppStyles } from '~/Theme';
 import styles from '~/Theme/RowStyles';
-import type { MainUnitNames } from '~/Utils/types';
-
-type Props = {
-  mainUnit: MainUnitNames;
-  selectMainUnit: (mainUnit: MainUnitNames) => void;
-};
+import type { FCSelectionProps, MainUnitNames } from '~/Utils/types';
 
 /**
  * Main Unit Row (None, μ's, Aqours)
- *
- * Prop:
- * - `selectMainUnit`: Save `mainUnit` state
- * - `mainUnit`: state from parent
  */
-const MainUnitRow: React.FC<Props> = ({ mainUnit, selectMainUnit }) => {
-  const none = () => selectMainUnit('');
-  const muse = () => selectMainUnit(`μ's`);
-  const aqours = () => selectMainUnit('Aqours');
+const MainUnitRow: React.FC<FCSelectionProps<MainUnitNames>> = ({
+  value,
+  setValue,
+}) => {
+  const none = () => setValue('');
+  const muse = () => setValue(`μ's`);
+  const aqours = () => setValue('Aqours');
 
   return (
     <View style={AppStyles.row}>
@@ -34,7 +28,7 @@ const MainUnitRow: React.FC<Props> = ({ mainUnit, selectMainUnit }) => {
           style={[
             styles.textButton,
             styles.standardButton,
-            mainUnit === '' && styles.selectedValue,
+            value === '' && styles.selectedValue,
           ]}>
           <Text>All</Text>
         </TouchableRipple>
@@ -42,7 +36,7 @@ const MainUnitRow: React.FC<Props> = ({ mainUnit, selectMainUnit }) => {
           onPress={muse}
           style={[
             styles.standardButton,
-            mainUnit === "μ's" && styles.selectedValue1,
+            value === "μ's" && styles.selectedValue1,
           ]}>
           <Image source={Images.mainUnit["μ's"]} style={styles.buttonImage1} />
         </TouchableRipple>
@@ -50,7 +44,7 @@ const MainUnitRow: React.FC<Props> = ({ mainUnit, selectMainUnit }) => {
           onPress={aqours}
           style={[
             styles.standardButton,
-            mainUnit === 'Aqours' && styles.selectedValue1,
+            value === 'Aqours' && styles.selectedValue1,
           ]}>
           <Image source={Images.mainUnit.Aqours} style={styles.buttonImage1} />
         </TouchableRipple>
@@ -60,8 +54,8 @@ const MainUnitRow: React.FC<Props> = ({ mainUnit, selectMainUnit }) => {
 };
 
 MainUnitRow.propTypes = {
-  mainUnit: PropTypes.any,
-  selectMainUnit: PropTypes.any,
+  value: PropTypes.any,
+  setValue: PropTypes.any,
 };
 
 export default MainUnitRow;

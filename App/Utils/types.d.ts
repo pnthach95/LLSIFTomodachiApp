@@ -7,6 +7,20 @@ import {
 } from 'react-native-modalfy';
 
 //  -----------------------------------------------
+//  Components
+//  -----------------------------------------------
+
+type FCSelectionProps<T> = {
+  value: T;
+  setValue: (value: T) => void;
+};
+
+type FCItemProps<T> = {
+  item: T;
+  onPress: () => void;
+};
+
+//  -----------------------------------------------
 //  Context
 //  -----------------------------------------------
 
@@ -290,8 +304,20 @@ type CardObject = {
   transparent_idolized_image?: string;
   clean_ur?: string;
   clean_ur_idolized?: string;
-  skill_up_cards?: TinyCardForSkillUpObject;
-  ur_pair?: URPairObject;
+  skill_up_cards?: {
+    id?: string;
+    round_card_image: string;
+  };
+  ur_pair?: {
+    card?: {
+      attribute?: string;
+      round_card_image?: string;
+      id?: string;
+      name?: string;
+    };
+    reverse_display_idolized?: string;
+    reverse_display?: string;
+  };
   total_owners?: number;
   total_wishlist?: number;
   ranking_attribute?: number;
@@ -313,22 +339,6 @@ type MiniEventObject = {
   english_name?: string;
   translated_name?: string;
   image: string;
-};
-
-type TinyCardForSkillUpObject = {
-  id?: string;
-  round_card_image: string;
-};
-
-type URPairObject = {
-  card?: {
-    attribute?: string;
-    round_card_image?: string;
-    id?: string;
-    name?: string;
-  };
-  reverse_display_idolized?: string;
-  reverse_display?: string;
 };
 
 type EventObject = {
@@ -376,7 +386,13 @@ type IdolObject = {
   year?: string;
   main_unit?: MainUnitNames;
   sub_unit?: SubUnitNames;
-  cv?: CVObject;
+  cv?: {
+    name: string;
+    nickname: string;
+    url: string;
+    twitter?: string;
+    instagram?: string;
+  };
   summary?: string;
   website_url: string;
   wiki_url?: string;
@@ -384,14 +400,6 @@ type IdolObject = {
   official_url?: string;
   chibi?: string;
   chibi_small?: string;
-};
-
-type CVObject = {
-  name: string;
-  nickname: string;
-  url: string;
-  twitter?: string;
-  instagram?: string;
 };
 
 type SongObject = {

@@ -20,12 +20,10 @@ import { findColorByAttribute, AddHTTPS, setStatusBar } from '~/Utils';
 import { Metrics, AppStyles, Colors, Images } from '~/Theme';
 import type { SongDetailScreenProps } from '~/Utils/types';
 
-type StatType = [number, number[]];
-
 type StatButtonProps = {
   id: number;
   text: string;
-  stat: StatType;
+  stat: [number, number[]];
 };
 
 /**
@@ -44,14 +42,17 @@ const SongDetailScreen: React.FC<SongDetailScreenProps> = ({
   const insets = useSafeAreaInsets();
   const { state } = useContext(UserContext);
   const [buttonID, setButtonID] = useState(0);
-  const [currentStats, setCurrentStats] = useState<StatType>([0, []]);
+  const [currentStats, setCurrentStats] = useState<StatButtonProps['stat']>([
+    0,
+    [],
+  ]);
   const attributeColors = findColorByAttribute(item.attribute || 'All');
-  const [easy, setEasy] = useState<StatType>([0, []]);
-  const [normal, setNormal] = useState<StatType>([0, []]);
-  const [hard, setHard] = useState<StatType>([0, []]);
-  const [expert, setExpert] = useState<StatType>([0, []]);
-  const [random, setRandom] = useState<StatType>([0, []]);
-  const [master, setMaster] = useState<StatType>([0, []]);
+  const [easy, setEasy] = useState<StatButtonProps['stat']>([0, []]);
+  const [normal, setNormal] = useState<StatButtonProps['stat']>([0, []]);
+  const [hard, setHard] = useState<StatButtonProps['stat']>([0, []]);
+  const [expert, setExpert] = useState<StatButtonProps['stat']>([0, []]);
+  const [random, setRandom] = useState<StatButtonProps['stat']>([0, []]);
+  const [master, setMaster] = useState<StatButtonProps['stat']>([0, []]);
   const bottom = { paddingBottom: insets.bottom };
 
   useEffect(() => {

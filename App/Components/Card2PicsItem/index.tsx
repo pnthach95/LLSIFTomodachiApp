@@ -6,12 +6,7 @@ import FastImage, { OnLoadEvent } from 'react-native-fast-image';
 import { responsiveWidth } from 'react-native-responsive-dimensions';
 import { Metrics, AppStyles, Images } from '~/Theme';
 import { AddHTTPS, findColorByAttribute, findSkill } from '~/Utils';
-import type { CardObject } from '~/Utils/types';
-
-type Props = {
-  item: CardObject;
-  onPress: () => void;
-};
+import type { FCItemProps, CardObject } from '~/Utils/types';
 
 const { itemWidth } = Metrics.images;
 
@@ -22,7 +17,10 @@ const { itemWidth } = Metrics.images;
  * - `item`: [Card object](https://github.com/MagiCircles/SchoolIdolAPI/wiki/API-Cards#objects)
  * - `onPress`: onPress function
  */
-const Card2PicsItem: React.FC<Props> = ({ item, onPress }) => {
+const Card2PicsItem: React.FC<FCItemProps<CardObject>> = ({
+  item,
+  onPress,
+}) => {
   const cardColors = findColorByAttribute(item.attribute);
   const [images, setImages] = useState<string[]>([]);
   const [imgSize, setImgSize] = useState({ width: 1, height: 0 });

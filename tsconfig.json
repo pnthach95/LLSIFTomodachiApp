@@ -25,6 +25,9 @@
       ]
     },
   },
+  "include": [
+    "App"
+  ],
   "exclude": [
     "node_modules",
     "babel.config.js",

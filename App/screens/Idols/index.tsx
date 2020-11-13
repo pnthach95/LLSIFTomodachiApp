@@ -11,14 +11,12 @@ import LoadingScreen from '../Loading';
 import { AppStyles, Metrics } from '~/Theme';
 import type { IdolObject, IdolsScreenProps } from '~/Utils/types';
 
-type SchoolData = {
-  key: string;
-  list: IdolObject[];
-};
-
 type SchoolObject = {
   title: string;
-  data: SchoolData[];
+  data: {
+    key: string;
+    list: IdolObject[];
+  }[];
 };
 
 /**
@@ -87,7 +85,7 @@ const IdolsScreen: React.FC<IdolsScreenProps> = ({ navigation }) => {
     return <IdolItem item={item} onPress={navigateToIdolDetail} />;
   };
 
-  const renderFlatList = ({ item }: { item: SchoolData }) => {
+  const renderFlatList = ({ item }: { item: SchoolObject['data'][0] }) => {
     /** Key extractor for FlatList */
     const keyExtractor = (fItem: IdolObject): string => `idol${fItem.name}`;
 
@@ -102,8 +100,10 @@ const IdolsScreen: React.FC<IdolsScreenProps> = ({ navigation }) => {
     );
   };
 
-  const sectionKeyExtractor = (item: SchoolData, index: number): string =>
-    `School${index}`;
+  const sectionKeyExtractor = (
+    item: SchoolObject['data'][0],
+    index: number,
+  ): string => `School${index}`;
 
   const renderSectionHeader = ({ section }: { section: SchoolObject }) => (
     <Title style={styles.sectionText}>{section.title}</Title>

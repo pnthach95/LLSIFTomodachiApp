@@ -4,24 +4,18 @@ import { View } from 'react-native';
 import { Text, TouchableRipple } from 'react-native-paper';
 import styles from '~/Theme/RowStyles';
 import { AppStyles } from '~/Theme';
-import type { BooleanOrEmpty } from '~/Utils/types';
-
-type Props = {
-  isEvent: BooleanOrEmpty;
-  selectEvent: (isEvent: BooleanOrEmpty) => void;
-};
+import type { BooleanOrEmpty, FCSelectionProps } from '~/Utils/types';
 
 /**
  * Event Card Row (None, True, False)
- *
- * Prop:
- * - `selectEvent`: Save `isEvent` state
- * - `isEvent`: state from parent
  */
-const EventRow: React.FC<Props> = ({ isEvent, selectEvent }) => {
-  const none = () => selectEvent('');
-  const sTrue = () => selectEvent('True');
-  const sFalse = () => selectEvent('False');
+const EventRow: React.FC<FCSelectionProps<BooleanOrEmpty>> = ({
+  value,
+  setValue,
+}) => {
+  const none = () => setValue('');
+  const sTrue = () => setValue('True');
+  const sFalse = () => setValue('False');
 
   return (
     <View style={AppStyles.row}>
@@ -34,7 +28,7 @@ const EventRow: React.FC<Props> = ({ isEvent, selectEvent }) => {
           style={[
             styles.textButton,
             styles.standardButton,
-            isEvent === '' && styles.selectedValue,
+            value === '' && styles.selectedValue,
           ]}>
           <Text>All</Text>
         </TouchableRipple>
@@ -43,7 +37,7 @@ const EventRow: React.FC<Props> = ({ isEvent, selectEvent }) => {
           style={[
             styles.textButton,
             styles.standardButton,
-            isEvent === 'True' && styles.selectedValue,
+            value === 'True' && styles.selectedValue,
           ]}>
           <Text>Only</Text>
         </TouchableRipple>
@@ -52,7 +46,7 @@ const EventRow: React.FC<Props> = ({ isEvent, selectEvent }) => {
           style={[
             styles.textButton,
             styles.standardButton,
-            isEvent === 'False' && styles.selectedValue,
+            value === 'False' && styles.selectedValue,
           ]}>
           <Text>None</Text>
         </TouchableRipple>
@@ -62,8 +56,8 @@ const EventRow: React.FC<Props> = ({ isEvent, selectEvent }) => {
 };
 
 EventRow.propTypes = {
-  isEvent: PropTypes.any,
-  selectEvent: PropTypes.any,
+  value: PropTypes.any,
+  setValue: PropTypes.any,
 };
 
 export default EventRow;

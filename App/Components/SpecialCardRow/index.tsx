@@ -4,24 +4,18 @@ import { View } from 'react-native';
 import { Text, TouchableRipple } from 'react-native-paper';
 import styles from '~/Theme/RowStyles';
 import { AppStyles } from '~/Theme';
-import type { BooleanOrEmpty } from '~/Utils/types';
-
-type Props = {
-  isSpecial: BooleanOrEmpty;
-  selectSpecial: (isSpecial: BooleanOrEmpty) => void;
-};
+import type { FCSelectionProps, BooleanOrEmpty } from '~/Utils/types';
 
 /**
  * Special Card Row (None, True, False)
- *
- * Prop:
- * - `selectSpecial`: Save `isSpecial` state
- * - `isSpecial`: state from parent
  */
-const SpecialCardRow: React.FC<Props> = ({ isSpecial, selectSpecial }) => {
-  const none = () => selectSpecial('');
-  const sTrue = () => selectSpecial('True');
-  const sFalse = () => selectSpecial('False');
+const SpecialCardRow: React.FC<FCSelectionProps<BooleanOrEmpty>> = ({
+  value,
+  setValue,
+}) => {
+  const none = () => setValue('');
+  const sTrue = () => setValue('True');
+  const sFalse = () => setValue('False');
 
   return (
     <View style={AppStyles.row}>
@@ -34,7 +28,7 @@ const SpecialCardRow: React.FC<Props> = ({ isSpecial, selectSpecial }) => {
           style={[
             styles.textButton,
             styles.standardButton,
-            isSpecial === '' && styles.selectedValue,
+            value === '' && styles.selectedValue,
           ]}>
           <Text>All</Text>
         </TouchableRipple>
@@ -43,7 +37,7 @@ const SpecialCardRow: React.FC<Props> = ({ isSpecial, selectSpecial }) => {
           style={[
             styles.textButton,
             styles.standardButton,
-            isSpecial === 'True' && styles.selectedValue,
+            value === 'True' && styles.selectedValue,
           ]}>
           <Text>Only</Text>
         </TouchableRipple>
@@ -52,7 +46,7 @@ const SpecialCardRow: React.FC<Props> = ({ isSpecial, selectSpecial }) => {
           style={[
             styles.textButton,
             styles.standardButton,
-            isSpecial === 'False' && styles.selectedValue,
+            value === 'False' && styles.selectedValue,
           ]}>
           <Text>None</Text>
         </TouchableRipple>
@@ -62,8 +56,8 @@ const SpecialCardRow: React.FC<Props> = ({ isSpecial, selectSpecial }) => {
 };
 
 SpecialCardRow.propTypes = {
-  isSpecial: PropTypes.any,
-  selectSpecial: PropTypes.any,
+  value: PropTypes.any,
+  setValue: PropTypes.any,
 };
 
 export default SpecialCardRow;

@@ -222,16 +222,16 @@ const SongsScreen: React.FC<SongsScreenProps> = ({ navigation }) => {
       {showFilter && (
         <Surface style={styles.filterContainer}>
           <AttributeRow
-            attribute={searchParams.attribute || ''}
-            selectAttribute={selectAttribute}
+            value={searchParams.attribute || ''}
+            setValue={selectAttribute}
           />
           <EventRow
-            isEvent={searchParams.is_event || ''}
-            selectEvent={selectEvent}
+            value={searchParams.is_event || ''}
+            setValue={selectEvent}
           />
           <MainUnitRow
-            mainUnit={searchParams.main_unit || ''}
-            selectMainUnit={selectMainUnit}
+            value={searchParams.main_unit || ''}
+            setValue={selectMainUnit}
           />
           <OrderingRow
             list={OrderingGroup.SONG}

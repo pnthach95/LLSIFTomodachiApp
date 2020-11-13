@@ -4,25 +4,16 @@ import { View } from 'react-native';
 import { Text, TouchableRipple } from 'react-native-paper';
 import styles from '~/Theme/RowStyles';
 import { AppStyles } from '~/Theme';
-import type { YearType } from '~/Utils/types';
-
-type Props = {
-  idolYear: YearType;
-  selectYear: (idolYear: YearType) => void;
-};
+import type { FCSelectionProps, YearType } from '~/Utils/types';
 
 /**
  * Year Row (None, First, Second, Third)
- *
- * Prop:
- * - `selectYear`: Save `idolYear` state
- * - `idolYear`: state from parent
  */
-const YearRow: React.FC<Props> = ({ idolYear, selectYear }) => {
-  const none = () => selectYear('');
-  const first = () => selectYear('First');
-  const second = () => selectYear('Second');
-  const third = () => selectYear('Third');
+const YearRow: React.FC<FCSelectionProps<YearType>> = ({ value, setValue }) => {
+  const none = () => setValue('');
+  const first = () => setValue('First');
+  const second = () => setValue('Second');
+  const third = () => setValue('Third');
 
   return (
     <View style={AppStyles.row}>
@@ -35,7 +26,7 @@ const YearRow: React.FC<Props> = ({ idolYear, selectYear }) => {
           style={[
             styles.textButton,
             styles.standardButton,
-            idolYear === '' && styles.selectedValue,
+            value === '' && styles.selectedValue,
           ]}>
           <Text>All</Text>
         </TouchableRipple>
@@ -44,7 +35,7 @@ const YearRow: React.FC<Props> = ({ idolYear, selectYear }) => {
           style={[
             styles.textButton,
             styles.standardButton,
-            idolYear === 'First' && styles.selectedValue,
+            value === 'First' && styles.selectedValue,
           ]}>
           <Text>1st</Text>
         </TouchableRipple>
@@ -53,7 +44,7 @@ const YearRow: React.FC<Props> = ({ idolYear, selectYear }) => {
           style={[
             styles.textButton,
             styles.standardButton,
-            idolYear === 'Second' && styles.selectedValue,
+            value === 'Second' && styles.selectedValue,
           ]}>
           <Text>2nd</Text>
         </TouchableRipple>
@@ -62,7 +53,7 @@ const YearRow: React.FC<Props> = ({ idolYear, selectYear }) => {
           style={[
             styles.textButton,
             styles.standardButton,
-            idolYear === 'Third' && styles.selectedValue,
+            value === 'Third' && styles.selectedValue,
           ]}>
           <Text>3rd</Text>
         </TouchableRipple>
@@ -72,8 +63,8 @@ const YearRow: React.FC<Props> = ({ idolYear, selectYear }) => {
 };
 
 YearRow.propTypes = {
-  idolYear: PropTypes.any,
-  selectYear: PropTypes.any,
+  value: PropTypes.any,
+  setValue: PropTypes.any,
 };
 
 export default YearRow;

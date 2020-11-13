@@ -6,12 +6,7 @@ import FastImage, { OnLoadEvent } from 'react-native-fast-image';
 import { Metrics, Colors, Fonts } from '~/Theme';
 import { AddHTTPS } from '~/Utils';
 import { EventStatus } from '~/Config';
-import type { EventObject } from '~/Utils/types';
-
-type Props = {
-  item: EventObject;
-  onPress: () => void;
-};
+import type { FCItemProps, EventObject } from '~/Utils/types';
 
 const { ONGOING, ANNOUNCED } = EventStatus;
 const { amber400, green300 } = Colors;
@@ -23,7 +18,7 @@ const { amber400, green300 } = Colors;
  * - `item`: [Event object](https://github.com/MagiCircles/SchoolIdolAPI/wiki/API-Events#objects)
  * - `onPress`: onPress function
  */
-const EventItem: React.FC<Props> = ({ item, onPress }) => {
+const EventItem: React.FC<FCItemProps<EventObject>> = ({ item, onPress }) => {
   const { surface } = useTheme().colors;
   const [imgSize, setImgSize] = useState({
     width: Metrics.widthBanner,

@@ -18,17 +18,13 @@ import LLSIFdotnetService from '~/Services/LLSIFdotnetService';
 import { AppStyles, Colors, Fonts, Metrics } from '~/Theme';
 import type { EventTrackerScreenProps } from '~/Utils/types';
 
-type xyObject = { x: string; y: number };
-
-type ChartData = {
-  seriesName: string;
-  data: xyObject[] | null;
-  color: string;
-};
-
 type TrackerDataProps = {
   table: string[][] | null;
-  chart: ChartData[];
+  chart: {
+    seriesName: string;
+    data: { x: string; y: number }[] | null;
+    color: string;
+  }[];
 };
 
 const chartPadding = { left: 70, top: 20, bottom: 30, right: 20 };
@@ -120,7 +116,7 @@ const Tracker: React.FC<EventTrackerScreenProps> = ({ navigation, route }) => {
     let colorCount = 0;
     for (let i = 2; i < table[0].length; i += 2) {
       if (table[0][i].startsWith('t')) {
-        const row: xyObject[] = [];
+        const row: TrackerDataProps['chart'][0]['data'] = [];
         for (let j = 1; j < table.length; j++) {
           row.push({ x: table[j][0], y: Number(table[j][i]) });
         }

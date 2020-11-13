@@ -216,8 +216,8 @@ const EventsScreen: React.FC<EventsScreenProps> = ({ navigation }) => {
             onSelect={selectIdol}
           />
           <MainUnitRow
-            mainUnit={searchParams.main_unit || ''}
-            selectMainUnit={selectMainUnit}
+            value={searchParams.main_unit || ''}
+            setValue={selectMainUnit}
           />
           <PickerRow
             name='Skill'
@@ -226,12 +226,12 @@ const EventsScreen: React.FC<EventsScreenProps> = ({ navigation }) => {
             onSelect={selectSkill}
           />
           <AttributeRow
-            attribute={searchParams.attribute || ''}
-            selectAttribute={selectAttribute}
+            value={searchParams.attribute || ''}
+            setValue={selectAttribute}
           />
           <RegionRow
-            japanOnly={searchParams.is_english || ''}
-            selectRegion={selectRegion}
+            value={searchParams.is_english || ''}
+            setValue={selectRegion}
           />
           <Button mode='contained' onPress={resetFilter}>
             RESET

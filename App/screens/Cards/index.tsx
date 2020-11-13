@@ -301,28 +301,28 @@ const CardsScreen: React.FC<CardsScreenProps> = ({ navigation }) => {
               onSelect={selectIdol}
             />
             <RarityRow
-              rarity={searchParams.rarity || ''}
-              selectRarity={selectRarity}
+              value={searchParams.rarity || ''}
+              setValue={selectRarity}
             />
             <AttributeRow
-              attribute={searchParams.attribute || ''}
-              selectAttribute={selectAttribute}
+              value={searchParams.attribute || ''}
+              setValue={selectAttribute}
             />
             <RegionRow
-              japanOnly={searchParams.japan_only || ''}
-              selectRegion={selectRegion}
+              value={searchParams.japan_only || ''}
+              setValue={selectRegion}
             />
             <PromoCardRow
-              isPromo={searchParams.is_promo || ''}
-              selectPromo={selectPromo}
+              value={searchParams.is_promo || ''}
+              setValue={selectPromo}
             />
             <SpecialCardRow
-              isSpecial={searchParams.is_special || ''}
-              selectSpecial={selectSpecial}
+              value={searchParams.is_special || ''}
+              setValue={selectSpecial}
             />
             <EventRow
-              isEvent={searchParams.is_event || ''}
-              selectEvent={selectEvent}
+              value={searchParams.is_event || ''}
+              setValue={selectEvent}
             />
             <PickerRow
               name='Skill'
@@ -331,8 +331,8 @@ const CardsScreen: React.FC<CardsScreenProps> = ({ navigation }) => {
               onSelect={selectSkill}
             />
             <MainUnitRow
-              mainUnit={searchParams.idol_main_unit || ''}
-              selectMainUnit={selectMainUnit}
+              value={searchParams.idol_main_unit || ''}
+              setValue={selectMainUnit}
             />
             <PickerRow
               name='Subunit'
@@ -347,8 +347,8 @@ const CardsScreen: React.FC<CardsScreenProps> = ({ navigation }) => {
               onSelect={selectSchool}
             />
             <YearRow
-              idolYear={searchParams.idol_year || ''}
-              selectYear={selectYear}
+              value={searchParams.idol_year || ''}
+              setValue={selectYear}
             />
             <OrderingRow
               list={OrderingGroup.CARD}

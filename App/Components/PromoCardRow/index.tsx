@@ -4,24 +4,18 @@ import { View } from 'react-native';
 import { Text, TouchableRipple } from 'react-native-paper';
 import styles from '~/Theme/RowStyles';
 import { AppStyles } from '~/Theme';
-import type { BooleanOrEmpty } from '~/Utils/types';
-
-type Props = {
-  isPromo: BooleanOrEmpty;
-  selectPromo: (isPromo: BooleanOrEmpty) => void;
-};
+import type { FCSelectionProps, BooleanOrEmpty } from '~/Utils/types';
 
 /**
  * Promo Card Row (None, True, False)
- *
- * Prop:
- * - `selectPromo`: Save `isPromo` state
- * - `isPromo`: state from parent
  */
-const PromoCardRow: React.FC<Props> = ({ isPromo, selectPromo }) => {
-  const none = () => selectPromo('');
-  const sTrue = () => selectPromo('True');
-  const sFalse = () => selectPromo('False');
+const PromoCardRow: React.FC<FCSelectionProps<BooleanOrEmpty>> = ({
+  value,
+  setValue,
+}) => {
+  const none = () => setValue('');
+  const sTrue = () => setValue('True');
+  const sFalse = () => setValue('False');
 
   return (
     <View style={AppStyles.row}>
@@ -34,7 +28,7 @@ const PromoCardRow: React.FC<Props> = ({ isPromo, selectPromo }) => {
           style={[
             styles.textButton,
             styles.standardButton,
-            isPromo === '' && styles.selectedValue,
+            value === '' && styles.selectedValue,
           ]}>
           <Text>All</Text>
         </TouchableRipple>
@@ -43,7 +37,7 @@ const PromoCardRow: React.FC<Props> = ({ isPromo, selectPromo }) => {
           style={[
             styles.textButton,
             styles.standardButton,
-            isPromo === 'True' && styles.selectedValue,
+            value === 'True' && styles.selectedValue,
           ]}>
           <Text>Only</Text>
         </TouchableRipple>
@@ -52,7 +46,7 @@ const PromoCardRow: React.FC<Props> = ({ isPromo, selectPromo }) => {
           style={[
             styles.textButton,
             styles.standardButton,
-            isPromo === 'False' && styles.selectedValue,
+            value === 'False' && styles.selectedValue,
           ]}>
           <Text>None</Text>
         </TouchableRipple>
@@ -62,8 +56,8 @@ const PromoCardRow: React.FC<Props> = ({ isPromo, selectPromo }) => {
 };
 
 PromoCardRow.propTypes = {
-  isPromo: PropTypes.any,
-  selectPromo: PropTypes.any,
+  value: PropTypes.any,
+  setValue: PropTypes.any,
 };
 
 export default PromoCardRow;

@@ -39,6 +39,7 @@ module.exports = {
         packageDir: './'
       }
     ],
+    'object-shorthand': 1,
     '@typescript-eslint/no-unsafe-assignment': 'off',
     '@typescript-eslint/ban-ts-comment': 'off',
     'react-native/no-raw-text': 'off',

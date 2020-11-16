@@ -19,28 +19,32 @@ import { responsiveHeight } from 'react-native-responsive-dimensions';
 import _ from 'lodash';
 
 import ConnectStatus from '~/Components/ConnectStatus';
-import YearRow from '~/Components/YearRow';
 import CardItem from '~/Components/CardItem';
-import EventRow from '~/Components/EventRow';
-import RarityRow from '~/Components/RarityRow';
-import RegionRow from '~/Components/RegionRow';
+import SelectionRow from '~/Components/SelectionRow';
+import ImgSelectionRow from '~/Components/ImgSelectionRow';
 import PickerRow from '~/Components/PickerRow';
-import MainUnitRow from '~/Components/MainUnitRow';
 import OrderingRow from '~/Components/OrderingRow';
-import AttributeRow from '~/Components/AttributeRow';
-import PromoCardRow from '~/Components/PromoCardRow';
 import Card2PicsItem from '~/Components/Card2PicsItem';
-import SpecialCardRow from '~/Components/SpecialCardRow';
 import LLSIFService from '~/Services/LLSIFService';
 import { Metrics, AppStyles, Images } from '~/Theme';
 import UserContext from '~/Context/UserContext';
-import { OrderingGroup } from '~/Config';
+import {
+  OrderingGroup,
+  AllOnlyNone,
+  RegionData,
+  RarityData,
+  AttributeData,
+  MainUnitData,
+  YearData,
+} from '~/Config';
 import type {
   AttributeType,
   BooleanOrEmpty,
   CardObject,
   CardSearchParams,
   CardsScreenProps,
+  Combined,
+  CombinedWithBOE,
   MainUnitNames,
   RarityType,
   SkillType,
@@ -201,52 +205,55 @@ const CardsScreen: React.FC<CardsScreenProps> = ({ navigation }) => {
   const switchColumn = () => setColumn(column === 1 ? 2 : 1);
 
   /** Save is_promo */
-  const selectPromo = (value: BooleanOrEmpty) =>
-    setSearchParams({ ...searchParams, is_promo: value });
+  const selectPromo = (value: CombinedWithBOE) =>
+    setSearchParams({ ...searchParams, is_promo: value as BooleanOrEmpty });
 
   /** Save is_special */
-  const selectSpecial = (value: BooleanOrEmpty) =>
-    setSearchParams({ ...searchParams, is_special: value });
+  const selectSpecial = (value: CombinedWithBOE) =>
+    setSearchParams({ ...searchParams, is_special: value as BooleanOrEmpty });
 
   /** Save is_event */
-  const selectEvent = (value: BooleanOrEmpty) =>
-    setSearchParams({ ...searchParams, is_event: value });
+  const selectEvent = (value: CombinedWithBOE) =>
+    setSearchParams({ ...searchParams, is_event: value as BooleanOrEmpty });
 
   /** Save idol_main_unit */
-  const selectMainUnit = (value: MainUnitNames) =>
-    setSearchParams({ ...searchParams, idol_main_unit: value });
+  const selectMainUnit = (value: Combined) =>
+    setSearchParams({
+      ...searchParams,
+      idol_main_unit: value as MainUnitNames,
+    });
 
   /** Save rarity */
-  const selectRarity = (value: RarityType) =>
-    setSearchParams({ ...searchParams, rarity: value });
+  const selectRarity = (value: Combined) =>
+    setSearchParams({ ...searchParams, rarity: value as RarityType });
 
   /** Save attribute */
-  const selectAttribute = (value: AttributeType) =>
-    setSearchParams({ ...searchParams, attribute: value });
+  const selectAttribute = (value: Combined) =>
+    setSearchParams({ ...searchParams, attribute: value as AttributeType });
 
   /** Save idol_year */
-  const selectYear = (value: YearType) =>
-    setSearchParams({ ...searchParams, idol_year: value });
+  const selectYear = (value: CombinedWithBOE) =>
+    setSearchParams({ ...searchParams, idol_year: value as YearType });
 
   /** Save region */
-  const selectRegion = (value: BooleanOrEmpty) =>
-    setSearchParams({ ...searchParams, japan_only: value });
+  const selectRegion = (value: CombinedWithBOE) =>
+    setSearchParams({ ...searchParams, japan_only: value as BooleanOrEmpty });
 
   /** Save idol_sub_unit */
-  const selectSubUnit = (itemValue: string) =>
-    setSearchParams({ ...searchParams, idol_sub_unit: itemValue });
+  const selectSubUnit = (value: string) =>
+    setSearchParams({ ...searchParams, idol_sub_unit: value });
 
   /** Save idol name */
-  const selectIdol = (itemValue: string) =>
-    setSearchParams({ ...searchParams, name: itemValue });
+  const selectIdol = (value: string) =>
+    setSearchParams({ ...searchParams, name: value });
 
   /** Save school */
-  const selectSchool = (itemValue: string) =>
-    setSearchParams({ ...searchParams, idol_school: itemValue });
+  const selectSchool = (value: string) =>
+    setSearchParams({ ...searchParams, idol_school: value });
 
   /** Save skill */
-  const selectSkill = (itemValue: SkillType) =>
-    setSearchParams({ ...searchParams, skill: itemValue });
+  const selectSkill = (value: string) =>
+    setSearchParams({ ...searchParams, skill: value as SkillType });
 
   /** Save ordering */
   const selectOrdering = (value: string) =>
@@ -300,27 +307,39 @@ const CardsScreen: React.FC<CardsScreenProps> = ({ navigation }) => {
               value={searchParams.name || ''}
               onSelect={selectIdol}
             />
-            <RarityRow
+            <ImgSelectionRow
+              title='Rarity'
+              data={RarityData}
               value={searchParams.rarity || ''}
               setValue={selectRarity}
             />
-            <AttributeRow
+            <ImgSelectionRow
+              title='Attribute'
+              data={AttributeData}
               value={searchParams.attribute || ''}
               setValue={selectAttribute}
             />
-            <RegionRow
+            <SelectionRow
+              title='Region'
+              data={RegionData}
               value={searchParams.japan_only || ''}
               setValue={selectRegion}
             />
-            <PromoCardRow
+            <SelectionRow
+              title='Promo card'
+              data={AllOnlyNone}
               value={searchParams.is_promo || ''}
               setValue={selectPromo}
             />
-            <SpecialCardRow
+            <SelectionRow
+              title='Special card'
+              data={AllOnlyNone}
               value={searchParams.is_special || ''}
               setValue={selectSpecial}
             />
-            <EventRow
+            <SelectionRow
+              title='Event'
+              data={AllOnlyNone}
               value={searchParams.is_event || ''}
               setValue={selectEvent}
             />
@@ -330,7 +349,9 @@ const CardsScreen: React.FC<CardsScreenProps> = ({ navigation }) => {
               list={state.cachedData.skills}
               onSelect={selectSkill}
             />
-            <MainUnitRow
+            <ImgSelectionRow
+              title='Main unit'
+              data={MainUnitData}
               value={searchParams.idol_main_unit || ''}
               setValue={selectMainUnit}
             />
@@ -346,7 +367,9 @@ const CardsScreen: React.FC<CardsScreenProps> = ({ navigation }) => {
               list={state.cachedData.schools}
               onSelect={selectSchool}
             />
-            <YearRow
+            <SelectionRow
+              title='Year'
+              data={YearData}
               value={searchParams.idol_year || ''}
               setValue={selectYear}
             />

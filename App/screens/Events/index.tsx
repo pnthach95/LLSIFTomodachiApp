@@ -5,13 +5,13 @@ import _ from 'lodash';
 
 import ConnectStatus from '~/Components/ConnectStatus';
 import EventItem from '~/Components/EventItem';
-import RegionRow from '~/Components/RegionRow';
+import SelectionRow from '~/Components/SelectionRow';
 import PickerRow from '~/Components/PickerRow';
-import MainUnitRow from '~/Components/MainUnitRow';
-import AttributeRow from '~/Components/AttributeRow';
+import ImgSelectionRow from '~/Components/ImgSelectionRow';
 import { Metrics, AppStyles, Images } from '~/Theme';
 import LLSIFService from '~/Services/LLSIFService';
 import UserContext from '~/Context/UserContext';
+import { AttributeData, MainUnitData, RegionData } from '~/Config';
 import type {
   EventSearchParams,
   EventsScreenProps,
@@ -20,6 +20,8 @@ import type {
   MainUnitNames,
   BooleanOrEmpty,
   SkillType,
+  Combined,
+  CombinedWithBOE,
 } from '~/Utils/types';
 
 /**
@@ -153,24 +155,24 @@ const EventsScreen: React.FC<EventsScreenProps> = ({ navigation }) => {
   const toggleFilter = () => setShowFilter(!showFilter);
 
   /** Save `attribute` */
-  const selectAttribute = (value: AttributeType) =>
-    setSearchParams({ ...searchParams, attribute: value });
+  const selectAttribute = (value: Combined) =>
+    setSearchParams({ ...searchParams, attribute: value as AttributeType });
 
   /** Save `main_unit` */
-  const selectMainUnit = (value: MainUnitNames) =>
-    setSearchParams({ ...searchParams, main_unit: value });
+  const selectMainUnit = (value: Combined) =>
+    setSearchParams({ ...searchParams, main_unit: value as MainUnitNames });
 
   /** Save `is_english` */
-  const selectRegion = (value: BooleanOrEmpty) =>
-    setSearchParams({ ...searchParams, is_english: value });
+  const selectRegion = (value: CombinedWithBOE) =>
+    setSearchParams({ ...searchParams, is_english: value as BooleanOrEmpty });
 
   /** Save `skill` */
-  const selectSkill = (itemValue: SkillType) =>
-    setSearchParams({ ...searchParams, skill: itemValue });
+  const selectSkill = (value: string) =>
+    setSearchParams({ ...searchParams, skill: value as SkillType });
 
   /** Save `idol` */
-  const selectIdol = (itemValue: string) =>
-    setSearchParams({ ...searchParams, idol: itemValue });
+  const selectIdol = (value: string) =>
+    setSearchParams({ ...searchParams, idol: value });
 
   /** Render footer of FlatList */
   const renderFooter = (
@@ -215,7 +217,9 @@ const EventsScreen: React.FC<EventsScreenProps> = ({ navigation }) => {
             list={state.cachedData.idols}
             onSelect={selectIdol}
           />
-          <MainUnitRow
+          <ImgSelectionRow
+            title='Main unit'
+            data={MainUnitData}
             value={searchParams.main_unit || ''}
             setValue={selectMainUnit}
           />
@@ -225,11 +229,15 @@ const EventsScreen: React.FC<EventsScreenProps> = ({ navigation }) => {
             list={state.cachedData.skills}
             onSelect={selectSkill}
           />
-          <AttributeRow
+          <ImgSelectionRow
+            title='Attribute'
+            data={AttributeData}
             value={searchParams.attribute || ''}
             setValue={selectAttribute}
           />
-          <RegionRow
+          <SelectionRow
+            title='Region'
+            data={RegionData}
             value={searchParams.is_english || ''}
             setValue={selectRegion}
           />

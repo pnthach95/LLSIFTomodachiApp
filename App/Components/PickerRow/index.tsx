@@ -6,13 +6,13 @@ import { useModal } from 'react-native-modalfy';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import rowStyles from '~/Theme/RowStyles';
-import type { ModalStackParamList, SkillType } from '~/Utils/types';
+import type { ModalStackParamList } from '~/Utils/types';
 
 type Props = {
   name: string;
   value: string;
   list: string[];
-  onSelect: (name: string & SkillType) => void;
+  onSelect: (name: string) => void;
 };
 
 /**

@@ -10,7 +10,14 @@ import {
 //  Components
 //  -----------------------------------------------
 
-type FCSelectionProps<T> = {
+type LVObject<T> = { label: string; value: T };
+
+type Combined = RarityType | AttributeType | MainUnitNames;
+type CombinedWithBOE = BooleanOrEmpty | YearType;
+
+type FCSelectionProps<T = Combined> = {
+  title: string;
+  data: ReadonlyArray<T>;
   value: T;
   setValue: (value: T) => void;
 };
@@ -128,16 +135,14 @@ type ModalStackParamList = {
     title: string;
     selectedItem: string | undefined;
     data?: string[];
-    objectData?: SelectionObject[];
-    onPress: <T extends string & SkillType>(item: T) => void;
+    objectData?: LVObject<string>[];
+    onPress: (item: string) => void;
   };
 };
 
 type ListModalComponent = ModalComponentWithOptions<
   ModalComponentProp<ModalStackParamList, void, 'list'>
 >;
-
-type SelectionObject = { label: string; value: string };
 
 //  -----------------------------------------------
 //  Union
@@ -156,7 +161,8 @@ type SubUnitNames =
   | 'A-RISE';
 
 type BooleanOrEmpty = 'True' | 'False' | '';
-type AttributeType = 'Smile' | 'Pure' | 'Cool' | 'All' | '';
+type CoreAttributeType = 'Smile' | 'Pure' | 'Cool';
+type AttributeType = CoreAttributeType | 'All' | '';
 type RarityType = 'N' | 'R' | 'SR' | 'SSR' | 'UR' | '';
 type SkillType =
   | 'All'
@@ -246,9 +252,7 @@ type CachedDataObject = {
   subUnits: SubUnitNames[];
   schools: string[];
   maxStats: {
-    Smile: number;
-    Pure: number;
-    Cool: number;
+    [key in CoreAttributeType]: number;
   };
   songsMaxStats: number;
   ENEvent: EventObject;
@@ -448,9 +452,7 @@ type LLSIFCacheData = {
   }[];
   cards_info: {
     max_stats: {
-      Smile: number;
-      Pure: number;
-      Cool: number;
+      [key in CoreAttributeType]: number;
     };
     en_cards: number[];
     years: string[];
@@ -481,7 +483,7 @@ type LLSIFCacheData = {
 type CardSearchParams = {
   /** Keyword for search */
   search?: string;
-  /** Selected ordering option {label: string, value: string} */
+  /** Selected ordering option */
   selectedOrdering?: string;
   /** Is reverse (boolean) */
   isReverse?: boolean;

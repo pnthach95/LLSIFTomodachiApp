@@ -7,10 +7,10 @@ import { useModal } from 'react-native-modalfy';
 
 import rowStyles from '~/Theme/RowStyles';
 import { Colors, Metrics } from '~/Theme';
-import type { SelectionObject, ModalStackParamList } from '~/Utils/types';
+import type { LVObject, ModalStackParamList } from '~/Utils/types';
 
 type Props = {
-  list: SelectionObject[];
+  list: LVObject<string>[];
   onSelect: (item: string) => void;
   selectedItem: string | undefined;
   toggleReverse: () => void;

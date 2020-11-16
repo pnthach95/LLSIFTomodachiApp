@@ -160,7 +160,7 @@ const CardDetailScreen: React.FC<CardDetailScreenProps> = ({
         <Appbar.Content title={item.idol.name} onPress={navigateToIdolDetail} />
         {!!item.idol.main_unit && (
           <FastImage
-            source={Images.mainUnit[item.idol.main_unit]}
+            source={Images.multi[item.idol.main_unit]}
             resizeMode='contain'
             style={styles.rightHeaderImage}
           />

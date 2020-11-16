@@ -102,7 +102,7 @@ const IdolDetailScreen: React.FC<IdolDetailScreenProps> = ({
           <View style={AppStyles.row}>
             {!!item.main_unit && (
               <FastImage
-                source={Images.mainUnit[item.main_unit]}
+                source={Images.multi[item.main_unit]}
                 resizeMode='contain'
                 style={styles.rightHeaderImage}
               />

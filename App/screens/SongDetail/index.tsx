@@ -145,7 +145,7 @@ const SongDetailScreen: React.FC<SongDetailScreenProps> = ({
         <Appbar.Content title={item.name} subtitle={item.romaji_name} />
         {!!item.main_unit && (
           <FastImage
-            source={Images.mainUnit[item.main_unit]}
+            source={Images.multi[item.main_unit]}
             resizeMode='contain'
             style={styles.rightHeaderImage}
           />

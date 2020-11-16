@@ -42,7 +42,7 @@ const SPCStats: React.FC<Props> = ({ text, stat }) => {
       <Text>{text}</Text>
       <View style={AppStyles.row}>
         <FastImage
-          source={Images.attribute[text]}
+          source={Images.multi[text]}
           resizeMode='contain'
           style={[AppStyles.mediumIcon, styles.marginRight]}
         />

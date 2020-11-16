@@ -12,17 +12,23 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import _ from 'lodash';
 
 import ConnectStatus from '~/Components/ConnectStatus';
-import EventRow from '~/Components/EventRow';
+import SelectionRow from '~/Components/SelectionRow';
 import SongItem from '~/Components/SongItem';
-import MainUnitRow from '~/Components/MainUnitRow';
+import ImgSelectionRow from '~/Components/ImgSelectionRow';
 import OrderingRow from '~/Components/OrderingRow';
-import AttributeRow from '~/Components/AttributeRow';
 import LLSIFService from '~/Services/LLSIFService';
 import { AppStyles, Images, Metrics, Fonts } from '~/Theme';
-import { OrderingGroup } from '~/Config';
+import {
+  OrderingGroup,
+  AllOnlyNone,
+  AttributeData,
+  MainUnitData,
+} from '~/Config';
 import type {
   AttributeType,
   BooleanOrEmpty,
+  Combined,
+  CombinedWithBOE,
   MainUnitNames,
   SongObject,
   SongSearchParams,
@@ -166,20 +172,20 @@ const SongsScreen: React.FC<SongsScreenProps> = ({ navigation }) => {
     setSearchParams({ ...defaultParams, page: searchParams.page });
 
   /** Save `is_event` */
-  const selectEvent = (value: BooleanOrEmpty) =>
-    setSearchParams({ ...searchParams, is_event: value });
+  const selectEvent = (value: CombinedWithBOE) =>
+    setSearchParams({ ...searchParams, is_event: value as BooleanOrEmpty });
 
   /** Save `attribute` */
-  const selectAttribute = (value: AttributeType) =>
-    setSearchParams({ ...searchParams, attribute: value });
+  const selectAttribute = (value: Combined) =>
+    setSearchParams({ ...searchParams, attribute: value as AttributeType });
 
   /** Save `main_unit` */
-  const selectMainUnit = (value: MainUnitNames) =>
-    setSearchParams({ ...searchParams, main_unit: value });
+  const selectMainUnit = (value: Combined) =>
+    setSearchParams({ ...searchParams, main_unit: value as MainUnitNames });
 
   /** Save ordering */
-  const selectOrdering = (itemValue: string) =>
-    setSearchParams({ ...searchParams, selectedOrdering: itemValue });
+  const selectOrdering = (value: string) =>
+    setSearchParams({ ...searchParams, selectedOrdering: value });
 
   /** Render footer in FlatList */
   const renderFooter = (
@@ -221,15 +227,21 @@ const SongsScreen: React.FC<SongsScreenProps> = ({ navigation }) => {
       {/* FILTER */}
       {showFilter && (
         <Surface style={styles.filterContainer}>
-          <AttributeRow
+          <ImgSelectionRow
+            title='Attribute'
+            data={AttributeData}
             value={searchParams.attribute || ''}
             setValue={selectAttribute}
           />
-          <EventRow
+          <SelectionRow
+            title='Event'
+            data={AllOnlyNone}
             value={searchParams.is_event || ''}
             setValue={selectEvent}
           />
-          <MainUnitRow
+          <ImgSelectionRow
+            title='Main unit'
+            data={MainUnitData}
             value={searchParams.main_unit || ''}
             setValue={selectMainUnit}
           />

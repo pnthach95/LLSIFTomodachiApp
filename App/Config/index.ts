@@ -1,3 +1,12 @@
+import type {
+  AttributeType,
+  BooleanOrEmpty,
+  MainUnitNames,
+  RarityType,
+  YearType,
+  LVObject,
+} from '~/Utils/types';
+
 export const Config = {
   DATETIME_FORMAT_INPUT: 'YYYY-MM-DDTHH:mm:ssZ',
   API_URL: 'https://schoolido.lu/api/',
@@ -111,3 +120,34 @@ export const FirebaseTopic = {
   WW_EVENT: __DEV__ ? 'ww_event_test' : 'ww_event',
   MESSAGE: __DEV__ ? 'test_only' : 'admin_message',
 };
+
+export const MainUnitData: MainUnitNames[] = ['', "μ's", 'Aqours'];
+
+export const RarityData: RarityType[] = ['', 'N', 'R', 'SR', 'SSR', 'UR'];
+
+export const AttributeData: AttributeType[] = [
+  '',
+  'Smile',
+  'Pure',
+  'Cool',
+  'All',
+];
+
+export const AllOnlyNone: LVObject<BooleanOrEmpty>[] = [
+  { value: '', label: 'All' },
+  { value: 'True', label: 'Only' },
+  { value: 'False', label: 'None' },
+];
+
+export const RegionData: LVObject<BooleanOrEmpty>[] = [
+  { value: '', label: 'All' },
+  { value: 'True', label: 'JP Only' },
+  { value: 'False', label: 'EN Only' },
+];
+
+export const YearData: LVObject<YearType>[] = [
+  { label: 'All', value: '' },
+  { label: '1st', value: 'First' },
+  { label: '2nd', value: 'Second' },
+  { label: '3rd', value: 'Third' },
+];

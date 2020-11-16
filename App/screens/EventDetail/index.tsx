@@ -250,7 +250,7 @@ const EventDetailScreen: React.FC<EventDetailScreenProps> = ({
                       />
                       <View style={styles.songInfo}>
                         <Image
-                          source={Images.attribute[songItem.attribute || '']}
+                          source={Images.multi[songItem.attribute]}
                           style={styles.attributeIcon}
                         />
                         <View style={styles.width5} />

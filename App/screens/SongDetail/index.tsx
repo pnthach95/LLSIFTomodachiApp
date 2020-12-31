@@ -1,12 +1,12 @@
-import React, { useState, useEffect, useContext } from 'react';
-import { View, ScrollView, StyleSheet } from 'react-native';
-import PropTypes from 'prop-types';
+import React, { useState, useEffect, useContext, useRef } from 'react';
+import { View, Animated, StyleSheet } from 'react-native';
 import {
-  Appbar,
+  IconButton,
   TouchableRipple,
   Button,
   Text,
   ProgressBar,
+  useTheme,
 } from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import FastImage from 'react-native-fast-image';
@@ -16,8 +16,9 @@ import dayjs from 'dayjs';
 import UserContext from '~/Context/UserContext';
 import StarBar from '~/Components/StarBar';
 import TextRow from '~/Components/TextRow';
-import { findColorByAttribute, AddHTTPS, setStatusBar } from '~/Utils';
-import { Metrics, AppStyles, Colors, Images } from '~/Theme';
+import { findColorByAttribute, AddHTTPS } from '~/Utils';
+import { Metrics, AppStyles, Colors, Images, Fonts } from '~/Theme';
+import type { NativeSyntheticEvent, NativeScrollEvent } from 'react-native';
 import type { SongDetailScreenProps } from '~/Utils/types';
 
 type StatButtonProps = {
@@ -25,6 +26,8 @@ type StatButtonProps = {
   text: string;
   stat: [number, number[]];
 };
+
+const { ScrollView } = Animated;
 
 /**
  * Song Detail Screen
@@ -34,11 +37,13 @@ type StatButtonProps = {
  * [Song object](https://github.com/MagiCircles/SchoolIdolAPI/wiki/API-Songs#objects)
  *
  */
-const SongDetailScreen: React.FC<SongDetailScreenProps> = ({
+const SongDetailScreen = ({
   route,
   navigation,
-}) => {
+}: SongDetailScreenProps): JSX.Element => {
   const { item } = route.params;
+  const { colors } = useTheme();
+  const scrollAV = useRef(new Animated.Value(0)).current;
   const insets = useSafeAreaInsets();
   const { state } = useContext(UserContext);
   const [buttonID, setButtonID] = useState(0);
@@ -53,10 +58,10 @@ const SongDetailScreen: React.FC<SongDetailScreenProps> = ({
   const [expert, setExpert] = useState<StatButtonProps['stat']>([0, []]);
   const [random, setRandom] = useState<StatButtonProps['stat']>([0, []]);
   const [master, setMaster] = useState<StatButtonProps['stat']>([0, []]);
+  const [currentOffset, setCurrentOffset] = useState(0);
   const bottom = { paddingBottom: insets.bottom };
 
   useEffect(() => {
-    setStatusBar(attributeColors[0]);
     const easyArray = [];
     for (let i = 0; i < item.easy_difficulty; i += 1) {
       easyArray.push(setColor(i));
@@ -92,7 +97,6 @@ const SongDetailScreen: React.FC<SongDetailScreenProps> = ({
     }
     setMaster([item.master_notes || 0, masterArray]);
     setCurrentStats([item.easy_notes, easyArray]);
-    return () => setStatusBar(route.params.prevStatusBarColor);
   }, []);
 
   /** Set color for star */
@@ -138,11 +142,78 @@ const SongDetailScreen: React.FC<SongDetailScreenProps> = ({
 
   const goBack = () => navigation.goBack();
 
+  const moveBackButton = scrollAV.interpolate({
+    inputRange: [0, 1],
+    outputRange: [0, -50],
+    extrapolate: 'clamp',
+  });
+
+  const onScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
+    const offset = event.nativeEvent.contentOffset.y;
+    if (offset > 50) {
+      const dif = offset - (currentOffset || 0);
+      if (Math.abs(dif) > 10) {
+        if (dif < 0) {
+          Animated.timing(scrollAV, {
+            duration: 100,
+            toValue: 0,
+            useNativeDriver: true,
+          }).start();
+        } else {
+          Animated.timing(scrollAV, {
+            duration: 100,
+            toValue: 1,
+            useNativeDriver: true,
+          }).start();
+        }
+      }
+    } else {
+      Animated.timing(scrollAV, {
+        duration: 100,
+        toValue: 0,
+        useNativeDriver: true,
+      }).start();
+    }
+    setCurrentOffset(offset);
+  };
+
   return (
     <>
-      <Appbar.Header style={{ backgroundColor: attributeColors[1] }}>
-        <Appbar.BackAction onPress={goBack} />
-        <Appbar.Content title={item.name} subtitle={item.romaji_name} />
+      <Animated.View
+        style={[
+          AppStyles.back,
+          { transform: [{ translateY: moveBackButton }] },
+        ]}>
+        <IconButton
+          icon='arrow-left'
+          color={colors.text}
+          onPress={goBack}
+          style={{ backgroundColor: colors.background }}
+        />
+      </Animated.View>
+      <ScrollView
+        onScroll={onScroll}
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={[styles.scrollViewContainer, bottom]}
+        style={AppStyles.screen}>
+        <Text
+          style={[
+            Fonts.style.center,
+            Fonts.style.bigTitle,
+            { color: attributeColors[0] || colors.text },
+          ]}>
+          {item.name}
+        </Text>
+        {item.romaji_name && (
+          <Text
+            style={[
+              Fonts.style.center,
+              Fonts.style.smallTitle,
+              { color: attributeColors[0] || colors.text },
+            ]}>
+            {item.romaji_name}
+          </Text>
+        )}
         {!!item.main_unit && (
           <FastImage
             source={Images.multi[item.main_unit]}
@@ -150,11 +221,6 @@ const SongDetailScreen: React.FC<SongDetailScreenProps> = ({
             style={styles.rightHeaderImage}
           />
         )}
-      </Appbar.Header>
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={[styles.scrollViewContainer, bottom]}
-        style={AppStyles.screen}>
         <FastImage
           source={{ uri: AddHTTPS(item.image) }}
           resizeMode='contain'
@@ -284,12 +350,9 @@ const styles = StyleSheet.create({
   scrollViewContainer: {
     alignItems: 'center',
     padding: Metrics.baseMargin,
+    paddingTop: 50,
   },
   stretch: { alignSelf: 'stretch' },
 });
-
-SongDetailScreen.propTypes = {
-  route: PropTypes.any,
-};
 
 export default SongDetailScreen;

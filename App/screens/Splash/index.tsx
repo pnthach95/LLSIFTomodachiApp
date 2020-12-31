@@ -47,7 +47,7 @@ const SplashScreen: React.FC<SplashScreenProps> = () => {
     if (loadedAppOptions) {
       setStatusBar(colors.card);
       ThemeModule.setColor(colors.background);
-      RNBootSplash.hide({ fade: true });
+      void RNBootSplash.hide({ fade: true });
     }
     if (loadedAppOptions && loadedCached) {
       dispatch({ type: 'LOADING', loading: false });

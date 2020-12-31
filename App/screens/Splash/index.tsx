@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { View, StyleSheet } from 'react-native';
-import { Text, Button, useTheme } from 'react-native-paper';
+import { Text, Button } from 'react-native-paper';
 import firebase from 'react-native-firebase';
 import RNBootSplash from 'react-native-bootsplash';
 
@@ -10,8 +10,7 @@ import LLSIFdotnetService from '~/Services/LLSIFdotnetService';
 import LoadingScreen from '../Loading';
 import UserContext from '~/Context/UserContext';
 import { AppStyles, Metrics } from '~/Theme';
-import { loadSettings, setStatusBar } from '~/Utils';
-import ThemeModule from '~/Utils/ThemeModule';
+import { loadSettings } from '~/Utils';
 import { FirebaseTopic } from '~/Config';
 import type {
   SplashScreenProps,
@@ -24,7 +23,6 @@ import type {
  * Loading Screen
  */
 const SplashScreen: React.FC<SplashScreenProps> = () => {
-  const { colors } = useTheme();
   const { dispatch } = useContext(UserContext);
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -45,8 +43,6 @@ const SplashScreen: React.FC<SplashScreenProps> = () => {
 
   useEffect(() => {
     if (loadedAppOptions) {
-      setStatusBar(colors.card);
-      ThemeModule.setColor(colors.background);
       void RNBootSplash.hide({ fade: true });
     }
     if (loadedAppOptions && loadedCached) {

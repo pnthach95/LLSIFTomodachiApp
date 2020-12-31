@@ -1,9 +1,11 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
+import { StatusBar } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { ModalProvider } from 'react-native-modalfy';
 import { Provider as PaperProvider } from 'react-native-paper';
 
+import ThemeModule from '~/Utils/ThemeModule';
 import { Dark, Light } from '~/Theme';
 import UserContext from '~/Context/UserContext';
 import Modals from '~/modals';
@@ -27,11 +29,25 @@ const noHeader = { headerShown: false };
 
 const Routes = (): JSX.Element => {
   const { state } = useContext(UserContext);
+  const switchTheme = state.options.isDark ? Dark : Light;
+  const statusBarColor = state.options.isDark
+    ? Dark.colors.card
+    : Light.colors.card;
+  const statusBarStyle = state.options.isDark
+    ? 'light-content'
+    : 'dark-content';
+
+  useEffect(() => {
+    ThemeModule.setColor(
+      state.options.isDark ? Dark.colors.background : Light.colors.background,
+    );
+  }, [state.options.isDark]);
 
   return (
-    <PaperProvider theme={state.options.isDark ? Dark : Light}>
+    <PaperProvider theme={switchTheme}>
+      <StatusBar backgroundColor={statusBarColor} barStyle={statusBarStyle} />
       <ModalProvider stack={Modals}>
-        <NavigationContainer theme={state.options.isDark ? Dark : Light}>
+        <NavigationContainer theme={switchTheme}>
           <Stack.Navigator screenOptions={{ headerBackTitle: 'Back' }}>
             {state.loading ? (
               <Stack.Screen

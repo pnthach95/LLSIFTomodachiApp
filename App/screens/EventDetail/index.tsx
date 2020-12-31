@@ -16,7 +16,7 @@ import dayjs from 'dayjs';
 
 import TimerCountdown from '~/Components/TimerCountdown';
 import LoadingScreen from '../Loading';
-import { AddHTTPS, setStatusBar } from '~/Utils';
+import { AddHTTPS } from '~/Utils';
 import { EventStatus } from '~/Config';
 import LLSIFService from '~/Services/LLSIFService';
 import { Metrics, Images, Fonts, AppStyles } from '~/Theme';
@@ -66,9 +66,7 @@ const EventDetailScreen = ({
   const bottom = { paddingBottom: insets.bottom };
 
   useEffect(() => {
-    setStatusBar(colors.card);
     void getItem();
-    return () => setStatusBar(route.params.prevStatusBarColor);
   }, []);
 
   const getItem = async () => {

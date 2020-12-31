@@ -1,6 +1,5 @@
-import { Alert, Linking, StatusBar, Platform } from 'react-native';
+import { Alert, Linking } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import Color from 'color';
 import { Colors } from '~/Theme';
 import { initAppOptions } from '~/Context/Reducer';
 import type { AppOptions, AttributeType } from './types';
@@ -65,12 +64,4 @@ export const openLink = (link: string): void => {
     { text: 'Cancel', style: 'cancel' },
     { text: 'OK', onPress: () => Linking.openURL(link) },
   ]);
-};
-
-export const setStatusBar = (c: string): void => {
-  const cc = Color(c);
-  StatusBar.setBarStyle(cc.isDark() ? 'light-content' : 'dark-content');
-  if (Platform.OS === 'android') {
-    StatusBar.setBackgroundColor(c);
-  }
 };

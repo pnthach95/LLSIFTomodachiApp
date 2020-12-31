@@ -177,6 +177,16 @@ const IdolDetailScreen = ({
               </View>
             )}
           </View>
+          {Object.keys(Images.characters).includes(route.params.name) && (
+            <FastImage
+              source={
+                Images.characters[
+                  route.params.name as keyof typeof Images.characters
+                ]
+              }
+              style={styles.character}
+            />
+          )}
           <View style={styles.imageRow}>
             {!!images[0] && images[0].includes('.png') && (
               <FastImage
@@ -268,6 +278,13 @@ const IdolDetailScreen = ({
 };
 
 const styles = StyleSheet.create({
+  character: {
+    height: 100,
+    position: 'absolute',
+    right: 5,
+    top: 120,
+    width: 100,
+  },
   imageRow: {
     flexDirection: 'row',
     justifyContent: 'space-around',

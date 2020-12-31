@@ -31,6 +31,27 @@ import SR from '../Images/rarity/SR.png';
 import SSR from '../Images/rarity/SSR.png';
 import UR from '../Images/rarity/UR.png';
 
+import hanayo from '../Images/characters/hanayo.png';
+import maki from '../Images/characters/maki.png';
+import rin from '../Images/characters/rin.png';
+import honoka from '../Images/characters/honoka.png';
+import umi from '../Images/characters/umi.png';
+import kotori from '../Images/characters/kotori.png';
+import eli from '../Images/characters/eli.png';
+import nozomi from '../Images/characters/nozomi.png';
+import nico from '../Images/characters/nico.png';
+import yoshiko from '../Images/characters/yoshiko.png';
+import hanamaru from '../Images/characters/hanamaru.png';
+import ruby from '../Images/characters/ruby.png';
+import chika from '../Images/characters/chika.png';
+import you from '../Images/characters/you.png';
+import riko from '../Images/characters/riko.png';
+import dia from '../Images/characters/dia.png';
+import mari from '../Images/characters/mari.png';
+import kanan from '../Images/characters/kanan.png';
+import sarah from '../Images/characters/sarah.png';
+import leah from '../Images/characters/leah.png';
+
 const skill = [scoreUp, perfectLock, healer, special];
 const region = [japan, world];
 
@@ -60,6 +81,29 @@ const multi = {
   Aqours,
 };
 
+const characters = {
+  'Ayase Eli': eli,
+  'Hoshizora Rin': rin,
+  'Koizumi Hanayo': hanayo,
+  'Kousaka Honoka': honoka,
+  'Minami Kotori': kotori,
+  'Nishikino Maki': maki,
+  'Sonoda Umi': umi,
+  'Toujou Nozomi': nozomi,
+  'Yazawa Nico': nico,
+  'Takami Chika': chika,
+  'Sakurauchi Riko': riko,
+  'Watanabe You': you,
+  'Kurosawa Dia': dia,
+  'Ohara Mari': mari,
+  'Matsuura Kanan': kanan,
+  'Kurosawa Ruby': ruby,
+  'Kunikida Hanamaru': hanamaru,
+  'Tsushima Yoshiko': yoshiko,
+  'Kazuno Leah': leah,
+  'Kazuno Sarah': sarah,
+};
+
 export default {
   logo,
   promo,
@@ -70,4 +114,5 @@ export default {
   region,
   subUnit,
   multi,
+  characters,
 };

@@ -34,4 +34,8 @@ export default StyleSheet.create({
     flex: 1,
     marginLeft: Metrics.baseMargin,
   },
+  unitIcon: {
+    height: 50,
+    width: 70,
+  },
 });

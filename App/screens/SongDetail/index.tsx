@@ -218,7 +218,7 @@ const SongDetailScreen = ({
           <FastImage
             source={Images.multi[item.main_unit]}
             resizeMode='contain'
-            style={styles.rightHeaderImage}
+            style={AppStyles.unitIcon}
           />
         )}
         <FastImage
@@ -342,10 +342,6 @@ const styles = StyleSheet.create({
   image: {
     height: responsiveWidth(40),
     width: responsiveWidth(40),
-  },
-  rightHeaderImage: {
-    height: Metrics.navBarHeight,
-    width: Metrics.navBarHeight,
   },
   scrollViewContainer: {
     alignItems: 'center',

@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
-import { View, ScrollView, Image, StyleProp, StyleSheet } from 'react-native';
+import React, { useState, useEffect, useRef } from 'react';
+import { View, Animated, Image, StyleSheet } from 'react-native';
 import {
   Divider,
   Text,
   Title,
   TouchableRipple,
   Button,
+  IconButton,
   useTheme,
 } from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -21,6 +21,11 @@ import { EventStatus } from '~/Config';
 import LLSIFService from '~/Services/LLSIFService';
 import { Metrics, Images, Fonts, AppStyles } from '~/Theme';
 import type {
+  NativeSyntheticEvent,
+  NativeScrollEvent,
+  StyleProp,
+} from 'react-native';
+import type {
   CardObject,
   CardSearchParams,
   EventDetailScreenProps,
@@ -30,6 +35,8 @@ import type {
   SongSearchParams,
 } from '~/Utils/types';
 
+const { ScrollView } = Animated;
+
 /**
  * Event Detail Screen
  *
@@ -38,10 +45,11 @@ import type {
  * Event object: https://github.com/MagiCircles/SchoolIdolAPI/wiki/API-Events#objects
  *
  */
-const EventDetailScreen: React.FC<EventDetailScreenProps> = ({
+const EventDetailScreen = ({
   navigation,
   route,
-}) => {
+}: EventDetailScreenProps): JSX.Element => {
+  const scrollAV = useRef(new Animated.Value(0)).current;
   const insets = useSafeAreaInsets();
   const { colors } = useTheme();
   const [item, setItem] = useState<EventObject | null>(null);
@@ -54,6 +62,7 @@ const EventDetailScreen: React.FC<EventDetailScreenProps> = ({
   const [JPEventStart, setJPEventStart] = useState(dayjs());
   const [JPEventEnd, setJPEventEnd] = useState(dayjs());
   const [imgSize, setImgSize] = useState({ width: 1, height: 0 });
+  const [currentOffset, setCurrentOffset] = useState(0);
   const bottom = { paddingBottom: insets.bottom };
 
   useEffect(() => {
@@ -143,8 +152,57 @@ const EventDetailScreen: React.FC<EventDetailScreenProps> = ({
     height: (Metrics.widthBanner * imgSize.height) / imgSize.width,
   };
 
+  const goBack = () => navigation.goBack();
+
+  const moveBackButton = scrollAV.interpolate({
+    inputRange: [0, 1],
+    outputRange: [0, -50],
+    extrapolate: 'clamp',
+  });
+
+  const onScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
+    const offset = event.nativeEvent.contentOffset.y;
+    if (offset > 50) {
+      const dif = offset - (currentOffset || 0);
+      if (Math.abs(dif) > 10) {
+        if (dif < 0) {
+          Animated.timing(scrollAV, {
+            duration: 100,
+            toValue: 0,
+            useNativeDriver: true,
+          }).start();
+        } else {
+          Animated.timing(scrollAV, {
+            duration: 100,
+            toValue: 1,
+            useNativeDriver: true,
+          }).start();
+        }
+      }
+    } else {
+      Animated.timing(scrollAV, {
+        duration: 100,
+        toValue: 0,
+        useNativeDriver: true,
+      }).start();
+    }
+    setCurrentOffset(offset);
+  };
+
   return (
     <View style={AppStyles.screen}>
+      <Animated.View
+        style={[
+          AppStyles.back,
+          { transform: [{ translateY: moveBackButton }] },
+        ]}>
+        <IconButton
+          icon='arrow-left'
+          color={colors.text}
+          onPress={goBack}
+          style={{ backgroundColor: colors.background }}
+        />
+      </Animated.View>
       {isLoading ? (
         <LoadingScreen />
       ) : !!isError || !item ? (
@@ -154,6 +212,7 @@ const EventDetailScreen: React.FC<EventDetailScreenProps> = ({
         </View>
       ) : (
         <ScrollView
+          onScroll={onScroll}
           showsVerticalScrollIndicator={false}
           contentContainerStyle={[styles.content, bottom]}>
           {/* ENGLISH BLOCK */}
@@ -335,6 +394,7 @@ const styles = StyleSheet.create({
   },
   content: {
     paddingHorizontal: Metrics.baseMargin,
+    paddingTop: 50,
   },
   roundImage: {
     height: responsiveWidth(16),
@@ -356,9 +416,5 @@ const styles = StyleSheet.create({
     width: 5,
   },
 });
-
-EventDetailScreen.propTypes = {
-  route: PropTypes.any,
-};
 
 export default EventDetailScreen;

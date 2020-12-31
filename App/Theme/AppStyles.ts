@@ -3,6 +3,12 @@ import { responsiveWidth } from 'react-native-responsive-dimensions';
 import Metrics from './Metrics';
 
 export default StyleSheet.create({
+  back: {
+    left: 7,
+    position: 'absolute',
+    top: 5,
+    zIndex: 10,
+  },
   center: {
     alignItems: 'center',
     justifyContent: 'center',

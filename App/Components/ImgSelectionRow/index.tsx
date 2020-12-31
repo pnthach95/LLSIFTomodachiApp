@@ -1,20 +1,20 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { View, Image, FlatList } from 'react-native';
 import { Text, TouchableRipple } from 'react-native-paper';
 import { Images, AppStyles } from '~/Theme';
 import rowStyles from '~/Theme/RowStyles';
-import type { FCSelectionProps } from '~/Utils/types';
+
+import type { FCSelectionProps } from '~/typings';
 
 /**
  * Selection Row with Image
  */
-const ImgSelectionRow: React.FC<FCSelectionProps> = ({
+const ImgSelectionRow = ({
   title,
   data,
   value,
   setValue,
-}) => {
+}: FCSelectionProps): JSX.Element => {
   return (
     <View style={AppStyles.row}>
       <View style={rowStyles.leftView}>
@@ -46,13 +46,6 @@ const ImgSelectionRow: React.FC<FCSelectionProps> = ({
       </View>
     </View>
   );
-};
-
-ImgSelectionRow.propTypes = {
-  title: PropTypes.any,
-  data: PropTypes.any,
-  value: PropTypes.any,
-  setValue: PropTypes.any,
 };
 
 export default ImgSelectionRow;

@@ -12,17 +12,15 @@ import UserContext from '~/Context/UserContext';
 import { AppStyles, Metrics } from '~/Theme';
 import { loadSettings } from '~/Utils';
 import { FirebaseTopic } from '~/Config';
+
 import type {
-  SplashScreenProps,
   CachedDataObject,
   SubUnitNames,
   EventSearchParams,
-} from '~/Utils/types';
+} from '~/typings';
 
-/**
- * Loading Screen
- */
-const SplashScreen: React.FC<SplashScreenProps> = () => {
+/** Loading Screen */
+const SplashScreen = (): JSX.Element => {
   const { dispatch } = useContext(UserContext);
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(true);

@@ -14,9 +14,9 @@ import {
 } from 'react-native-responsive-dimensions';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-
 import { Colors, AppStyles, Fonts } from '~/Theme';
-import type { ListModalComponent, LVObject, SkillType } from '~/Utils/types';
+
+import type { ListModalComponent, LVObject, SkillType } from '~/typings';
 
 /**
  * Selection modal

@@ -14,14 +14,14 @@ import ImageView from 'react-native-image-viewing';
 import { responsiveWidth } from 'react-native-responsive-dimensions';
 import Icon from 'react-native-vector-icons/Ionicons';
 import dayjs from 'dayjs';
-
 import LoadingScreen from '../Loading';
 import SPCStats from '~/Components/SPCStats';
 import TextRow from '~/Components/TextRow';
 import { findColorByAttribute, AddHTTPS } from '~/Utils';
 import { Metrics, AppStyles, Colors, Images, Fonts } from '~/Theme';
+
 import type { NativeSyntheticEvent, NativeScrollEvent } from 'react-native';
-import type { CardDetailScreenProps } from '~/Utils/types';
+import type { CardDetailScreenProps } from '~/typings';
 
 const { ScrollView } = Animated;
 const { itemWidth, cardHeight, cardWidth } = Metrics.images;

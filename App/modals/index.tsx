@@ -1,10 +1,10 @@
 import { Easing } from 'react-native';
-import { createModalStack, ModalStackConfig } from 'react-native-modalfy';
+import { createModalStack } from 'react-native-modalfy';
 import { responsiveScreenHeight } from 'react-native-responsive-dimensions';
-
 import FlatListModal from './flatlist';
 
-import type { ModalStackParamList } from '~/Utils/types';
+import type { ModalStackConfig } from 'react-native-modalfy';
+import type { ModalStackParamList } from '~/typings';
 
 const modalConfig: ModalStackConfig = {
   list: {

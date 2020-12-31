@@ -21,7 +21,7 @@ import IdolDetailScreen from '~/screens/IdolDetail';
 import SongDetailScreen from '~/screens/SongDetail';
 import AboutMeScreen from '~/screens/AboutMe';
 
-import type { RootStackParamList } from '~/Utils/types';
+import type { RootStackParamList } from '~/typings';
 
 const Stack = createStackNavigator<RootStackParamList>();
 

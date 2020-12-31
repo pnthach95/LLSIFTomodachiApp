@@ -12,14 +12,14 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import FastImage from 'react-native-fast-image';
 import { responsiveWidth } from 'react-native-responsive-dimensions';
 import dayjs from 'dayjs';
-
 import UserContext from '~/Context/UserContext';
 import StarBar from '~/Components/StarBar';
 import TextRow from '~/Components/TextRow';
 import { findColorByAttribute, AddHTTPS } from '~/Utils';
 import { Metrics, AppStyles, Colors, Images, Fonts } from '~/Theme';
+
 import type { NativeSyntheticEvent, NativeScrollEvent } from 'react-native';
-import type { SongDetailScreenProps } from '~/Utils/types';
+import type { SongDetailScreenProps } from '~/typings';
 
 type StatButtonProps = {
   id: number;

@@ -1,19 +1,19 @@
 import React, { useContext } from 'react';
-import PropTypes from 'prop-types';
 import { View, StyleSheet } from 'react-native';
 import { Text, ProgressBar } from 'react-native-paper';
 import FastImage from 'react-native-fast-image';
-
 import UserContext from '~/Context/UserContext';
 import { Metrics, AppStyles, Colors, Images } from '~/Theme';
-import type { AttributeType } from '~/Utils/types';
+
+import type { AttributeType } from '~/typings';
 
 type Props = {
   text: AttributeType;
   stat: number;
 };
 
-const SPCStats: React.FC<Props> = ({ text, stat }) => {
+/** SPC = Smile Pure Cool */
+const SPCStats = ({ text, stat }: Props): JSX.Element => {
   const { state } = useContext(UserContext);
   const maxStats = [
     state.cachedData?.maxStats?.Smile || 0,
@@ -63,10 +63,5 @@ const styles = StyleSheet.create({
     paddingVertical: Metrics.baseMargin,
   },
 });
-
-SPCStats.propTypes = {
-  text: PropTypes.any,
-  stat: PropTypes.any,
-};
 
 export default SPCStats;

@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
-import PropTypes from 'prop-types';
 import { View, StyleSheet } from 'react-native';
 import { Text, TouchableRipple, Surface, useTheme } from 'react-native-paper';
-import FastImage, { OnLoadEvent } from 'react-native-fast-image';
+import FastImage from 'react-native-fast-image';
 import { Metrics, Colors, Fonts } from '~/Theme';
 import { AddHTTPS } from '~/Utils';
 import { EventStatus } from '~/Config';
-import type { FCItemProps, EventObject } from '~/Utils/types';
+
+import type { OnLoadEvent } from 'react-native-fast-image';
+import type { FCItemProps, EventObject } from '~/typings';
 
 const { ONGOING, ANNOUNCED } = EventStatus;
 const { amber400, green300 } = Colors;
@@ -18,7 +19,10 @@ const { amber400, green300 } = Colors;
  * - `item`: [Event object](https://github.com/MagiCircles/SchoolIdolAPI/wiki/API-Events#objects)
  * - `onPress`: onPress function
  */
-const EventItem: React.FC<FCItemProps<EventObject>> = ({ item, onPress }) => {
+const EventItem = ({
+  item,
+  onPress,
+}: FCItemProps<EventObject>): JSX.Element => {
   const { surface } = useTheme().colors;
   const [imgSize, setImgSize] = useState({
     width: Metrics.widthBanner,
@@ -85,10 +89,5 @@ const styles = StyleSheet.create({
     paddingTop: Metrics.smallMargin,
   },
 });
-
-EventItem.propTypes = {
-  item: PropTypes.any,
-  onPress: PropTypes.any,
-};
 
 export default EventItem;

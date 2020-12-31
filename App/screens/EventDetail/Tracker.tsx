@@ -1,22 +1,16 @@
 import React, { useEffect, useContext, useState } from 'react';
-import PropTypes from 'prop-types';
-import {
-  View,
-  ScrollView,
-  FlatList,
-  StyleSheet,
-  ViewStyle,
-} from 'react-native';
+import { View, ScrollView, FlatList, StyleSheet } from 'react-native';
 import { Text, useTheme } from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { responsiveHeight } from 'react-native-responsive-dimensions';
 import { VictoryChart, VictoryLine, VictoryAxis } from 'victory-native';
-
 import LoadingScreen from '../Loading';
 import UserContext from '~/Context/UserContext';
 import LLSIFdotnetService from '~/Services/LLSIFdotnetService';
 import { AppStyles, Colors, Fonts, Metrics } from '~/Theme';
-import type { EventTrackerScreenProps } from '~/Utils/types';
+
+import type { ViewStyle } from 'react-native';
+import type { EventTrackerScreenProps } from '~/typings';
 
 type TrackerDataProps = {
   table: string[][] | null;
@@ -71,7 +65,10 @@ const parseEventTracker = (data: string) => {
   return result;
 };
 
-const Tracker: React.FC<EventTrackerScreenProps> = ({ navigation, route }) => {
+const Tracker = ({
+  navigation,
+  route,
+}: EventTrackerScreenProps): JSX.Element => {
   const insets = useSafeAreaInsets();
   const { state } = useContext(UserContext);
   const { colors } = useTheme();
@@ -217,9 +214,5 @@ const styles = StyleSheet.create({
     padding: Metrics.baseMargin,
   },
 });
-
-Tracker.propTypes = {
-  route: PropTypes.any,
-};
 
 export default Tracker;

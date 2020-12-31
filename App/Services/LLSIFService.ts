@@ -11,7 +11,7 @@ import type {
   LLSIFError,
   EventSearchParams,
   SongSearchParams,
-} from '~/Utils/types';
+} from '~/typings';
 
 const LLSIFApiClient = create({ baseURL: Config.API_URL });
 

@@ -4,18 +4,18 @@ import { IconButton, Text, useTheme } from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import FastImage from 'react-native-fast-image';
 import dayjs from 'dayjs';
-
 import LoadingScreen from '../Loading';
 import InfoLine from '~/Components/InfoLine';
 import LLSIFService from '~/Services/LLSIFService';
 import { findColorByAttribute, AddHTTPS } from '~/Utils';
 import { Metrics, AppStyles, Images, Fonts } from '~/Theme';
+
 import type { NativeSyntheticEvent, NativeScrollEvent } from 'react-native';
 import type {
   CardSearchParams,
   IdolDetailScreenProps,
   IdolObject,
-} from '~/Utils/types';
+} from '~/typings';
 
 const { ScrollView } = Animated;
 

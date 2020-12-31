@@ -1,4 +1,4 @@
-import type { ActionType, AppState, CachedDataObject } from '~/Utils/types';
+import type { ActionType, AppState, CachedDataObject } from '~/typings';
 
 const reducer: React.Reducer<AppState, ActionType> = (prevState, action) => {
   switch (action.type) {

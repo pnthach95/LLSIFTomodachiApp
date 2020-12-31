@@ -10,7 +10,6 @@ import {
 } from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import _ from 'lodash';
-
 import ConnectStatus from '~/Components/ConnectStatus';
 import SelectionRow from '~/Components/SelectionRow';
 import SongItem from '~/Components/SongItem';
@@ -24,6 +23,7 @@ import {
   AttributeData,
   MainUnitData,
 } from '~/Config';
+
 import type {
   AttributeType,
   BooleanOrEmpty,
@@ -33,7 +33,7 @@ import type {
   SongObject,
   SongSearchParams,
   SongsScreenProps,
-} from '~/Utils/types';
+} from '~/typings';
 
 const defaultParams: SongSearchParams = {
   selectedOrdering: OrderingGroup.SONG[0].value,

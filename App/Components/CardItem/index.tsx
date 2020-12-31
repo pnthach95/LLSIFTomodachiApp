@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import PropTypes from 'prop-types';
 import { View, Image, StyleSheet } from 'react-native';
 import { Surface, TouchableRipple, Divider } from 'react-native-paper';
-import FastImage, { OnLoadEvent } from 'react-native-fast-image';
+import FastImage from 'react-native-fast-image';
 import { Metrics, AppStyles, Images } from '~/Theme';
 import { AddHTTPS, findColorByAttribute, findSkill } from '~/Utils';
-import type { FCItemProps, CardObject } from '~/Utils/types';
+
+import type { OnLoadEvent } from 'react-native-fast-image';
+import type { FCItemProps, CardObject } from '~/typings';
 
 const { itemWidth } = Metrics.images;
 
@@ -16,7 +17,7 @@ const { itemWidth } = Metrics.images;
  * - `item`: [Card object](https://github.com/MagiCircles/SchoolIdolAPI/wiki/API-Cards#objects)
  * - `onPress`: onPress function
  */
-const CardItem: React.FC<FCItemProps<CardObject>> = ({ item, onPress }) => {
+const CardItem = ({ item, onPress }: FCItemProps<CardObject>): JSX.Element => {
   const card = item.card_image || item.card_idolized_image;
   const cardColors = findColorByAttribute(item.attribute);
   const [imgSize, setImgSize] = useState({ width: 1, height: 0 });
@@ -109,10 +110,5 @@ const styles = StyleSheet.create({
     borderTopRightRadius: Metrics.smallMargin,
   },
 });
-
-CardItem.propTypes = {
-  item: PropTypes.any,
-  onPress: PropTypes.any,
-};
 
 export default CardItem;

@@ -1,13 +1,12 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { View, StyleSheet } from 'react-native';
 import { Text, TouchableRipple, useTheme } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useModal } from 'react-native-modalfy';
-
 import rowStyles from '~/Theme/RowStyles';
 import { Colors, Metrics } from '~/Theme';
-import type { LVObject, ModalStackParamList } from '~/Utils/types';
+
+import type { LVObject, ModalStackParamList } from '~/typings';
 
 type Props = {
   list: LVObject<string>[];
@@ -17,16 +16,14 @@ type Props = {
   isReverse: boolean;
 };
 
-/**
- * Ordering Row
- */
-const OrderingRow: React.FC<Props> = ({
+/** Ordering Row */
+const OrderingRow = ({
   isReverse,
   list,
   onSelect,
   selectedItem,
   toggleReverse,
-}) => {
+}: Props): JSX.Element => {
   const { colors } = useTheme();
   const { openModal } = useModal<ModalStackParamList>();
 
@@ -80,13 +77,5 @@ const styles = StyleSheet.create({
     padding: Metrics.baseMargin,
   },
 });
-
-OrderingRow.propTypes = {
-  isReverse: PropTypes.any,
-  onSelect: PropTypes.any,
-  list: PropTypes.any,
-  selectedItem: PropTypes.any,
-  toggleReverse: PropTypes.any,
-};
 
 export default OrderingRow;

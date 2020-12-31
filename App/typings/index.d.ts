@@ -102,7 +102,6 @@ type RootStackParamList = {
   AboutMeScreen: undefined;
 };
 
-type SplashScreenProps = StackScreenProps<RootStackParamList, 'SplashScreen'>;
 type IdolsScreenProps = StackScreenProps<RootStackParamList, 'IdolsScreen'>;
 type SongsScreenProps = StackScreenProps<RootStackParamList, 'SongsScreen'>;
 type CardDetailScreenProps = StackScreenProps<

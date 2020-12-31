@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
-import PropTypes from 'prop-types';
 import { View, StyleSheet } from 'react-native';
 import { Text, TouchableRipple, Surface } from 'react-native-paper';
-import FastImage, { OnLoadEvent } from 'react-native-fast-image';
-
+import FastImage from 'react-native-fast-image';
 import { Metrics, Fonts, AppStyles } from '~/Theme';
 import { findColorByAttribute } from '~/Utils';
-import type { FCItemProps, IdolObject } from '~/Utils/types';
+
+import type { OnLoadEvent } from 'react-native-fast-image';
+import type { FCItemProps, IdolObject } from '~/typings';
 
 const { smallItemWidth } = Metrics.images;
 const cImgSize = smallItemWidth - Metrics.baseMargin;
@@ -18,7 +18,7 @@ const cImgSize = smallItemWidth - Metrics.baseMargin;
  * - `item`: [Idol object](https://github.com/MagiCircles/SchoolIdolAPI/wiki/API-Idols#objects)
  * - `onPress`: onPress function
  */
-const IdolItem: React.FC<FCItemProps<IdolObject>> = ({ item, onPress }) => {
+const IdolItem = ({ item, onPress }: FCItemProps<IdolObject>): JSX.Element => {
   const attColors = findColorByAttribute(item.attribute || '');
   const [imgSize, setImgSize] = useState({
     height: cImgSize,
@@ -62,10 +62,5 @@ const styles = StyleSheet.create({
     padding: Metrics.smallMargin,
   },
 });
-
-IdolItem.propTypes = {
-  item: PropTypes.any,
-  onPress: PropTypes.any,
-};
 
 export default IdolItem;

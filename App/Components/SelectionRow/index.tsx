@@ -1,10 +1,10 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { View, FlatList } from 'react-native';
 import { Text, TouchableRipple } from 'react-native-paper';
 import { AppStyles } from '~/Theme';
 import rowStyles from '~/Theme/RowStyles';
-import type { LVObject, CombinedWithBOE } from '~/Utils/types';
+
+import type { LVObject, CombinedWithBOE } from '~/typings';
 
 type Props<T = CombinedWithBOE> = {
   title: string;
@@ -16,7 +16,7 @@ type Props<T = CombinedWithBOE> = {
 /**
  * Boolean or empty selection row
  */
-const SelectionRow: React.FC<Props> = ({ title, value, setValue, data }) => {
+const SelectionRow = ({ title, value, setValue, data }: Props): JSX.Element => {
   const keyExtractor = (item: Props['data'][0], index: number): string =>
     `${index}${item.value}`;
 
@@ -52,13 +52,6 @@ const SelectionRow: React.FC<Props> = ({ title, value, setValue, data }) => {
       </View>
     </View>
   );
-};
-
-SelectionRow.propTypes = {
-  title: PropTypes.any,
-  value: PropTypes.any,
-  setValue: PropTypes.any,
-  data: PropTypes.any,
 };
 
 export default SelectionRow;

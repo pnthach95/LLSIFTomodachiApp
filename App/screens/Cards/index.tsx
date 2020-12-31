@@ -17,7 +17,6 @@ import {
 } from 'react-native-paper';
 import { responsiveHeight } from 'react-native-responsive-dimensions';
 import _ from 'lodash';
-
 import ConnectStatus from '~/Components/ConnectStatus';
 import CardItem from '~/Components/CardItem';
 import SelectionRow from '~/Components/SelectionRow';
@@ -37,6 +36,7 @@ import {
   MainUnitData,
   YearData,
 } from '~/Config';
+
 import type {
   AttributeType,
   BooleanOrEmpty,
@@ -49,7 +49,7 @@ import type {
   RarityType,
   SkillType,
   YearType,
-} from '~/Utils/types';
+} from '~/typings';
 
 /**
  * [Card List Screen](https://github.com/MagiCircles/SchoolIdolAPI/wiki/API-Cards#get-the-list-of-cards)

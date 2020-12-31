@@ -2,7 +2,7 @@ import { Alert, Linking } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Colors } from '~/Theme';
 import { initAppOptions } from '~/Context/Reducer';
-import type { AppOptions, AttributeType } from './types';
+import type { AppOptions, AttributeType } from '../typings';
 
 /** Add `https:` for image link */
 export const AddHTTPS = (link: string): string => `https:${link}`;

@@ -5,11 +5,11 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import firebase from 'react-native-firebase';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import VersionNumber from 'react-native-version-number';
-
 import UserContext from '~/Context/UserContext';
 import { Fonts, Metrics, Colors } from '~/Theme';
 import { saveSettings } from '~/Utils';
-import type { AppOptions, MoreScreenProps } from '~/Utils/types';
+
+import type { AppOptions, MoreScreenProps } from '~/typings';
 
 const iconSize = 30;
 

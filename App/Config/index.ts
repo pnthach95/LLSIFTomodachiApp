@@ -5,7 +5,7 @@ import type {
   RarityType,
   YearType,
   LVObject,
-} from '~/Utils/types';
+} from '~/typings';
 
 export const Config = {
   DATETIME_FORMAT_INPUT: 'YYYY-MM-DDTHH:mm:ssZ',

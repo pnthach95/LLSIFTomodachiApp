@@ -10,21 +10,22 @@ import {
   useTheme,
 } from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import FastImage, { ImageStyle } from 'react-native-fast-image';
+import FastImage from 'react-native-fast-image';
 import { responsiveWidth } from 'react-native-responsive-dimensions';
 import dayjs from 'dayjs';
-
 import TimerCountdown from '~/Components/TimerCountdown';
 import LoadingScreen from '../Loading';
 import { AddHTTPS } from '~/Utils';
 import { EventStatus } from '~/Config';
 import LLSIFService from '~/Services/LLSIFService';
 import { Metrics, Images, Fonts, AppStyles } from '~/Theme';
+
 import type {
   NativeSyntheticEvent,
   NativeScrollEvent,
   StyleProp,
 } from 'react-native';
+import type { ImageStyle } from 'react-native-fast-image';
 import type {
   CardObject,
   CardSearchParams,
@@ -33,7 +34,7 @@ import type {
   LLSIFError,
   SongObject,
   SongSearchParams,
-} from '~/Utils/types';
+} from '~/typings';
 
 const { ScrollView } = Animated;
 

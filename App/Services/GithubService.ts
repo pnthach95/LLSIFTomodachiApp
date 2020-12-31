@@ -1,6 +1,6 @@
 import { create } from 'apisauce';
 import { Config } from '../Config';
-import type { GithubRepoType } from '~/Utils/types';
+import type { GithubRepoType } from '~/typings';
 
 const GithubApiClient = create({ baseURL: Config.GITHUB_API, timeout: 10000 });
 

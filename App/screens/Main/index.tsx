@@ -8,11 +8,10 @@ import {
   useTheme,
 } from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import FastImage, { OnLoadEvent } from 'react-native-fast-image';
+import FastImage from 'react-native-fast-image';
 import { responsiveWidth } from 'react-native-responsive-dimensions';
 import VersionNumber from 'react-native-version-number';
 import dayjs from 'dayjs';
-
 import ConnectStatus from '~/Components/ConnectStatus';
 import TimerCountdown from '~/Components/TimerCountdown';
 import { AddHTTPS, openLink } from '~/Utils';
@@ -20,7 +19,9 @@ import { Config, EventStatus } from '~/Config';
 import GithubService from '~/Services/GithubService';
 import { Metrics, Colors, Images, AppStyles } from '~/Theme';
 import UserContext from '~/Context/UserContext';
-import type { EventObject, MainScreenProps } from '~/Utils/types';
+
+import type { OnLoadEvent } from 'react-native-fast-image';
+import type { EventObject, MainScreenProps } from '~/typings';
 
 type GithubVersion = {
   tag: string;
@@ -28,9 +29,7 @@ type GithubVersion = {
   link: string;
 };
 
-/**
- * Main Screen
- */
+/** Main Screen */
 const MainScreen: React.FC<MainScreenProps> = ({ navigation }) => {
   const { top } = useSafeAreaInsets();
   const { colors } = useTheme();

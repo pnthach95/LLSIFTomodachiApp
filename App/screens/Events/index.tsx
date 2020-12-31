@@ -2,7 +2,6 @@ import React, { useState, useEffect, useContext } from 'react';
 import { View, FlatList, Alert, Image, StyleSheet } from 'react-native';
 import { Text, Button, Appbar, Searchbar, useTheme } from 'react-native-paper';
 import _ from 'lodash';
-
 import ConnectStatus from '~/Components/ConnectStatus';
 import EventItem from '~/Components/EventItem';
 import SelectionRow from '~/Components/SelectionRow';
@@ -12,6 +11,7 @@ import { Metrics, AppStyles, Images } from '~/Theme';
 import LLSIFService from '~/Services/LLSIFService';
 import UserContext from '~/Context/UserContext';
 import { AttributeData, MainUnitData, RegionData } from '~/Config';
+
 import type {
   EventSearchParams,
   EventsScreenProps,
@@ -22,7 +22,7 @@ import type {
   SkillType,
   Combined,
   CombinedWithBOE,
-} from '~/Utils/types';
+} from '~/typings';
 
 /**
  * [Event List Screen](https://github.com/MagiCircles/SchoolIdolAPI/wiki/API-Events#get-the-list-of-events)

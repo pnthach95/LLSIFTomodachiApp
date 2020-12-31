@@ -1,12 +1,11 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { View } from 'react-native';
 import { Text, TouchableRipple, useTheme } from 'react-native-paper';
 import { useModal } from 'react-native-modalfy';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-
 import rowStyles from '~/Theme/RowStyles';
-import type { ModalStackParamList } from '~/Utils/types';
+
+import type { ModalStackParamList } from '~/typings';
 
 type Props = {
   name: string;
@@ -15,10 +14,8 @@ type Props = {
   onSelect: (name: string) => void;
 };
 
-/**
- * Idol Name Row.
- */
-const PickerRow: React.FC<Props> = ({ name, value, list, onSelect }) => {
+/** Idol Name Row */
+const PickerRow = ({ name, value, list, onSelect }: Props): JSX.Element => {
   const { colors } = useTheme();
   const { openModal } = useModal<ModalStackParamList>();
 
@@ -44,13 +41,6 @@ const PickerRow: React.FC<Props> = ({ name, value, list, onSelect }) => {
       </TouchableRipple>
     </View>
   );
-};
-
-PickerRow.propTypes = {
-  name: PropTypes.any,
-  value: PropTypes.any,
-  list: PropTypes.any,
-  onSelect: PropTypes.any,
 };
 
 export default PickerRow;

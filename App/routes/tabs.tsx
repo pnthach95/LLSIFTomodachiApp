@@ -1,13 +1,9 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import AnimatedTabBar, {
-  TabsConfig,
-  BubbleTabBarItemConfig,
-} from '@gorhom/animated-tabbar';
+import AnimatedTabBar from '@gorhom/animated-tabbar';
 import { useTheme } from 'react-native-paper';
 import Animated from 'react-native-reanimated';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-
 import { Colors } from '~/Theme';
 
 import MainScreen from '~/screens/Main';
@@ -15,7 +11,11 @@ import CardsScreen from '~/screens/Cards';
 import EventsScreen from '~/screens/Events';
 import MoreScreen from '~/screens/More';
 
-import type { BottomTabList } from '~/Utils/types';
+import type {
+  TabsConfig,
+  BubbleTabBarItemConfig,
+} from '@gorhom/animated-tabbar';
+import type { BottomTabList } from '~/typings';
 
 type IconProps = {
   color: Animated.Node<string>;

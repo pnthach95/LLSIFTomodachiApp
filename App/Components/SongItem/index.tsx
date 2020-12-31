@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import PropTypes from 'prop-types';
 import { View, StyleSheet } from 'react-native';
 import { Text, Surface, TouchableRipple } from 'react-native-paper';
-import FastImage, { OnLoadEvent } from 'react-native-fast-image';
+import FastImage from 'react-native-fast-image';
 import { Metrics, Fonts } from '~/Theme';
 import { AddHTTPS, findColorByAttribute } from '~/Utils';
-import type { FCItemProps, SongObject } from '~/Utils/types';
+
+import type { OnLoadEvent } from 'react-native-fast-image';
+import type { FCItemProps, SongObject } from '~/typings';
 
 const { itemWidth } = Metrics.images;
 
@@ -16,7 +17,7 @@ const { itemWidth } = Metrics.images;
  * - `item`: [Song object](https://github.com/MagiCircles/SchoolIdolAPI/wiki/API-Songs#objects)
  * - `onPress`: onPress function
  */
-const SongItem: React.FC<FCItemProps<SongObject>> = ({ item, onPress }) => {
+const SongItem = ({ item, onPress }: FCItemProps<SongObject>): JSX.Element => {
   const attColors = findColorByAttribute(item.attribute || '');
   const [imgSize, setImgSize] = useState({ width: 1, height: 1 });
 
@@ -74,10 +75,5 @@ const styles = StyleSheet.create({
     ...Fonts.style.center,
   },
 });
-
-SongItem.propTypes = {
-  item: PropTypes.any,
-  onPress: PropTypes.any,
-};
 
 export default SongItem;

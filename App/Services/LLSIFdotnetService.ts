@@ -5,7 +5,7 @@ import {
   LLNETEvent,
   LLNETEventInfo,
   LLSIFnetParams,
-} from '~/Utils/types';
+} from '~/typings';
 
 const LLSIFnet = create({ baseURL: 'https://llsif.net/', timeout: 10000 });
 

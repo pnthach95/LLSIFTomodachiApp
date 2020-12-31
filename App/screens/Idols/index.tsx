@@ -2,14 +2,14 @@ import React, { useState, useContext, useEffect } from 'react';
 import { View, SectionList, FlatList, Alert, StyleSheet } from 'react-native';
 import { Title, useTheme } from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-
 import UserContext from '~/Context/UserContext';
 import ConnectStatus from '~/Components/ConnectStatus';
 import IdolItem from '~/Components/IdolItem';
 import LLSIFService from '~/Services/LLSIFService';
 import LoadingScreen from '../Loading';
 import { AppStyles, Metrics } from '~/Theme';
-import type { IdolObject, IdolsScreenProps } from '~/Utils/types';
+
+import type { IdolObject, IdolsScreenProps } from '~/typings';
 
 type SchoolObject = {
   title: string;
@@ -19,9 +19,7 @@ type SchoolObject = {
   }[];
 };
 
-/**
- * Idol List Screen
- */
+/** Idol List Screen */
 const IdolsScreen: React.FC<IdolsScreenProps> = ({ navigation }) => {
   const insets = useSafeAreaInsets();
   const { colors } = useTheme();

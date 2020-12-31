@@ -51,6 +51,9 @@ export const OrderingGroup = {
 export const RELEASE_NOTE = `This app is free and open-source.
 
 Change log:
+- Version 0.4.1:
+  • Update UI for some screens.
+
 - Version 0.4.0:
   • Rework UI.
   • Support dark theme.

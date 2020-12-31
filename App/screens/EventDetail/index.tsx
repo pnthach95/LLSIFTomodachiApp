@@ -392,7 +392,7 @@ const styles = StyleSheet.create({
   },
   content: {
     paddingHorizontal: Metrics.baseMargin,
-    paddingTop: 50,
+    paddingTop: 10,
   },
   roundImage: {
     height: responsiveWidth(16),

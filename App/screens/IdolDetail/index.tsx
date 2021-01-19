@@ -1,23 +1,20 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { View, Animated, StyleSheet } from 'react-native';
-import { IconButton, Text, useTheme } from 'react-native-paper';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import React, { useState, useEffect } from 'react';
+import { View, StyleSheet } from 'react-native';
+import { Text, useTheme } from 'react-native-paper';
 import FastImage from 'react-native-fast-image';
 import dayjs from 'dayjs';
 import LoadingScreen from '../Loading';
+import ScrollViewWithBackButton from '~/Components/scrollviewwithbackbutton';
 import InfoLine from '~/Components/InfoLine';
 import LLSIFService from '~/Services/LLSIFService';
 import { findColorByAttribute, AddHTTPS } from '~/Utils';
 import { Metrics, AppStyles, Images, Fonts } from '~/Theme';
 
-import type { NativeSyntheticEvent, NativeScrollEvent } from 'react-native';
 import type {
   CardSearchParams,
   IdolDetailScreenProps,
   IdolObject,
 } from '~/typings';
-
-const { ScrollView } = Animated;
 
 /**
  * Idol Detail Screen
@@ -26,19 +23,12 @@ const { ScrollView } = Animated;
  *
  * [Idol object](https://github.com/MagiCircles/SchoolIdolAPI/wiki/API-Idols#objects)
  */
-const IdolDetailScreen = ({
-  route,
-  navigation,
-}: IdolDetailScreenProps): JSX.Element => {
-  const scrollAV = useRef(new Animated.Value(0)).current;
-  const insets = useSafeAreaInsets();
+const IdolDetailScreen = ({ route }: IdolDetailScreenProps): JSX.Element => {
   const { colors } = useTheme();
   const [isLoading, setIsLoading] = useState(true);
   const [images, setImages] = useState<string[]>([]);
   const [item, setItem] = useState<IdolObject | null>(null);
   const [idolColors, setIdolColors] = useState<string[]>([]);
-  const [currentOffset, setCurrentOffset] = useState(0);
-  const bottom = { paddingBottom: insets.bottom, paddingTop: 30 };
 
   useEffect(() => {
     void loadItem();
@@ -83,64 +73,12 @@ const IdolDetailScreen = ({
     }
   };
 
-  const goBack = () => navigation.goBack();
-
-  const moveBackButton = scrollAV.interpolate({
-    inputRange: [0, 1],
-    outputRange: [0, -50],
-    extrapolate: 'clamp',
-  });
-
-  const onScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
-    const offset = event.nativeEvent.contentOffset.y;
-    if (offset > 50) {
-      const dif = offset - (currentOffset || 0);
-      if (Math.abs(dif) > 10) {
-        if (dif < 0) {
-          Animated.timing(scrollAV, {
-            duration: 100,
-            toValue: 0,
-            useNativeDriver: true,
-          }).start();
-        } else {
-          Animated.timing(scrollAV, {
-            duration: 100,
-            toValue: 1,
-            useNativeDriver: true,
-          }).start();
-        }
-      }
-    } else {
-      Animated.timing(scrollAV, {
-        duration: 100,
-        toValue: 0,
-        useNativeDriver: true,
-      }).start();
-    }
-    setCurrentOffset(offset);
-  };
-
   return (
-    <View style={AppStyles.screen}>
-      <Animated.View
-        style={[
-          AppStyles.back,
-          { transform: [{ translateY: moveBackButton }] },
-        ]}>
-        <IconButton
-          icon='arrow-left'
-          color={colors.text}
-          onPress={goBack}
-          style={{ backgroundColor: colors.background }}
-        />
-      </Animated.View>
+    <ScrollViewWithBackButton>
       {isLoading ? (
         <LoadingScreen />
       ) : item ? (
-        <ScrollView
-          onScroll={onScroll}
-          showsVerticalScrollIndicator={false}
-          contentContainerStyle={bottom}>
+        <>
           <View style={styles.scrollView}>
             <Text
               style={[
@@ -269,11 +207,11 @@ const IdolDetailScreen = ({
               <InfoLine title={'Summary'} content={item.summary} />
             )}
           </View>
-        </ScrollView>
+        </>
       ) : (
         <Text>Error</Text>
       )}
-    </View>
+    </ScrollViewWithBackButton>
   );
 };
 
@@ -290,7 +228,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
   },
   scrollView: {
-    margin: Metrics.doubleBaseMargin,
+    marginHorizontal: Metrics.doubleBaseMargin,
   },
 });
 

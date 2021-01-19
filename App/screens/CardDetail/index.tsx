@@ -1,29 +1,26 @@
-import React, { useState, useEffect, useCallback, useRef } from 'react';
-import { View, Animated, StyleSheet } from 'react-native';
+import React, { useState, useEffect, useCallback } from 'react';
+import { View, StyleSheet } from 'react-native';
 import {
   Text,
   Caption,
-  IconButton,
   Button,
   TouchableRipple,
   useTheme,
 } from 'react-native-paper';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import FastImage from 'react-native-fast-image';
 import ImageView from 'react-native-image-viewing';
 import { responsiveWidth } from 'react-native-responsive-dimensions';
 import Icon from 'react-native-vector-icons/Ionicons';
 import dayjs from 'dayjs';
 import LoadingScreen from '../Loading';
+import ScrollViewWithBackButton from '~/Components/scrollviewwithbackbutton';
 import SPCStats from '~/Components/SPCStats';
 import TextRow from '~/Components/TextRow';
 import { findColorByAttribute, AddHTTPS } from '~/Utils';
 import { Metrics, AppStyles, Colors, Images, Fonts } from '~/Theme';
 
-import type { NativeSyntheticEvent, NativeScrollEvent } from 'react-native';
 import type { CardDetailScreenProps } from '~/typings';
 
-const { ScrollView } = Animated;
 const { itemWidth, cardHeight, cardWidth } = Metrics.images;
 
 /**
@@ -49,18 +46,14 @@ const CardDetailScreen = ({
     item.idolized_maximum_statistics_pure || 0,
     item.idolized_maximum_statistics_cool || 0,
   ];
-  const scrollAV = useRef(new Animated.Value(0)).current;
   const { colors } = useTheme();
-  const insets = useSafeAreaInsets();
   const [done, setDone] = useState(false);
   const [imgViewer, setImgViewer] = useState({ visible: false, index: 0 });
   const [propertyLine, setPropertyLine] = useState('');
   const [images, setImages] = useState<{ uri: string }[]>([]);
   const [buttonID, setButtonID] = useState(0);
   const [currentStats, setCurrentStats] = useState(minStats);
-  const [currentOffset, setCurrentOffset] = useState(0);
   const cardColors = findColorByAttribute(item.attribute);
-  const bottom = { paddingBottom: insets.bottom, paddingTop: 50 };
 
   useEffect(() => {
     const tmpImages = [];
@@ -154,62 +147,10 @@ const CardDetailScreen = ({
     [],
   );
 
-  const goBack = () => navigation.goBack();
-
-  const moveBackButton = scrollAV.interpolate({
-    inputRange: [0, 1],
-    outputRange: [0, -50],
-    extrapolate: 'clamp',
-  });
-
-  const onScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
-    const offset = event.nativeEvent.contentOffset.y;
-    if (offset > 50) {
-      const dif = offset - (currentOffset || 0);
-      if (Math.abs(dif) > 10) {
-        if (dif < 0) {
-          Animated.timing(scrollAV, {
-            duration: 100,
-            toValue: 0,
-            useNativeDriver: true,
-          }).start();
-        } else {
-          Animated.timing(scrollAV, {
-            duration: 100,
-            toValue: 1,
-            useNativeDriver: true,
-          }).start();
-        }
-      }
-    } else {
-      Animated.timing(scrollAV, {
-        duration: 100,
-        toValue: 0,
-        useNativeDriver: true,
-      }).start();
-    }
-    setCurrentOffset(offset);
-  };
-
   return (
-    <>
-      <Animated.View
-        style={[
-          AppStyles.back,
-          { transform: [{ translateY: moveBackButton }] },
-        ]}>
-        <IconButton
-          icon='arrow-left'
-          color={colors.text}
-          onPress={goBack}
-          style={{ backgroundColor: colors.background }}
-        />
-      </Animated.View>
+    <ScrollViewWithBackButton>
       {done ? (
-        <ScrollView
-          onScroll={onScroll}
-          showsVerticalScrollIndicator={false}
-          contentContainerStyle={bottom}>
+        <>
           <TouchableRipple onPress={navigateToIdolDetail}>
             <Text
               style={[
@@ -380,7 +321,7 @@ const CardDetailScreen = ({
               </>
             )}
           </View>
-        </ScrollView>
+        </>
       ) : (
         <LoadingScreen />
       )}
@@ -390,7 +331,7 @@ const CardDetailScreen = ({
         visible={imgViewer.visible}
         onRequestClose={closeImgViewer}
       />
-    </>
+    </ScrollViewWithBackButton>
   );
 };
 

@@ -1,24 +1,22 @@
-import React, { useState, useEffect, useContext, useRef } from 'react';
-import { View, Animated, StyleSheet } from 'react-native';
+import React, { useState, useEffect, useContext } from 'react';
+import { View, StyleSheet } from 'react-native';
 import {
-  IconButton,
   TouchableRipple,
   Button,
   Text,
   ProgressBar,
   useTheme,
 } from 'react-native-paper';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import FastImage from 'react-native-fast-image';
 import { responsiveWidth } from 'react-native-responsive-dimensions';
 import dayjs from 'dayjs';
 import UserContext from '~/Context/UserContext';
+import ScrollViewWithBackButton from '~/Components/scrollviewwithbackbutton';
 import StarBar from '~/Components/StarBar';
 import TextRow from '~/Components/TextRow';
 import { findColorByAttribute, AddHTTPS } from '~/Utils';
 import { Metrics, AppStyles, Colors, Images, Fonts } from '~/Theme';
 
-import type { NativeSyntheticEvent, NativeScrollEvent } from 'react-native';
 import type { SongDetailScreenProps } from '~/typings';
 
 type StatButtonProps = {
@@ -26,8 +24,6 @@ type StatButtonProps = {
   text: string;
   stat: [number, number[]];
 };
-
-const { ScrollView } = Animated;
 
 /**
  * Song Detail Screen
@@ -43,8 +39,6 @@ const SongDetailScreen = ({
 }: SongDetailScreenProps): JSX.Element => {
   const { item } = route.params;
   const { colors } = useTheme();
-  const scrollAV = useRef(new Animated.Value(0)).current;
-  const insets = useSafeAreaInsets();
   const { state } = useContext(UserContext);
   const [buttonID, setButtonID] = useState(0);
   const [currentStats, setCurrentStats] = useState<StatButtonProps['stat']>([
@@ -58,8 +52,6 @@ const SongDetailScreen = ({
   const [expert, setExpert] = useState<StatButtonProps['stat']>([0, []]);
   const [random, setRandom] = useState<StatButtonProps['stat']>([0, []]);
   const [master, setMaster] = useState<StatButtonProps['stat']>([0, []]);
-  const [currentOffset, setCurrentOffset] = useState(0);
-  const bottom = { paddingBottom: insets.bottom };
 
   useEffect(() => {
     const easyArray = [];
@@ -140,62 +132,9 @@ const SongDetailScreen = ({
     );
   };
 
-  const goBack = () => navigation.goBack();
-
-  const moveBackButton = scrollAV.interpolate({
-    inputRange: [0, 1],
-    outputRange: [0, -50],
-    extrapolate: 'clamp',
-  });
-
-  const onScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
-    const offset = event.nativeEvent.contentOffset.y;
-    if (offset > 50) {
-      const dif = offset - (currentOffset || 0);
-      if (Math.abs(dif) > 10) {
-        if (dif < 0) {
-          Animated.timing(scrollAV, {
-            duration: 100,
-            toValue: 0,
-            useNativeDriver: true,
-          }).start();
-        } else {
-          Animated.timing(scrollAV, {
-            duration: 100,
-            toValue: 1,
-            useNativeDriver: true,
-          }).start();
-        }
-      }
-    } else {
-      Animated.timing(scrollAV, {
-        duration: 100,
-        toValue: 0,
-        useNativeDriver: true,
-      }).start();
-    }
-    setCurrentOffset(offset);
-  };
-
   return (
-    <>
-      <Animated.View
-        style={[
-          AppStyles.back,
-          { transform: [{ translateY: moveBackButton }] },
-        ]}>
-        <IconButton
-          icon='arrow-left'
-          color={colors.text}
-          onPress={goBack}
-          style={{ backgroundColor: colors.background }}
-        />
-      </Animated.View>
-      <ScrollView
-        onScroll={onScroll}
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={[styles.scrollViewContainer, bottom]}
-        style={AppStyles.screen}>
+    <ScrollViewWithBackButton>
+      <View style={styles.scrollViewContainer}>
         <Text
           style={[
             Fonts.style.center,
@@ -308,8 +247,8 @@ const SongDetailScreen = ({
           </View>
         )}
         <StarBar array={currentStats[1]} />
-      </ScrollView>
-    </>
+      </View>
+    </ScrollViewWithBackButton>
   );
 };
 
@@ -345,8 +284,7 @@ const styles = StyleSheet.create({
   },
   scrollViewContainer: {
     alignItems: 'center',
-    padding: Metrics.baseMargin,
-    paddingTop: 50,
+    paddingHorizontal: Metrics.baseMargin,
   },
   stretch: { alignSelf: 'stretch' },
 });

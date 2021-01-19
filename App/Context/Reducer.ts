@@ -1,3 +1,5 @@
+import { Appearance } from 'react-native';
+
 import type { ActionType, AppState, CachedDataObject } from '~/typings';
 
 const reducer: React.Reducer<AppState, ActionType> = (prevState, action) => {
@@ -53,7 +55,7 @@ export const initAppOptions = {
   wwEvent: true,
   jpEvent: true,
   worldwideOnly: false,
-  isDark: false,
+  isDark: Appearance.getColorScheme() === 'dark',
 };
 
 /** Initial state */

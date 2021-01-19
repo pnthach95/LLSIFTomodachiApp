@@ -2,10 +2,10 @@ import React, { useContext, useEffect } from 'react';
 import { StatusBar } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
+import { setRootViewBackgroundColor } from '@pnthach95/react-native-root-view-background';
 import { ModalProvider } from 'react-native-modalfy';
 import { Provider as PaperProvider } from 'react-native-paper';
 
-import ThemeModule from '~/Utils/ThemeModule';
 import { Dark, Light } from '~/Theme';
 import UserContext from '~/Context/UserContext';
 import Modals from '~/modals';
@@ -38,7 +38,7 @@ const Routes = (): JSX.Element => {
     : 'dark-content';
 
   useEffect(() => {
-    ThemeModule.setColor(
+    setRootViewBackgroundColor(
       state.options.isDark ? Dark.colors.background : Light.colors.background,
     );
   }, [state.options.isDark]);

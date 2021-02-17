@@ -69,6 +69,10 @@ Assuming you have all the requirements installed, you can setup and run the proj
 | ![10](docs/images/10.png) | ![10](docs/images/10_dark.png) |
 | ![11](docs/images/11.png) | ![11](docs/images/11_dark.png) |
 
+## Todo
+
+- Gonna update when server starts merging
+
 ## Author
 
 Phạm Ngọc Thạch

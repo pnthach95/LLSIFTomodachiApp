@@ -41,6 +41,7 @@
     "react-native-gesture-handler": "^1.10.3",
     "react-native-image-viewing": "^0.2.0",
     "react-native-modalfy": "^2.1.2",
+    "react-native-navigation-bar-color": "https://github.com/MoOx/react-native-navigation-bar-color#patch-1",
     "react-native-offline": "^5.8.0",
     "react-native-paper": "^4.9.2",
     "react-native-reanimated": "^1.13.3",

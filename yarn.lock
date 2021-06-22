@@ -7267,6 +7267,10 @@ react-native-modalfy@^2.1.2:
     react-is "^17.0.2"
     use-memo-one "^1.1.2"
 
+"react-native-navigation-bar-color@https://github.com/MoOx/react-native-navigation-bar-color#patch-1":
+  version "2.0.1"
+  resolved "https://github.com/MoOx/react-native-navigation-bar-color#6cca5e47f79112dbc410de3eb8b154d992b64dd3"
+
 react-native-offline@^5.8.0:
   version "5.8.0"
   resolved "https://registry.yarnpkg.com/react-native-offline/-/react-native-offline-5.8.0.tgz#804d8647237cbfd54a434e5ffedb0e5a7d0e9309"

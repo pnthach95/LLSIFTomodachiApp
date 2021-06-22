@@ -2,6 +2,7 @@ import React, { useContext, useEffect } from 'react';
 import { StatusBar } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
+import changeNavigationBarColor from 'react-native-navigation-bar-color';
 import { setRootViewBackgroundColor } from '@pnthach95/react-native-root-view-background';
 import { ModalProvider } from 'react-native-modalfy';
 import { Provider as PaperProvider } from 'react-native-paper';
@@ -41,6 +42,11 @@ const Routes = (): JSX.Element => {
     setRootViewBackgroundColor(
       state.options.isDark ? Dark.colors.background : Light.colors.background,
     );
+    try {
+      changeNavigationBarColor(statusBarColor, !state.options.isDark, false);
+    } catch (cnbcError) {
+      // console.log(cnbcError);
+    }
   }, [state.options.isDark]);
 
   return (

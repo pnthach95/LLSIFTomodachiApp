@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { View, ScrollView, StyleSheet } from 'react-native';
 import { Text, Switch, TouchableRipple } from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import firebase from 'react-native-firebase';
+import messaging from '@react-native-firebase/messaging';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import VersionNumber from 'react-native-version-number';
 import UserContext from '~/Context/UserContext';
@@ -28,31 +28,16 @@ const MoreScreen: React.FC<MoreScreenProps> = ({ navigation }) => {
     saveSettings(data);
   };
 
-  /** Toggle receiving worldwide event notification option */
-  const wwEventToggle = () => {
-    const data: AppOptions = {
-      ...state.options,
-      wwEvent: !state.options.wwEvent,
-    };
-    if (data.wwEvent) {
-      firebase.messaging().subscribeToTopic('ww_event');
-    } else {
-      firebase.messaging().unsubscribeFromTopic('ww_event');
-    }
-    dispatch({ type: 'SAVE_OPTIONS', data });
-    saveSettings(data);
-  };
-
-  /** Toggle receiving japanese event notification option */
-  const jpEventToggle = () => {
+  /** Toggle receiving event notification option */
+  const eventToggle = () => {
     const data: AppOptions = {
       ...state.options,
       jpEvent: !state.options.jpEvent,
     };
     if (data.jpEvent) {
-      firebase.messaging().subscribeToTopic('jp_event');
+      void messaging().subscribeToTopic('jp_event');
     } else {
-      firebase.messaging().unsubscribeFromTopic('jp_event');
+      void messaging().unsubscribeFromTopic('jp_event');
     }
     dispatch({ type: 'SAVE_OPTIONS', data });
     saveSettings(data);
@@ -88,16 +73,10 @@ const MoreScreen: React.FC<MoreScreenProps> = ({ navigation }) => {
           />
         </View>
       </TouchableRipple>
-      <TouchableRipple onPress={wwEventToggle}>
+      <TouchableRipple onPress={eventToggle}>
         <View style={styles.settingRow}>
-          <Text>Notify WW event</Text>
-          <Switch value={state.options.wwEvent} onValueChange={wwEventToggle} />
-        </View>
-      </TouchableRipple>
-      <TouchableRipple onPress={jpEventToggle}>
-        <View style={styles.settingRow}>
-          <Text>Notify JP event</Text>
-          <Switch value={state.options.jpEvent} onValueChange={jpEventToggle} />
+          <Text>Notify event</Text>
+          <Switch value={state.options.jpEvent} onValueChange={eventToggle} />
         </View>
       </TouchableRipple>
       <TouchableRipple onPress={themeToggle}>

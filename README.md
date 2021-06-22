@@ -9,21 +9,21 @@ This project is a Love Live School Idol Festival app using data from [School Ido
 
 The project contains:
 
-- [React Native](https://reactnative.dev/) (v0.63.4)
-- [React Navigation](https://reactnavigation.org/) (v5.8.10)
-- [Animated TabBar](https://github.com/gorhom/react-native-animated-tabbar) (v2.1.0)
-- [React Native Paper](https://callstack.github.io/react-native-paper/) (v4.5.0)
-- [apisauce](https://github.com/infinitered/apisauce) (v2.0.1)
-- [React Native Firebase](https://v5.rnfirebase.io/docs/v5.x.x/getting-started) (v5.6.0, for push notification)
-- [React Native Fast Image](https://github.com/DylanVann/react-native-fast-image) (v8.3.4)
-- [React Native Image Viewing](https://github.com/jobtoday/react-native-image-viewing) (v0.2.0)
-- [React Native Sentry](https://sentry.io) (v1.9.0)
-- [React Native Offline](https://github.com/rgommezz/react-native-offline) (v5.7.0)
-- [React Native Vector Icons](https://github.com/oblador/react-native-vector-icons) (v7.1.0)
-- [React Native Version Number](https://github.com/APSL/react-native-version-number) (v0.3.6)
-- [React Native Async Storage](https://react-native-async-storage.github.io/async-storage/) (v1.13.2)
-- [react-native-modalfy](https://colorfy-software.gitbook.io/react-native-modalfy/) (v2.1.0)
-- [dayjs](https://day.js.org/) (v1.9.8)
+- [React Native](https://reactnative.dev/)
+- [React Navigation](https://reactnavigation.org/)
+- [Animated TabBar](https://github.com/gorhom/react-native-animated-tabbar)
+- [React Native Paper](https://callstack.github.io/react-native-paper/)
+- [apisauce](https://github.com/infinitered/apisauce)
+- [React Native Firebase](https://rnfirebase.io)
+- [React Native Fast Image](https://github.com/DylanVann/react-native-fast-image)
+- [React Native Image Viewing](https://github.com/jobtoday/react-native-image-viewing)
+- [React Native Sentry](https://sentry.io)
+- [React Native Offline](https://github.com/rgommezz/react-native-offline)
+- [React Native Vector Icons](https://github.com/oblador/react-native-vector-icons)
+- [React Native Version Number](https://github.com/APSL/react-native-version-number)
+- [React Native Async Storage](https://react-native-async-storage.github.io/async-storage/)
+- [react-native-modalfy](https://colorfy-software.gitbook.io/react-native-modalfy/)
+- [dayjs](https://day.js.org/)
 - And more...
 
 ## Directory layout
@@ -68,10 +68,6 @@ Assuming you have all the requirements installed, you can setup and run the proj
 | ![09](docs/images/09.png) | ![09](docs/images/09_dark.png) |
 | ![10](docs/images/10.png) | ![10](docs/images/10_dark.png) |
 | ![11](docs/images/11.png) | ![11](docs/images/11_dark.png) |
-
-## Todo
-
-- Gonna update when server starts merging
 
 ## Author
 

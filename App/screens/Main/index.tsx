@@ -1,12 +1,6 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { View, ScrollView, Platform, StyleSheet } from 'react-native';
-import {
-  Text,
-  Title,
-  Divider,
-  TouchableRipple,
-  useTheme,
-} from 'react-native-paper';
+import { Text, Title, TouchableRipple, useTheme } from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import FastImage from 'react-native-fast-image';
 import { responsiveWidth } from 'react-native-responsive-dimensions';
@@ -37,15 +31,12 @@ const MainScreen: React.FC<MainScreenProps> = ({ navigation }) => {
   const { ENEvent, JPEvent } = state.cachedData;
   const [version, setVersion] = useState<GithubVersion | null>(null);
   const [imgSize, setImgSize] = useState({ width: 1, height: 1 });
+  const padding = { paddingTop: top };
 
-  /** Start time of Worldwide event */
-  const ENEventStart = dayjs(ENEvent.english_beginning);
-  /** End time of Worldwide event */
-  const ENEventEnd = dayjs(ENEvent.english_end);
-  /** Start time of Japanese event */
-  const JPEventStart = dayjs(JPEvent.beginning, Config.DATETIME_FORMAT_INPUT);
-  /** End time of Japanese event */
-  const JPEventEnd = dayjs(JPEvent.end, Config.DATETIME_FORMAT_INPUT);
+  /** Start time of event */
+  const eventStart = dayjs(JPEvent.beginning, Config.DATETIME_FORMAT_INPUT);
+  /** End time of event */
+  const eventEnd = dayjs(JPEvent.end, Config.DATETIME_FORMAT_INPUT);
 
   useEffect(() => {
     if (Platform.OS === 'android') {
@@ -97,13 +88,14 @@ const MainScreen: React.FC<MainScreenProps> = ({ navigation }) => {
     });
   };
 
-  const goToENEvent = () => navigateToEventDetail(ENEvent);
+  const goToEvent = () => navigateToEventDetail(JPEvent);
 
-  const goToJPEvent = () => navigateToEventDetail(JPEvent);
+  const onOpenLink = () => version && openLink(version.link);
+
   return (
     <View style={AppStyles.screen}>
       {/* HEADER */}
-      <View style={[styles.header, { paddingTop: top }]}>
+      <View style={[styles.header, padding]}>
         <FastImage
           source={Images.logo}
           resizeMode='contain'
@@ -111,9 +103,7 @@ const MainScreen: React.FC<MainScreenProps> = ({ navigation }) => {
         />
       </View>
       {version !== null && (
-        <TouchableRipple
-          style={styles.update}
-          onPress={() => openLink(version.link)}>
+        <TouchableRipple style={styles.update} onPress={onOpenLink}>
           <Text>{`Download new version ${version.tag} on Github!`}</Text>
         </TouchableRipple>
       )}
@@ -122,11 +112,12 @@ const MainScreen: React.FC<MainScreenProps> = ({ navigation }) => {
       <ScrollView
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.content}>
-        {/* ENGLISH BLOCK */}
-        <TouchableRipple style={styles.block} onPress={goToENEvent}>
+        <TouchableRipple style={styles.block} onPress={goToEvent}>
           <>
-            <Text>{`Worldwide Event: ${ENEvent.english_status || ''}`}</Text>
+            <Text>{`Event: ${ENEvent.english_status || ''}`}</Text>
             <Title>{ENEvent.english_name}</Title>
+            <Title>{JPEvent.romaji_name}</Title>
+            <View style={styles.space} />
             <FastImage
               source={{ uri: AddHTTPS(ENEvent.english_image || '') }}
               onLoad={onLoadFastImage}
@@ -136,28 +127,7 @@ const MainScreen: React.FC<MainScreenProps> = ({ navigation }) => {
                 height: (Metrics.widthBanner * imgSize.height) / imgSize.width,
               }}
             />
-            <Text>{`Start: ${ENEventStart.format('LLL')}`}</Text>
-            <Text>{`End: ${ENEventEnd.format('LLL')}`}</Text>
-            {ENEvent.world_current && (
-              <Text>
-                <TimerCountdown seconds={ENEventEnd.diff(dayjs())} />
-                {' left'}
-              </Text>
-            )}
-            {ENEvent.english_status === EventStatus.ANNOUNCED && (
-              <Text>
-                {'Starts in '}
-                <TimerCountdown seconds={ENEventStart.diff(dayjs())} />
-              </Text>
-            )}
-          </>
-        </TouchableRipple>
-        <Divider style={styles.divider} />
-        {/* JAPANESE BLOCK */}
-        <TouchableRipple style={styles.block} onPress={goToJPEvent}>
-          <>
-            <Text>{`Japanese Event: ${JPEvent.japan_status || ''}`}</Text>
-            <Title>{JPEvent.romaji_name}</Title>
+            <View style={styles.space} />
             <FastImage
               source={{ uri: AddHTTPS(JPEvent.image) }}
               resizeMode='contain'
@@ -166,18 +136,19 @@ const MainScreen: React.FC<MainScreenProps> = ({ navigation }) => {
                 height: (Metrics.widthBanner * imgSize.height) / imgSize.width,
               }}
             />
-            <Text>{`Start: ${JPEventStart.format('LLL')}`}</Text>
-            <Text>{`End: ${JPEventEnd.format('LLL')}`}</Text>
+            <View style={styles.space} />
+            <Text>{`Start: ${eventStart.format('LLL')}`}</Text>
+            <Text>{`End: ${eventEnd.format('LLL')}`}</Text>
             {JPEvent.japan_current && (
               <Text>
-                <TimerCountdown seconds={JPEventEnd.diff(dayjs())} />
+                <TimerCountdown seconds={eventEnd.diff(dayjs())} />
                 {' left'}
               </Text>
             )}
             {JPEvent.japan_status === EventStatus.ANNOUNCED && (
               <Text>
                 {'Starts in '}
-                <TimerCountdown seconds={JPEventStart.diff(dayjs())} />
+                <TimerCountdown seconds={eventStart.diff(dayjs())} />
               </Text>
             )}
           </>
@@ -190,17 +161,18 @@ const MainScreen: React.FC<MainScreenProps> = ({ navigation }) => {
 const styles = StyleSheet.create({
   block: {
     alignItems: 'center',
+    paddingVertical: Metrics.baseMargin,
     width: responsiveWidth(100),
   },
   content: {
     alignItems: 'center',
     padding: Metrics.baseMargin,
   },
-  divider: {
-    paddingVertical: Metrics.baseMargin,
-  },
   header: {
     alignItems: 'center',
+  },
+  space: {
+    height: Metrics.baseMargin,
   },
   update: {
     alignItems: 'center',

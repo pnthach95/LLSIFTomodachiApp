@@ -1,6 +1,12 @@
 import React from 'react';
 import { ScrollView, View, StyleSheet } from 'react-native';
-import { Text, TouchableRipple, Divider, useTheme } from 'react-native-paper';
+import {
+  Paragraph,
+  Text,
+  TouchableRipple,
+  Divider,
+  useTheme,
+} from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/Ionicons';
 
@@ -46,7 +52,7 @@ const AboutMeScreen: React.FC<null> = () => {
         </TouchableRipple>
       </View>
       <Divider style={[styles.divider, { backgroundColor: colors.text }]} />
-      <Text style={styles.changelog}>{RELEASE_NOTE}</Text>
+      <Paragraph style={styles.changelog}>{RELEASE_NOTE}</Paragraph>
     </ScrollView>
   );
 };

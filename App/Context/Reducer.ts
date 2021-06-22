@@ -52,7 +52,6 @@ export const initCachedData: CachedDataObject = {
 };
 
 export const initAppOptions = {
-  wwEvent: true,
   jpEvent: true,
   worldwideOnly: false,
   isDark: Appearance.getColorScheme() === 'dark',

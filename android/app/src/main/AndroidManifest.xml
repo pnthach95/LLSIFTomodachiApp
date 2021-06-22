@@ -42,6 +42,7 @@
         android:resource="@drawable/ic_info_notif" />
       <meta-data
         android:name="com.google.firebase.messaging.default_notification_color"
+        tools:replace="android:resource"
         android:resource="@color/purple" />
     </application>
 </manifest>

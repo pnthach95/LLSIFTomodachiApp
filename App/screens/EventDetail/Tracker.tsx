@@ -96,10 +96,14 @@ const Tracker = ({
 
   const getData = async () => {
     let table: string[][] = [];
-    const { isWW, name } = route.params;
-    const targetEvent = isWW
+    const { isWW, name, backup } = route.params;
+    let targetEvent = isWW
       ? wwEventInfo.filter((value) => value.event_name === name)
       : jpEventInfo.filter((value) => value.event_name === name);
+    // After merged, they use English event name in JP event tracker
+    if (targetEvent.length === 0 && backup) {
+      targetEvent = jpEventInfo.filter((value) => value.event_name === backup);
+    }
     if (targetEvent.length > 0) {
       const res = await LLSIFdotnetService.fetchEventData({
         server: isWW ? 'EN' : 'JP',

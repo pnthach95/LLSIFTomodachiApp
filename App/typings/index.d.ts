@@ -95,7 +95,7 @@ type RootStackParamList = {
   SongsScreen: undefined;
   CardDetailScreen: { item: CardObject; prevStatusBarColor: string };
   EventDetailScreen: { eventName: string; prevStatusBarColor: string };
-  EventTrackerScreen: { isWW: boolean; name: string };
+  EventTrackerScreen: { isWW: boolean; name: string; backup?: string };
   IdolDetailScreen: { name: string; prevStatusBarColor: string };
   SongDetailScreen: { item: SongObject; prevStatusBarColor: string };
   AboutMeScreen: undefined;

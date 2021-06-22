@@ -54,6 +54,7 @@ const EventDetailScreen = ({
   const [JPEventStart, setJPEventStart] = useState(dayjs());
   const [JPEventEnd, setJPEventEnd] = useState(dayjs());
   const [imgSize, setImgSize] = useState({ width: 1, height: 0 });
+  const [isMerged, setIsMerged] = useState(false);
 
   useEffect(() => {
     void getItem();
@@ -77,9 +78,22 @@ const EventDetailScreen = ({
 
   /** Load card list, song list in event */
   const loadData = async (evRes: EventObject) => {
-    setWWEventStart(dayjs(evRes.english_beginning));
+    const wwBegin = dayjs(evRes.english_beginning);
+    const jpBegin = dayjs(evRes.beginning);
+    /** Check merging date */
+    if (
+      wwBegin.year() >= 2021 &&
+      wwBegin.month() >= 5 &&
+      wwBegin.date() > 3 &&
+      jpBegin.year() >= 2021 &&
+      jpBegin.month() >= 5 &&
+      jpBegin.date() > 3
+    ) {
+      setIsMerged(true);
+    }
+    setWWEventStart(wwBegin);
     setWWEventEnd(dayjs(evRes.english_end));
-    setJPEventStart(dayjs(evRes.beginning));
+    setJPEventStart(jpBegin);
     setJPEventEnd(dayjs(evRes.end));
     const cardParams: CardSearchParams = {
       page: 1,
@@ -131,6 +145,7 @@ const EventDetailScreen = ({
     navigation.navigate('EventTrackerScreen', {
       isWW: false,
       name: item?.japanese_name || '',
+      backup: item?.english_name || '',
     });
   };
 
@@ -151,80 +166,132 @@ const EventDetailScreen = ({
         </View>
       ) : (
         <>
-          {/* ENGLISH BLOCK */}
-          {!!item.english_name && (
+          {isMerged ? (
+            // Event block if merge
+            <View style={AppStyles.center}>
+              <View style={[AppStyles.center, styles.textBlock]}>
+                {item.english_name && <Title>{item.english_name}</Title>}
+                <Title>{item.romaji_name}</Title>
+              </View>
+              {item.english_image && (
+                <>
+                  <FastImage
+                    source={{ uri: AddHTTPS(item.english_image) }}
+                    resizeMode={FastImage.resizeMode.contain}
+                    style={styleFastImage}
+                  />
+                  <View style={styles.space} />
+                </>
+              )}
+              <FastImage
+                source={{ uri: AddHTTPS(item.image) }}
+                resizeMode={FastImage.resizeMode.contain}
+                onLoad={(e) => {
+                  const { width, height } = e.nativeEvent;
+                  setImgSize({ width, height });
+                }}
+                style={styleFastImage}
+              />
+              <View style={[AppStyles.center, styles.textBlock]}>
+                <Text>{`Start: ${JPEventStart.format('LLL')}`}</Text>
+                <Text>{`End: ${JPEventEnd.format('LLL')}`}</Text>
+                {item.japan_current && (
+                  <Text>
+                    <TimerCountdown seconds={JPEventEnd.diff(dayjs())} />
+                    {' left'}
+                  </Text>
+                )}
+                {item.japan_status === EventStatus.ANNOUNCED && (
+                  <Text>
+                    {'Starts in '}
+                    <TimerCountdown seconds={JPEventStart.diff(dayjs())} />
+                  </Text>
+                )}
+                {item.japan_status !== EventStatus.ANNOUNCED && (
+                  <Button onPress={goToJpTracker}>Go to tracker</Button>
+                )}
+              </View>
+            </View>
+          ) : (
             <>
+              {/* ENGLISH BLOCK */}
+              {!!item.english_name && (
+                <>
+                  <View style={AppStyles.center}>
+                    <View style={[AppStyles.center, styles.textBlock]}>
+                      <Text>Worldwide</Text>
+                      <Title style={Fonts.style.center}>
+                        {item.english_name || item.romaji_name}
+                      </Title>
+                    </View>
+                    <FastImage
+                      source={{ uri: AddHTTPS(item.english_image || '') }}
+                      resizeMode={FastImage.resizeMode.contain}
+                      style={styleFastImage}
+                    />
+                    <View style={[AppStyles.center, styles.textBlock]}>
+                      <Text>{`Start: ${WWEventStart.format('LLL')}`}</Text>
+                      <Text>{`End: ${WWEventEnd.format('LLL')}`}</Text>
+                      {item.world_current && (
+                        <Text>
+                          <TimerCountdown seconds={WWEventEnd.diff(dayjs())} />
+                          {' left'}
+                        </Text>
+                      )}
+                      {item.english_status === EventStatus.ANNOUNCED && (
+                        <Text>
+                          {'Starts in '}
+                          <TimerCountdown
+                            seconds={WWEventStart.diff(dayjs())}
+                          />
+                        </Text>
+                      )}
+                      {item.english_status !== EventStatus.ANNOUNCED && (
+                        <Button onPress={goToEnTracker}>Go to tracker</Button>
+                      )}
+                    </View>
+                  </View>
+                  <Divider style={{ backgroundColor: colors.text }} />
+                </>
+              )}
+
+              {/* JAPANESE BLOCK */}
               <View style={AppStyles.center}>
                 <View style={[AppStyles.center, styles.textBlock]}>
-                  <Text>Worldwide</Text>
-                  <Title style={Fonts.style.center}>
-                    {item.english_name || item.romaji_name}
-                  </Title>
+                  <Text>Japanese</Text>
+                  <Title>{item.romaji_name}</Title>
                 </View>
                 <FastImage
-                  source={{ uri: AddHTTPS(item.english_image || '') }}
+                  source={{ uri: AddHTTPS(item.image) }}
                   resizeMode={FastImage.resizeMode.contain}
+                  onLoad={(e) => {
+                    const { width, height } = e.nativeEvent;
+                    setImgSize({ width, height });
+                  }}
                   style={styleFastImage}
                 />
                 <View style={[AppStyles.center, styles.textBlock]}>
-                  <Text>{`Start: ${WWEventStart.format('LLL')}`}</Text>
-                  <Text>{`End: ${WWEventEnd.format('LLL')}`}</Text>
-                  {item.world_current && (
+                  <Text>{`Start: ${JPEventStart.format('LLL')}`}</Text>
+                  <Text>{`End: ${JPEventEnd.format('LLL')}`}</Text>
+                  {item.japan_current && (
                     <Text>
-                      <TimerCountdown seconds={WWEventEnd.diff(dayjs())} />
+                      <TimerCountdown seconds={JPEventEnd.diff(dayjs())} />
                       {' left'}
                     </Text>
                   )}
-                  {item.english_status === EventStatus.ANNOUNCED && (
+                  {item.japan_status === EventStatus.ANNOUNCED && (
                     <Text>
                       {'Starts in '}
-                      <TimerCountdown seconds={WWEventStart.diff(dayjs())} />
+                      <TimerCountdown seconds={JPEventStart.diff(dayjs())} />
                     </Text>
                   )}
-                  {item.english_status !== EventStatus.ANNOUNCED && (
-                    <Button onPress={goToEnTracker}>Go to tracker</Button>
+                  {item.japan_status !== EventStatus.ANNOUNCED && (
+                    <Button onPress={goToJpTracker}>Go to tracker</Button>
                   )}
                 </View>
               </View>
-              <Divider style={{ backgroundColor: colors.text }} />
             </>
           )}
-
-          {/* JAPANESE BLOCK */}
-          <View style={AppStyles.center}>
-            <View style={[AppStyles.center, styles.textBlock]}>
-              <Text>Japanese</Text>
-              <Title>{item.romaji_name}</Title>
-            </View>
-            <FastImage
-              source={{ uri: AddHTTPS(item.image) }}
-              resizeMode={FastImage.resizeMode.contain}
-              onLoad={(e) => {
-                const { width, height } = e.nativeEvent;
-                setImgSize({ width, height });
-              }}
-              style={styleFastImage}
-            />
-            <View style={[AppStyles.center, styles.textBlock]}>
-              <Text>{`Start: ${JPEventStart.format('LLL')}`}</Text>
-              <Text>{`End: ${JPEventEnd.format('LLL')}`}</Text>
-              {item.japan_current && (
-                <Text>
-                  <TimerCountdown seconds={JPEventEnd.diff(dayjs())} />
-                  {' left'}
-                </Text>
-              )}
-              {item.japan_status === EventStatus.ANNOUNCED && (
-                <Text>
-                  {'Starts in '}
-                  <TimerCountdown seconds={JPEventStart.diff(dayjs())} />
-                </Text>
-              )}
-              {item.japan_status !== EventStatus.ANNOUNCED && (
-                <Button onPress={goToJpTracker}>Go to tracker</Button>
-              )}
-            </View>
-          </View>
           {/* SONGS */}
           {songs.length !== 0 && (
             <View>
@@ -342,6 +409,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flexDirection: 'row',
     paddingVertical: Metrics.baseMargin,
+  },
+  space: {
+    height: Metrics.baseMargin,
   },
   textBlock: {
     paddingVertical: Metrics.baseMargin,

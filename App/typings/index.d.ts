@@ -33,7 +33,6 @@ type FCItemProps<T> = {
 
 type AppOptions = {
   isDark: boolean;
-  wwEvent: boolean;
   jpEvent: boolean;
   worldwideOnly: boolean;
 };

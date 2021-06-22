@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Text, Button } from 'react-native-paper';
-import firebase from 'react-native-firebase';
+import messaging from '@react-native-firebase/messaging';
 import RNBootSplash from 'react-native-bootsplash';
 
 import { initCachedData } from '~/Context/Reducer';
@@ -51,15 +51,11 @@ const SplashScreen = (): JSX.Element => {
   const loadAppOptions = async () => {
     const res = await loadSettings();
     if (res.jpEvent) {
-      firebase.messaging().subscribeToTopic(FirebaseTopic.JP_EVENT);
+      void messaging().subscribeToTopic(FirebaseTopic.JP_EVENT);
     } else {
-      firebase.messaging().unsubscribeFromTopic(FirebaseTopic.JP_EVENT);
+      void messaging().unsubscribeFromTopic(FirebaseTopic.JP_EVENT);
     }
-    if (res.wwEvent) {
-      firebase.messaging().subscribeToTopic(FirebaseTopic.WW_EVENT);
-    } else {
-      firebase.messaging().unsubscribeFromTopic(FirebaseTopic.WW_EVENT);
-    }
+    void messaging().unsubscribeFromTopic(FirebaseTopic.WW_EVENT);
     dispatch({ type: 'SAVE_OPTIONS', data: res });
     setLoadedAO(true);
   };

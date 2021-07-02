@@ -84,11 +84,11 @@ const styles = StyleSheet.create({
 });
 
 InfoLine.propTypes = {
-  content: PropTypes.any,
-  instagram: PropTypes.any,
-  myanimelist: PropTypes.any,
-  title: PropTypes.any,
-  twitter: PropTypes.any,
+  content: PropTypes.string.isRequired,
+  instagram: PropTypes.string,
+  myanimelist: PropTypes.string,
+  title: PropTypes.string.isRequired,
+  twitter: PropTypes.string,
 };
 
 export default InfoLine;

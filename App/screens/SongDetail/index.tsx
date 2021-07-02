@@ -96,7 +96,9 @@ const SongDetailScreen = ({
     if (index < 3) return 0;
     if (index < 6) return 1;
     if (index < 9) return 2;
-    return 3;
+    if (index === 9) return 3;
+    if (index === 10) return 4;
+    return 5;
   };
 
   /** Convert seconds to m:ss */

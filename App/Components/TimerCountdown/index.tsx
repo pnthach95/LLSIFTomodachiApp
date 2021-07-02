@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { TextStyle } from 'react-native';
 import { Text } from 'react-native-paper';
+
+import type { TextStyle } from 'react-native';
 
 type Props = {
   seconds: number;
@@ -44,9 +45,11 @@ const TimerCountdown: React.FC<Props> = ({
 };
 
 TimerCountdown.propTypes = {
-  interval: PropTypes.any,
-  seconds: PropTypes.any,
-  style: PropTypes.any,
+  interval: PropTypes.number,
+  seconds: PropTypes.number.isRequired,
+  style: PropTypes.objectOf(
+    PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  ),
 };
 
 export default TimerCountdown;

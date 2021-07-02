@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
 });
 
 StarBar.propTypes = {
-  array: PropTypes.any,
+  array: PropTypes.arrayOf(PropTypes.number.isRequired).isRequired,
 };
 
 export default StarBar;

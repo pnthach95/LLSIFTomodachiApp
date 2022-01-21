@@ -6,6 +6,7 @@ import {
   ScrollView,
   Image,
   StyleSheet,
+  StatusBar,
 } from 'react-native';
 import {
   Text,
@@ -96,10 +97,7 @@ const CardsScreen: React.FC<CardsScreenProps> = ({ navigation }) => {
   const renderItem = ({ item }: { item: CardObject }) => {
     /** Navigate to Card Detail Screen */
     const navigateToCardDetail = () => {
-      navigation.navigate('CardDetailScreen', {
-        item,
-        prevStatusBarColor: colors.card,
-      });
+      navigation.navigate('CardDetailScreen', { item });
     };
 
     if (column === 1) {
@@ -282,7 +280,9 @@ const CardsScreen: React.FC<CardsScreenProps> = ({ navigation }) => {
   return (
     <View style={AppStyles.screen}>
       {/* HEADER */}
-      <Appbar.Header style={{ backgroundColor: colors.card }}>
+      <Appbar.Header
+        statusBarHeight={StatusBar.currentHeight}
+        style={{ backgroundColor: colors.card }}>
         <View style={AppStyles.searchHeader}>
           <Searchbar
             value={searchParams.search || ''}

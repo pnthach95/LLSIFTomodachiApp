@@ -93,11 +93,11 @@ type RootStackParamList = {
   SplashScreen: undefined;
   IdolsScreen: undefined;
   SongsScreen: undefined;
-  CardDetailScreen: { item: CardObject; prevStatusBarColor: string };
-  EventDetailScreen: { eventName: string; prevStatusBarColor: string };
+  CardDetailScreen: { item: CardObject };
+  EventDetailScreen: { eventName: string };
   EventTrackerScreen: { isWW: boolean; name: string; backup?: string };
-  IdolDetailScreen: { name: string; prevStatusBarColor: string };
-  SongDetailScreen: { item: SongObject; prevStatusBarColor: string };
+  IdolDetailScreen: { name: string };
+  SongDetailScreen: { item: SongObject };
   AboutMeScreen: undefined;
 };
 

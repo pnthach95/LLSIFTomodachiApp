@@ -1,5 +1,5 @@
 <resources>
   <color name="colorAccent">#888888</color>
   <color name="purple">#A436CA</color>
-  <color name="bootsplash_background">#F2F2F2</color>
+  <color name="bootsplash_background">#FFFFFF</color>
 </resources>

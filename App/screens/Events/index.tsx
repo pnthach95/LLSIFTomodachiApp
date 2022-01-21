@@ -1,5 +1,12 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { View, FlatList, Alert, Image, StyleSheet } from 'react-native';
+import {
+  View,
+  FlatList,
+  Alert,
+  Image,
+  StyleSheet,
+  StatusBar,
+} from 'react-native';
 import { Text, Button, Appbar, Searchbar, useTheme } from 'react-native-paper';
 import _ from 'lodash';
 import ConnectStatus from '~/Components/ConnectStatus';
@@ -63,7 +70,6 @@ const EventsScreen: React.FC<EventsScreenProps> = ({ navigation }) => {
     const navigateToEventDetail = () => {
       navigation.navigate('EventDetailScreen', {
         eventName: item.japanese_name,
-        prevStatusBarColor: colors.card,
       });
     };
 
@@ -193,7 +199,9 @@ const EventsScreen: React.FC<EventsScreenProps> = ({ navigation }) => {
   return (
     <View style={AppStyles.screen}>
       {/* HEADER */}
-      <Appbar.Header style={{ backgroundColor: colors.card }}>
+      <Appbar.Header
+        statusBarHeight={StatusBar.currentHeight}
+        style={{ backgroundColor: colors.card }}>
         <View style={AppStyles.searchHeader}>
           <Searchbar
             value={searchParams.search || ''}

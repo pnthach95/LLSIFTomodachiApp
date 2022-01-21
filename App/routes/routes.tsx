@@ -7,7 +7,7 @@ import { setRootViewBackgroundColor } from '@pnthach95/react-native-root-view-ba
 import { ModalProvider } from 'react-native-modalfy';
 import { Provider as PaperProvider } from 'react-native-paper';
 
-import { Dark, Light } from '~/Theme';
+import { Colors, Dark, Light } from '~/Theme';
 import UserContext from '~/Context/UserContext';
 import Modals from '~/modals';
 
@@ -51,7 +51,11 @@ const Routes = (): JSX.Element => {
 
   return (
     <PaperProvider theme={switchTheme}>
-      <StatusBar backgroundColor={statusBarColor} barStyle={statusBarStyle} />
+      <StatusBar
+        backgroundColor={Colors.transparent}
+        barStyle={statusBarStyle}
+        translucent
+      />
       <ModalProvider stack={Modals}>
         <NavigationContainer theme={switchTheme}>
           <Stack.Navigator screenOptions={{ headerBackTitle: 'Back' }}>

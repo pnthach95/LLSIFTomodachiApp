@@ -104,7 +104,7 @@ const SongDetailScreen = ({
   /** Convert seconds to m:ss */
   const formatTime = (time: number): string => {
     const duration = dayjs.duration(time, 's');
-    return `${duration.minutes()}:${duration.seconds()}`;
+    return duration.format('m:ss');
   };
 
   /** Navigate to Event Detail Screen */
@@ -112,7 +112,6 @@ const SongDetailScreen = ({
     if (item.event?.japanese_name) {
       navigation.navigate('EventDetailScreen', {
         eventName: item.event?.japanese_name,
-        prevStatusBarColor: attributeColors[0],
       });
     }
   };

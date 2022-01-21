@@ -1,5 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { View, FlatList, Alert, Image, StyleSheet } from 'react-native';
+import {
+  View,
+  FlatList,
+  Alert,
+  Image,
+  StyleSheet,
+  StatusBar,
+} from 'react-native';
 import {
   Appbar,
   Surface,
@@ -76,10 +83,7 @@ const SongsScreen: React.FC<SongsScreenProps> = ({ navigation }) => {
   const renderItem = ({ item }: { item: SongObject }) => {
     /** Navigate to Song Detail Screen */
     const navigateToSongDetail = () => {
-      navigation.navigate('SongDetailScreen', {
-        item,
-        prevStatusBarColor: colors.card,
-      });
+      navigation.navigate('SongDetailScreen', { item });
     };
 
     return <SongItem item={item} onPress={navigateToSongDetail} />;
@@ -210,7 +214,9 @@ const SongsScreen: React.FC<SongsScreenProps> = ({ navigation }) => {
   return (
     <View style={AppStyles.screen}>
       {/* HEADER */}
-      <Appbar.Header style={{ backgroundColor: colors.card }}>
+      <Appbar.Header
+        statusBarHeight={StatusBar.currentHeight}
+        style={{ backgroundColor: colors.card }}>
         <Appbar.BackAction onPress={goBack} />
         <View style={AppStyles.searchHeader}>
           <Searchbar

@@ -96,13 +96,11 @@ const CardDetailScreen = ({
   const goToEvent = () =>
     navigation.navigate('EventDetailScreen', {
       eventName: item.event?.japanese_name || '',
-      prevStatusBarColor: cardColors[0],
     });
 
   const goToOtherEvent = () =>
     navigation.navigate('EventDetailScreen', {
       eventName: item.other_event?.japanese_name || '',
-      prevStatusBarColor: cardColors[0],
     });
 
   /**
@@ -111,7 +109,6 @@ const CardDetailScreen = ({
   const navigateToIdolDetail = () => {
     navigation.navigate('IdolDetailScreen', {
       name: item.idol.name,
-      prevStatusBarColor: cardColors[0],
     });
   };
 

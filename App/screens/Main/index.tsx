@@ -1,6 +1,6 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { View, ScrollView, Platform, StyleSheet } from 'react-native';
-import { Text, Title, TouchableRipple, useTheme } from 'react-native-paper';
+import { Text, Title, TouchableRipple } from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import FastImage from 'react-native-fast-image';
 import { responsiveWidth } from 'react-native-responsive-dimensions';
@@ -26,7 +26,6 @@ type GithubVersion = {
 /** Main Screen */
 const MainScreen: React.FC<MainScreenProps> = ({ navigation }) => {
   const { top } = useSafeAreaInsets();
-  const { colors } = useTheme();
   const { state } = useContext(UserContext);
   const { ENEvent, JPEvent } = state.cachedData;
   const [version, setVersion] = useState<GithubVersion | null>(null);
@@ -84,7 +83,6 @@ const MainScreen: React.FC<MainScreenProps> = ({ navigation }) => {
   const navigateToEventDetail = (event: EventObject) => {
     navigation.navigate('EventDetailScreen', {
       eventName: event.japanese_name,
-      prevStatusBarColor: colors.card,
     });
   };
 

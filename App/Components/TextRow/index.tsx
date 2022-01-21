@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { View } from 'react-native';
 import { Paragraph } from 'react-native-paper';
 import { AppStyles } from '~/Theme';
@@ -38,24 +37,6 @@ const TextRow: React.FC<Props> = ({ item1, item2 }) => {
       </View>
     </View>
   );
-};
-
-TextRow.propTypes = {
-  item1: PropTypes.shape({
-    flex: PropTypes.number.isRequired,
-    text: PropTypes.string.isRequired,
-    textStyle: PropTypes.objectOf(
-      PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-    ).isRequired,
-  }).isRequired,
-  item2: PropTypes.shape({
-    flex: PropTypes.number.isRequired,
-    text: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
-    textStyle: PropTypes.objectOf(
-      PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-    ).isRequired,
-    onPress: PropTypes.func.isRequired,
-  }).isRequired,
 };
 
 export default TextRow;

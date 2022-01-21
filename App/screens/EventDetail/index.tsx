@@ -46,7 +46,7 @@ const EventDetailScreen = ({
   const { colors } = useTheme();
   const [item, setItem] = useState<EventObject | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [isError, setIsError] = useState<LLSIFError | null>(null);
+  const [isError, setIsError] = useState<LLSIFError | Error | null>(null);
   const [cards, setCards] = useState<CardObject[]>([]);
   const [songs, setSongs] = useState<SongObject[]>([]);
   const [WWEventStart, setWWEventStart] = useState(dayjs());
@@ -69,10 +69,10 @@ const EventDetailScreen = ({
       if (res) {
         await loadData(res);
       } else {
-        throw Error('Error');
+        throw new Error('Error');
       }
     } catch (error) {
-      setIsError(error);
+      setIsError(error as Error);
     }
   };
 
@@ -120,18 +120,12 @@ const EventDetailScreen = ({
 
   /** Navigate to destination screen */
   const goToSongDetail = (song: SongObject) => () => {
-    navigation.navigate('SongDetailScreen', {
-      item: song,
-      prevStatusBarColor: colors.card,
-    });
+    navigation.navigate('SongDetailScreen', { item: song });
   };
 
   /** Navigate to destination screen */
   const goToCardDetail = (card: CardObject) => () => {
-    navigation.navigate('CardDetailScreen', {
-      item: card,
-      prevStatusBarColor: colors.card,
-    });
+    navigation.navigate('CardDetailScreen', { item: card });
   };
 
   const goToEnTracker = () => {
@@ -161,7 +155,9 @@ const EventDetailScreen = ({
         <LoadingScreen />
       ) : !!isError || !item ? (
         <View style={[AppStyles.center, AppStyles.screen]}>
-          <Text>{isError?.detail}</Text>
+          <Text>
+            {(isError as LLSIFError)?.detail || (isError as Error)?.message}
+          </Text>
           <Text>{route.params.eventName}</Text>
         </View>
       ) : (

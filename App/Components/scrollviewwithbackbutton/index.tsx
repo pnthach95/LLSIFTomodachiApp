@@ -23,6 +23,9 @@ const ScrollViewWithBackButton = ({
   const [currentOffset, setCurrentOffset] = useState(0);
   const { colors } = useTheme();
   const navigation = useNavigation();
+  const scroll = {
+    paddingTop: 50 + safeAreaInsets.top,
+  };
   const top = {
     paddingTop: safeAreaInsets.top,
   };
@@ -74,10 +77,9 @@ const ScrollViewWithBackButton = ({
 
   return (
     <View style={styles.flex1}>
-      <View style={top} />
       <ScrollView
         {...props}
-        contentContainerStyle={[styles.scroll, bottom]}
+        contentContainerStyle={[scroll, bottom]}
         onScroll={onScroll}
         scrollEventThrottle={16}
         showsVerticalScrollIndicator={false}>
@@ -109,9 +111,6 @@ const styles = StyleSheet.create({
   right: {
     position: 'absolute',
     right: 0,
-  },
-  scroll: {
-    paddingTop: 50,
   },
 });
 

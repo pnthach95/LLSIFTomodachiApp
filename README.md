@@ -17,7 +17,6 @@ The project contains:
 - [React Native Firebase](https://rnfirebase.io)
 - [React Native Fast Image](https://github.com/DylanVann/react-native-fast-image)
 - [React Native Image Viewing](https://github.com/jobtoday/react-native-image-viewing)
-- [React Native Sentry](https://sentry.io)
 - [React Native Offline](https://github.com/rgommezz/react-native-offline)
 - [React Native Vector Icons](https://github.com/oblador/react-native-vector-icons)
 - [React Native Version Number](https://github.com/APSL/react-native-version-number)

@@ -1,14 +1,12 @@
-import React, { useState } from 'react';
-import { View, StyleSheet } from 'react-native';
-import { Text, TouchableRipple, Surface } from 'react-native-paper';
+import React, {useState} from 'react';
+import {StyleSheet} from 'react-native';
 import FastImage from 'react-native-fast-image';
-import { Metrics, Fonts, AppStyles } from '~/Theme';
-import { findColorByAttribute } from '~/Utils';
+import {Surface, Text, TouchableRipple} from 'react-native-paper';
+import {Fonts, Metrics} from '~/Theme';
+import {findColorByAttribute} from '~/Utils';
+import type {OnLoadEvent} from 'react-native-fast-image';
 
-import type { OnLoadEvent } from 'react-native-fast-image';
-import type { FCItemProps, IdolObject } from '~/typings';
-
-const { smallItemWidth } = Metrics.images;
+const {smallItemWidth} = Metrics.images;
 const cImgSize = smallItemWidth - Metrics.baseMargin;
 
 /**
@@ -18,7 +16,7 @@ const cImgSize = smallItemWidth - Metrics.baseMargin;
  * - `item`: [Idol object](https://github.com/MagiCircles/SchoolIdolAPI/wiki/API-Idols#objects)
  * - `onPress`: onPress function
  */
-const IdolItem = ({ item, onPress }: FCItemProps<IdolObject>): JSX.Element => {
+const IdolItem = ({item, onPress}: FCItemProps<IdolObject>) => {
   const attColors = findColorByAttribute(item.attribute || '');
   const [imgSize, setImgSize] = useState({
     height: cImgSize,
@@ -26,7 +24,7 @@ const IdolItem = ({ item, onPress }: FCItemProps<IdolObject>): JSX.Element => {
   });
 
   const onLoad = (e: OnLoadEvent) => {
-    const { width, height } = e.nativeEvent;
+    const {width, height} = e.nativeEvent;
     setImgSize({
       ...imgSize,
       height: (cImgSize * height) / width,
@@ -34,17 +32,21 @@ const IdolItem = ({ item, onPress }: FCItemProps<IdolObject>): JSX.Element => {
   };
 
   return (
-    <Surface style={[styles.container, { backgroundColor: attColors[0] }]}>
-      <TouchableRipple borderless rippleColor={attColors[1]} onPress={onPress}>
-        <View style={[AppStyles.center, styles.content]}>
+    <Surface style={[styles.container, {backgroundColor: attColors[0]}]}>
+      <TouchableRipple
+        borderless
+        rippleColor={attColors[1]}
+        style={styles.content}
+        onPress={onPress}>
+        <>
           <FastImage
-            source={{ uri: item.chibi, priority: 'normal' }}
-            onLoad={onLoad}
-            resizeMode='contain'
+            resizeMode="contain"
+            source={{uri: item.chibi, priority: 'normal'}}
             style={imgSize}
+            onLoad={onLoad}
           />
           <Text style={Fonts.style.center}>{item.name}</Text>
-        </View>
+        </>
       </TouchableRipple>
     </Surface>
   );
@@ -59,6 +61,8 @@ const styles = StyleSheet.create({
     width: smallItemWidth,
   },
   content: {
+    alignItems: 'center',
+    flex: 1,
     padding: Metrics.smallMargin,
   },
 });

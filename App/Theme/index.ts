@@ -1,8 +1,8 @@
+import AppStyles from './AppStyles';
 import Colors from './Colors';
 import Fonts from './Fonts';
-import Metrics from './Metrics';
 import Images from './Images';
-import AppStyles from './AppStyles';
-import { Dark, Light } from './Themes';
+import Metrics from './Metrics';
+import {Dark, Light} from './Themes';
 
-export { Colors, Fonts, Images, Metrics, AppStyles, Dark, Light };
+export {Colors, Fonts, Images, Metrics, AppStyles, Dark, Light};

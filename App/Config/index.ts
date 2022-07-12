@@ -1,12 +1,3 @@
-import type {
-  AttributeType,
-  BooleanOrEmpty,
-  MainUnitNames,
-  RarityType,
-  YearType,
-  LVObject,
-} from '~/typings';
-
 export const Config = {
   DATETIME_FORMAT_INPUT: 'YYYY-MM-DDTHH:mm:ssZ',
   API_URL: 'https://schoolido.lu/api/',
@@ -25,26 +16,26 @@ export const Config = {
 
 export const OrderingGroup = {
   CARD: [
-    { label: 'Game ID', value: 'game_id' },
-    { label: 'Release date', value: 'release_date' },
-    { label: 'Idol', value: 'name' },
-    { label: "Smile's statistics", value: 'idolized_maximum_statistics_smile' },
-    { label: "Pure's statistics", value: 'idolized_maximum_statistics_pure' },
-    { label: "Cool's statistics", value: 'idolized_maximum_statistics_cool' },
-    { label: 'Rarity', value: 'rarity' },
-    { label: 'Attribute', value: 'attribute' },
-    { label: 'HP', value: 'hp' },
+    {label: 'Game ID', value: 'game_id'},
+    {label: 'Release date', value: 'release_date'},
+    {label: 'Idol', value: 'name'},
+    {label: "Smile's statistics", value: 'idolized_maximum_statistics_smile'},
+    {label: "Pure's statistics", value: 'idolized_maximum_statistics_pure'},
+    {label: "Cool's statistics", value: 'idolized_maximum_statistics_cool'},
+    {label: 'Rarity', value: 'rarity'},
+    {label: 'Attribute', value: 'attribute'},
+    {label: 'HP', value: 'hp'},
   ],
   SONG: [
-    { label: 'Date added', value: 'id' },
-    { label: 'Latest unlocked songs', value: 'latest' },
-    { label: 'Song name', value: 'name' },
-    { label: 'Beats per minute', value: 'BPM' },
-    { label: 'Song length', value: 'time' },
-    { label: 'Rank to unlock song', value: 'rank' },
-    { label: 'Notes in Hard song', value: 'hard_notes' },
-    { label: 'Notes in Expert song', value: 'expert_notes' },
-    { label: 'Notes in Master song', value: 'master_notes' },
+    {label: 'Date added', value: 'id'},
+    {label: 'Latest unlocked songs', value: 'latest'},
+    {label: 'Song name', value: 'name'},
+    {label: 'Beats per minute', value: 'BPM'},
+    {label: 'Song length', value: 'time'},
+    {label: 'Rank to unlock song', value: 'rank'},
+    {label: 'Notes in Hard song', value: 'hard_notes'},
+    {label: 'Notes in Expert song', value: 'expert_notes'},
+    {label: 'Notes in Master song', value: 'master_notes'},
   ],
 };
 
@@ -127,7 +118,13 @@ export const FirebaseTopic = {
   MESSAGE: __DEV__ ? 'test_only' : 'admin_message',
 };
 
-export const MainUnitData: MainUnitNames[] = ['', "μ's", 'Aqours'];
+export const MainUnitData: MainUnitNames[] = [
+  '',
+  "μ's",
+  'Aqours',
+  'Nijigasaki',
+  'Liella!',
+];
 
 export const RarityData: RarityType[] = ['', 'N', 'R', 'SR', 'SSR', 'UR'];
 
@@ -140,20 +137,20 @@ export const AttributeData: AttributeType[] = [
 ];
 
 export const AllOnlyNone: LVObject<BooleanOrEmpty>[] = [
-  { value: '', label: 'All' },
-  { value: 'True', label: 'Only' },
-  { value: 'False', label: 'None' },
+  {value: '', label: 'All'},
+  {value: 'True', label: 'Only'},
+  {value: 'False', label: 'None'},
 ];
 
 export const RegionData: LVObject<BooleanOrEmpty>[] = [
-  { value: '', label: 'All' },
-  { value: 'True', label: 'JP Only' },
-  { value: 'False', label: 'EN Only' },
+  {value: '', label: 'All'},
+  {value: 'True', label: 'JP Only'},
+  {value: 'False', label: 'EN Only'},
 ];
 
 export const YearData: LVObject<YearType>[] = [
-  { label: 'All', value: '' },
-  { label: '1st', value: 'First' },
-  { label: '2nd', value: 'Second' },
-  { label: '3rd', value: 'Third' },
+  {label: 'All', value: ''},
+  {label: '1st', value: 'First'},
+  {label: '2nd', value: 'Second'},
+  {label: '3rd', value: 'Third'},
 ];

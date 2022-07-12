@@ -1,56 +1,52 @@
-import React, { useContext } from 'react';
-import { View, ScrollView, StyleSheet } from 'react-native';
-import { Text, Switch, TouchableRipple } from 'react-native-paper';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import messaging from '@react-native-firebase/messaging';
+import React from 'react';
+import {ScrollView, StyleSheet, View} from 'react-native';
+import {Switch, Text, TouchableRipple} from 'react-native-paper';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import VersionNumber from 'react-native-version-number';
-import UserContext from '~/Context/UserContext';
-import { Fonts, Metrics, Colors } from '~/Theme';
-import { saveSettings } from '~/Utils';
-
-import type { AppOptions, MoreScreenProps } from '~/typings';
+import {Colors, Fonts, Metrics} from '~/Theme';
+import {useStorage} from '~/Utils';
+import {initAppOptions} from '~/store/init';
+import type {MainTabScreenProps} from '~/typings/navigation';
 
 const iconSize = 30;
 
-const MoreScreen: React.FC<MoreScreenProps> = ({ navigation }) => {
+const MoreScreen = ({navigation}: MainTabScreenProps<'MoreScreen'>) => {
+  const [settings, setSettings] = useStorage('settings', initAppOptions);
   const insets = useSafeAreaInsets();
-  const { state, dispatch } = useContext(UserContext);
-  const top = { paddingTop: insets.top };
+  const top = {paddingTop: insets.top};
 
   /** Toggle worldwide option */
   const worldwideToggle = () => {
     const data: AppOptions = {
-      ...state.options,
-      worldwideOnly: !state.options.worldwideOnly,
+      ...settings,
+      worldwideOnly: !settings.worldwideOnly,
     };
-    dispatch({ type: 'SAVE_OPTIONS', data });
-    saveSettings(data);
+    setSettings(data);
   };
 
   /** Toggle receiving event notification option */
   const eventToggle = () => {
     const data: AppOptions = {
-      ...state.options,
-      jpEvent: !state.options.jpEvent,
+      ...settings,
+      jpEvent: !settings.jpEvent,
     };
     if (data.jpEvent) {
-      void messaging().subscribeToTopic('jp_event');
+      messaging().subscribeToTopic('jp_event');
     } else {
-      void messaging().unsubscribeFromTopic('jp_event');
+      messaging().unsubscribeFromTopic('jp_event');
     }
-    dispatch({ type: 'SAVE_OPTIONS', data });
-    saveSettings(data);
+    setSettings(data);
   };
 
   /** Toggle dark theme */
   const themeToggle = () => {
     const data: AppOptions = {
-      ...state.options,
-      isDark: !state.options.isDark,
+      ...settings,
+      isDark: !settings.isDark,
     };
-    dispatch({ type: 'SAVE_OPTIONS', data });
-    saveSettings(data);
+    setSettings(data);
   };
 
   const goToIdols = () => navigation.navigate('IdolsScreen');
@@ -59,8 +55,8 @@ const MoreScreen: React.FC<MoreScreenProps> = ({ navigation }) => {
 
   return (
     <ScrollView
-      showsVerticalScrollIndicator={false}
-      contentContainerStyle={top}>
+      contentContainerStyle={top}
+      showsVerticalScrollIndicator={false}>
       <View style={styles.group}>
         <Text style={styles.headline}>Options</Text>
       </View>
@@ -68,7 +64,7 @@ const MoreScreen: React.FC<MoreScreenProps> = ({ navigation }) => {
         <View style={styles.settingRow}>
           <Text>Search Worldwide only</Text>
           <Switch
-            value={state.options.worldwideOnly}
+            value={settings.worldwideOnly}
             onValueChange={worldwideToggle}
           />
         </View>
@@ -76,13 +72,13 @@ const MoreScreen: React.FC<MoreScreenProps> = ({ navigation }) => {
       <TouchableRipple onPress={eventToggle}>
         <View style={styles.settingRow}>
           <Text>Notify event</Text>
-          <Switch value={state.options.jpEvent} onValueChange={eventToggle} />
+          <Switch value={settings.jpEvent} onValueChange={eventToggle} />
         </View>
       </TouchableRipple>
       <TouchableRipple onPress={themeToggle}>
         <View style={styles.settingRow}>
           <Text>Dark theme</Text>
-          <Switch value={state.options.isDark} onValueChange={themeToggle} />
+          <Switch value={settings.isDark} onValueChange={themeToggle} />
         </View>
       </TouchableRipple>
       <View style={styles.group}>
@@ -90,7 +86,7 @@ const MoreScreen: React.FC<MoreScreenProps> = ({ navigation }) => {
       </View>
       <TouchableRipple onPress={goToIdols}>
         <View style={styles.button}>
-          <Icon name='face-woman' color={Colors.pink} size={iconSize} />
+          <Icon color={Colors.pink} name="face-woman" size={iconSize} />
           <View style={styles.space} />
           <Text>Idols</Text>
         </View>
@@ -98,8 +94,8 @@ const MoreScreen: React.FC<MoreScreenProps> = ({ navigation }) => {
       <TouchableRipple onPress={goToSongs}>
         <View style={styles.button}>
           <Icon
-            name='music-box-multiple'
             color={Colors.green}
+            name="music-box-multiple"
             size={iconSize}
           />
           <View style={styles.space} />
@@ -108,7 +104,7 @@ const MoreScreen: React.FC<MoreScreenProps> = ({ navigation }) => {
       </TouchableRipple>
       <TouchableRipple onPress={goToAboutMe}>
         <View style={styles.button}>
-          <Icon name='help-circle' color={Colors.blue} size={iconSize} />
+          <Icon color={Colors.blue} name="help-circle" size={iconSize} />
           <View style={styles.space} />
           <Text>About me</Text>
         </View>

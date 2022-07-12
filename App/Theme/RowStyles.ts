@@ -1,5 +1,5 @@
-import { StyleSheet } from 'react-native';
-import { Metrics, Colors } from './index';
+import {StyleSheet} from 'react-native';
+import {Colors, Metrics} from './index';
 
 export default StyleSheet.create({
   buttonImage: {

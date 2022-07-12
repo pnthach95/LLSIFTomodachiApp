@@ -1,22 +1,22 @@
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
-import { ActivityIndicator } from 'react-native-paper';
+import {StyleSheet, View} from 'react-native';
 import FastImage from 'react-native-fast-image';
-import { responsiveScreenWidth } from 'react-native-responsive-dimensions';
-import { Images, AppStyles } from '~/Theme';
+import {ActivityIndicator} from 'react-native-paper';
+import {responsiveScreenWidth} from 'react-native-responsive-dimensions';
+import {AppStyles, Images} from '~/Theme';
 
 /**
  * Splash Screen
  */
-const LoadingScreen: React.FC<unknown> = () => {
+const LoadingScreen = () => {
   return (
     <View style={[AppStyles.screen, AppStyles.center]}>
       <FastImage
+        resizeMode="contain"
         source={Images.logo}
-        resizeMode='contain'
         style={styles.logo}
       />
-      <ActivityIndicator size='large' />
+      <ActivityIndicator size="large" />
     </View>
   );
 };

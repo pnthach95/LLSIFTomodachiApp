@@ -1,45 +1,45 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import { View, FlatList, StyleSheet } from 'react-native';
+import {FlatList, StyleSheet, View} from 'react-native';
 import {
-  Text,
   IconButton,
-  TouchableRipple,
   Subheading,
+  Text,
+  TouchableRipple,
   useTheme,
 } from 'react-native-paper';
 import {
   responsiveHeight,
   responsiveScreenWidth,
 } from 'react-native-responsive-dimensions';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import { Colors, AppStyles, Fonts } from '~/Theme';
+import {AppStyles, Colors, Fonts} from '~/Theme';
+import type {ListModalComponent} from '~/typings/modalfy';
+import type {ListRenderItem} from 'react-native';
 
-import type { ListModalComponent, LVObject, SkillType } from '~/typings';
+const keyExtractor = (item: string, index: number) => `item${index}`;
+const objKeyExtractor = (item: LVObject<string>, index: number) =>
+  `item${index}`;
 
 /**
  * Selection modal
  */
-const FlatListModal: ListModalComponent = ({ modal }) => {
-  const { colors } = useTheme();
+const FlatListModal: ListModalComponent = ({modal}) => {
+  const {colors} = useTheme();
   const insets = useSafeAreaInsets();
-  const bottom = { height: insets.bottom };
-  const { closeModal, getParam } = modal;
+  const {closeModal, getParam} = modal;
   const title = getParam('title', '');
   const selectedItem = getParam('selectedItem');
   const data = getParam('data');
   const objectData = getParam('objectData');
 
-  const listFooter = <View style={bottom} />;
+  const listFooter = {
+    paddingBottom: insets.bottom,
+  };
 
   const onClose = () => closeModal();
 
-  const keyExtractor = (item: string, index: number): string => `item${index}`;
-  const objKeyExtractor = (item: LVObject<string>, index: number): string =>
-    `item${index}`;
-
-  const renderItem = ({ item }: { item: SkillType | string }) => {
+  const renderItem: ListRenderItem<SkillType | string> = ({item}) => {
     const onPressItem = getParam('onPress');
     const onPress = () => {
       closeModal();
@@ -51,14 +51,14 @@ const FlatListModal: ListModalComponent = ({ modal }) => {
         <View style={[AppStyles.row, styles.item]}>
           <Text style={Fonts.style.textWrap}>{item}</Text>
           {!!selectedItem && item === selectedItem && (
-            <Icon name='check' color={Colors.green400} size={20} />
+            <Icon color={Colors.green400} name="check" size={20} />
           )}
         </View>
       </TouchableRipple>
     );
   };
 
-  const renderObjectItem = ({ item }: { item: LVObject<string> }) => {
+  const renderObjectItem: ListRenderItem<LVObject<string>> = ({item}) => {
     const onPressItem = getParam('onPress');
     const onPress = () => {
       closeModal();
@@ -70,7 +70,7 @@ const FlatListModal: ListModalComponent = ({ modal }) => {
         <View style={[AppStyles.row, styles.item]}>
           <Text style={Fonts.style.textWrap}>{item.label}</Text>
           {!!selectedItem && item.value === selectedItem && (
-            <Icon name='check' color={Colors.green400} size={20} />
+            <Icon color={Colors.green400} name="check" size={20} />
           )}
         </View>
       </TouchableRipple>
@@ -78,35 +78,35 @@ const FlatListModal: ListModalComponent = ({ modal }) => {
   };
 
   return (
-    <View style={[styles.container, { backgroundColor: colors.background }]}>
+    <View style={[styles.container, {backgroundColor: colors.background}]}>
       <View
         style={[
           AppStyles.row,
           styles.header,
-          { backgroundColor: colors.surface },
+          {backgroundColor: colors.surface},
         ]}>
         <Subheading style={styles.headerText}>{title}</Subheading>
         <IconButton
-          icon='close'
           color={Colors.red400}
+          icon="close"
           size={24}
           onPress={onClose}
         />
       </View>
       {data && (
         <FlatList
+          contentContainerStyle={listFooter}
           data={data}
-          renderItem={renderItem}
-          ListFooterComponent={listFooter}
           keyExtractor={keyExtractor}
+          renderItem={renderItem}
         />
       )}
       {objectData && (
         <FlatList
+          contentContainerStyle={listFooter}
           data={objectData}
           keyExtractor={objKeyExtractor}
           renderItem={renderObjectItem}
-          ListFooterComponent={listFooter}
         />
       )}
     </View>
@@ -133,9 +133,5 @@ const styles = StyleSheet.create({
     padding: 10,
   },
 });
-
-FlatListModal.propTypes = {
-  modal: PropTypes.any,
-};
 
 export default FlatListModal;

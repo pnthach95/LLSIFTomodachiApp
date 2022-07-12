@@ -1,21 +1,17 @@
-import React from 'react';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import AnimatedTabBar from '@gorhom/animated-tabbar';
-import { useTheme } from 'react-native-paper';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import React, {useCallback} from 'react';
+import {useTheme} from 'react-native-paper';
 import Animated from 'react-native-reanimated';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import { Colors } from '~/Theme';
-
-import MainScreen from '~/screens/Main';
+import {Colors} from '~/Theme';
 import CardsScreen from '~/screens/Cards';
 import EventsScreen from '~/screens/Events';
+import MainScreen from '~/screens/Main';
 import MoreScreen from '~/screens/More';
-
-import type {
-  TabsConfig,
-  BubbleTabBarItemConfig,
-} from '@gorhom/animated-tabbar';
-import type { BottomTabList } from '~/typings';
+import type {BottomTabList} from '~/typings/navigation';
+import type {BubbleTabBarItemConfig, TabsConfig} from '@gorhom/animated-tabbar';
+import type {BottomTabBarProps} from '@react-navigation/bottom-tabs';
 
 type IconProps = {
   color: Animated.Node<string>;
@@ -26,17 +22,17 @@ const Tab = createBottomTabNavigator<BottomTabList>();
 
 const Icon = Animated.createAnimatedComponent(Ionicons);
 
-const homeIcon = ({ size, color }: IconProps) => (
-  <Icon name='home' size={size} color={color} />
+const homeIcon = ({size, color}: IconProps) => (
+  <Icon color={color} name="home" size={size} />
 );
-const cardIcon = ({ size, color }: IconProps) => (
-  <Icon name='albums' size={size} color={color} />
+const cardIcon = ({size, color}: IconProps) => (
+  <Icon color={color} name="albums" size={size} />
 );
-const eventIcon = ({ size, color }: IconProps) => (
-  <Icon name='calendar' size={size} color={color} />
+const eventIcon = ({size, color}: IconProps) => (
+  <Icon color={color} name="calendar" size={size} />
 );
-const moreIcon = ({ size, color }: IconProps) => (
-  <Icon name='ellipsis-horizontal' size={size} color={color} />
+const moreIcon = ({size, color}: IconProps) => (
+  <Icon color={color} name="ellipsis-horizontal" size={size} />
 );
 
 const tabs: TabsConfig<BubbleTabBarItemConfig, BottomTabList> = {
@@ -98,37 +94,41 @@ const tabs: TabsConfig<BubbleTabBarItemConfig, BottomTabList> = {
   },
 };
 
-const LLSIFTab = (): JSX.Element => {
-  const { colors } = useTheme();
-  const tabStyle = { backgroundColor: colors.card };
+const LLSIFTab = () => {
+  const {colors} = useTheme();
+  const tabStyle = {backgroundColor: colors.card};
+
+  const TabBar = useCallback(
+    (props: BottomTabBarProps) => {
+      return <AnimatedTabBar style={tabStyle} tabs={tabs} {...props} />;
+    },
+    [tabStyle],
+  );
 
   return (
     <Tab.Navigator
-      backBehavior='initialRoute'
-      screenOptions={{ headerShown: false }}
-      tabBar={(props) => (
-        //@ts-ignore
-        <AnimatedTabBar tabs={tabs} style={tabStyle} {...props} />
-      )}>
+      backBehavior="initialRoute"
+      screenOptions={{headerShown: false}}
+      tabBar={TabBar}>
       <Tab.Screen
-        name='MainScreen'
         component={MainScreen}
-        options={{ tabBarLabel: 'Home' }}
+        name="MainScreen"
+        options={{tabBarLabel: 'Home'}}
       />
       <Tab.Screen
-        name='CardsScreen'
         component={CardsScreen}
-        options={{ tabBarLabel: 'Cards' }}
+        name="CardsScreen"
+        options={{tabBarLabel: 'Cards'}}
       />
       <Tab.Screen
-        name='EventsScreen'
         component={EventsScreen}
-        options={{ tabBarLabel: 'Events' }}
+        name="EventsScreen"
+        options={{tabBarLabel: 'Events'}}
       />
       <Tab.Screen
-        name='MoreScreen'
         component={MoreScreen}
-        options={{ tabBarLabel: 'More' }}
+        name="MoreScreen"
+        options={{tabBarLabel: 'More'}}
       />
     </Tab.Navigator>
   );

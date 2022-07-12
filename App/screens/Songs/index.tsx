@@ -1,46 +1,31 @@
-import React, { useState, useEffect } from 'react';
-import {
-  View,
-  FlatList,
-  Alert,
-  Image,
-  StyleSheet,
-  StatusBar,
-} from 'react-native';
+import {FlashList} from '@shopify/flash-list';
+import React, {useEffect, useState} from 'react';
+import {Alert, Image, StatusBar, StyleSheet, View} from 'react-native';
 import {
   Appbar,
-  Surface,
-  Text,
   Button,
   Searchbar,
+  Surface,
+  Text,
   useTheme,
 } from 'react-native-paper';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import _ from 'lodash';
+import Animated, {Layout, SlideInUp, SlideOutUp} from 'react-native-reanimated';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import {useImmer} from 'use-immer';
 import ConnectStatus from '~/Components/ConnectStatus';
-import SelectionRow from '~/Components/SelectionRow';
-import SongItem from '~/Components/SongItem';
 import ImgSelectionRow from '~/Components/ImgSelectionRow';
 import OrderingRow from '~/Components/OrderingRow';
-import LLSIFService from '~/Services/LLSIFService';
-import { AppStyles, Images, Metrics, Fonts } from '~/Theme';
+import SelectionRow from '~/Components/SelectionRow';
+import SongItem from '~/Components/SongItem';
 import {
-  OrderingGroup,
   AllOnlyNone,
   AttributeData,
   MainUnitData,
+  OrderingGroup,
 } from '~/Config';
-
-import type {
-  AttributeType,
-  BooleanOrEmpty,
-  Combined,
-  CombinedWithBOE,
-  MainUnitNames,
-  SongObject,
-  SongSearchParams,
-  SongsScreenProps,
-} from '~/typings';
+import LLSIFService from '~/Services/LLSIFService';
+import {AppStyles, Fonts, Images, Metrics} from '~/Theme';
+import type {RootStackScreenProps} from '~/typings/navigation';
 
 const defaultParams: SongSearchParams = {
   selectedOrdering: OrderingGroup.SONG[0].value,
@@ -57,33 +42,30 @@ const defaultParams: SongSearchParams = {
   main_unit: '',
 };
 
+/** Key extractor for FlatList */
+const keyExtractor = (item: SongObject) => `song ${item.name}`;
+
 /**
  * [Song List Screen](https://github.com/MagiCircles/SchoolIdolAPI/wiki/API-Songs#get-the-list-of-songs)
  */
-const SongsScreen: React.FC<SongsScreenProps> = ({ navigation }) => {
+const SongsScreen = ({navigation}: RootStackScreenProps<'SongsScreen'>) => {
   const insets = useSafeAreaInsets();
-  const { colors } = useTheme();
+  const {colors} = useTheme();
   const [loading, setLoading] = useState(true);
   const [list, setList] = useState<SongObject[]>([]);
   const [showFilter, setShowFilter] = useState(false);
-  const [searchParams, setSearchParams] = useState(defaultParams);
-  const [runSearch, setRunSearch] = useState(0);
-  const bottom = { paddingBottom: insets.bottom };
+  const [searchParams, setSearchParams] = useImmer(defaultParams);
+  const bottom = {paddingBottom: insets.bottom};
 
   useEffect(() => {
-    if (searchParams.page > 0) {
-      void getSongs();
-    }
-  }, [searchParams.page, runSearch]);
-
-  /** Key extractor for FlatList */
-  const keyExtractor = (item: SongObject) => `song ${item.name}`;
+    getSongs(defaultParams);
+  }, []);
 
   /** Render item in FlatList */
-  const renderItem = ({ item }: { item: SongObject }) => {
+  const renderItem = ({item}: {item: SongObject}) => {
     /** Navigate to Song Detail Screen */
     const navigateToSongDetail = () => {
-      navigation.navigate('SongDetailScreen', { item });
+      navigation.navigate('SongDetailScreen', {item});
     };
 
     return <SongItem item={item} onPress={navigateToSongDetail} />;
@@ -93,62 +75,75 @@ const SongsScreen: React.FC<SongsScreenProps> = ({ navigation }) => {
    * Call when scrolling to the end of list.
    * stopSearch prevents calling getCards when no card was found (404).
    */
-  const onEndReaching = () => {
-    if (searchParams.page > 0) {
-      setSearchParams({ ...searchParams, page: searchParams.page + 1 });
+  const onEndReached = () => {
+    if (searchParams.page > 0 && !loading) {
+      const draft: SongSearchParams = {
+        ...searchParams,
+        page: searchParams.page + 1,
+      };
+      setSearchParams(draft);
+      getSongs(draft);
     }
   };
 
-  const onEndReached = _.debounce(onEndReaching, 500);
-
   /** Fetch song list */
-  const getSongs = async () => {
-    const ordering =
-      (searchParams.isReverse ? '-' : '') +
-      (searchParams.selectedOrdering || '');
+  const getSongs = async (sp: SongSearchParams) => {
+    const ordering = (sp.isReverse ? '-' : '') + (sp.selectedOrdering || '');
     const params: SongSearchParams = {
       ordering,
-      page_size: searchParams.page_size,
-      page: searchParams.page,
-      expand_event: searchParams.expand_event,
+      page_size: sp.page_size,
+      page: sp.page,
+      expand_event: sp.expand_event,
       // is_daily_rotation: this.state.is_daily_rotation
     };
-    if (searchParams.attribute !== '')
-      params.attribute = searchParams.attribute;
-    if (searchParams.available !== '')
-      params.available = searchParams.available;
-    if (searchParams.is_event !== '') params.is_event = searchParams.is_event;
-    if (searchParams.main_unit !== '')
-      params.main_unit = searchParams.main_unit;
-    if (searchParams.search !== '') params.search = searchParams.search;
+    if (sp.attribute && sp.attribute?.length > 0) {
+      params.attribute = sp.attribute;
+    }
+    if (sp.available && sp.available?.length > 0) {
+      params.available = sp.available;
+    }
+    if (sp.is_event && sp.is_event?.length > 0) {
+      params.is_event = sp.is_event;
+    }
+    if (sp.main_unit && sp.main_unit?.length > 0) {
+      params.main_unit = sp.main_unit;
+    }
+    if (sp.search && sp.search?.length > 0) {
+      params.search = sp.search;
+    }
     // console.log(`Songs.getSongs ${JSON.stringify(theFilter)}`);
-    setLoading(true);
     try {
       const result = await LLSIFService.fetchSongList(params);
       if (result === 404) {
-        setSearchParams({ ...searchParams, page: 0 });
+        setSearchParams(draft => {
+          draft.page = 0;
+        });
       } else if (Array.isArray(result)) {
         let x = [];
-        if (searchParams.page === 1) {
+        if (sp.page === 1) {
           x = [...result];
         } else {
           x = [...list, ...result];
         }
         x = x.filter(
           (song, ind, self) =>
-            ind === self.findIndex((t) => t.name === song.name),
+            ind === self.findIndex(t => t.name === song.name),
         );
         if (x.length === 0) {
-          setSearchParams({ ...searchParams, page: 0 });
+          setSearchParams(draft => {
+            draft.page = 0;
+          });
         }
         setList(x);
       } else {
-        setSearchParams({ ...searchParams, page: 0 });
-        throw Error('null');
+        setSearchParams(draft => {
+          draft.page = 0;
+        });
+        throw new Error('null');
       }
     } catch (err) {
       // console.log('OK Pressed', err);
-      Alert.alert('Error', 'Error when get songs', [{ text: 'OK' }]);
+      Alert.alert('Error', 'Error when get songs', [{text: 'OK'}]);
     } finally {
       setLoading(false);
     }
@@ -158,45 +153,56 @@ const SongsScreen: React.FC<SongsScreenProps> = ({ navigation }) => {
   const toggleFilter = () => setShowFilter(!showFilter);
 
   /** Reverse search on/off */
-  const toggleReverse = () =>
-    setSearchParams({ ...searchParams, isReverse: !searchParams.isReverse });
+  const toggleReverse = () => {
+    setSearchParams(draft => {
+      draft.isReverse = !draft.isReverse;
+    });
+  };
 
   /** Call when pressing search button */
   const onSearch = () => {
     setList([]);
     setShowFilter(false);
-    if (searchParams.page === 1) {
-      setRunSearch(runSearch + 1);
-    }
-    setSearchParams({ ...searchParams, page: 1 });
+    const draft: SongSearchParams = {
+      ...searchParams,
+      page: 1,
+    };
+    setSearchParams(draft);
+    getSongs(draft);
   };
 
   /** Reset filter variables */
-  const resetFilter = () =>
-    setSearchParams({ ...defaultParams, page: searchParams.page });
+  const resetFilter = () => {
+    setSearchParams({...defaultParams, page: searchParams.page});
+  };
 
   /** Save `is_event` */
-  const selectEvent = (value: CombinedWithBOE) =>
-    setSearchParams({ ...searchParams, is_event: value as BooleanOrEmpty });
+  const selectEvent = (value: CombinedWithBOE) => {
+    setSearchParams(draft => {
+      draft.is_event = value as BooleanOrEmpty;
+    });
+  };
 
   /** Save `attribute` */
-  const selectAttribute = (value: Combined) =>
-    setSearchParams({ ...searchParams, attribute: value as AttributeType });
+  const selectAttribute = (value: Combined) => {
+    setSearchParams(draft => {
+      draft.attribute = value as AttributeType;
+    });
+  };
 
   /** Save `main_unit` */
-  const selectMainUnit = (value: Combined) =>
-    setSearchParams({ ...searchParams, main_unit: value as MainUnitNames });
+  const selectMainUnit = (value: Combined) => {
+    setSearchParams(draft => {
+      draft.main_unit = value as MainUnitNames;
+    });
+  };
 
   /** Save ordering */
-  const selectOrdering = (value: string) =>
-    setSearchParams({ ...searchParams, selectedOrdering: value });
-
-  /** Render footer in FlatList */
-  const renderFooter = (
-    <View style={[AppStyles.center, styles.flatListElement]}>
-      <Image source={Images.alpaca} />
-    </View>
-  );
+  const selectOrdering = (value: string) => {
+    setSearchParams(draft => {
+      draft.selectedOrdering = value;
+    });
+  };
 
   const renderEmpty = (
     <View style={styles.flatListElement}>
@@ -206,8 +212,11 @@ const SongsScreen: React.FC<SongsScreenProps> = ({ navigation }) => {
     </View>
   );
 
-  const onChangeText = (text: string) =>
-    setSearchParams({ ...searchParams, search: text });
+  const onChangeText = (text: string) => {
+    setSearchParams(draft => {
+      draft.search = text;
+    });
+  };
 
   const goBack = () => navigation.goBack();
 
@@ -216,67 +225,74 @@ const SongsScreen: React.FC<SongsScreenProps> = ({ navigation }) => {
       {/* HEADER */}
       <Appbar.Header
         statusBarHeight={StatusBar.currentHeight}
-        style={{ backgroundColor: colors.card }}>
+        style={{backgroundColor: colors.card}}>
         <Appbar.BackAction onPress={goBack} />
         <View style={AppStyles.searchHeader}>
           <Searchbar
-            value={searchParams.search || ''}
+            placeholder="Search song..."
             style={AppStyles.noElevation}
+            value={searchParams.search || ''}
             onChangeText={onChangeText}
-            onSubmitEditing={onSearch}
             onIconPress={onSearch}
-            placeholder='Search song...'
+            onSubmitEditing={onSearch}
           />
         </View>
-        <Appbar.Action icon='dots-horizontal' onPress={toggleFilter} />
+        <Appbar.Action icon="dots-horizontal" onPress={toggleFilter} />
       </Appbar.Header>
       {/* FILTER */}
       {showFilter && (
-        <Surface style={styles.filterContainer}>
-          <ImgSelectionRow
-            title='Attribute'
-            data={AttributeData}
-            value={searchParams.attribute || ''}
-            setValue={selectAttribute}
-          />
-          <SelectionRow
-            title='Event'
-            data={AllOnlyNone}
-            value={searchParams.is_event || ''}
-            setValue={selectEvent}
-          />
-          <ImgSelectionRow
-            title='Main unit'
-            data={MainUnitData}
-            value={searchParams.main_unit || ''}
-            setValue={selectMainUnit}
-          />
-          <OrderingRow
-            list={OrderingGroup.SONG}
-            selectedItem={searchParams.selectedOrdering}
-            onSelect={selectOrdering}
-            isReverse={searchParams.isReverse || true}
-            toggleReverse={toggleReverse}
-          />
-          <Button mode='contained' onPress={resetFilter}>
-            RESET
-          </Button>
-        </Surface>
+        <Animated.View
+          entering={SlideInUp}
+          exiting={SlideOutUp}
+          layout={Layout}>
+          <Surface style={styles.filterContainer}>
+            <ImgSelectionRow
+              data={AttributeData}
+              setValue={selectAttribute}
+              title="Attribute"
+              value={searchParams.attribute || ''}
+            />
+            <SelectionRow
+              data={AllOnlyNone}
+              setValue={selectEvent}
+              title="Event"
+              value={searchParams.is_event || ''}
+            />
+            <ImgSelectionRow
+              data={MainUnitData}
+              setValue={selectMainUnit}
+              title="Main unit"
+              value={searchParams.main_unit || ''}
+            />
+            <OrderingRow
+              isReverse={searchParams.isReverse || true}
+              list={OrderingGroup.SONG}
+              selectedItem={searchParams.selectedOrdering}
+              toggleReverse={toggleReverse}
+              onSelect={selectOrdering}
+            />
+            <Button mode="contained" onPress={resetFilter}>
+              RESET
+            </Button>
+          </Surface>
+        </Animated.View>
       )}
       <ConnectStatus />
       {/* LIST */}
-      <FlatList
-        data={list}
-        initialNumToRender={6}
-        numColumns={2}
-        keyExtractor={keyExtractor}
-        style={styles.list}
-        onEndReached={onEndReached}
-        ListEmptyComponent={renderEmpty}
-        ListFooterComponent={renderFooter}
-        renderItem={renderItem}
-        contentContainerStyle={bottom}
-      />
+      <View style={[styles.list, AppStyles.screen]}>
+        <FlashList
+          contentContainerStyle={bottom}
+          data={list}
+          estimatedItemSize={300}
+          keyExtractor={keyExtractor}
+          ListEmptyComponent={renderEmpty}
+          ListFooterComponent={renderFooter}
+          numColumns={2}
+          renderItem={renderItem}
+          showsVerticalScrollIndicator={false}
+          onEndReached={onEndReached}
+        />
+      </View>
     </View>
   );
 };
@@ -284,6 +300,7 @@ const SongsScreen: React.FC<SongsScreenProps> = ({ navigation }) => {
 const styles = StyleSheet.create({
   filterContainer: {
     padding: Metrics.baseMargin,
+    zIndex: -1000,
   },
   flatListElement: {
     margin: Metrics.baseMargin,
@@ -292,5 +309,12 @@ const styles = StyleSheet.create({
     padding: Metrics.smallMargin,
   },
 });
+
+/** Render footer in FlatList */
+const renderFooter = (
+  <View style={[AppStyles.center, styles.flatListElement]}>
+    <Image source={Images.alpaca} />
+  </View>
+);
 
 export default SongsScreen;

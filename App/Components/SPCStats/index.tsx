@@ -1,11 +1,9 @@
-import React, { useContext } from 'react';
-import { View, StyleSheet } from 'react-native';
-import { Text, ProgressBar } from 'react-native-paper';
+import React from 'react';
+import {StyleSheet, View} from 'react-native';
 import FastImage from 'react-native-fast-image';
-import UserContext from '~/Context/UserContext';
-import { Metrics, AppStyles, Colors, Images } from '~/Theme';
-
-import type { AttributeType } from '~/typings';
+import {ProgressBar, Text} from 'react-native-paper';
+import {AppStyles, Colors, Images, Metrics} from '~/Theme';
+import useStore from '~/store';
 
 type Props = {
   text: AttributeType;
@@ -13,12 +11,12 @@ type Props = {
 };
 
 /** SPC = Smile Pure Cool */
-const SPCStats = ({ text, stat }: Props): JSX.Element => {
-  const { state } = useContext(UserContext);
+const SPCStats = ({text, stat}: Props) => {
+  const cachedData = useStore(s => s.cachedData);
   const maxStats = [
-    state.cachedData?.maxStats?.Smile || 0,
-    state.cachedData?.maxStats?.Pure || 0,
-    state.cachedData?.maxStats?.Cool || 0,
+    cachedData?.maxStats?.Smile || 0,
+    cachedData?.maxStats?.Pure || 0,
+    cachedData?.maxStats?.Cool || 0,
   ];
   let progress = 0;
   let color = Colors.pink;
@@ -42,13 +40,13 @@ const SPCStats = ({ text, stat }: Props): JSX.Element => {
       <Text>{text}</Text>
       <View style={AppStyles.row}>
         <FastImage
+          resizeMode="contain"
           source={Images.multi[text]}
-          resizeMode='contain'
           style={[AppStyles.mediumIcon, styles.marginRight]}
         />
         <View style={AppStyles.screen}>
           <Text>{stat}</Text>
-          <ProgressBar progress={progress} color={color} />
+          <ProgressBar color={color} progress={progress} />
         </View>
       </View>
     </View>

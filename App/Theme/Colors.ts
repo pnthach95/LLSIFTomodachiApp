@@ -1,4 +1,4 @@
-import { Colors } from 'react-native-paper';
+import {Colors} from 'react-native-paper';
 
 export default {
   ...Colors,

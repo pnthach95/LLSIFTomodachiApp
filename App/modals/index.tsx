@@ -1,10 +1,9 @@
-import { Easing } from 'react-native';
-import { createModalStack } from 'react-native-modalfy';
-import { responsiveScreenHeight } from 'react-native-responsive-dimensions';
+import {Easing} from 'react-native';
+import {createModalStack} from 'react-native-modalfy';
+import {responsiveScreenHeight} from 'react-native-responsive-dimensions';
+import type {ModalStackParamList} from '~/typings/modalfy';
 import FlatListModal from './flatlist';
-
-import type { ModalStackConfig } from 'react-native-modalfy';
-import type { ModalStackParamList } from '~/typings';
+import type {ModalStackConfig} from 'react-native-modalfy';
 
 const modalConfig: ModalStackConfig = {
   list: {
@@ -18,7 +17,7 @@ const modalConfig: ModalStackConfig = {
       easing: Easing.bezier(0.42, -0.03, 0.27, 0.95),
       duration: 450,
     },
-    transitionOptions: (animatedValue) => ({
+    transitionOptions: animatedValue => ({
       transform: [
         {
           translateY: animatedValue.interpolate({

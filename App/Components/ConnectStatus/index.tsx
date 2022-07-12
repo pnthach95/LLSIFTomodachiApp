@@ -1,16 +1,16 @@
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
-import { Text } from 'react-native-paper';
-import { NetworkConsumer } from 'react-native-offline';
-import { Fonts, Colors } from '~/Theme';
+import {StyleSheet, View} from 'react-native';
+import {NetworkConsumer} from 'react-native-offline';
+import {Text} from 'react-native-paper';
+import {Colors, Fonts} from '~/Theme';
 
 /**
  * Connect Status
  */
-const ConnectStatus = (): React.ReactElement => {
+const ConnectStatus = () => {
   return (
     <NetworkConsumer>
-      {({ isConnected }) =>
+      {({isConnected}) =>
         isConnected ? (
           <View style={styles.zero} />
         ) : (

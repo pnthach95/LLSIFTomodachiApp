@@ -1,63 +1,56 @@
-import React, { useState, useEffect, useContext } from 'react';
+import {FlashList} from '@shopify/flash-list';
+import React, {useEffect, useState} from 'react';
 import {
-  View,
-  FlatList,
   Alert,
-  ScrollView,
   Image,
-  StyleSheet,
+  ScrollView,
   StatusBar,
+  StyleSheet,
+  View,
 } from 'react-native';
 import {
-  Text,
-  Button,
   Appbar,
+  Button,
   FAB,
   Searchbar,
+  Text,
   useTheme,
 } from 'react-native-paper';
-import { responsiveHeight } from 'react-native-responsive-dimensions';
-import _ from 'lodash';
-import ConnectStatus from '~/Components/ConnectStatus';
-import CardItem from '~/Components/CardItem';
-import SelectionRow from '~/Components/SelectionRow';
-import ImgSelectionRow from '~/Components/ImgSelectionRow';
-import PickerRow from '~/Components/PickerRow';
-import OrderingRow from '~/Components/OrderingRow';
+import {responsiveHeight} from 'react-native-responsive-dimensions';
+import {useImmer} from 'use-immer';
 import Card2PicsItem from '~/Components/Card2PicsItem';
-import LLSIFService from '~/Services/LLSIFService';
-import { Metrics, AppStyles, Images } from '~/Theme';
-import UserContext from '~/Context/UserContext';
+import CardItem from '~/Components/CardItem';
+import ConnectStatus from '~/Components/ConnectStatus';
+import ImgSelectionRow from '~/Components/ImgSelectionRow';
+import OrderingRow from '~/Components/OrderingRow';
+import PickerRow from '~/Components/PickerRow';
+import SelectionRow from '~/Components/SelectionRow';
 import {
-  OrderingGroup,
   AllOnlyNone,
-  RegionData,
-  RarityData,
   AttributeData,
   MainUnitData,
+  OrderingGroup,
+  RarityData,
+  RegionData,
   YearData,
 } from '~/Config';
+import LLSIFService from '~/Services/LLSIFService';
+import {AppStyles, Images, Metrics} from '~/Theme';
+import {useStorage} from '~/Utils';
+import useStore from '~/store';
+import {initAppOptions} from '~/store/init';
+import type {MainTabScreenProps} from '~/typings/navigation';
 
-import type {
-  AttributeType,
-  BooleanOrEmpty,
-  CardObject,
-  CardSearchParams,
-  CardsScreenProps,
-  Combined,
-  CombinedWithBOE,
-  MainUnitNames,
-  RarityType,
-  SkillType,
-  YearType,
-} from '~/typings';
+/** Key extractor in FlatList */
+const keyExtractor = (item: CardObject) => `card ${item.id}`;
 
 /**
  * [Card List Screen](https://github.com/MagiCircles/SchoolIdolAPI/wiki/API-Cards#get-the-list-of-cards)
  */
-const CardsScreen: React.FC<CardsScreenProps> = ({ navigation }) => {
-  const { colors } = useTheme();
-  const { state } = useContext(UserContext);
+const CardsScreen = ({navigation}: MainTabScreenProps<'CardsScreen'>) => {
+  const {colors} = useTheme();
+  const [settings] = useStorage('settings', initAppOptions);
+  const cachedData = useStore(s => s.cachedData);
   const defaultParams: CardSearchParams = {
     search: '',
     selectedOrdering: OrderingGroup.CARD[1].value,
@@ -67,7 +60,7 @@ const CardsScreen: React.FC<CardsScreenProps> = ({ navigation }) => {
     name: 'All',
     rarity: '',
     attribute: '',
-    japan_only: state.options.worldwideOnly ? 'False' : '',
+    japan_only: settings.worldwideOnly ? 'False' : '',
     is_promo: '',
     is_special: '',
     is_event: '',
@@ -78,26 +71,20 @@ const CardsScreen: React.FC<CardsScreenProps> = ({ navigation }) => {
     idol_year: '',
   };
   const [isLoading, setIsLoading] = useState(true);
-  const [searchParams, setSearchParams] = useState(defaultParams);
+  const [searchParams, setSearchParams] = useImmer(defaultParams);
   const [column, setColumn] = useState(2);
   const [list, setList] = useState<CardObject[]>([]);
   const [showFilter, setShowFilter] = useState(false);
-  const [runSearch, setRunSearch] = useState(0);
 
   useEffect(() => {
-    if (searchParams.page > 0) {
-      void getCards();
-    }
-  }, [searchParams.page, runSearch]);
-
-  /** Key extractor in FlatList */
-  const keyExtractor = (item: CardObject) => `card ${item.id}`;
+    getCards(defaultParams);
+  }, []);
 
   /** Render item in FlatList */
-  const renderItem = ({ item }: { item: CardObject }) => {
+  const renderItem = ({item}: {item: CardObject}) => {
     /** Navigate to Card Detail Screen */
     const navigateToCardDetail = () => {
-      navigation.navigate('CardDetailScreen', { item });
+      navigation.navigate('CardDetailScreen', {item});
     };
 
     if (column === 1) {
@@ -107,64 +94,81 @@ const CardsScreen: React.FC<CardsScreenProps> = ({ navigation }) => {
   };
 
   /** Get card list */
-  const getCards = async () => {
-    const ordering =
-      (searchParams?.isReverse ? '-' : '') +
-      (searchParams.selectedOrdering || '');
+  const getCards = async (sp: CardSearchParams) => {
+    const ordering = (sp?.isReverse ? '-' : '') + (sp.selectedOrdering || '');
     const params: CardSearchParams = {
       ordering,
-      page_size: searchParams.page_size,
-      page: searchParams.page,
+      page_size: sp.page_size,
+      page: sp.page,
     };
-    if (searchParams.attribute !== '')
-      params.attribute = searchParams.attribute;
-    if (searchParams.idol_main_unit !== '')
-      params.idol_main_unit = searchParams.idol_main_unit;
-    if (searchParams.idol_sub_unit !== 'All')
-      params.idol_sub_unit = searchParams.idol_sub_unit;
-    if (searchParams.idol_school !== 'All')
-      params.idol_school = searchParams.idol_school;
-    if (searchParams.name !== 'All') params.name = searchParams.name;
-    if (searchParams.skill !== 'All') params.skill = searchParams.skill;
-    if (searchParams.is_event !== '') params.is_event = searchParams.is_event;
-    if (searchParams.is_promo !== '') params.is_promo = searchParams.is_promo;
-    if (searchParams.japan_only !== '')
-      params.japan_only = searchParams.japan_only;
-    if (searchParams.idol_year !== '')
-      params.idol_year = searchParams.idol_year;
-    if (searchParams.is_special !== '')
-      params.is_special = searchParams.is_special;
-    if (searchParams.rarity !== '') params.rarity = searchParams.rarity;
-    if (searchParams.search !== '') params.search = searchParams.search;
+    if (sp.attribute !== '') {
+      params.attribute = sp.attribute;
+    }
+    if (sp.idol_main_unit !== '') {
+      params.idol_main_unit = sp.idol_main_unit;
+    }
+    if (sp.idol_sub_unit !== 'All') {
+      params.idol_sub_unit = sp.idol_sub_unit;
+    }
+    if (sp.idol_school !== 'All') {
+      params.idol_school = sp.idol_school;
+    }
+    if (sp.name !== 'All') {
+      params.name = sp.name;
+    }
+    if (sp.skill !== 'All') {
+      params.skill = sp.skill;
+    }
+    if (sp.is_event !== '') {
+      params.is_event = sp.is_event;
+    }
+    if (sp.is_promo !== '') {
+      params.is_promo = sp.is_promo;
+    }
+    if (sp.japan_only !== '') {
+      params.japan_only = sp.japan_only;
+    }
+    if (sp.idol_year !== '') {
+      params.idol_year = sp.idol_year;
+    }
+    if (sp.is_special !== '') {
+      params.is_special = sp.is_special;
+    }
+    if (sp.rarity !== '') {
+      params.rarity = sp.rarity;
+    }
+    if (sp.search !== '') {
+      params.search = sp.search;
+    }
     // console.log(`Cards.getCards: ${JSON.stringify(theFilter)}`);
     try {
       setIsLoading(true);
       const result = await LLSIFService.fetchCardList(params);
       if (result === 404) {
         // console.log('LLSIFService.fetchCardList 404');
-        setSearchParams({ ...searchParams, page: 0 });
+        setSearchParams({...sp, page: 0});
       } else if (Array.isArray(result)) {
         let x = [];
-        if (searchParams.page === 1) {
+        if (sp.page === 1) {
           x = [...result];
         } else {
           x = [...list, ...result];
         }
         x = x.filter(
           (card, index, self) =>
-            index === self.findIndex((t) => t.id === card.id),
+            index === self.findIndex(t => t.id === card.id),
         );
         if (x.length === 0) {
-          setSearchParams({ ...searchParams, page: 0 });
+          setSearchParams({...sp, page: 0});
         }
         setList(x);
       } else {
-        setSearchParams({ ...searchParams, page: 0 });
-        throw Error('null');
+        setSearchParams({...sp, page: 0});
+        throw new Error('null');
       }
     } catch (err) {
       // console.log('OK Pressed', err);
-      Alert.alert('Error', 'Error when get cards', [{ text: 'OK' }]);
+      Alert.alert('Error', 'Error when get cards', [{text: 'OK'}]);
     } finally {
       setIsLoading(false);
     }
@@ -174,99 +178,130 @@ const CardsScreen: React.FC<CardsScreenProps> = ({ navigation }) => {
   const onSearch = () => {
     setList([]);
     setShowFilter(false);
-    if (searchParams.page === 1) {
-      setRunSearch(runSearch + 1);
-    }
-    setSearchParams({ ...searchParams, page: 1 });
+    setSearchParams({...searchParams, page: 1});
+    getCards({...searchParams, page: 1});
   };
 
   /**
    * Call when scrolling to the end of list.
    * stopSearch prevents calling getCards when no card was found (404).
    */
-  const onEndReaching = () => {
-    if (searchParams.page > 0) {
-      setSearchParams({ ...searchParams, page: searchParams.page + 1 });
+  const onEndReached = () => {
+    if (searchParams.page > 0 && !isLoading) {
+      const newSP = {...searchParams, page: searchParams.page + 1};
+      setSearchParams(newSP);
+      getCards(newSP);
     }
   };
-
-  const onEndReached = _.debounce(onEndReaching, 1000);
 
   /** Filter on/off */
   const toggleFilter = () => setShowFilter(!showFilter);
 
   /** Reverse search on/off */
-  const toggleReverse = () =>
-    setSearchParams({ ...searchParams, isReverse: !searchParams.isReverse });
+  const toggleReverse = () => {
+    setSearchParams(draft => {
+      draft.isReverse = !draft.isReverse;
+    });
+  };
 
   /** Switch 1 column and 2 columns */
   const switchColumn = () => setColumn(column === 1 ? 2 : 1);
 
   /** Save is_promo */
-  const selectPromo = (value: CombinedWithBOE) =>
-    setSearchParams({ ...searchParams, is_promo: value as BooleanOrEmpty });
+  const selectPromo = (value: CombinedWithBOE) => {
+    setSearchParams(draft => {
+      draft.is_promo = value as BooleanOrEmpty;
+    });
+  };
 
   /** Save is_special */
-  const selectSpecial = (value: CombinedWithBOE) =>
-    setSearchParams({ ...searchParams, is_special: value as BooleanOrEmpty });
+  const selectSpecial = (value: CombinedWithBOE) => {
+    setSearchParams(draft => {
+      draft.is_special = value as BooleanOrEmpty;
+    });
+  };
 
   /** Save is_event */
-  const selectEvent = (value: CombinedWithBOE) =>
-    setSearchParams({ ...searchParams, is_event: value as BooleanOrEmpty });
+  const selectEvent = (value: CombinedWithBOE) => {
+    setSearchParams(draft => {
+      draft.is_event = value as BooleanOrEmpty;
+    });
+  };
 
   /** Save idol_main_unit */
-  const selectMainUnit = (value: Combined) =>
-    setSearchParams({
-      ...searchParams,
-      idol_main_unit: value as MainUnitNames,
+  const selectMainUnit = (value: Combined) => {
+    setSearchParams(draft => {
+      draft.idol_main_unit = value as MainUnitNames;
     });
+  };
 
   /** Save rarity */
-  const selectRarity = (value: Combined) =>
-    setSearchParams({ ...searchParams, rarity: value as RarityType });
+  const selectRarity = (value: Combined) => {
+    setSearchParams(draft => {
+      draft.rarity = value as RarityType;
+    });
+  };
 
   /** Save attribute */
-  const selectAttribute = (value: Combined) =>
-    setSearchParams({ ...searchParams, attribute: value as AttributeType });
+  const selectAttribute = (value: Combined) => {
+    setSearchParams(draft => {
+      draft.attribute = value as AttributeType;
+    });
+  };
 
   /** Save idol_year */
-  const selectYear = (value: CombinedWithBOE) =>
-    setSearchParams({ ...searchParams, idol_year: value as YearType });
+  const selectYear = (value: CombinedWithBOE) => {
+    setSearchParams(draft => {
+      draft.idol_year = value as YearType;
+    });
+  };
 
   /** Save region */
-  const selectRegion = (value: CombinedWithBOE) =>
-    setSearchParams({ ...searchParams, japan_only: value as BooleanOrEmpty });
+  const selectRegion = (value: CombinedWithBOE) => {
+    setSearchParams(draft => {
+      draft.japan_only = value as BooleanOrEmpty;
+    });
+  };
 
   /** Save idol_sub_unit */
-  const selectSubUnit = (value: string) =>
-    setSearchParams({ ...searchParams, idol_sub_unit: value });
+  const selectSubUnit = (value: string) => {
+    setSearchParams(draft => {
+      draft.idol_sub_unit = value;
+    });
+  };
 
   /** Save idol name */
-  const selectIdol = (value: string) =>
-    setSearchParams({ ...searchParams, name: value });
+  const selectIdol = (value: string) => {
+    setSearchParams(draft => {
+      draft.name = value;
+    });
+  };
 
   /** Save school */
-  const selectSchool = (value: string) =>
-    setSearchParams({ ...searchParams, idol_school: value });
+  const selectSchool = (value: string) => {
+    setSearchParams(draft => {
+      draft.idol_school = value;
+    });
+  };
 
   /** Save skill */
-  const selectSkill = (value: string) =>
-    setSearchParams({ ...searchParams, skill: value as SkillType });
+  const selectSkill = (value: string) => {
+    setSearchParams(draft => {
+      draft.skill = value as SkillType;
+    });
+  };
 
   /** Save ordering */
-  const selectOrdering = (value: string) =>
-    setSearchParams({ ...searchParams, selectedOrdering: value });
+  const selectOrdering = (value: string) => {
+    setSearchParams(draft => {
+      draft.selectedOrdering = value;
+    });
+  };
 
   /** Reset filter variables */
-  const resetFilter = () =>
-    setSearchParams({ ...defaultParams, page: searchParams.page });
-
-  /** Render footer of FlatList */
-  const renderFooter = (
-    <View style={[AppStyles.center, styles.flatListElement]}>
-      <Image source={Images.alpaca} />
-    </View>
-  );
+  const resetFilter = () => {
+    setSearchParams({...defaultParams, page: searchParams.page});
+  };
 
   const renderEmpty = (
     <View style={[AppStyles.center, styles.flatListElement]}>
@@ -275,116 +310,118 @@ const CardsScreen: React.FC<CardsScreenProps> = ({ navigation }) => {
   );
 
   const onChangeText = (text: string) =>
-    setSearchParams({ ...searchParams, search: text });
+    setSearchParams(draft => {
+      draft.search = text;
+    });
 
   return (
     <View style={AppStyles.screen}>
       {/* HEADER */}
       <Appbar.Header
         statusBarHeight={StatusBar.currentHeight}
-        style={{ backgroundColor: colors.card }}>
+        style={{backgroundColor: colors.card}}>
         <View style={AppStyles.searchHeader}>
           <Searchbar
+            placeholder="Search card..."
+            style={AppStyles.noElevation}
             value={searchParams.search || ''}
             onChangeText={onChangeText}
-            onSubmitEditing={onSearch}
             onIconPress={onSearch}
-            placeholder='Search card...'
-            style={AppStyles.noElevation}
+            onSubmitEditing={onSearch}
           />
         </View>
-        <Appbar.Action icon='dots-horizontal' onPress={toggleFilter} />
+        <Appbar.Action icon="dots-horizontal" onPress={toggleFilter} />
       </Appbar.Header>
 
       {/* FILTER */}
       {showFilter && (
         <View
-          style={[styles.filterContainer, { backgroundColor: colors.surface }]}>
+          style={[styles.filterContainer, {backgroundColor: colors.surface}]}>
           <ScrollView contentContainerStyle={styles.contentContainer}>
             <PickerRow
-              name='Idol'
-              list={state.cachedData.idols}
+              list={cachedData.idols}
+              name="Idol"
               value={searchParams.name || ''}
               onSelect={selectIdol}
             />
             <ImgSelectionRow
-              title='Rarity'
               data={RarityData}
-              value={searchParams.rarity || ''}
               setValue={selectRarity}
+              title="Rarity"
+              value={searchParams.rarity || ''}
             />
             <ImgSelectionRow
-              title='Attribute'
               data={AttributeData}
-              value={searchParams.attribute || ''}
               setValue={selectAttribute}
+              title="Attribute"
+              value={searchParams.attribute || ''}
             />
             <SelectionRow
-              title='Region'
               data={RegionData}
-              value={searchParams.japan_only || ''}
               setValue={selectRegion}
+              title="Region"
+              value={searchParams.japan_only || ''}
             />
             <SelectionRow
-              title='Promo card'
               data={AllOnlyNone}
-              value={searchParams.is_promo || ''}
               setValue={selectPromo}
+              title="Promo card"
+              value={searchParams.is_promo || ''}
             />
             <SelectionRow
-              title='Special card'
               data={AllOnlyNone}
-              value={searchParams.is_special || ''}
               setValue={selectSpecial}
+              title="Special card"
+              value={searchParams.is_special || ''}
             />
             <SelectionRow
-              title='Event'
               data={AllOnlyNone}
-              value={searchParams.is_event || ''}
               setValue={selectEvent}
+              title="Event"
+              value={searchParams.is_event || ''}
             />
             <PickerRow
-              name='Skill'
+              list={cachedData.skills}
+              name="Skill"
               value={searchParams.skill || 'All'}
-              list={state.cachedData.skills}
               onSelect={selectSkill}
             />
             <ImgSelectionRow
-              title='Main unit'
               data={MainUnitData}
-              value={searchParams.idol_main_unit || ''}
               setValue={selectMainUnit}
+              title="Main unit"
+              value={searchParams.idol_main_unit || ''}
             />
             <PickerRow
-              name='Subunit'
+              list={cachedData.subUnits}
+              name="Subunit"
               value={searchParams.idol_sub_unit || ''}
-              list={state.cachedData.subUnits}
               onSelect={selectSubUnit}
             />
             <PickerRow
-              name='School'
+              list={cachedData.schools}
+              name="School"
               value={searchParams.idol_school || ''}
-              list={state.cachedData.schools}
               onSelect={selectSchool}
             />
             <SelectionRow
-              title='Year'
               data={YearData}
-              value={searchParams.idol_year || ''}
               setValue={selectYear}
+              title="Year"
+              value={searchParams.idol_year || ''}
             />
             <OrderingRow
+              isReverse={searchParams.isReverse || false}
               list={OrderingGroup.CARD}
               selectedItem={
                 searchParams.selectedOrdering || OrderingGroup.CARD[1].value
               }
-              onSelect={selectOrdering}
-              isReverse={searchParams.isReverse || false}
               toggleReverse={toggleReverse}
+              onSelect={selectOrdering}
             />
 
             {/* RESET BUTTON */}
-            <Button mode='contained' onPress={resetFilter}>
+            <Button mode="contained" onPress={resetFilter}>
               RESET
             </Button>
           </ScrollView>
@@ -392,23 +429,25 @@ const CardsScreen: React.FC<CardsScreenProps> = ({ navigation }) => {
       )}
       <ConnectStatus />
       {/* LIST */}
-      <FlatList
-        data={list}
-        key={`${column}c`}
-        showsVerticalScrollIndicator={false}
-        numColumns={column}
-        initialNumToRender={8}
-        keyExtractor={keyExtractor}
-        onEndReached={onEndReached}
-        style={styles.list}
-        ListEmptyComponent={renderEmpty}
-        ListFooterComponent={renderFooter}
-        renderItem={renderItem}
-      />
+      <View style={styles.listWrapper}>
+        <FlashList
+          key={`${column}c`}
+          contentContainerStyle={styles.list}
+          data={list}
+          estimatedItemSize={100}
+          keyExtractor={keyExtractor}
+          ListEmptyComponent={renderEmpty}
+          ListFooterComponent={renderFooter}
+          numColumns={column}
+          renderItem={renderItem}
+          showsVerticalScrollIndicator={false}
+          onEndReached={onEndReached}
+        />
+      </View>
       <FAB
         icon={column === 1 ? 'view-grid' : 'view-agenda'}
-        onPress={switchColumn}
         style={styles.fab}
+        onPress={switchColumn}
       />
     </View>
   );
@@ -431,8 +470,19 @@ const styles = StyleSheet.create({
     margin: Metrics.baseMargin,
   },
   list: {
-    padding: Metrics.smallMargin,
+    paddingVertical: Metrics.smallMargin,
+  },
+  listWrapper: {
+    flex: 1,
+    paddingHorizontal: Metrics.smallMargin,
   },
 });
+
+/** Render footer of FlatList */
+const renderFooter = (
+  <View style={[AppStyles.center, styles.flatListElement]}>
+    <Image source={Images.alpaca} />
+  </View>
+);
 
 export default CardsScreen;

@@ -1,12 +1,11 @@
-import React, { useRef, useState } from 'react';
-import { View, ScrollView, StyleSheet, Animated } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import { IconButton, useTheme } from 'react-native-paper';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-
+import {useNavigation} from '@react-navigation/native';
+import React, {useRef, useState} from 'react';
+import {Animated, ScrollView, StyleSheet, View} from 'react-native';
+import {IconButton, useTheme} from 'react-native-paper';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import type {
-  NativeSyntheticEvent,
   NativeScrollEvent,
+  NativeSyntheticEvent,
   ScrollViewProps,
 } from 'react-native';
 
@@ -17,11 +16,11 @@ const ScrollViewWithBackButton = ({
 }: ScrollViewProps & {
   children?: React.ReactNode;
   right?: React.ReactNode;
-}): JSX.Element => {
+}) => {
   const scrollAV = useRef(new Animated.Value(0)).current;
   const safeAreaInsets = useSafeAreaInsets();
   const [currentOffset, setCurrentOffset] = useState(0);
-  const { colors } = useTheme();
+  const {colors} = useTheme();
   const navigation = useNavigation();
   const scroll = {
     paddingTop: 50 + safeAreaInsets.top,
@@ -80,21 +79,19 @@ const ScrollViewWithBackButton = ({
       <ScrollView
         {...props}
         contentContainerStyle={[scroll, bottom]}
-        onScroll={onScroll}
         scrollEventThrottle={16}
-        showsVerticalScrollIndicator={false}>
+        showsVerticalScrollIndicator={false}
+        onScroll={onScroll}>
         {children}
       </ScrollView>
-      <Animated.View
-        style={[styles.back, top, { transform: [{ translateX }] }]}>
+      <Animated.View style={[styles.back, top, {transform: [{translateX}]}]}>
         <IconButton
-          icon='arrow-left'
+          icon="arrow-left"
+          style={{backgroundColor: colors.background}}
           onPress={goBack}
-          style={{ backgroundColor: colors.background }}
         />
       </Animated.View>
-      <Animated.View
-        style={[styles.right, top, { transform: [{ translateY }] }]}>
+      <Animated.View style={[styles.right, top, {transform: [{translateY}]}]}>
         {right}
       </Animated.View>
     </View>

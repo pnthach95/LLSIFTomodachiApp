@@ -1,23 +1,22 @@
-import React, { useState, useEffect, useContext } from 'react';
-import { View, StyleSheet } from 'react-native';
+import dayjs from 'dayjs';
+import React, {useCallback, useEffect, useState} from 'react';
+import {StyleSheet, View} from 'react-native';
+import FastImage from 'react-native-fast-image';
 import {
-  TouchableRipple,
   Button,
-  Text,
   ProgressBar,
+  Text,
+  TouchableRipple,
   useTheme,
 } from 'react-native-paper';
-import FastImage from 'react-native-fast-image';
-import { responsiveWidth } from 'react-native-responsive-dimensions';
-import dayjs from 'dayjs';
-import UserContext from '~/Context/UserContext';
-import ScrollViewWithBackButton from '~/Components/scrollviewwithbackbutton';
+import {responsiveWidth} from 'react-native-responsive-dimensions';
 import StarBar from '~/Components/StarBar';
 import TextRow from '~/Components/TextRow';
-import { findColorByAttribute, AddHTTPS } from '~/Utils';
-import { Metrics, AppStyles, Colors, Images, Fonts } from '~/Theme';
-
-import type { SongDetailScreenProps } from '~/typings';
+import ScrollViewWithBackButton from '~/Components/scrollviewwithbackbutton';
+import {AppStyles, Colors, Fonts, Images, Metrics} from '~/Theme';
+import {AddHTTPS, findColorByAttribute} from '~/Utils';
+import useStore from '~/store';
+import type {RootStackScreenProps} from '~/typings/navigation';
 
 type StatButtonProps = {
   id: number;
@@ -36,10 +35,10 @@ type StatButtonProps = {
 const SongDetailScreen = ({
   route,
   navigation,
-}: SongDetailScreenProps): JSX.Element => {
-  const { item } = route.params;
-  const { colors } = useTheme();
-  const { state } = useContext(UserContext);
+}: RootStackScreenProps<'SongDetailScreen'>) => {
+  const {item} = route.params;
+  const {colors} = useTheme();
+  const cachedData = useStore(s => s.cachedData);
   const [buttonID, setButtonID] = useState(0);
   const [currentStats, setCurrentStats] = useState<StatButtonProps['stat']>([
     0,
@@ -93,11 +92,21 @@ const SongDetailScreen = ({
 
   /** Set color for star */
   const setColor = (index: number): number => {
-    if (index < 3) return 0;
-    if (index < 6) return 1;
-    if (index < 9) return 2;
-    if (index === 9) return 3;
-    if (index === 10) return 4;
+    if (index < 3) {
+      return 0;
+    }
+    if (index < 6) {
+      return 1;
+    }
+    if (index < 9) {
+      return 2;
+    }
+    if (index === 9) {
+      return 3;
+    }
+    if (index === 10) {
+      return 4;
+    }
     return 5;
   };
 
@@ -117,21 +126,25 @@ const SongDetailScreen = ({
   };
 
   /** Render choosing stat button */
-  const StatButton = ({ id, text, stat }: StatButtonProps) => {
-    const onPress = () => {
-      setButtonID(id);
-      setCurrentStats(stat);
-    };
-    return (
-      <Button
-        mode='contained'
-        color={buttonID === id ? attributeColors[0] : Colors.inactive}
-        style={styles.button}
-        onPress={onPress}>
-        {text}
-      </Button>
-    );
-  };
+  const StatButton = useCallback(
+    ({id, text, stat}: StatButtonProps) => {
+      const onPress = () => {
+        setButtonID(id);
+        setCurrentStats(stat);
+      };
+
+      return (
+        <Button
+          color={buttonID === id ? attributeColors[0] : Colors.inactive}
+          mode="contained"
+          style={styles.button}
+          onPress={onPress}>
+          {text}
+        </Button>
+      );
+    },
+    [buttonID, attributeColors[0]],
+  );
 
   return (
     <ScrollViewWithBackButton>
@@ -140,7 +153,7 @@ const SongDetailScreen = ({
           style={[
             Fonts.style.center,
             Fonts.style.bigTitle,
-            { color: attributeColors[0] || colors.text },
+            {color: attributeColors[0] || colors.text},
           ]}>
           {item.name}
         </Text>
@@ -149,65 +162,65 @@ const SongDetailScreen = ({
             style={[
               Fonts.style.center,
               Fonts.style.smallTitle,
-              { color: attributeColors[0] || colors.text },
+              {color: attributeColors[0] || colors.text},
             ]}>
             {item.romaji_name}
           </Text>
         )}
         {!!item.main_unit && (
           <FastImage
+            resizeMode="contain"
             source={Images.multi[item.main_unit]}
-            resizeMode='contain'
             style={AppStyles.unitIcon}
           />
         )}
         <FastImage
-          source={{ uri: AddHTTPS(item.image) }}
-          resizeMode='contain'
+          resizeMode="contain"
+          source={{uri: AddHTTPS(item.image)}}
           style={styles.image}
         />
         <View style={styles.height10} />
 
         <TextRow
-          item1={{ text: 'Attribute', flex: 1 }}
-          item2={{ text: item.attribute, flex: 1 }}
+          item1={{text: 'Attribute', flex: 1}}
+          item2={{text: item.attribute, flex: 1}}
         />
         {!!item.rank && (
           <View style={styles.event}>
             <TextRow
-              item1={{ text: 'Unlock', flex: 1 }}
-              item2={{ text: item.rank, flex: 1 }}
+              item1={{text: 'Unlock', flex: 1}}
+              item2={{text: item.rank, flex: 1}}
             />
           </View>
         )}
         {!!item.BPM && (
           <TextRow
-            item1={{ text: 'Beats per minute', flex: 1 }}
-            item2={{ text: item.BPM, flex: 1 }}
+            item1={{text: 'Beats per minute', flex: 1}}
+            item2={{text: item.BPM, flex: 1}}
           />
         )}
         <TextRow
-          item1={{ text: 'Length', flex: 1 }}
-          item2={{ text: formatTime(item.time), flex: 1 }}
+          item1={{text: 'Length', flex: 1}}
+          item2={{text: formatTime(item.time), flex: 1}}
         />
         {item.event && (
           <View style={styles.event}>
             <TextRow
-              item1={{ text: 'Event', flex: 1 }}
-              item2={{ text: item.event.japanese_name, flex: 1 }}
+              item1={{text: 'Event', flex: 1}}
+              item2={{text: item.event.japanese_name, flex: 1}}
             />
             {!!item.event.english_name && (
               <TextRow
-                item1={{ text: '', flex: 1 }}
-                item2={{ text: item.event.english_name, flex: 1 }}
+                item1={{text: '', flex: 1}}
+                item2={{text: item.event.english_name, flex: 1}}
               />
             )}
             <TouchableRipple
-              onPress={navigateToEventDetail}
-              style={styles.eventButton}>
+              style={styles.eventButton}
+              onPress={navigateToEventDetail}>
               <FastImage
-                source={{ uri: AddHTTPS(item.event.image) }}
                 resizeMode={FastImage.resizeMode.contain}
+                source={{uri: AddHTTPS(item.event.image)}}
                 style={styles.eventImage}
               />
             </TouchableRipple>
@@ -216,7 +229,7 @@ const SongDetailScreen = ({
         {!!item.daily_rotation && !!item.daily_rotation_position && (
           <View style={styles.event}>
             <TextRow
-              item1={{ text: 'Daily rotation', flex: 1 }}
+              item1={{text: 'Daily rotation', flex: 1}}
               item2={{
                 text: `${item.daily_rotation} - ${item.daily_rotation_position}`,
                 flex: 1,
@@ -225,25 +238,25 @@ const SongDetailScreen = ({
           </View>
         )}
         <TextRow
-          item1={{ text: 'Currently available', flex: 1 }}
-          item2={{ text: item.available ? 'Yes' : 'No', flex: 1 }}
+          item1={{text: 'Currently available', flex: 1}}
+          item2={{text: item.available ? 'Yes' : 'No', flex: 1}}
         />
         <View style={styles.buttonRow}>
-          <StatButton id={0} text='Easy' stat={easy} />
-          <StatButton id={1} text='Normal' stat={normal} />
-          <StatButton id={2} text='Hard' stat={hard} />
-          <StatButton id={3} text='Expert' stat={expert} />
+          <StatButton id={0} stat={easy} text="Easy" />
+          <StatButton id={1} stat={normal} text="Normal" />
+          <StatButton id={2} stat={hard} text="Hard" />
+          <StatButton id={3} stat={expert} text="Expert" />
           {random[1].length !== 0 && (
-            <StatButton id={4} text='Random' stat={random} />
+            <StatButton id={4} stat={random} text="Random" />
           )}
-          {master[0] > 0 && <StatButton id={5} text='Master' stat={master} />}
+          {master[0] > 0 && <StatButton id={5} stat={master} text="Master" />}
         </View>
         {currentStats[0] > 0 && (
           <View style={styles.stretch}>
             <Text>{currentStats[0]} notes</Text>
             <ProgressBar
               color={attributeColors[0]}
-              progress={currentStats[0] / state.cachedData.songsMaxStats}
+              progress={currentStats[0] / cachedData.songsMaxStats}
             />
           </View>
         )}
@@ -287,7 +300,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: Metrics.baseMargin,
   },
-  stretch: { alignSelf: 'stretch' },
+  stretch: {alignSelf: 'stretch'},
 });
 
 export default SongDetailScreen;

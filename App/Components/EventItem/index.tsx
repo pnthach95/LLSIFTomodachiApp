@@ -1,16 +1,14 @@
-import React, { useState } from 'react';
-import { View, StyleSheet } from 'react-native';
-import { Text, TouchableRipple, Surface, useTheme } from 'react-native-paper';
+import React, {useState} from 'react';
+import {StyleSheet, View} from 'react-native';
 import FastImage from 'react-native-fast-image';
-import { Metrics, Colors, Fonts } from '~/Theme';
-import { AddHTTPS } from '~/Utils';
-import { EventStatus } from '~/Config';
+import {Surface, Text, TouchableRipple, useTheme} from 'react-native-paper';
+import {EventStatus} from '~/Config';
+import {Colors, Fonts, Metrics} from '~/Theme';
+import {AddHTTPS} from '~/Utils';
+import type {OnLoadEvent} from 'react-native-fast-image';
 
-import type { OnLoadEvent } from 'react-native-fast-image';
-import type { FCItemProps, EventObject } from '~/typings';
-
-const { ONGOING, ANNOUNCED } = EventStatus;
-const { amber400, green300 } = Colors;
+const {ONGOING, ANNOUNCED} = EventStatus;
+const {amber400, green300} = Colors;
 
 /**
  * Event item for Event List Screen
@@ -19,11 +17,8 @@ const { amber400, green300 } = Colors;
  * - `item`: [Event object](https://github.com/MagiCircles/SchoolIdolAPI/wiki/API-Events#objects)
  * - `onPress`: onPress function
  */
-const EventItem = ({
-  item,
-  onPress,
-}: FCItemProps<EventObject>): JSX.Element => {
-  const { surface } = useTheme().colors;
+const EventItem = ({item, onPress}: FCItemProps<EventObject>) => {
+  const {surface} = useTheme().colors;
   const [imgSize, setImgSize] = useState({
     width: Metrics.widthBanner,
     height: 100,
@@ -41,22 +36,22 @@ const EventItem = ({
   };
 
   const onLoad = (e: OnLoadEvent) => {
-    const { width, height } = e.nativeEvent;
-    setImgSize({ width, height });
+    const {width, height} = e.nativeEvent;
+    setImgSize({width, height});
   };
 
   return (
     <Surface style={[styles.container, bgColor]}>
-      <TouchableRipple borderless onPress={onPress} style={styles.padding}>
+      <TouchableRipple borderless style={styles.touchable} onPress={onPress}>
         <>
           <FastImage
-            onLoad={onLoad}
-            source={{ uri: getImage, priority: 'normal' }}
-            resizeMode='contain'
+            resizeMode="contain"
+            source={{uri: getImage, priority: 'normal'}}
             style={{
               width: Metrics.widthBanner,
               height: (Metrics.widthBanner * imgSize.height) / imgSize.width,
             }}
+            onLoad={onLoad}
           />
           <View style={styles.textBox}>
             {label.length > 0 && (
@@ -64,9 +59,10 @@ const EventItem = ({
                 {`[${label.toUpperCase()}]`}
               </Text>
             )}
-            {!!item.english_name && (
-              <Text style={Fonts.style.center}>{item.english_name}</Text>
-            )}
+            {!!item.english_name &&
+              item.english_name !== item.japanese_name && (
+                <Text style={Fonts.style.center}>{item.english_name}</Text>
+              )}
             <Text style={Fonts.style.center}>{item.japanese_name}</Text>
           </View>
         </>
@@ -79,14 +75,16 @@ const styles = StyleSheet.create({
   container: {
     borderRadius: Metrics.baseMargin,
     elevation: 5,
-    margin: Metrics.smallMargin,
+    marginHorizontal: Metrics.baseMargin,
     overflow: 'hidden',
-  },
-  padding: {
-    padding: Metrics.baseMargin,
+    paddingHorizontal: Metrics.baseMargin,
   },
   textBox: {
     paddingTop: Metrics.smallMargin,
+  },
+  touchable: {
+    alignItems: 'center',
+    padding: Metrics.baseMargin,
   },
 });
 

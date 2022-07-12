@@ -1,27 +1,20 @@
-import React, { useState, useEffect, useContext } from 'react';
-import { View, StyleSheet } from 'react-native';
-import { Text, Button } from 'react-native-paper';
 import messaging from '@react-native-firebase/messaging';
+import React, {useEffect, useState} from 'react';
+import {StyleSheet, View} from 'react-native';
 import RNBootSplash from 'react-native-bootsplash';
-
-import { initCachedData } from '~/Context/Reducer';
+import {Button, Text} from 'react-native-paper';
+import {FirebaseTopic} from '~/Config';
 import LLSIFService from '~/Services/LLSIFService';
 import LLSIFdotnetService from '~/Services/LLSIFdotnetService';
+import {AppStyles, Metrics} from '~/Theme';
+import {useStorage} from '~/Utils';
+import {saveCachedData, setAppRoute} from '~/store';
+import {initAppOptions, initCachedData} from '~/store/init';
 import LoadingScreen from '../Loading';
-import UserContext from '~/Context/UserContext';
-import { AppStyles, Metrics } from '~/Theme';
-import { loadSettings } from '~/Utils';
-import { FirebaseTopic } from '~/Config';
-
-import type {
-  CachedDataObject,
-  SubUnitNames,
-  EventSearchParams,
-} from '~/typings';
 
 /** Loading Screen */
-const SplashScreen = (): JSX.Element => {
-  const { dispatch } = useContext(UserContext);
+const SplashScreen = () => {
+  const [settings] = useStorage('settings', initAppOptions);
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(true);
   const [isMounted, setIsMounted] = useState(true);
@@ -29,41 +22,39 @@ const SplashScreen = (): JSX.Element => {
   const [loadedCached, setLoadedC] = useState(false);
 
   useEffect(() => {
-    void loadAppOptions();
+    loadAppOptions();
     return () => setIsMounted(false);
   }, []);
 
   useEffect(() => {
     if (loading) {
-      void loadCachedData();
+      loadCachedData();
     }
   }, [loading]);
 
   useEffect(() => {
     if (loadedAppOptions) {
-      void RNBootSplash.hide({ fade: true });
+      RNBootSplash.hide({fade: true});
     }
     if (loadedAppOptions && loadedCached) {
-      dispatch({ type: 'LOADING', loading: false });
+      setAppRoute('MAIN');
     }
   }, [loadedAppOptions, loadedCached]);
 
   const loadAppOptions = async () => {
-    const res = await loadSettings();
-    if (res.jpEvent) {
-      void messaging().subscribeToTopic(FirebaseTopic.JP_EVENT);
+    if (settings.jpEvent) {
+      messaging().subscribeToTopic(FirebaseTopic.JP_EVENT);
     } else {
-      void messaging().unsubscribeFromTopic(FirebaseTopic.JP_EVENT);
+      messaging().unsubscribeFromTopic(FirebaseTopic.JP_EVENT);
     }
-    void messaging().unsubscribeFromTopic(FirebaseTopic.WW_EVENT);
-    dispatch({ type: 'SAVE_OPTIONS', data: res });
+    messaging().unsubscribeFromTopic(FirebaseTopic.WW_EVENT);
     setLoadedAO(true);
   };
 
   const loadCachedData = async () => {
     setError(false);
     try {
-      const cachedData: CachedDataObject = { ...initCachedData };
+      const cachedData: CachedDataObject = {...initCachedData};
       const enParams: EventSearchParams = {
         page: 1,
         ordering: '-english_beginning',
@@ -82,12 +73,12 @@ const SplashScreen = (): JSX.Element => {
       ]);
       if (data) {
         const cardsInfo = data.cards_info;
-        const idols = cardsInfo.idols.map(({ name }) => name);
+        const idols = cardsInfo.idols.map(({name}) => name);
         cachedData.idols = idols;
-        const skills = cardsInfo.skills.map(({ skill }) => skill);
+        const skills = cardsInfo.skills.map(({skill}) => skill);
         cachedData.skills = skills;
         const subUnits = cardsInfo.sub_units.map(
-          (value) => value,
+          value => value,
         ) as SubUnitNames[];
         cachedData.subUnits = subUnits;
         const schools = cardsInfo.schools.map((value: string) => value);
@@ -102,13 +93,10 @@ const SplashScreen = (): JSX.Element => {
           cachedData.JPEvent = eventJP[0];
         }
         cachedData.eventInfo = evInfo;
-        dispatch({
-          type: 'SAVE_CACHED_DATA',
-          data: cachedData,
-        });
+        saveCachedData(cachedData);
         setLoadedC(true);
       } else {
-        throw Error('data = null');
+        throw new Error('data = null');
       }
     } catch (e) {
       // console.log(e);

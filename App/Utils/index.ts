@@ -1,8 +1,10 @@
-import { Alert, Linking } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { Colors } from '~/Theme';
-import { initAppOptions } from '~/Context/Reducer';
-import type { AppOptions, AttributeType } from '../typings';
+import {Alert, Linking} from 'react-native';
+import {MMKVLoader, create} from 'react-native-mmkv-storage';
+import {Colors} from '~/Theme';
+import type {AttributeType} from '../typings';
+
+const MMKV = new MMKVLoader().initialize();
+export const useStorage = create(MMKV);
 
 /** Add `https:` for image link */
 export const AddHTTPS = (link: string): string => `https:${link}`;
@@ -45,23 +47,9 @@ export const findSkill = (key: string): number => {
   }
 };
 
-export const loadSettings = async (): Promise<AppOptions> => {
-  const res = await AsyncStorage.getItem('settings');
-  if (res === null) {
-    return initAppOptions;
-  } else {
-    const parsed: AppOptions = JSON.parse(res);
-    return parsed;
-  }
-};
-
-export const saveSettings = (settings: AppOptions): void => {
-  void AsyncStorage.setItem('settings', JSON.stringify(settings));
-};
-
-export const openLink = (link: string): void => {
+export const openLink = (link: string) => {
   Alert.alert('Open link', link, [
-    { text: 'Cancel', style: 'cancel' },
-    { text: 'OK', onPress: () => Linking.openURL(link) },
+    {text: 'Cancel', style: 'cancel'},
+    {text: 'OK', onPress: () => Linking.openURL(link)},
   ]);
 };

@@ -1,42 +1,32 @@
-import React, { useState, useEffect, useContext } from 'react';
-import {
-  View,
-  FlatList,
-  Alert,
-  Image,
-  StyleSheet,
-  StatusBar,
-} from 'react-native';
-import { Text, Button, Appbar, Searchbar, useTheme } from 'react-native-paper';
-import _ from 'lodash';
+import {FlashList} from '@shopify/flash-list';
+import React, {useEffect, useState} from 'react';
+import {Alert, Image, StatusBar, StyleSheet, View} from 'react-native';
+import {Appbar, Button, Searchbar, Text, useTheme} from 'react-native-paper';
+import {useImmer} from 'use-immer';
 import ConnectStatus from '~/Components/ConnectStatus';
 import EventItem from '~/Components/EventItem';
-import SelectionRow from '~/Components/SelectionRow';
-import PickerRow from '~/Components/PickerRow';
 import ImgSelectionRow from '~/Components/ImgSelectionRow';
-import { Metrics, AppStyles, Images } from '~/Theme';
+import PickerRow from '~/Components/PickerRow';
+import SelectionRow from '~/Components/SelectionRow';
+import Space from '~/Components/space';
+import {AttributeData, MainUnitData, RegionData} from '~/Config';
 import LLSIFService from '~/Services/LLSIFService';
-import UserContext from '~/Context/UserContext';
-import { AttributeData, MainUnitData, RegionData } from '~/Config';
+import {AppStyles, Images, Metrics} from '~/Theme';
+import {useStorage} from '~/Utils';
+import useStore from '~/store';
+import {initAppOptions} from '~/store/init';
+import type {MainTabScreenProps} from '~/typings/navigation';
 
-import type {
-  EventSearchParams,
-  EventsScreenProps,
-  EventObject,
-  AttributeType,
-  MainUnitNames,
-  BooleanOrEmpty,
-  SkillType,
-  Combined,
-  CombinedWithBOE,
-} from '~/typings';
+/** Key extractor for FlatList */
+const keyExtractor = (item: EventObject) => `event ${item.japanese_name}`;
 
 /**
  * [Event List Screen](https://github.com/MagiCircles/SchoolIdolAPI/wiki/API-Events#get-the-list-of-events)
  */
-const EventsScreen: React.FC<EventsScreenProps> = ({ navigation }) => {
-  const { colors } = useTheme();
-  const { state } = useContext(UserContext);
+const EventsScreen = ({navigation}: MainTabScreenProps<'EventsScreen'>) => {
+  const {colors} = useTheme();
+  const [settings] = useStorage('settings', initAppOptions);
+  const cachedData = useStore(s => s.cachedData);
   const defaultParams: EventSearchParams = {
     ordering: '-beginning',
     page_size: 30,
@@ -46,26 +36,20 @@ const EventsScreen: React.FC<EventsScreenProps> = ({ navigation }) => {
     main_unit: '',
     skill: 'All',
     attribute: '',
-    is_english: state.options.worldwideOnly ? 'False' : '',
+    is_english: settings.worldwideOnly ? 'False' : '',
   };
 
   const [isLoading, setIsLoading] = useState(true);
   const [list, setList] = useState<EventObject[]>([]);
   const [showFilter, setShowFilter] = useState(false);
-  const [searchParams, setSearchParams] = useState(defaultParams);
-  const [runSearch, setRunSearch] = useState(0);
+  const [searchParams, setSearchParams] = useImmer(defaultParams);
 
   useEffect(() => {
-    if (searchParams.page > 0) {
-      void getEvents();
-    }
-  }, [searchParams.page, runSearch]);
-
-  /** Key extractor for FlatList */
-  const keyExtractor = (item: EventObject) => `event ${item.japanese_name}`;
+    getEvents(defaultParams);
+  }, []);
 
   /** Render item in FlatList */
-  const renderItem = ({ item }: { item: EventObject }) => {
+  const renderItem = ({item}: {item: EventObject}) => {
     /** Navigate to Event Detail Screen */
     const navigateToEventDetail = () => {
       navigation.navigate('EventDetailScreen', {
@@ -80,63 +64,74 @@ const EventsScreen: React.FC<EventsScreenProps> = ({ navigation }) => {
    * Call when scrolling to the end of list.
    * stopSearch prevents calling getEvents when no event was found (404).
    */
-  const onEndReaching = () => {
-    if (searchParams.page > 0) {
-      setSearchParams({ ...searchParams, page: searchParams.page + 1 });
+  const onEndReached = () => {
+    if (searchParams.page > 0 && !isLoading) {
+      const newSP = {...searchParams, page: searchParams.page + 1};
+      setSearchParams(newSP);
+      getEvents(newSP);
     }
   };
 
-  const onEndReached = _.debounce(onEndReaching, 500);
-
   /** Get event list */
-  const getEvents = async () => {
+  const getEvents = async (sp: EventSearchParams) => {
     const params: EventSearchParams = {
-      ordering: searchParams.ordering,
-      page_size: searchParams.page_size,
-      page: searchParams.page,
+      ordering: sp.ordering,
+      page_size: sp.page_size,
+      page: sp.page,
     };
-    if (searchParams.idol !== 'All') params.idol = searchParams.idol;
-    if (searchParams.skill !== 'All') params.skill = searchParams.skill;
-    let isEnglish = searchParams.is_english;
+    if (sp.idol !== 'All') {
+      params.idol = sp.idol;
+    }
+    if (sp.skill !== 'All') {
+      params.skill = sp.skill;
+    }
+    let isEnglish = sp.is_english;
     if (isEnglish !== '') {
-      if (isEnglish === 'True') isEnglish = 'False';
-      else isEnglish = 'True';
+      if (isEnglish === 'True') {
+        isEnglish = 'False';
+      } else {
+        isEnglish = 'True';
+      }
       params.is_english = isEnglish;
     }
-    if (searchParams.main_unit !== '')
-      params.main_unit = searchParams.main_unit;
-    if (searchParams.attribute !== '')
-      params.attribute = searchParams.attribute;
-    if (searchParams.search !== '') params.search = searchParams.search;
+    if (sp.main_unit !== '') {
+      params.main_unit = sp.main_unit;
+    }
+    if (sp.attribute !== '') {
+      params.attribute = sp.attribute;
+    }
+    if (sp.search !== '') {
+      params.search = sp.search;
+    }
     // console.log(`Events.getEvents ${JSON.stringify(params)}`);
     try {
       setIsLoading(true);
       const result = await LLSIFService.fetchEventList(params);
       if (result === 404) {
         // console.log('LLSIFService.fetchEventList 404');
-        setSearchParams({ ...searchParams, page: 0 });
+        setSearchParams({...sp, page: 0});
       } else if (Array.isArray(result)) {
         let x = [];
-        if (searchParams.page === 1) {
+        if (sp.page === 1) {
           x = [...result];
         } else {
           x = [...list, ...result];
         }
         x = x.filter(
-          (thing, index, self) =>
+          (item, index, self) =>
             index ===
-            self.findIndex((t) => t.japanese_name === thing.japanese_name),
+            self.findIndex(t => t.japanese_name === item.japanese_name),
         );
         if (x.length === 0) {
-          setSearchParams({ ...searchParams, page: 0 });
+          setSearchParams({...sp, page: 0});
         }
         setList(x);
       } else {
-        setSearchParams({ ...searchParams, page: 0 });
-        throw Error('null');
+        setSearchParams({...sp, page: 0});
+        throw new Error('null');
       }
     } catch (err) {
-      Alert.alert('Error', 'Error when get songs', [{ text: 'OK' }]);
+      Alert.alert('Error', 'Error when get songs', [{text: 'OK'}]);
       // console.log('error', err);
     } finally {
       setIsLoading(false);
@@ -147,45 +142,51 @@ const EventsScreen: React.FC<EventsScreenProps> = ({ navigation }) => {
   const onSearch = () => {
     setList([]);
     setShowFilter(false);
-    if (searchParams.page === 1) {
-      setRunSearch(runSearch + 1);
-    }
-    setSearchParams({ ...searchParams, page: 1 });
+    setSearchParams({...searchParams, page: 1});
+    getEvents({...searchParams, page: 1});
   };
 
   /** Reset filter */
   const resetFilter = () =>
-    setSearchParams({ ...defaultParams, page: searchParams.page });
+    setSearchParams({...defaultParams, page: searchParams.page});
 
   /** Filter on/off */
   const toggleFilter = () => setShowFilter(!showFilter);
 
   /** Save `attribute` */
-  const selectAttribute = (value: Combined) =>
-    setSearchParams({ ...searchParams, attribute: value as AttributeType });
+  const selectAttribute = (value: Combined) => {
+    setSearchParams(draft => {
+      draft.attribute = value as AttributeType;
+    });
+  };
 
   /** Save `main_unit` */
-  const selectMainUnit = (value: Combined) =>
-    setSearchParams({ ...searchParams, main_unit: value as MainUnitNames });
+  const selectMainUnit = (value: Combined) => {
+    setSearchParams(draft => {
+      draft.main_unit = value as MainUnitNames;
+    });
+  };
 
   /** Save `is_english` */
-  const selectRegion = (value: CombinedWithBOE) =>
-    setSearchParams({ ...searchParams, is_english: value as BooleanOrEmpty });
+  const selectRegion = (value: CombinedWithBOE) => {
+    setSearchParams(draft => {
+      draft.is_english = value as BooleanOrEmpty;
+    });
+  };
 
   /** Save `skill` */
-  const selectSkill = (value: string) =>
-    setSearchParams({ ...searchParams, skill: value as SkillType });
+  const selectSkill = (value: string) => {
+    setSearchParams(draft => {
+      draft.skill = value as SkillType;
+    });
+  };
 
   /** Save `idol` */
-  const selectIdol = (value: string) =>
-    setSearchParams({ ...searchParams, idol: value });
-
-  /** Render footer of FlatList */
-  const renderFooter = (
-    <View style={[AppStyles.center, styles.margin10]}>
-      <Image source={Images.alpaca} />
-    </View>
-  );
+  const selectIdol = (value: string) => {
+    setSearchParams(draft => {
+      draft.idol = value;
+    });
+  };
 
   const renderEmpty = (
     <View style={[AppStyles.center, styles.flatListElement]}>
@@ -193,100 +194,104 @@ const EventsScreen: React.FC<EventsScreenProps> = ({ navigation }) => {
     </View>
   );
 
-  const onChangeText = (text: string) =>
-    setSearchParams({ ...searchParams, search: text });
+  const onChangeText = (text: string) => {
+    setSearchParams(draft => {
+      draft.search = text;
+    });
+  };
 
   return (
     <View style={AppStyles.screen}>
       {/* HEADER */}
       <Appbar.Header
         statusBarHeight={StatusBar.currentHeight}
-        style={{ backgroundColor: colors.card }}>
+        style={{backgroundColor: colors.card}}>
         <View style={AppStyles.searchHeader}>
           <Searchbar
+            placeholder="Search event..."
+            style={AppStyles.noElevation}
             value={searchParams.search || ''}
             onChangeText={onChangeText}
-            onSubmitEditing={onSearch}
             onIconPress={onSearch}
-            placeholder='Search event...'
-            style={AppStyles.noElevation}
+            onSubmitEditing={onSearch}
           />
         </View>
-        <Appbar.Action icon='dots-horizontal' onPress={toggleFilter} />
+        <Appbar.Action icon="dots-horizontal" onPress={toggleFilter} />
       </Appbar.Header>
 
       {/* FILTER */}
       {showFilter && (
         <View
-          style={[styles.filterContainer, { backgroundColor: colors.surface }]}>
+          style={[styles.filterContainer, {backgroundColor: colors.surface}]}>
           <PickerRow
-            name='Idol'
+            list={cachedData.idols}
+            name="Idol"
             value={searchParams.idol || 'All'}
-            list={state.cachedData.idols}
             onSelect={selectIdol}
           />
           <ImgSelectionRow
-            title='Main unit'
             data={MainUnitData}
-            value={searchParams.main_unit || ''}
             setValue={selectMainUnit}
+            title="Main unit"
+            value={searchParams.main_unit || ''}
           />
           <PickerRow
-            name='Skill'
+            list={cachedData.skills}
+            name="Skill"
             value={searchParams.skill || 'All'}
-            list={state.cachedData.skills}
             onSelect={selectSkill}
           />
           <ImgSelectionRow
-            title='Attribute'
             data={AttributeData}
-            value={searchParams.attribute || ''}
             setValue={selectAttribute}
+            title="Attribute"
+            value={searchParams.attribute || ''}
           />
           <SelectionRow
-            title='Region'
             data={RegionData}
-            value={searchParams.is_english || ''}
             setValue={selectRegion}
+            title="Region"
+            value={searchParams.is_english || ''}
           />
-          <Button mode='contained' onPress={resetFilter}>
+          <Button mode="contained" onPress={resetFilter}>
             RESET
           </Button>
         </View>
       )}
       <ConnectStatus />
       {/* LIST */}
-      <FlatList
+      <FlashList
+        contentContainerStyle={styles.list}
         data={list}
-        contentContainerStyle={styles.content}
-        initialNumToRender={6}
+        estimatedItemSize={100}
+        ItemSeparatorComponent={Space}
         keyExtractor={keyExtractor}
-        style={styles.list}
         ListEmptyComponent={renderEmpty}
         ListFooterComponent={renderFooter}
-        onEndReached={onEndReached}
         renderItem={renderItem}
+        onEndReached={onEndReached}
       />
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  content: {
-    alignItems: 'center',
-  },
   filterContainer: {
-    padding: 10,
+    padding: Metrics.baseMargin,
   },
   flatListElement: {
     margin: Metrics.baseMargin,
   },
   list: {
-    padding: Metrics.smallMargin,
-  },
-  margin10: {
-    margin: 10,
+    paddingVertical: Metrics.smallMargin,
   },
 });
+
+/** Render footer of FlatList */
+const renderFooter = (
+  <View style={[AppStyles.center, styles.flatListElement]}>
+    <Image source={Images.alpaca} />
+  </View>
+);
 
 export default EventsScreen;

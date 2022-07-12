@@ -1,23 +1,15 @@
-import { CompositeNavigationProp } from '@react-navigation/native';
-import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
-import { StackScreenProps, StackNavigationProp } from '@react-navigation/stack';
-import {
-  ModalComponentWithOptions,
-  ModalComponentProp,
-} from 'react-native-modalfy';
-
 //  -----------------------------------------------
 //  Components
 //  -----------------------------------------------
 
-type LVObject<T> = { label: string; value: T };
+type LVObject<T> = {label: string; value: T};
 
 type Combined = RarityType | AttributeType | MainUnitNames;
 type CombinedWithBOE = BooleanOrEmpty | YearType;
 
 type FCSelectionProps<T = Combined> = {
   title: string;
-  data: ReadonlyArray<T>;
+  data: readonly T[];
   value: T;
   setValue: (value: T) => void;
 };
@@ -37,117 +29,18 @@ type AppOptions = {
   worldwideOnly: boolean;
 };
 
-type AppState = {
-  loading: boolean;
+type StoreState = {
+  appRoute: 'LOADING' | 'MAIN';
   cachedData: CachedDataObject;
-  options: AppOptions;
+  schoolIdols: SchoolObject[];
 };
-
-//  -----------------------------------------------
-//  Reducer
-//  -----------------------------------------------
-
-type ActionType =
-  | { type: 'LOADING'; loading: boolean }
-  | { type: 'SAVE_CACHED_DATA'; data: CachedDataObject }
-  | { type: 'SAVE_OPTIONS'; data: AppOptions };
-
-//  -----------------------------------------------
-//  Navigation
-//  -----------------------------------------------
-
-type BottomTabList = {
-  MainScreen: undefined;
-  CardsScreen: undefined;
-  EventsScreen: undefined;
-  MoreScreen: undefined;
-};
-
-type MainScreenProps = {
-  navigation: CompositeNavigationProp<
-    BottomTabNavigationProp<BottomTabList, 'MainScreen'>,
-    StackNavigationProp<RootStackParamList>
-  >;
-};
-type CardsScreenProps = {
-  navigation: CompositeNavigationProp<
-    BottomTabNavigationProp<BottomTabList, 'CardsScreen'>,
-    StackNavigationProp<RootStackParamList>
-  >;
-};
-type EventsScreenProps = {
-  navigation: CompositeNavigationProp<
-    BottomTabNavigationProp<BottomTabList, 'EventsScreen'>,
-    StackNavigationProp<RootStackParamList>
-  >;
-};
-type MoreScreenProps = {
-  navigation: CompositeNavigationProp<
-    BottomTabNavigationProp<BottomTabList, 'MoreScreen'>,
-    StackNavigationProp<RootStackParamList>
-  >;
-};
-
-type RootStackParamList = {
-  Main: undefined;
-  SplashScreen: undefined;
-  IdolsScreen: undefined;
-  SongsScreen: undefined;
-  CardDetailScreen: { item: CardObject };
-  EventDetailScreen: { eventName: string };
-  EventTrackerScreen: { isWW: boolean; name: string; backup?: string };
-  IdolDetailScreen: { name: string };
-  SongDetailScreen: { item: SongObject };
-  AboutMeScreen: undefined;
-};
-
-type IdolsScreenProps = StackScreenProps<RootStackParamList, 'IdolsScreen'>;
-type SongsScreenProps = StackScreenProps<RootStackParamList, 'SongsScreen'>;
-type CardDetailScreenProps = StackScreenProps<
-  RootStackParamList,
-  'CardDetailScreen'
->;
-type EventDetailScreenProps = StackScreenProps<
-  RootStackParamList,
-  'EventDetailScreen'
->;
-type EventTrackerScreenProps = StackScreenProps<
-  RootStackParamList,
-  'EventTrackerScreen'
->;
-type IdolDetailScreenProps = StackScreenProps<
-  RootStackParamList,
-  'IdolDetailScreen'
->;
-type SongDetailScreenProps = StackScreenProps<
-  RootStackParamList,
-  'SongDetailScreen'
->;
-
-//  -----------------------------------------------
-//  Modal
-//  -----------------------------------------------
-
-type ModalStackParamList = {
-  list: {
-    title: string;
-    selectedItem: string | undefined;
-    data?: string[];
-    objectData?: LVObject<string>[];
-    onPress: (item: string) => void;
-  };
-};
-
-type ListModalComponent = ModalComponentWithOptions<
-  ModalComponentProp<ModalStackParamList, void, 'list'>
->;
 
 //  -----------------------------------------------
 //  Union
 //  -----------------------------------------------
 
 type YearType = 'First' | 'Second' | 'Third' | '';
-type MainUnitNames = `μ's` | 'Aqours' | '';
+type MainUnitNames = "μ's" | 'Aqours' | 'Nijigasaki' | 'Liella!' | '';
 type SubUnitNames =
   | 'Printemps'
   | 'Lily White'
@@ -638,4 +531,12 @@ type GithubRepoType = {
   tarball_url: string;
   zipball_url: string;
   body: string;
+};
+
+type SchoolObject = {
+  title: string;
+  data: {
+    key: string;
+    list: IdolObject[];
+  }[];
 };

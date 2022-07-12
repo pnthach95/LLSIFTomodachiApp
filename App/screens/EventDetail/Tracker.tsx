@@ -1,27 +1,26 @@
-import React, { useEffect, useContext, useState } from 'react';
-import { View, ScrollView, FlatList, StyleSheet } from 'react-native';
-import { Text, useTheme } from 'react-native-paper';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { responsiveHeight } from 'react-native-responsive-dimensions';
-import { VictoryChart, VictoryLine, VictoryAxis } from 'victory-native';
-import LoadingScreen from '../Loading';
-import UserContext from '~/Context/UserContext';
+import React, {useEffect, useState} from 'react';
+import {FlatList, ScrollView, StyleSheet, View} from 'react-native';
+import {Text, useTheme} from 'react-native-paper';
+import {responsiveHeight} from 'react-native-responsive-dimensions';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import {VictoryAxis, VictoryChart, VictoryLine} from 'victory-native';
 import LLSIFdotnetService from '~/Services/LLSIFdotnetService';
-import { AppStyles, Colors, Fonts, Metrics } from '~/Theme';
-
-import type { ViewStyle } from 'react-native';
-import type { EventTrackerScreenProps } from '~/typings';
+import {AppStyles, Colors, Fonts, Metrics} from '~/Theme';
+import useStore from '~/store';
+import type {RootStackScreenProps} from '~/typings/navigation';
+import LoadingScreen from '../Loading';
+import type {ViewStyle} from 'react-native';
 
 type TrackerDataProps = {
   table: string[][] | null;
   chart: {
     seriesName: string;
-    data: { x: string; y: number }[] | null;
+    data: {x: string; y: number}[] | null;
     color: string;
   }[];
 };
 
-const chartPadding = { left: 70, top: 20, bottom: 30, right: 20 };
+const chartPadding = {left: 70, top: 20, bottom: 30, right: 20};
 const colorArr = [
   Colors.red400,
   Colors.blue500,
@@ -35,8 +34,8 @@ const colorArr = [
   Colors.indigo600,
 ];
 
-const Row = ({ data, style }: { data: string[]; style?: ViewStyle | null }) => {
-  const { colors } = useTheme();
+const Row = ({data, style}: {data: string[]; style?: ViewStyle | null}) => {
+  const {colors} = useTheme();
   return data ? (
     <View style={[AppStyles.row, style]}>
       {data.map((item, i) => {
@@ -44,7 +43,7 @@ const Row = ({ data, style }: { data: string[]; style?: ViewStyle | null }) => {
         return (
           <View
             key={i}
-            style={[styles.border, { width: wth, borderColor: colors.text }]}>
+            style={[styles.border, {width: wth, borderColor: colors.text}]}>
             <Text>{item}</Text>
           </View>
         );
@@ -56,7 +55,7 @@ const Row = ({ data, style }: { data: string[]; style?: ViewStyle | null }) => {
 const parseEventTracker = (data: string) => {
   const result: string[][] = [];
   const rows = data.split('\n');
-  rows.forEach((row) => {
+  rows.forEach(row => {
     const rowArr = row.split(',');
     if (rowArr.length > 10) {
       result.push(rowArr);
@@ -68,17 +67,17 @@ const parseEventTracker = (data: string) => {
 const Tracker = ({
   navigation,
   route,
-}: EventTrackerScreenProps): JSX.Element => {
+}: RootStackScreenProps<'EventTrackerScreen'>) => {
   const insets = useSafeAreaInsets();
-  const { state } = useContext(UserContext);
-  const { colors } = useTheme();
+  const eventInfo = useStore(s => s.cachedData.eventInfo);
+  const {colors} = useTheme();
   const [isLoading, setIsLoading] = useState(true);
   const [trackerData, setTrackerData] = useState<TrackerDataProps>({
     table: null,
     chart: [],
   });
-  const wwEventInfo = state.cachedData.eventInfo.ww || [];
-  const jpEventInfo = state.cachedData.eventInfo.jp || [];
+  const wwEventInfo = eventInfo.ww || [];
+  const jpEventInfo = eventInfo.jp || [];
   const axisStyle = {
     tickLabels: {
       fill: colors.text,
@@ -87,22 +86,22 @@ const Tracker = ({
       stroke: colors.text,
     },
   };
-  const bottom = { height: insets.bottom };
+  const bottom = {height: insets.bottom};
 
   useEffect(() => {
-    navigation.setOptions({ title: route.params.name });
-    void getData();
+    navigation.setOptions({title: route.params.name});
+    getData();
   }, []);
 
   const getData = async () => {
     let table: string[][] = [];
-    const { isWW, name, backup } = route.params;
+    const {isWW, name, backup} = route.params;
     let targetEvent = isWW
-      ? wwEventInfo.filter((value) => value.event_name === name)
-      : jpEventInfo.filter((value) => value.event_name === name);
+      ? wwEventInfo.filter(value => value.event_name === name)
+      : jpEventInfo.filter(value => value.event_name === name);
     // After merged, they use English event name in JP event tracker
     if (targetEvent.length === 0 && backup) {
-      targetEvent = jpEventInfo.filter((value) => value.event_name === backup);
+      targetEvent = jpEventInfo.filter(value => value.event_name === backup);
     }
     if (targetEvent.length > 0) {
       const res = await LLSIFdotnetService.fetchEventData({
@@ -119,7 +118,7 @@ const Tracker = ({
       if (table[0][i].startsWith('t')) {
         const row: TrackerDataProps['chart'][0]['data'] = [];
         for (let j = 1; j < table.length; j++) {
-          row.push({ x: table[j][0], y: Number(table[j][i]) });
+          row.push({x: table[j][0], y: Number(table[j][i])});
         }
         chart.push({
           seriesName: table[0][i],
@@ -129,14 +128,14 @@ const Tracker = ({
         colorCount += 1;
       }
     }
-    setTrackerData({ table, chart });
+    setTrackerData({table, chart});
     setIsLoading(false);
   };
 
   const keyExtractor = (item: string[], index: number): string =>
     `data ${index}`;
 
-  const renderItem = ({ item, index }: { item: string[]; index: number }) => (
+  const renderItem = ({item, index}: {item: string[]; index: number}) => (
     <Row data={item} style={index === 0 ? styles.head : null} />
   );
 
@@ -152,23 +151,23 @@ const Tracker = ({
           {trackerData.chart !== undefined && (
             <View style={AppStyles.screen}>
               <VictoryChart
-                padding={chartPadding}
-                height={responsiveHeight(33)}>
-                {trackerData.chart.map((value) => (
+                height={responsiveHeight(33)}
+                padding={chartPadding}>
+                {trackerData.chart.map(value => (
                   <VictoryLine
                     key={value.seriesName}
                     data={value.data || []}
-                    style={{ data: { stroke: value.color } }}
+                    style={{data: {stroke: value.color}}}
                   />
                 ))}
                 <VictoryAxis dependentAxis style={axisStyle} />
-                <VictoryAxis style={axisStyle} fixLabelOverlap={true} />
+                <VictoryAxis fixLabelOverlap={true} style={axisStyle} />
               </VictoryChart>
               <View style={styles.row}>
-                {trackerData.chart.map((value) => (
+                {trackerData.chart.map(value => (
                   <View key={value.seriesName} style={AppStyles.row}>
                     <View
-                      style={[styles.block, { backgroundColor: value.color }]}
+                      style={[styles.block, {backgroundColor: value.color}]}
                     />
                     <Text>{value.seriesName}</Text>
                   </View>
@@ -178,15 +177,13 @@ const Tracker = ({
           )}
           <View style={AppStyles.screen}>
             <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-              <View>
-                <FlatList
-                  data={trackerData.table}
-                  stickyHeaderIndices={[0]}
-                  showsVerticalScrollIndicator={false}
-                  keyExtractor={keyExtractor}
-                  renderItem={renderItem}
-                />
-              </View>
+              <FlatList
+                data={trackerData.table}
+                keyExtractor={keyExtractor}
+                renderItem={renderItem}
+                showsVerticalScrollIndicator={false}
+                stickyHeaderIndices={[0]}
+              />
             </ScrollView>
           </View>
           <View style={bottom} />

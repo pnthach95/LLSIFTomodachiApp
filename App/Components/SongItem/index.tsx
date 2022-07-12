@@ -1,14 +1,12 @@
-import React, { useState } from 'react';
-import { View, StyleSheet } from 'react-native';
-import { Text, Surface, TouchableRipple } from 'react-native-paper';
+import React, {useState} from 'react';
+import {StyleSheet, View} from 'react-native';
 import FastImage from 'react-native-fast-image';
-import { Metrics, Fonts } from '~/Theme';
-import { AddHTTPS, findColorByAttribute } from '~/Utils';
+import {Surface, Text, TouchableRipple} from 'react-native-paper';
+import {Fonts, Metrics} from '~/Theme';
+import {AddHTTPS, findColorByAttribute} from '~/Utils';
+import type {OnLoadEvent} from 'react-native-fast-image';
 
-import type { OnLoadEvent } from 'react-native-fast-image';
-import type { FCItemProps, SongObject } from '~/typings';
-
-const { itemWidth } = Metrics.images;
+const {itemWidth} = Metrics.images;
 
 /**
  * Song item for Song List Screen
@@ -17,22 +15,21 @@ const { itemWidth } = Metrics.images;
  * - `item`: [Song object](https://github.com/MagiCircles/SchoolIdolAPI/wiki/API-Songs#objects)
  * - `onPress`: onPress function
  */
-const SongItem = ({ item, onPress }: FCItemProps<SongObject>): JSX.Element => {
+const SongItem = ({item, onPress}: FCItemProps<SongObject>) => {
   const attColors = findColorByAttribute(item.attribute || '');
-  const [imgSize, setImgSize] = useState({ width: 1, height: 1 });
+  const [imgSize, setImgSize] = useState({width: 1, height: 1});
 
   const onLoad = (e: OnLoadEvent) => {
-    const { width, height } = e.nativeEvent;
-    setImgSize({ width, height });
+    const {width, height} = e.nativeEvent;
+    setImgSize({width, height});
   };
 
   return (
-    <Surface style={[styles.container, { backgroundColor: attColors[0] }]}>
+    <Surface style={[styles.container, {backgroundColor: attColors[0]}]}>
       <TouchableRipple borderless rippleColor={attColors[1]} onPress={onPress}>
         <>
           <FastImage
-            source={{ uri: AddHTTPS(item.image) }}
-            onLoad={onLoad}
+            source={{uri: AddHTTPS(item.image)}}
             style={[
               styles.image,
               {
@@ -40,6 +37,7 @@ const SongItem = ({ item, onPress }: FCItemProps<SongObject>): JSX.Element => {
                 height: (itemWidth * imgSize.height) / imgSize.width,
               },
             ]}
+            onLoad={onLoad}
           />
           <View style={styles.info}>
             <Text style={styles.text}>{item.name}</Text>

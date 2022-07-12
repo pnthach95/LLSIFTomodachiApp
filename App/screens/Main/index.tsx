@@ -1,21 +1,20 @@
-import React, { useContext, useState, useEffect } from 'react';
-import { View, ScrollView, Platform, StyleSheet } from 'react-native';
-import { Text, Title, TouchableRipple } from 'react-native-paper';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import FastImage from 'react-native-fast-image';
-import { responsiveWidth } from 'react-native-responsive-dimensions';
-import VersionNumber from 'react-native-version-number';
 import dayjs from 'dayjs';
+import React, {useEffect, useState} from 'react';
+import {Platform, ScrollView, StyleSheet, View} from 'react-native';
+import FastImage from 'react-native-fast-image';
+import {Text, Title, TouchableRipple} from 'react-native-paper';
+import {responsiveWidth} from 'react-native-responsive-dimensions';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import VersionNumber from 'react-native-version-number';
 import ConnectStatus from '~/Components/ConnectStatus';
 import TimerCountdown from '~/Components/TimerCountdown';
-import { AddHTTPS, openLink } from '~/Utils';
-import { Config, EventStatus } from '~/Config';
+import {Config, EventStatus} from '~/Config';
 import GithubService from '~/Services/GithubService';
-import { Metrics, Colors, Images, AppStyles } from '~/Theme';
-import UserContext from '~/Context/UserContext';
-
-import type { OnLoadEvent } from 'react-native-fast-image';
-import type { EventObject, MainScreenProps } from '~/typings';
+import {AppStyles, Colors, Images, Metrics} from '~/Theme';
+import {AddHTTPS, openLink} from '~/Utils';
+import useStore from '~/store';
+import type {MainTabScreenProps} from '~/typings/navigation';
+import type {OnLoadEvent} from 'react-native-fast-image';
 
 type GithubVersion = {
   tag: string;
@@ -24,13 +23,12 @@ type GithubVersion = {
 };
 
 /** Main Screen */
-const MainScreen: React.FC<MainScreenProps> = ({ navigation }) => {
-  const { top } = useSafeAreaInsets();
-  const { state } = useContext(UserContext);
-  const { ENEvent, JPEvent } = state.cachedData;
+const MainScreen = ({navigation}: MainTabScreenProps<'MainScreen'>) => {
+  const {top} = useSafeAreaInsets();
+  const {ENEvent, JPEvent} = useStore(s => s.cachedData);
   const [version, setVersion] = useState<GithubVersion | null>(null);
-  const [imgSize, setImgSize] = useState({ width: 1, height: 1 });
-  const padding = { paddingTop: top };
+  const [imgSize, setImgSize] = useState({width: 1, height: 1});
+  const padding = {paddingTop: top};
 
   /** Start time of event */
   const eventStart = dayjs(JPEvent.beginning, Config.DATETIME_FORMAT_INPUT);
@@ -39,7 +37,7 @@ const MainScreen: React.FC<MainScreenProps> = ({ navigation }) => {
 
   useEffect(() => {
     if (Platform.OS === 'android') {
-      void checkVersion();
+      checkVersion();
     }
   }, []);
 
@@ -65,18 +63,26 @@ const MainScreen: React.FC<MainScreenProps> = ({ navigation }) => {
     for (let i = 0; i < 3; i++) {
       const na = Number(pa[i]);
       const nb = Number(pb[i]);
-      if (na > nb) return false;
-      if (nb > na) return true;
-      if (!isNaN(na) && isNaN(nb)) return false;
-      if (isNaN(na) && !isNaN(nb)) return true;
+      if (na > nb) {
+        return false;
+      }
+      if (nb > na) {
+        return true;
+      }
+      if (!isNaN(na) && isNaN(nb)) {
+        return false;
+      }
+      if (isNaN(na) && !isNaN(nb)) {
+        return true;
+      }
     }
     return false;
   };
 
   /** Get width, height of image in FastImage */
   const onLoadFastImage = (e: OnLoadEvent) => {
-    const { width, height } = e.nativeEvent;
-    setImgSize({ width, height });
+    const {width, height} = e.nativeEvent;
+    setImgSize({width, height});
   };
 
   /** Navigate to Event Detail Screen */
@@ -95,8 +101,8 @@ const MainScreen: React.FC<MainScreenProps> = ({ navigation }) => {
       {/* HEADER */}
       <View style={[styles.header, padding]}>
         <FastImage
+          resizeMode="contain"
           source={Images.logo}
-          resizeMode='contain'
           style={AppStyles.imageHeader}
         />
       </View>
@@ -108,8 +114,8 @@ const MainScreen: React.FC<MainScreenProps> = ({ navigation }) => {
       <ConnectStatus />
       {/* BODY */}
       <ScrollView
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={styles.content}>
+        contentContainerStyle={styles.content}
+        showsVerticalScrollIndicator={false}>
         <TouchableRipple style={styles.block} onPress={goToEvent}>
           <>
             <Text>{`Event: ${ENEvent.english_status || ''}`}</Text>
@@ -117,18 +123,18 @@ const MainScreen: React.FC<MainScreenProps> = ({ navigation }) => {
             <Title>{JPEvent.romaji_name}</Title>
             <View style={styles.space} />
             <FastImage
-              source={{ uri: AddHTTPS(ENEvent.english_image || '') }}
-              onLoad={onLoadFastImage}
-              resizeMode='contain'
+              resizeMode="contain"
+              source={{uri: AddHTTPS(ENEvent.english_image || '')}}
               style={{
                 width: Metrics.widthBanner,
                 height: (Metrics.widthBanner * imgSize.height) / imgSize.width,
               }}
+              onLoad={onLoadFastImage}
             />
             <View style={styles.space} />
             <FastImage
-              source={{ uri: AddHTTPS(JPEvent.image) }}
-              resizeMode='contain'
+              resizeMode="contain"
+              source={{uri: AddHTTPS(JPEvent.image)}}
               style={{
                 width: Metrics.widthBanner,
                 height: (Metrics.widthBanner * imgSize.height) / imgSize.width,

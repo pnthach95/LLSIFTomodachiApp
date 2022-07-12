@@ -1,6 +1,6 @@
-import { StyleSheet } from 'react-native';
-import { Colors } from 'react-native-paper';
-import { responsiveScreenFontSize } from 'react-native-responsive-dimensions';
+import {StyleSheet} from 'react-native';
+import {Colors} from 'react-native-paper';
+import {responsiveScreenFontSize} from 'react-native-responsive-dimensions';
 
 const style = StyleSheet.create({
   bigTitle: {
@@ -26,4 +26,4 @@ const style = StyleSheet.create({
   },
 });
 
-export default { style };
+export default {style};

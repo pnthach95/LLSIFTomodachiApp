@@ -1,5 +1,5 @@
-import { StyleSheet } from 'react-native';
-import { responsiveWidth } from 'react-native-responsive-dimensions';
+import {StyleSheet} from 'react-native';
+import {responsiveWidth} from 'react-native-responsive-dimensions';
 import Metrics from './Metrics';
 
 export default StyleSheet.create({

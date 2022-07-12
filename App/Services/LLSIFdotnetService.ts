@@ -1,13 +1,6 @@
-import { create } from 'apisauce';
-import {
-  LLSIFnetEvent,
-  LLSIFnetData,
-  LLNETEvent,
-  LLNETEventInfo,
-  LLSIFnetParams,
-} from '~/typings';
+import {create} from 'apisauce';
 
-const LLSIFnet = create({ baseURL: 'https://llsif.net/', timeout: 10000 });
+const LLSIFnet = create({baseURL: 'https://llsif.net/', timeout: 10000});
 
 /** Fetch event data */
 const fetchEventData = async (
@@ -24,7 +17,7 @@ const fetchEventData = async (
 const parseEvent = (events: Record<string, LLSIFnetEvent>) => {
   const result: LLNETEvent[] = [];
   const keys = Object.keys(events);
-  keys.forEach((key) => {
+  keys.forEach(key => {
     if (Object.prototype.hasOwnProperty.call(events, key)) {
       const element = events[key];
       result.push({
@@ -46,7 +39,7 @@ const fetchEventInfo = async (): Promise<LLNETEventInfo> => {
     };
     return result;
   }
-  return { ww: [], jp: [] };
+  return {ww: [], jp: []};
 };
 
-export default { fetchEventData, fetchEventInfo };
+export default {fetchEventData, fetchEventInfo};

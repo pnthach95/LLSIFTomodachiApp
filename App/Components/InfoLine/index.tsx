@@ -1,9 +1,8 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import { View, StyleSheet } from 'react-native';
-import { Text, Caption } from 'react-native-paper';
-import { openLink } from '~/Utils';
-import { Metrics } from '~/Theme';
+import {StyleSheet, View} from 'react-native';
+import {Caption, Text} from 'react-native-paper';
+import {Metrics} from '~/Theme';
+import {openLink} from '~/Utils';
 
 type Props = {
   title: string;
@@ -34,7 +33,9 @@ const InfoLine: React.FC<Props> = ({
     }
   };
   const openMAL = () => {
-    if (myanimelist) openLink(myanimelist);
+    if (myanimelist) {
+      openLink(myanimelist);
+    }
   };
 
   return (
@@ -46,7 +47,7 @@ const InfoLine: React.FC<Props> = ({
       {!!twitter && (
         <Text style={styles.content}>
           Twitter:{' '}
-          <Text onPress={openTwitter} style={[styles.content, styles.link]}>
+          <Text style={[styles.content, styles.link]} onPress={openTwitter}>
             {twitter}
           </Text>
         </Text>
@@ -54,7 +55,7 @@ const InfoLine: React.FC<Props> = ({
       {!!instagram && (
         <Text style={styles.content}>
           Instagram:{' '}
-          <Text onPress={openInstagram} style={[styles.content, styles.link]}>
+          <Text style={[styles.content, styles.link]} onPress={openInstagram}>
             {instagram}
           </Text>
         </Text>
@@ -62,7 +63,7 @@ const InfoLine: React.FC<Props> = ({
       {!!myanimelist && (
         <Text style={styles.content}>
           MyAnimeList:{' '}
-          <Text onPress={openMAL} style={[styles.content, styles.link]}>
+          <Text style={[styles.content, styles.link]} onPress={openMAL}>
             {myanimelist}
           </Text>
         </Text>
@@ -82,13 +83,5 @@ const styles = StyleSheet.create({
     textDecorationLine: 'underline',
   },
 });
-
-InfoLine.propTypes = {
-  content: PropTypes.string.isRequired,
-  instagram: PropTypes.string,
-  myanimelist: PropTypes.string,
-  title: PropTypes.string.isRequired,
-  twitter: PropTypes.string,
-};
 
 export default InfoLine;

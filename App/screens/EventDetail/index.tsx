@@ -1,35 +1,26 @@
-import React, { useState, useEffect } from 'react';
-import { View, Image, StyleSheet } from 'react-native';
+import dayjs from 'dayjs';
+import React, {useEffect, useState} from 'react';
+import {Image, StyleSheet, View} from 'react-native';
+import FastImage from 'react-native-fast-image';
 import {
+  Button,
   Divider,
   Text,
   Title,
   TouchableRipple,
-  Button,
   useTheme,
 } from 'react-native-paper';
-import FastImage from 'react-native-fast-image';
-import { responsiveWidth } from 'react-native-responsive-dimensions';
-import dayjs from 'dayjs';
-import ScrollViewWithBackButton from '~/Components/scrollviewwithbackbutton';
+import {responsiveWidth} from 'react-native-responsive-dimensions';
 import TimerCountdown from '~/Components/TimerCountdown';
-import LoadingScreen from '../Loading';
-import { AddHTTPS } from '~/Utils';
-import { EventStatus } from '~/Config';
+import ScrollViewWithBackButton from '~/Components/scrollviewwithbackbutton';
+import {EventStatus} from '~/Config';
 import LLSIFService from '~/Services/LLSIFService';
-import { Metrics, Images, Fonts, AppStyles } from '~/Theme';
-
-import type { StyleProp } from 'react-native';
-import type { ImageStyle } from 'react-native-fast-image';
-import type {
-  CardObject,
-  CardSearchParams,
-  EventDetailScreenProps,
-  EventObject,
-  LLSIFError,
-  SongObject,
-  SongSearchParams,
-} from '~/typings';
+import {AppStyles, Fonts, Images, Metrics} from '~/Theme';
+import {AddHTTPS} from '~/Utils';
+import type {RootStackScreenProps} from '~/typings/navigation';
+import LoadingScreen from '../Loading';
+import type {StyleProp} from 'react-native';
+import type {ImageStyle} from 'react-native-fast-image';
 
 /**
  * Event Detail Screen
@@ -42,8 +33,8 @@ import type {
 const EventDetailScreen = ({
   navigation,
   route,
-}: EventDetailScreenProps): JSX.Element => {
-  const { colors } = useTheme();
+}: RootStackScreenProps<'EventDetailScreen'>) => {
+  const {colors} = useTheme();
   const [item, setItem] = useState<EventObject | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState<LLSIFError | Error | null>(null);
@@ -53,11 +44,11 @@ const EventDetailScreen = ({
   const [WWEventEnd, setWWEventEnd] = useState(dayjs());
   const [JPEventStart, setJPEventStart] = useState(dayjs());
   const [JPEventEnd, setJPEventEnd] = useState(dayjs());
-  const [imgSize, setImgSize] = useState({ width: 1, height: 0 });
+  const [imgSize, setImgSize] = useState({width: 1, height: 0});
   const [isMerged, setIsMerged] = useState(false);
 
   useEffect(() => {
-    void getItem();
+    getItem();
   }, []);
 
   const getItem = async () => {
@@ -120,12 +111,12 @@ const EventDetailScreen = ({
 
   /** Navigate to destination screen */
   const goToSongDetail = (song: SongObject) => () => {
-    navigation.navigate('SongDetailScreen', { item: song });
+    navigation.navigate('SongDetailScreen', {item: song});
   };
 
   /** Navigate to destination screen */
   const goToCardDetail = (card: CardObject) => () => {
-    navigation.navigate('CardDetailScreen', { item: card });
+    navigation.navigate('CardDetailScreen', {item: card});
   };
 
   const goToEnTracker = () => {
@@ -172,21 +163,21 @@ const EventDetailScreen = ({
               {item.english_image && (
                 <>
                   <FastImage
-                    source={{ uri: AddHTTPS(item.english_image) }}
                     resizeMode={FastImage.resizeMode.contain}
+                    source={{uri: AddHTTPS(item.english_image)}}
                     style={styleFastImage}
                   />
                   <View style={styles.space} />
                 </>
               )}
               <FastImage
-                source={{ uri: AddHTTPS(item.image) }}
                 resizeMode={FastImage.resizeMode.contain}
-                onLoad={(e) => {
-                  const { width, height } = e.nativeEvent;
-                  setImgSize({ width, height });
-                }}
+                source={{uri: AddHTTPS(item.image)}}
                 style={styleFastImage}
+                onLoad={e => {
+                  const {width, height} = e.nativeEvent;
+                  setImgSize({width, height});
+                }}
               />
               <View style={[AppStyles.center, styles.textBlock]}>
                 <Text>{`Start: ${JPEventStart.format('LLL')}`}</Text>
@@ -221,8 +212,8 @@ const EventDetailScreen = ({
                       </Title>
                     </View>
                     <FastImage
-                      source={{ uri: AddHTTPS(item.english_image || '') }}
                       resizeMode={FastImage.resizeMode.contain}
+                      source={{uri: AddHTTPS(item.english_image || '')}}
                       style={styleFastImage}
                     />
                     <View style={[AppStyles.center, styles.textBlock]}>
@@ -247,7 +238,7 @@ const EventDetailScreen = ({
                       )}
                     </View>
                   </View>
-                  <Divider style={{ backgroundColor: colors.text }} />
+                  <Divider style={{backgroundColor: colors.text}} />
                 </>
               )}
 
@@ -258,13 +249,13 @@ const EventDetailScreen = ({
                   <Title>{item.romaji_name}</Title>
                 </View>
                 <FastImage
-                  source={{ uri: AddHTTPS(item.image) }}
                   resizeMode={FastImage.resizeMode.contain}
-                  onLoad={(e) => {
-                    const { width, height } = e.nativeEvent;
-                    setImgSize({ width, height });
-                  }}
+                  source={{uri: AddHTTPS(item.image)}}
                   style={styleFastImage}
+                  onLoad={e => {
+                    const {width, height} = e.nativeEvent;
+                    setImgSize({width, height});
+                  }}
                 />
                 <View style={[AppStyles.center, styles.textBlock]}>
                   <Text>{`Start: ${JPEventStart.format('LLL')}`}</Text>
@@ -291,7 +282,7 @@ const EventDetailScreen = ({
           {/* SONGS */}
           {songs.length !== 0 && (
             <View>
-              <Divider style={{ backgroundColor: colors.text }} />
+              <Divider style={{backgroundColor: colors.text}} />
               <View style={[AppStyles.center, styles.textBlock]}>
                 <Text>Song</Text>
               </View>
@@ -299,11 +290,11 @@ const EventDetailScreen = ({
                 {songs.map((songItem, index) => (
                   <TouchableRipple
                     key={`song${index}`}
-                    onPress={goToSongDetail(songItem)}
-                    style={styles.card}>
+                    style={styles.card}
+                    onPress={goToSongDetail(songItem)}>
                     <>
                       <FastImage
-                        source={{ uri: AddHTTPS(songItem.image) }}
+                        source={{uri: AddHTTPS(songItem.image)}}
                         style={styles.song}
                       />
                       <View style={styles.songInfo}>
@@ -328,7 +319,7 @@ const EventDetailScreen = ({
 
           {cards.length > 0 && (
             <>
-              <Divider style={{ backgroundColor: colors.text }} />
+              <Divider style={{backgroundColor: colors.text}} />
               <View style={[AppStyles.center, styles.textBlock]}>
                 <Text>Rewards</Text>
               </View>
@@ -339,8 +330,8 @@ const EventDetailScreen = ({
             {cards.map((cardItem, index) => (
               <TouchableRipple
                 key={`card${index}`}
-                onPress={goToCardDetail(cardItem)}
-                style={styles.card}>
+                style={styles.card}
+                onPress={goToCardDetail(cardItem)}>
                 <>
                   <View style={styles.cardImage}>
                     {!!cardItem.round_card_image && (

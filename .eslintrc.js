@@ -1,73 +1,69 @@
 module.exports = {
+  root: true,
+  extends: '@react-native-community',
   parser: '@typescript-eslint/parser',
-  parserOptions: {
-    project: './tsconfig.json',
-    sourceType: 'module',
-    ecmaVersion: 2020,
-    ecmaFeatures: {
-      jsx: true
-    }
-  },
-  plugins: [
-    '@typescript-eslint',
-    'prettier',
-    'react',
-    'react-hooks',
-    'react-native',
-    'import'
-  ],
-  extends: [
-    'eslint:recommended',
-    'plugin:react/recommended',
-    'plugin:@typescript-eslint/eslint-recommended',
-    'plugin:@typescript-eslint/recommended',
-    'plugin:@typescript-eslint/recommended-requiring-type-checking',
-    'plugin:react-native/all'
+  plugins: ['@typescript-eslint', 'react-hooks', 'react-native', 'import'],
+  overrides: [
+    {
+      files: ['*.ts', '*.tsx'],
+      rules: {
+        '@typescript-eslint/no-shadow': ['error'],
+        'no-shadow': 'off',
+        'no-undef': 'off',
+      },
+    },
   ],
   rules: {
-    'react/prop-types': [
-      'error',
+    'no-console': 'error',
+    'no-var': 'error',
+    '@typescript-eslint/no-explicit-any': 'error',
+    'prefer-const': 'error',
+    'react/jsx-sort-props': [
+      'warn',
       {
-        ignore: ['navigation']
-      }
-    ],
-    'no-console': 1,
-    'import/no-extraneous-dependencies': [
-      'error',
-      {
-        packageDir: './'
-      }
-    ],
-    'object-shorthand': 1,
-    '@typescript-eslint/no-unsafe-assignment': 'off',
-    '@typescript-eslint/ban-ts-comment': 'off',
-    'react-native/no-raw-text': 'off',
-    'import/extensions': 0,
-    'class-methods-use-this': 'off',
-    'no-use-before-define': 'off',
-    'prettier/prettier': 'error'
-  },
-  settings: {
-    react: {
-      version: 'detect'
-    },
-    'import/resolver': {
-      'babel-module': {
-        alias: {
-          map: [['~', './App/']],
-          extensions: ['.ts', '.js', '.tsx'],
-        },
+        callbacksLast: true,
+        shorthandFirst: true,
+        ignoreCase: true,
+        reservedFirst: true,
       },
-      'typescript': {}
-    }
+    ],
+    'react-native/sort-styles': [
+      'error',
+      'asc',
+      {ignoreClassNames: false, ignoreStyleProperties: false},
+    ],
+    'react-native/no-single-element-style-arrays': 'error',
+    'react-native/no-inline-styles': 'error',
+    'react-native/no-unused-styles': 'warn',
+    'react-hooks/exhaustive-deps': 'off',
+    'object-shorthand': ['error', 'always'],
+    'comma-dangle': 'off',
+    '@typescript-eslint/comma-dangle': ['error', 'always-multiline'],
+    '@typescript-eslint/array-type': ['error', {default: 'array'}],
+    eqeqeq: ['error', 'always'],
+    'import/order': [
+      'error',
+      {
+        groups: [
+          'builtin',
+          'internal',
+          'external',
+          'parent',
+          'sibling',
+          'index',
+          'type',
+        ],
+        alphabetize: {
+          order: 'asc',
+        },
+        pathGroups: [
+          {
+            pattern: '~/**',
+            group: 'external',
+          },
+        ],
+      },
+    ],
+    'sort-imports': ['error', {ignoreDeclarationSort: true}],
   },
-  env: {
-    es6: true,
-    node: true,
-    jest: true
-  },
-  globals: {
-    __DEV__: true
-  },
-  ignorePatterns: ['/*.*']
 };

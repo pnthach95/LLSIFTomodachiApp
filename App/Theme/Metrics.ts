@@ -1,4 +1,4 @@
-import { responsiveWidth } from 'react-native-responsive-dimensions';
+import {responsiveWidth} from 'react-native-responsive-dimensions';
 
 export default {
   marginHorizontal: 10,

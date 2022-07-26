@@ -2,19 +2,13 @@ import {MMKVLoader} from 'react-native-mmkv-storage';
 import create from 'zustand';
 import {persist} from 'zustand/middleware';
 import {initCachedData} from '~/store/init';
-import type {GetState, Mutate, SetState, StoreApi} from 'zustand';
 import type {StateStorage} from 'zustand/middleware';
 
 const storage = new MMKVLoader().initialize();
 
-const useStore = create(
-  persist<
-    StoreState,
-    SetState<StoreState>,
-    GetState<StoreState>,
-    Mutate<StoreApi<StoreState>, [['zustand/persist', Partial<StoreState>]]>
-  >(
-    () => ({
+const useStore = create<StoreState>()(
+  persist(
+    _ => ({
       /** Loading cached data */
       appRoute: 'LOADING',
       cachedData: initCachedData,

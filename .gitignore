@@ -65,3 +65,11 @@ buck-out/
 .vscode/.react/
 
 desktop.ini
+
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions

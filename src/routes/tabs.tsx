@@ -1,76 +1,95 @@
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {MaterialDesignIcons} from 'components/uniwind';
+import Icon from '@react-native-vector-icons/material-design-icons';
+import {createNativeBottomTabNavigator} from '@react-navigation/bottom-tabs/unstable';
+import {useThemeColor} from 'heroui-native/hooks';
 import CardsScreen from 'screens/cards';
 import EventsScreen from 'screens/events';
 import MainScreen from 'screens/main';
 import MoreScreen from 'screens/more';
-import type {BottomTabList} from 'typings/navigation';
+import type {BottomTabList, RootStackScreenProps} from 'typings/navigation';
 
-const Tab = createBottomTabNavigator<BottomTabList>();
+const ICON_SIZE = 24;
+const Tab = createNativeBottomTabNavigator<BottomTabList>();
 
-const LLSIFTab = () => {
+const LLSIFTab = ({navigation}: RootStackScreenProps<'Main'>) => {
+  //@ts-ignore
+  const [smile, pure, cool]: string[] = useThemeColor([
+    //@ts-ignore
+    'smile',
+    'pure',
+    'cool',
+  ]);
+
   return (
     <Tab.Navigator
       backBehavior="initialRoute"
       screenOptions={{headerShown: false}}>
       <Tab.Screen
         component={MainScreen}
+        listeners={{
+          focus: () => {
+            navigation.setOptions({title: 'Home'});
+          },
+        }}
         name="MainScreen"
         options={{
           tabBarLabel: 'Home',
-          tabBarIcon: ({focused, size}) => (
-            <MaterialDesignIcons
-              colorClassName="data-[checked=true]:accent-pink accent-gray-600"
-              data-checked={focused}
-              name="home"
-              size={size}
-            />
-          ),
+          tabBarActiveTintColor: smile,
+          tabBarIcon: {
+            source: Icon.getImageSourceSync('home', {size: ICON_SIZE}),
+            type: 'image',
+          },
         }}
       />
       <Tab.Screen
         component={CardsScreen}
+        listeners={{
+          focus: () => {
+            navigation.setOptions({title: 'Cards'});
+          },
+        }}
         name="CardsScreen"
         options={{
           tabBarLabel: 'Cards',
-          tabBarIcon: ({focused, size}) => (
-            <MaterialDesignIcons
-              colorClassName="data-[checked=true]:accent-green accent-gray-600"
-              data-checked={focused}
-              name="cards"
-              size={size}
-            />
-          ),
+          tabBarActiveTintColor: pure,
+          tabBarIcon: {
+            source: Icon.getImageSourceSync('cards', {size: ICON_SIZE}),
+            type: 'image',
+          },
         }}
       />
       <Tab.Screen
         component={EventsScreen}
+        listeners={{
+          focus: () => {
+            navigation.setOptions({title: 'Events'});
+          },
+        }}
         name="EventsScreen"
         options={{
           tabBarLabel: 'Events',
-          tabBarIcon: ({focused, size}) => (
-            <MaterialDesignIcons
-              colorClassName="data-[checked=true]:accent-blue accent-gray-600"
-              data-checked={focused}
-              name="calendar"
-              size={size}
-            />
-          ),
+          tabBarActiveTintColor: cool,
+          tabBarIcon: {
+            source: Icon.getImageSourceSync('calendar', {size: ICON_SIZE}),
+            type: 'image',
+          },
         }}
       />
       <Tab.Screen
         component={MoreScreen}
+        listeners={{
+          focus: () => {
+            navigation.setOptions({title: 'More'});
+          },
+        }}
         name="MoreScreen"
         options={{
           tabBarLabel: 'More',
-          tabBarIcon: ({focused, size}) => (
-            <MaterialDesignIcons
-              colorClassName="accent-gray-600 data-[checked=true]:accent-yellow-900"
-              data-checked={focused}
-              name="dots-horizontal"
-              size={size}
-            />
-          ),
+          tabBarIcon: {
+            source: Icon.getImageSourceSync('dots-horizontal', {
+              size: ICON_SIZE,
+            }),
+            type: 'image',
+          },
         }}
       />
     </Tab.Navigator>

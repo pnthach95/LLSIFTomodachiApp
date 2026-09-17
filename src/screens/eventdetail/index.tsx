@@ -1,5 +1,4 @@
 import {Images} from 'assets';
-import ScrollViewWithBackButton from 'components/scrollviewwithbackbutton';
 import TimerCountdown from 'components/timercountdown';
 import {TurboImage} from 'components/uniwind';
 import dayjs from 'dayjs';
@@ -8,7 +7,7 @@ import {PressableFeedback} from 'heroui-native/pressable-feedback';
 import {Separator} from 'heroui-native/separator';
 import {Typography as Text} from 'heroui-native/text';
 import {useEffect, useState} from 'react';
-import {Image, View, useWindowDimensions} from 'react-native';
+import {Image, ScrollView, View, useWindowDimensions} from 'react-native';
 import LLSIFService from 'services/LLSIFService';
 import {AddHTTPS} from 'utils';
 import LoadingScreen from '../loading';
@@ -136,7 +135,7 @@ const EventDetailScreen = ({
   };
 
   return (
-    <ScrollViewWithBackButton>
+    <ScrollView contentContainerClassName="grow">
       {isLoading ? (
         <LoadingScreen />
       ) : !!isError || !item ? (
@@ -152,8 +151,14 @@ const EventDetailScreen = ({
             // Event block if merge
             <View className="items-center justify-center">
               <View className="items-center justify-center py-2.5">
-                {item.english_name && <Text>{item.english_name}</Text>}
-                <Text>{item.romaji_name}</Text>
+                {item.english_name && (
+                  <Text align="center" type="h3">
+                    {item.english_name}
+                  </Text>
+                )}
+                <Text align="center" type="h3">
+                  {item.romaji_name}
+                </Text>
               </View>
               {engImage && (
                 <>
@@ -206,7 +211,7 @@ const EventDetailScreen = ({
                   <View className="items-center justify-center">
                     <View className="items-center justify-center py-2.5">
                       <Text>Worldwide</Text>
-                      <Text className="text-center">
+                      <Text align="center" type="h3">
                         {item.english_name || item.romaji_name}
                       </Text>
                     </View>
@@ -247,7 +252,9 @@ const EventDetailScreen = ({
               <View className="items-center justify-center">
                 <View className="items-center justify-center py-2.5">
                   <Text>Japanese</Text>
-                  <Text>{item.romaji_name}</Text>
+                  <Text align="center" type="h3">
+                    {item.romaji_name}
+                  </Text>
                 </View>
                 {image && (
                   <TurboImage
@@ -374,7 +381,7 @@ const EventDetailScreen = ({
           </View>
         </>
       )}
-    </ScrollViewWithBackButton>
+    </ScrollView>
   );
 };
 

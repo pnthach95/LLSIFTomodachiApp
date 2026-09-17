@@ -5,14 +5,13 @@ import ImgSelectionRow from 'components/imgselectionrow';
 import OrderingRow from 'components/orderingrow';
 import SelectionRow from 'components/selectionrow';
 import SongItem from 'components/songitem';
-import {MaterialDesignIcons} from 'components/uniwind';
 import {AllOnlyNone, AttributeData, MainUnitData, OrderingGroup} from 'config';
 import {Button} from 'heroui-native/button';
 import {SearchField} from 'heroui-native/search-field';
 import {Surface} from 'heroui-native/surface';
 import {Typography as Text} from 'heroui-native/text';
-import {useEffect, useState} from 'react';
-import {Alert, Image, View} from 'react-native';
+import {useEffect, useLayoutEffect, useState} from 'react';
+import {Alert, Image, View, useWindowDimensions} from 'react-native';
 import Animated, {
   LinearTransition,
   SlideInUp,
@@ -40,14 +39,53 @@ const defaultParams: SongSearchParams = {
 /** Key extractor for FlatList */
 const keyExtractor = (item: SongObject) => `song ${item.name}`;
 
+export const useNumColumns = () => {
+  const {width} = useWindowDimensions();
+  if (width >= 1280) {
+    return 6;
+  }
+  if (width >= 1024) {
+    return 5;
+  }
+  if (width >= 768) {
+    return 4;
+  }
+  if (width >= 640) {
+    return 3;
+  }
+  return 2;
+};
+
 /**
  * [Song List Screen](https://github.com/MagiCircles/SchoolIdolAPI/wiki/API-Songs#get-the-list-of-songs)
  */
 const SongsScreen = ({navigation}: RootStackScreenProps<'SongsScreen'>) => {
+  const numColumns = useNumColumns();
   const [loading, setLoading] = useState(true);
   const [list, setList] = useState<SongObject[]>([]);
   const [showFilter, setShowFilter] = useState(false);
   const [searchParams, setSearchParams] = useImmer(defaultParams);
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerSearchBarOptions: {
+        placeholder: 'Search song...',
+        onChangeText: ({nativeEvent: {text}}) => {
+          setSearchParams(draft => {
+            draft.search = text;
+          });
+        },
+      },
+      unstable_headerRightItems: () => [
+        {
+          type: 'button',
+          label: 'Filter',
+          icon: {type: 'sfSymbol', name: 'line.3.horizontal.decrease'},
+          onPress: () => setShowFilter(v => !v),
+        },
+      ],
+    });
+  }, [navigation]);
 
   useEffect(() => {
     // eslint-disable-next-line react-hooks/immutability
@@ -61,7 +99,13 @@ const SongsScreen = ({navigation}: RootStackScreenProps<'SongsScreen'>) => {
       navigation.navigate('SongDetailScreen', {item});
     };
 
-    return <SongItem item={item} onPress={navigateToSongDetail} />;
+    return (
+      <SongItem
+        item={item}
+        numColumns={numColumns}
+        onPress={navigateToSongDetail}
+      />
+    );
   };
 
   /**
@@ -142,9 +186,6 @@ const SongsScreen = ({navigation}: RootStackScreenProps<'SongsScreen'>) => {
     }
   };
 
-  /** Filter on/off */
-  const toggleFilter = () => setShowFilter(!showFilter);
-
   /** Reverse search on/off */
   const toggleReverse = () => {
     setSearchParams(draft => {
@@ -209,16 +250,14 @@ const SongsScreen = ({navigation}: RootStackScreenProps<'SongsScreen'>) => {
     });
   };
 
-  const goBack = () => navigation.goBack();
-
   return (
     <View className="flex-1">
       {/* HEADER */}
       <View className="flex-row gap-2">
-        <Button isIconOnly onPress={goBack}>
-          <MaterialDesignIcons name="arrow-left" />
-        </Button>
-        <SearchField value={searchParams.search || ''} onChange={onChangeText}>
+        <SearchField
+          className="flex-1"
+          value={searchParams.search || ''}
+          onChange={onChangeText}>
           <SearchField.Group>
             <SearchField.Input
               placeholder="Search song..."
@@ -226,9 +265,6 @@ const SongsScreen = ({navigation}: RootStackScreenProps<'SongsScreen'>) => {
             />
           </SearchField.Group>
         </SearchField>
-        <Button isIconOnly onPress={toggleFilter}>
-          <MaterialDesignIcons name="dots-horizontal" />
-        </Button>
       </View>
       {/* FILTER */}
       {showFilter && (
@@ -268,19 +304,18 @@ const SongsScreen = ({navigation}: RootStackScreenProps<'SongsScreen'>) => {
       )}
       <ConnectStatus />
       {/* LIST */}
-      <View className="flex-1 p-1.25">
-        <FlashList
-          contentContainerClassName="pb-safe-offset-0"
-          data={list}
-          keyExtractor={keyExtractor}
-          ListEmptyComponent={renderEmpty}
-          ListFooterComponent={renderFooter}
-          numColumns={2}
-          renderItem={renderItem}
-          showsVerticalScrollIndicator={false}
-          onEndReached={onEndReached}
-        />
-      </View>
+      <FlashList
+        contentContainerClassName="pb-safe-offset-0"
+        contentInsetAdjustmentBehavior="automatic"
+        data={list}
+        keyExtractor={keyExtractor}
+        ListEmptyComponent={renderEmpty}
+        ListFooterComponent={renderFooter}
+        numColumns={numColumns}
+        renderItem={renderItem}
+        showsVerticalScrollIndicator={false}
+        onEndReached={onEndReached}
+      />
     </View>
   );
 };

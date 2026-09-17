@@ -2,7 +2,7 @@ import {Images} from 'assets';
 import {Progress} from 'components/progress';
 import {Typography as Text} from 'heroui-native/text';
 import {Image, View} from 'react-native';
-import useStore from 'store';
+import {useCachedData} from 'store';
 
 type Props = {
   text: AttributeType;
@@ -11,7 +11,7 @@ type Props = {
 
 /** SPC = Smile Pure Cool */
 const SPCStats = ({text, stat}: Props) => {
-  const cachedData = useStore(s => s.cachedData);
+  const cachedData = useCachedData();
   const maxStats = [
     cachedData?.maxStats?.Smile || 0,
     cachedData?.maxStats?.Pure || 0,
@@ -42,9 +42,16 @@ const SPCStats = ({text, stat}: Props) => {
         <View className="flex-1">
           <Text>{stat}</Text>
           <Progress
+            className="data-[attribute=Cool]:bg-light-cool data-[attribute=Pure]:bg-light-pure data-[attribute=Smile]:bg-light-smile"
             data-attribute={text}
-            indicatorClassName="data-[attribute=Cool]:bg-cool data-[attribute=Pure]:bg-pure data-[attribute=Smile]:bg-smile"
-            value={progress}
+            indicatorClassName={
+              text === 'Smile'
+                ? 'bg-smile'
+                : text === 'Pure'
+                  ? 'bg-pure'
+                  : 'bg-cool'
+            }
+            value={progress * 100}
           />
         </View>
       </View>

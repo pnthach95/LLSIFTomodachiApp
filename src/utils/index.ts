@@ -1,5 +1,11 @@
 import {type ClassValue, clsx} from 'clsx';
-import {Alert, Linking} from 'react-native';
+import {
+  Alert,
+  Dimensions,
+  Linking,
+  Platform,
+  useWindowDimensions,
+} from 'react-native';
 import {MMKVLoader, create} from 'react-native-mmkv-storage';
 import {twMerge} from 'tailwind-merge';
 import {Uniwind} from 'uniwind';
@@ -77,4 +83,46 @@ export const openLink = (link: string) => {
     {text: 'Cancel', style: 'cancel'},
     {text: 'OK', onPress: () => Linking.openURL(link)},
   ]);
+};
+
+export const useNumColumns = () => {
+  const {width} = useWindowDimensions();
+  if (width >= 1280) {
+    return 5;
+  }
+  if (width >= 1024) {
+    return 4;
+  }
+  if (width >= 768) {
+    return 3;
+  }
+  if (width >= 640) {
+    return 2;
+  }
+  return 1;
+};
+
+export const useEventNumColumns = () => {
+  const {width} = useWindowDimensions();
+  if (width >= 640) {
+    return 2;
+  }
+  return 1;
+};
+
+/**
+ * Safe area cho control window button trên iPadOS 26
+ * @returns {object} left và top
+ */
+export const useControlWindowInsets = () => {
+  const {width: screenWidth, height: screenHeight} = Dimensions.get('screen');
+  const {width, height} = useWindowDimensions();
+  const isIPad26 =
+    Platform.OS === 'ios' &&
+    Platform.isPad &&
+    parseInt(Platform.Version.split('.')[0], 10) >= 26;
+  if (isIPad26 && (width !== screenWidth || height !== screenHeight)) {
+    return {left: 66, top: 56};
+  }
+  return {left: 0, top: 0};
 };

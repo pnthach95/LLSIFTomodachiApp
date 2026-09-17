@@ -13,10 +13,8 @@ import {Typography as Text} from 'heroui-native/text';
 import {useEffect, useState} from 'react';
 import {Alert, Image, View} from 'react-native';
 import LLSIFService from 'services/LLSIFService';
-import useStore from 'store';
-import {initAppOptions} from 'store/init';
+import {useCachedData, useWorldwideOnly} from 'store';
 import {useImmer} from 'use-immer';
-import {useStorage} from 'utils';
 import type {MainTabScreenProps} from 'typings/navigation';
 
 /** Key extractor for FlatList */
@@ -26,8 +24,8 @@ const keyExtractor = (item: EventObject) => `event ${item.japanese_name}`;
  * [Event List Screen](https://github.com/MagiCircles/SchoolIdolAPI/wiki/API-Events#get-the-list-of-events)
  */
 const EventsScreen = ({navigation}: MainTabScreenProps<'EventsScreen'>) => {
-  const [settings] = useStorage('settings', initAppOptions);
-  const cachedData = useStore(s => s.cachedData);
+  const worldwideOnly = useWorldwideOnly();
+  const cachedData = useCachedData();
   const defaultParams: EventSearchParams = {
     ordering: '-beginning',
     page_size: 30,
@@ -37,7 +35,7 @@ const EventsScreen = ({navigation}: MainTabScreenProps<'EventsScreen'>) => {
     main_unit: '',
     skill: 'All',
     attribute: '',
-    is_english: settings.worldwideOnly ? 'False' : '',
+    is_english: worldwideOnly ? 'False' : '',
   };
 
   const [isLoading, setIsLoading] = useState(true);

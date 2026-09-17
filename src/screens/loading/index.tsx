@@ -1,18 +1,17 @@
 import {Images} from 'assets';
 import {Spinner} from 'heroui-native/spinner';
-import {Image, View, useWindowDimensions} from 'react-native';
+import {Image, View} from 'react-native';
 
 /**
  * Splash Screen
  */
 const LoadingScreen = () => {
-  const {width} = useWindowDimensions();
   return (
     <View className="flex-1 items-center justify-center">
       <Image
+        className="h-1/2 w-1/2"
         resizeMode="contain"
         source={Images.logo}
-        style={{height: width / 2, width: width * 0.7}}
       />
       <Spinner size="lg" />
     </View>

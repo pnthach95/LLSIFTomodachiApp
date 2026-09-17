@@ -1525,6 +1525,28 @@ PODS:
     - ReactCommon/turbomodule/core
     - ReactNativeDependencies
     - Yoga
+  - react-native-restart (0.0.29):
+    - hermes-engine
+    - RCTRequired
+    - RCTTypeSafety
+    - React-Core
+    - React-Core-prebuilt
+    - React-debug
+    - React-Fabric
+    - React-featureflags
+    - React-graphics
+    - React-ImageManager
+    - React-jsi
+    - React-NativeModulesApple
+    - React-RCTFabric
+    - React-renderercss
+    - React-rendererdebug
+    - React-utils
+    - ReactCodegen
+    - ReactCommon/turbomodule/bridging
+    - ReactCommon/turbomodule/core
+    - ReactNativeDependencies
+    - Yoga
   - react-native-root-view-background (2.0.1):
     - hermes-engine
     - RCTRequired
@@ -1547,7 +1569,7 @@ PODS:
     - ReactCommon/turbomodule/core
     - ReactNativeDependencies
     - Yoga
-  - react-native-safe-area-context (5.9.1):
+  - react-native-safe-area-context (5.10.0):
     - hermes-engine
     - RCTRequired
     - RCTTypeSafety
@@ -1559,8 +1581,8 @@ PODS:
     - React-graphics
     - React-ImageManager
     - React-jsi
-    - react-native-safe-area-context/common (= 5.9.1)
-    - react-native-safe-area-context/fabric (= 5.9.1)
+    - react-native-safe-area-context/common (= 5.10.0)
+    - react-native-safe-area-context/fabric (= 5.10.0)
     - React-NativeModulesApple
     - React-RCTFabric
     - React-renderercss
@@ -1571,7 +1593,7 @@ PODS:
     - ReactCommon/turbomodule/core
     - ReactNativeDependencies
     - Yoga
-  - react-native-safe-area-context/common (5.9.1):
+  - react-native-safe-area-context/common (5.10.0):
     - hermes-engine
     - RCTRequired
     - RCTTypeSafety
@@ -1593,7 +1615,7 @@ PODS:
     - ReactCommon/turbomodule/core
     - ReactNativeDependencies
     - Yoga
-  - react-native-safe-area-context/fabric (5.9.1):
+  - react-native-safe-area-context/fabric (5.10.0):
     - hermes-engine
     - RCTRequired
     - RCTTypeSafety
@@ -1619,6 +1641,28 @@ PODS:
   - react-native-turbo-image (1.24.3):
     - APNGKit
     - Gifu
+    - hermes-engine
+    - RCTRequired
+    - RCTTypeSafety
+    - React-Core
+    - React-Core-prebuilt
+    - React-debug
+    - React-Fabric
+    - React-featureflags
+    - React-graphics
+    - React-ImageManager
+    - React-jsi
+    - React-NativeModulesApple
+    - React-RCTFabric
+    - React-renderercss
+    - React-rendererdebug
+    - React-utils
+    - ReactCodegen
+    - ReactCommon/turbomodule/bridging
+    - ReactCommon/turbomodule/core
+    - ReactNativeDependencies
+    - Yoga
+  - react-native-vector-icons (13.0.1):
     - hermes-engine
     - RCTRequired
     - RCTTypeSafety
@@ -2395,9 +2439,11 @@ DEPENDENCIES:
   - react-native-keyboard-controller (from `../node_modules/react-native-keyboard-controller`)
   - react-native-mmkv-storage (from `../node_modules/react-native-mmkv-storage`)
   - "react-native-netinfo (from `../node_modules/@react-native-community/netinfo`)"
+  - react-native-restart (from `../node_modules/react-native-restart`)
   - "react-native-root-view-background (from `../node_modules/@pnthach95/react-native-root-view-background`)"
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
   - react-native-turbo-image (from `../node_modules/react-native-turbo-image`)
+  - "react-native-vector-icons (from `../node_modules/@react-native-vector-icons/get-image`)"
   - "react-native-vector-icons-material-design-icons (from `../node_modules/@react-native-vector-icons/material-design-icons`)"
   - "react-native-vector-icons-material-icons (from `../node_modules/@react-native-vector-icons/material-icons`)"
   - React-NativeModulesApple (from `../node_modules/react-native/ReactCommon/react/nativemodule/core/platform/ios`)
@@ -2540,12 +2586,16 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-mmkv-storage"
   react-native-netinfo:
     :path: "../node_modules/@react-native-community/netinfo"
+  react-native-restart:
+    :path: "../node_modules/react-native-restart"
   react-native-root-view-background:
     :path: "../node_modules/@pnthach95/react-native-root-view-background"
   react-native-safe-area-context:
     :path: "../node_modules/react-native-safe-area-context"
   react-native-turbo-image:
     :path: "../node_modules/react-native-turbo-image"
+  react-native-vector-icons:
+    :path: "../node_modules/@react-native-vector-icons/get-image"
   react-native-vector-icons-material-design-icons:
     :path: "../node_modules/@react-native-vector-icons/material-design-icons"
   react-native-vector-icons-material-icons:
@@ -2686,9 +2736,11 @@ SPEC CHECKSUMS:
   react-native-keyboard-controller: ce68b0d160ca7a2314ce238bb1becb935b8de773
   react-native-mmkv-storage: b72abffd6e1f4739a48fa64e2e1502606edd686c
   react-native-netinfo: 2f906d5d9a639090ed1c079135d6485a95f749f1
+  react-native-restart: a217cbbc54db4290d6c85c2fd9165040c43774e2
   react-native-root-view-background: 62c6e8c5f112ecf994699d683320234abb5a45b4
-  react-native-safe-area-context: 8368d1052ccc8fe8725adfb6a83498c8bdb48250
+  react-native-safe-area-context: 0dd5d7db903a6289e798e934356cd80cf23a31d3
   react-native-turbo-image: fdd359e61af800640d8a19daa5114be13ffba781
+  react-native-vector-icons: 0045d5cce6204dded8ccc99c4570fddb925f3e6e
   react-native-vector-icons-material-design-icons: 9e98e87947156bfe95135fb523b62821486044e3
   react-native-vector-icons-material-icons: 6d1d8ea28261609bbb975b1e9c51fe54eedfafe6
   React-NativeModulesApple: 2b658272ca69df0694cf5d54f9510aa7c33977bc
@@ -2735,6 +2787,6 @@ SPEC CHECKSUMS:
   RNWorklets: 453d16f4cb680d5a4262b314519711e7765a80a1
   Yoga: 18b74b3ade30bebc1904004dfaceae1dd02a330a
 
-PODFILE CHECKSUM: eb22b22b94497b780f283327e543a5013d768a6a
+PODFILE CHECKSUM: a88ede549f01cc4555ae882003ad469a8cf1da73
 
 COCOAPODS: 1.17.0

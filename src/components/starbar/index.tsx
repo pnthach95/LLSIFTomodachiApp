@@ -14,7 +14,7 @@ type Props = {
 const StarBar = ({array}: Props) => {
   const {width} = useWindowDimensions();
   return (
-    <View className="my-2.5 flex-row">
+    <View className="flex-row justify-center">
       {array.map((item, index) => (
         <MaterialDesignIcons
           key={`star${index}`}

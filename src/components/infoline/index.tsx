@@ -1,3 +1,4 @@
+import {Label} from 'heroui-native/label';
 import {Typography as Text} from 'heroui-native/text';
 import {View} from 'react-native';
 import {openLink} from 'utils';
@@ -38,10 +39,10 @@ const InfoLine: React.FC<Props> = ({
 
   return (
     <View className="my-2">
-      <Text>{title}</Text>
-      <Text selectable className="text-justify">
+      <Label>{title}</Label>
+      <Text.Paragraph selectable className="text-justify">
         {content}
-      </Text>
+      </Text.Paragraph>
       {!!twitter && (
         <Text className="text-justify">
           Twitter:{' '}

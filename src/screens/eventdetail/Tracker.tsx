@@ -4,7 +4,7 @@ import {useEffect, useState} from 'react';
 import {FlatList, ScrollView, View, useWindowDimensions} from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import LLSIFdotnetService from 'services/LLSIFdotnetService';
-import useStore from 'store';
+import {useCachedData} from 'store';
 import {useCSSVariable} from 'uniwind';
 import {VictoryAxis, VictoryChart, VictoryLine} from 'victory-native';
 import LoadingScreen from '../loading';
@@ -54,7 +54,7 @@ const Tracker = ({
 }: RootStackScreenProps<'EventTrackerScreen'>) => {
   const {height} = useWindowDimensions();
   const insets = useSafeAreaInsets();
-  const eventInfo = useStore(s => s.cachedData.eventInfo);
+  const eventInfo = useCachedData().eventInfo;
   const [isLoading, setIsLoading] = useState(true);
   const [trackerData, setTrackerData] = useState<TrackerDataProps>({
     table: null,

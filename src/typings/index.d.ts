@@ -23,15 +23,11 @@ type FCItemProps<T> = {
 //  Context
 //  -----------------------------------------------
 
-type AppOptions = {
-  isDark: boolean;
-  jpEvent: boolean;
-  worldwideOnly: boolean;
-};
-
 type StoreState = {
   appTheme: 'dark' | 'light';
   cachedData: CachedDataObject;
+  jpEvent: boolean;
+  worldwideOnly: boolean;
   schoolIdols: SchoolObject[];
 };
 

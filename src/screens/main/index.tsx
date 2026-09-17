@@ -15,12 +15,13 @@ import {
   useWindowDimensions,
 } from 'react-native';
 import {getVersion} from 'react-native-device-info';
+import {SafeAreaView} from 'react-native-screens/experimental';
 import GithubService from 'services/GithubService';
 import LLSIFService from 'services/LLSIFService';
 import LLSIFdotnetService from 'services/LLSIFdotnetService';
-import useStore, {saveCachedData} from 'store';
+import {saveCachedData, useCachedData} from 'store';
 import {initCachedData} from 'store/init';
-import {AddHTTPS, openLink} from 'utils';
+import {AddHTTPS, openLink, useEventNumColumns} from 'utils';
 import type {NativeSyntheticEvent} from 'react-native';
 import type {Success} from 'react-native-turbo-image';
 import type {MainTabScreenProps} from 'typings/navigation';
@@ -33,11 +34,14 @@ type GithubVersion = {
 
 /** Main Screen */
 const MainScreen = ({navigation}: MainTabScreenProps<'MainScreen'>) => {
+  const numColumns = useEventNumColumns();
   const {width} = useWindowDimensions();
   const widthBanner = width - 40;
-  const {ENEvent, JPEvent} = useStore(s => s.cachedData);
+  const {ENEvent, JPEvent} = useCachedData();
   const [version, setVersion] = useState<GithubVersion | null>(null);
   const [imgSize, setImgSize] = useState({width: 1, height: 1});
+  const engImage = AddHTTPS(ENEvent.english_image);
+  const jpImage = AddHTTPS(JPEvent.image);
 
   /** Start time of event */
   const eventStart = dayjs(JPEvent.beginning, Config.DATETIME_FORMAT_INPUT);
@@ -153,14 +157,12 @@ const MainScreen = ({navigation}: MainTabScreenProps<'MainScreen'>) => {
 
   const onOpenLink = () => version && openLink(version.link);
 
-  const engImage = AddHTTPS(ENEvent.english_image);
-  const jpImage = AddHTTPS(JPEvent.image);
   return (
-    <View className="flex-1">
+    <SafeAreaView className="flex-1" edges={{top: true}}>
       {/* HEADER */}
-      <View className="items-center pt-safe-offset-0">
+      <View className="items-center">
         <Image
-          className="h-13.5 w-3/5"
+          className="h-13 w-full"
           resizeMode="contain"
           source={Images.logo}
         />
@@ -175,39 +177,52 @@ const MainScreen = ({navigation}: MainTabScreenProps<'MainScreen'>) => {
       <ConnectStatus />
       {/* BODY */}
       <ScrollView
-        contentContainerClassName="items-center p-2.5"
+        contentContainerClassName="items-center p-3"
         showsVerticalScrollIndicator={false}>
-        <PressableFeedback
-          className="w-full items-center py-2.5"
-          onPress={goToEvent}>
-          <>
+        <PressableFeedback className="items-center gap-3" onPress={goToEvent}>
+          <View className="items-center">
             <Text>{`Event: ${ENEvent.english_status || ''}`}</Text>
-            <Text>{ENEvent.english_name}</Text>
-            <Text>{JPEvent.romaji_name}</Text>
-            <View className="h-2.5" />
-            {engImage && (
-              <TurboImage
-                resizeMode="contain"
-                source={{uri: engImage}}
-                style={{
-                  width: widthBanner,
-                  height: (widthBanner * imgSize.height) / imgSize.width,
-                }}
-                onSuccess={onLoad}
-              />
-            )}
-            <View className="h-2.5" />
-            {jpImage && (
-              <TurboImage
-                resizeMode="contain"
-                source={{uri: jpImage}}
-                style={{
-                  width: widthBanner,
-                  height: (widthBanner * imgSize.height) / imgSize.width,
-                }}
-              />
-            )}
-            <View className="h-2.5" />
+          </View>
+          <View className="flex-col gap-3 sm:flex-row">
+            <View className="w-full items-center sm:w-1/2">
+              <Text align="center" type="h3">
+                {ENEvent.english_name}
+              </Text>
+              {engImage && (
+                <TurboImage
+                  resizeMode="contain"
+                  source={{uri: engImage}}
+                  style={{
+                    width: widthBanner / numColumns,
+                    height:
+                      (widthBanner * imgSize.height) /
+                      imgSize.width /
+                      numColumns,
+                  }}
+                  onSuccess={onLoad}
+                />
+              )}
+            </View>
+            <View className="w-full items-center sm:w-1/2">
+              <Text align="center" type="h3">
+                {JPEvent.romaji_name}
+              </Text>
+              {jpImage && (
+                <TurboImage
+                  resizeMode="contain"
+                  source={{uri: jpImage}}
+                  style={{
+                    width: widthBanner / numColumns,
+                    height:
+                      (widthBanner * imgSize.height) /
+                      imgSize.width /
+                      numColumns,
+                  }}
+                />
+              )}
+            </View>
+          </View>
+          <View className="items-center">
             <Text>{`Start: ${eventStart.format('LLL')}`}</Text>
             <Text>{`End: ${eventEnd.format('LLL')}`}</Text>
             {JPEvent.japan_current && (
@@ -222,10 +237,10 @@ const MainScreen = ({navigation}: MainTabScreenProps<'MainScreen'>) => {
                 <TimerCountdown seconds={eventStart.diff(dayjs())} />
               </Text>
             )}
-          </>
+          </View>
         </PressableFeedback>
       </ScrollView>
-    </View>
+    </SafeAreaView>
   );
 };
 

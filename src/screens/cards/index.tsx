@@ -1,6 +1,5 @@
 import {FlashList} from '@shopify/flash-list';
 import {Images} from 'assets';
-import Card2PicsItem from 'components/card2picsitem';
 import CardItem from 'components/carditem';
 import ConnectStatus from 'components/connectstatus';
 import ImgSelectionRow from 'components/imgselectionrow';
@@ -22,11 +21,11 @@ import {SearchField} from 'heroui-native/search-field';
 import {Typography as Text} from 'heroui-native/text';
 import {useEffect, useState} from 'react';
 import {Alert, Image, ScrollView, View} from 'react-native';
+import {SafeAreaView} from 'react-native-screens/experimental';
 import LLSIFService from 'services/LLSIFService';
-import useStore from 'store';
-import {initAppOptions} from 'store/init';
+import {useCachedData, useWorldwideOnly} from 'store';
 import {useImmer} from 'use-immer';
-import {useStorage} from 'utils';
+import {useControlWindowInsets, useNumColumns} from 'utils';
 import type {MainTabScreenProps} from 'typings/navigation';
 
 /** Key extractor in FlatList */
@@ -36,8 +35,10 @@ const keyExtractor = (item: CardObject) => `card ${item.id}`;
  * [Card List Screen](https://github.com/MagiCircles/SchoolIdolAPI/wiki/API-Cards#get-the-list-of-cards)
  */
 const CardsScreen = ({navigation}: MainTabScreenProps<'CardsScreen'>) => {
-  const [settings] = useStorage('settings', initAppOptions);
-  const cachedData = useStore(s => s.cachedData);
+  const insets = useControlWindowInsets();
+  const numColumns = useNumColumns();
+  const worldwideOnly = useWorldwideOnly();
+  const cachedData = useCachedData();
   const defaultParams: CardSearchParams = {
     search: '',
     selectedOrdering: OrderingGroup.CARD[1].value,
@@ -47,7 +48,7 @@ const CardsScreen = ({navigation}: MainTabScreenProps<'CardsScreen'>) => {
     name: 'All',
     rarity: '',
     attribute: '',
-    japan_only: settings.worldwideOnly ? 'False' : '',
+    japan_only: worldwideOnly ? 'False' : '',
     is_promo: '',
     is_special: '',
     is_event: '',
@@ -59,7 +60,6 @@ const CardsScreen = ({navigation}: MainTabScreenProps<'CardsScreen'>) => {
   };
   const [isLoading, setIsLoading] = useState(true);
   const [searchParams, setSearchParams] = useImmer(defaultParams);
-  const [column, setColumn] = useState(2);
   const [list, setList] = useState<CardObject[]>([]);
   const [showFilter, setShowFilter] = useState(false);
 
@@ -156,10 +156,13 @@ const CardsScreen = ({navigation}: MainTabScreenProps<'CardsScreen'>) => {
       navigation.navigate('CardDetailScreen', {item});
     };
 
-    if (column === 1) {
-      return <Card2PicsItem item={item} onPress={navigateToCardDetail} />;
-    }
-    return <CardItem item={item} onPress={navigateToCardDetail} />;
+    return (
+      <CardItem
+        item={item}
+        numColumns={numColumns}
+        onPress={navigateToCardDetail}
+      />
+    );
   };
 
   /** Call when pressing search button */
@@ -191,9 +194,6 @@ const CardsScreen = ({navigation}: MainTabScreenProps<'CardsScreen'>) => {
       draft.isReverse = !draft.isReverse;
     });
   };
-
-  /** Switch 1 column and 2 columns */
-  const switchColumn = () => setColumn(column === 1 ? 2 : 1);
 
   /** Save is_promo */
   const selectPromo = (value: CombinedWithBOE) => {
@@ -303,31 +303,33 @@ const CardsScreen = ({navigation}: MainTabScreenProps<'CardsScreen'>) => {
     });
 
   return (
-    <View className="flex-1">
+    <SafeAreaView className="flex-1" edges={{top: true}}>
       {/* HEADER */}
-      <View className="flex-row">
-        <View className="ml-2.5 flex-1">
-          <SearchField
-            value={searchParams.search || ''}
-            onChange={onChangeText}>
-            <SearchField.Group>
-              <SearchField.SearchIcon />
-              <SearchField.Input
-                placeholder="Search card..."
-                onSubmitEditing={onSearch}
-              />
-            </SearchField.Group>
-          </SearchField>
-        </View>
-        <Button isIconOnly onPress={toggleFilter}>
+      <View className="flex-row gap-3 px-3" style={{paddingLeft: insets.left}}>
+        <SearchField
+          className="flex-1"
+          value={searchParams.search || ''}
+          onChange={onChangeText}>
+          <SearchField.Group>
+            <SearchField.SearchIcon />
+            <SearchField.Input
+              placeholder="Search card..."
+              onSubmitEditing={onSearch}
+            />
+          </SearchField.Group>
+        </SearchField>
+        <Button
+          isIconOnly
+          variant={showFilter ? 'secondary' : 'ghost'}
+          onPress={toggleFilter}>
           <MaterialDesignIcons name="dots-horizontal" />
         </Button>
       </View>
 
       {/* FILTER */}
       {showFilter && (
-        <View className="h-7/20 bg-surface">
-          <ScrollView contentContainerClassName="p-2.5">
+        <View className="h-7/20">
+          <ScrollView contentContainerClassName="p-3">
             <PickerRow
               list={cachedData.idols}
               name="Idol"
@@ -417,29 +419,18 @@ const CardsScreen = ({navigation}: MainTabScreenProps<'CardsScreen'>) => {
       )}
       <ConnectStatus />
       {/* LIST */}
-      <View className="flex-1 px-1.25">
-        <FlashList
-          key={`${column}c`}
-          contentContainerClassName="py-1.25"
-          data={list}
-          keyExtractor={keyExtractor}
-          ListEmptyComponent={renderEmpty}
-          ListFooterComponent={renderFooter}
-          numColumns={column}
-          renderItem={renderItem}
-          showsVerticalScrollIndicator={false}
-          onEndReached={onEndReached}
-        />
-      </View>
-      <Button
-        isIconOnly
-        className="absolute right-0 bottom-0 m-4"
-        onPress={switchColumn}>
-        <MaterialDesignIcons
-          name={column === 1 ? 'view-grid' : 'view-agenda'}
-        />
-      </Button>
-    </View>
+      <FlashList
+        contentInsetAdjustmentBehavior="automatic"
+        data={list}
+        keyExtractor={keyExtractor}
+        ListEmptyComponent={renderEmpty}
+        ListFooterComponent={renderFooter}
+        numColumns={numColumns}
+        renderItem={renderItem}
+        showsVerticalScrollIndicator={false}
+        onEndReached={onEndReached}
+      />
+    </SafeAreaView>
   );
 };
 

@@ -1,3 +1,4 @@
+import {Label} from 'heroui-native/label';
 import {Typography as Text} from 'heroui-native/text';
 import {View} from 'react-native';
 import type {TextStyle} from 'react-native';
@@ -25,12 +26,12 @@ const TextRow = ({item1, item2}: Props) => {
   return (
     <View className="flex-row">
       <View style={style1}>
-        <Text style={item1.textStyle}>{item1.text}</Text>
+        <Label style={item1.textStyle}>{item1.text}</Label>
       </View>
       <View style={style2}>
-        <Text style={item2.textStyle} onPress={item2.onPress}>
+        <Text.Paragraph style={item2.textStyle} onPress={item2.onPress}>
           {item2.text}
-        </Text>
+        </Text.Paragraph>
       </View>
     </View>
   );

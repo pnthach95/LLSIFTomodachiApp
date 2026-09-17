@@ -1,26 +1,18 @@
-import {Images} from 'assets';
 import {Progress} from 'components/progress';
-import ScrollViewWithBackButton from 'components/scrollviewwithbackbutton';
 import StarBar from 'components/starbar';
 import TextRow from 'components/textrow';
 import {TurboImage} from 'components/uniwind';
 import dayjs from 'dayjs';
-import {Button} from 'heroui-native/button';
 import {PressableFeedback} from 'heroui-native/pressable-feedback';
+import {TagGroup, type TagKey} from 'heroui-native/tag-group';
 import {Typography as Text} from 'heroui-native/text';
 import {useState} from 'react';
-import {Image, View, useWindowDimensions} from 'react-native';
-import useStore from 'store';
+import {ScrollView, View, useWindowDimensions} from 'react-native';
+import {useCachedData} from 'store';
 import {AddHTTPS} from 'utils';
 import type {RootStackScreenProps} from 'typings/navigation';
 
 type SongStat = [number, number[]];
-type StatButtonProps = {
-  attribute: AttributeType;
-  isChecked: boolean;
-  text: string;
-  onPress: () => void;
-};
 
 /** Set color for star */
 const setColor = (index: number): number => {
@@ -42,19 +34,6 @@ const setColor = (index: number): number => {
   return 5;
 };
 
-/** Render choosing stat button */
-const StatButton = ({isChecked, text, attribute, onPress}: StatButtonProps) => {
-  return (
-    <Button
-      className="my-2.5 bg-other-attribute data-[attribute=Cool]:bg-cool data-[attribute=Pure]:bg-pure data-[attribute=Smile]:bg-smile data-[checked=false]:bg-inactive"
-      data-attribute={attribute}
-      data-checked={isChecked ? 'true' : 'false'}
-      onPress={onPress}>
-      {text}
-    </Button>
-  );
-};
-
 /**
  * Song Detail Screen
  *
@@ -70,8 +49,8 @@ const SongDetailScreen = ({
   navigation,
 }: RootStackScreenProps<'SongDetailScreen'>) => {
   const {width} = useWindowDimensions();
-  const cachedData = useStore(s => s.cachedData);
-  const [buttonID, setButtonID] = useState(0);
+  const cachedData = useCachedData();
+  const [selected, setSelected] = useState<Set<TagKey>>(new Set([0]));
   const easy: SongStat = [
     item.easy_notes,
     Array(item.easy_difficulty)
@@ -114,6 +93,7 @@ const SongDetailScreen = ({
   ];
   const [currentStats, setCurrentStats] = useState<SongStat>(easy);
   const eventImage = AddHTTPS(item.event?.image);
+  const image = AddHTTPS(item.image);
 
   /** Convert seconds to m:ss */
   const formatTime = (time: number): string => {
@@ -130,39 +110,26 @@ const SongDetailScreen = ({
     }
   };
 
-  const image = AddHTTPS(item.image);
   return (
-    <ScrollViewWithBackButton>
-      <View className="items-center px-2.5">
+    <ScrollView
+      contentContainerClassName="gap-3 px-5"
+      contentInsetAdjustmentBehavior="automatic">
+      {item.romaji_name && (
         <Text
-          className="text-center font-bold data-[attribute=Cool]:text-cool data-[attribute=Pure]:text-pure data-[attribute=Smile]:text-smile"
+          className="font-bold data-[attribute=Cool]:text-cool data-[attribute=Pure]:text-pure data-[attribute=Smile]:text-smile"
           data-attribute={item.attribute}>
-          {item.name}
+          {item.romaji_name}
         </Text>
-        {item.romaji_name && (
-          <Text
-            className="text-center font-bold data-[attribute=Cool]:text-cool data-[attribute=Pure]:text-pure data-[attribute=Smile]:text-smile"
-            data-attribute={item.attribute}>
-            {item.romaji_name}
-          </Text>
-        )}
-        {!!item.main_unit && (
-          <Image
-            className="h-12.5 w-17.5"
-            resizeMode="contain"
-            source={Images.multi[item.main_unit]}
-          />
-        )}
-        {image && (
-          <TurboImage
-            className="w-2/5"
-            resizeMode="contain"
-            source={{uri: image}}
-            style={{height: width * 0.4}}
-          />
-        )}
-        <View className="h-2.5" />
-
+      )}
+      {image && (
+        <TurboImage
+          className="w-2/5 self-center"
+          resizeMode="contain"
+          source={{uri: image}}
+          style={{height: width * 0.4}}
+        />
+      )}
+      <View>
         <TextRow
           item1={{text: 'Attribute', flex: 1}}
           item2={{text: item.attribute, flex: 1}}
@@ -226,79 +193,79 @@ const SongDetailScreen = ({
           item1={{text: 'Currently available', flex: 1}}
           item2={{text: item.available ? 'Yes' : 'No', flex: 1}}
         />
-        <View className="flex-row flex-wrap justify-around self-stretch py-2.5">
-          <StatButton
-            attribute={item.attribute}
-            isChecked={buttonID === 0}
-            text="Easy"
-            onPress={() => {
-              setButtonID(0);
+      </View>
+      <TagGroup
+        className="self-center"
+        selectedKeys={selected}
+        selectionMode="single"
+        size="lg"
+        onSelectionChange={v => {
+          if (v.size > 0) {
+            setSelected(v);
+            if (v.has(0)) {
               setCurrentStats(easy);
-            }}
-          />
-          <StatButton
-            attribute={item.attribute}
-            isChecked={buttonID === 1}
-            text="Normal"
-            onPress={() => {
-              setButtonID(1);
+            }
+            if (v.has(1)) {
               setCurrentStats(normal);
-            }}
-          />
-          <StatButton
-            attribute={item.attribute}
-            isChecked={buttonID === 2}
-            text="Hard"
-            onPress={() => {
-              setButtonID(2);
+            }
+            if (v.has(2)) {
               setCurrentStats(hard);
-            }}
-          />
-          <StatButton
-            attribute={item.attribute}
-            isChecked={buttonID === 3}
-            text="Expert"
-            onPress={() => {
-              setButtonID(3);
+            }
+            if (v.has(3)) {
               setCurrentStats(expert);
-            }}
-          />
+            }
+            if (v.has(4)) {
+              setCurrentStats(random);
+            }
+            if (v.has(5)) {
+              setCurrentStats(master);
+            }
+          }
+        }}>
+        <TagGroup.List>
+          <TagGroup.Item id={0}>
+            <TagGroup.ItemLabel>Easy</TagGroup.ItemLabel>
+          </TagGroup.Item>
+          <TagGroup.Item id={1}>
+            <TagGroup.ItemLabel>Normal</TagGroup.ItemLabel>
+          </TagGroup.Item>
+          <TagGroup.Item id={2}>
+            <TagGroup.ItemLabel>Hard</TagGroup.ItemLabel>
+          </TagGroup.Item>
+          <TagGroup.Item id={3}>
+            <TagGroup.ItemLabel>Expert</TagGroup.ItemLabel>
+          </TagGroup.Item>
           {random[1].length !== 0 && (
-            <StatButton
-              attribute={item.attribute}
-              isChecked={buttonID === 4}
-              text="Random"
-              onPress={() => {
-                setButtonID(3);
-                setCurrentStats(random);
-              }}
-            />
+            <TagGroup.Item id={4}>
+              <TagGroup.ItemLabel>Random</TagGroup.ItemLabel>
+            </TagGroup.Item>
           )}
           {master[0] > 0 && (
-            <StatButton
-              attribute={item.attribute}
-              isChecked={buttonID === 5}
-              text="Master"
-              onPress={() => {
-                setButtonID(5);
-                setCurrentStats(master);
-              }}
-            />
+            <TagGroup.Item id={5}>
+              <TagGroup.ItemLabel>Master</TagGroup.ItemLabel>
+            </TagGroup.Item>
           )}
+        </TagGroup.List>
+      </TagGroup>
+      {currentStats[0] > 0 && (
+        <View className="self-stretch">
+          <Text>{currentStats[0]} notes</Text>
+          <Progress
+            className="bg-light-other-attribute data-[attribute=Cool]:bg-light-cool data-[attribute=Pure]:bg-light-pure data-[attribute=Smile]:bg-light-smile"
+            data-attribute={item.attribute}
+            indicatorClassName={
+              item.attribute === 'Smile'
+                ? 'bg-smile'
+                : item.attribute === 'Pure'
+                  ? 'bg-pure'
+                  : 'bg-cool'
+            }
+            value={(100 * currentStats[0]) / cachedData.songsMaxStats}
+          />
         </View>
-        {currentStats[0] > 0 && (
-          <View className="self-stretch">
-            <Text>{currentStats[0]} notes</Text>
-            <Progress
-              data-attribute={item.attribute}
-              indicatorClassName="bg-other-attribute data-[attribute=Cool]:bg-cool data-[attribute=Pure]:bg-pure data-[attribute=Smile]:bg-smile"
-              value={currentStats[0] / cachedData.songsMaxStats}
-            />
-          </View>
-        )}
-        <StarBar array={currentStats[1]} />
-      </View>
-    </ScrollViewWithBackButton>
+      )}
+      <StarBar array={currentStats[1]} />
+    </ScrollView>
   );
 };
 

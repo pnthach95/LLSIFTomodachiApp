@@ -5,7 +5,7 @@ import {useEffect} from 'react';
 import {Alert, FlatList, SectionList, View} from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import LLSIFService from 'services/LLSIFService';
-import useStore, {setSchoolIdols} from 'store';
+import {setSchoolIdols, useCachedData, useSchoolIdols} from 'store';
 import LoadingScreen from '../loading';
 import type {ListRenderItem, SectionListRenderItem} from 'react-native';
 import type {RootStackScreenProps} from 'typings/navigation';
@@ -19,8 +19,8 @@ const sectionKeyExtractor = (item: SchoolObject['data'][0], index: number) =>
 /** Idol List Screen */
 const IdolsScreen = ({navigation}: RootStackScreenProps<'IdolsScreen'>) => {
   const insets = useSafeAreaInsets();
-  const schools = useStore(s => s.cachedData.schools);
-  const list = useStore(s => s.schoolIdols);
+  const schools = useCachedData().schools;
+  const list = useSchoolIdols();
   const bottom = {paddingBottom: insets.bottom};
 
   useEffect(() => {

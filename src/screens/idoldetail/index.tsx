@@ -1,13 +1,12 @@
 import {Images} from 'assets';
 import InfoLine from 'components/infoline';
-import ScrollViewWithBackButton from 'components/scrollviewwithbackbutton';
 import {TurboImage} from 'components/uniwind';
 import dayjs from 'dayjs';
 import {Typography as Text} from 'heroui-native/text';
 import {useEffect, useState} from 'react';
-import {Image, StyleSheet, View, useWindowDimensions} from 'react-native';
+import {Image, ScrollView, View, useWindowDimensions} from 'react-native';
 import LLSIFService from 'services/LLSIFService';
-import {AddHTTPS} from 'utils';
+import {AddHTTPS, findColorByAttribute} from 'utils';
 import LoadingScreen from '../loading';
 import type {RootStackScreenProps} from 'typings/navigation';
 
@@ -19,12 +18,12 @@ import type {RootStackScreenProps} from 'typings/navigation';
  * [Idol object](https://github.com/MagiCircles/SchoolIdolAPI/wiki/API-Idols#objects)
  */
 const IdolDetailScreen = ({
+  navigation,
   route: {
     params: {name},
   },
 }: RootStackScreenProps<'IdolDetailScreen'>) => {
   const {width} = useWindowDimensions();
-  const itemWidth = ((width - 10) / 2 - 10) * 1.5;
   const [isLoading, setIsLoading] = useState(true);
   const [images, setImages] = useState<(string | undefined)[]>([]);
   const [item, setItem] = useState<IdolObject | null>(null);
@@ -36,6 +35,9 @@ const IdolDetailScreen = ({
         const res1 = await LLSIFService.fetchIdol(name);
         if (res1) {
           setItem(res1);
+          navigation.setOptions({
+            headerTintColor: findColorByAttribute(res1.attribute || 'All')[0],
+          });
           const res2 = await LLSIFService.fetchCardList(params);
           if (Array.isArray(res2)) {
             if (res2.length === 0) {
@@ -67,17 +69,14 @@ const IdolDetailScreen = ({
   }, []);
 
   return (
-    <ScrollViewWithBackButton>
+    <ScrollView
+      contentContainerClassName="grow"
+      contentInsetAdjustmentBehavior="automatic">
       {isLoading ? (
         <LoadingScreen />
       ) : item ? (
         <>
-          <View style={styles.scrollView}>
-            <Text
-              className="font-bold text-other-attribute data-[attribute=Cool]:text-cool data-[attribute=Pure]:text-pure data-[attribute=Smile]:text-smile"
-              data-attribute={item.attribute}>
-              {name}
-            </Text>
+          <View className="px-5">
             {item?.japanese_name && (
               <Text
                 className="text-other-attribute data-[attribute=Cool]:text-cool data-[attribute=Pure]:text-pure data-[attribute=Smile]:text-smile"
@@ -106,27 +105,29 @@ const IdolDetailScreen = ({
           </View>
           {Object.keys(Images.characters).includes(name) && (
             <Image
+              className="absolute top-20 right-1.5 h-24 w-24 opacity-50"
               source={Images.characters[name as keyof typeof Images.characters]}
-              style={styles.character}
             />
           )}
-          <View style={styles.imageRow}>
+          <View className="flex-row">
             {!!images[0] && images[0].includes('.png') && (
               <TurboImage
+                className="aspect-3/4"
                 resizeMode="contain"
                 source={{uri: images[0]}}
-                style={{width: itemWidth, height: itemWidth}}
+                style={{width: width / 2}}
               />
             )}
             {!!images[1] && images[1].includes('.png') && (
               <TurboImage
+                className="aspect-3/4"
                 resizeMode="contain"
                 source={{uri: images[1]}}
-                style={{width: itemWidth, height: itemWidth}}
+                style={{width: width / 2}}
               />
             )}
           </View>
-          <View style={styles.scrollView}>
+          <View className="px-5">
             {!!item.school && <InfoLine content={item.school} title="School" />}
             {!!item.attribute && (
               <InfoLine content={item.attribute} title="Attribute" />
@@ -182,25 +183,8 @@ const IdolDetailScreen = ({
       ) : (
         <Text>Error</Text>
       )}
-    </ScrollViewWithBackButton>
+    </ScrollView>
   );
 };
-
-const styles = StyleSheet.create({
-  character: {
-    height: 100,
-    position: 'absolute',
-    right: 5,
-    top: 120,
-    width: 100,
-  },
-  imageRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-  },
-  scrollView: {
-    marginHorizontal: 20,
-  },
-});
 
 export default IdolDetailScreen;

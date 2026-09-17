@@ -1,5 +1,3 @@
-import {Appearance} from 'react-native';
-
 export const initCachedData: CachedDataObject = {
   ENEvent: {
     image: '',
@@ -25,10 +23,4 @@ export const initCachedData: CachedDataObject = {
   skills: [],
   songsMaxStats: 0,
   subUnits: [],
-};
-
-export const initAppOptions = {
-  jpEvent: true,
-  worldwideOnly: false,
-  isDark: Appearance.getColorScheme() === 'dark',
 };

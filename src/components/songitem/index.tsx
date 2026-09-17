@@ -1,12 +1,8 @@
 import {TurboImage} from 'components/uniwind';
 import {PressableFeedback} from 'heroui-native/pressable-feedback';
-import {Surface} from 'heroui-native/surface';
 import {Typography as Text} from 'heroui-native/text';
-import {useState} from 'react';
 import {View, useWindowDimensions} from 'react-native';
 import {AddHTTPS, findColorByAttribute} from 'utils';
-import type {NativeSyntheticEvent} from 'react-native';
-import type {Success} from 'react-native-turbo-image';
 
 /**
  * Song item for Song List Screen
@@ -15,46 +11,40 @@ import type {Success} from 'react-native-turbo-image';
  * - `item`: [Song object](https://github.com/MagiCircles/SchoolIdolAPI/wiki/API-Songs#objects)
  * - `onPress`: onPress function
  */
-const SongItem = ({item, onPress}: FCItemProps<SongObject>) => {
+const SongItem = ({
+  numColumns,
+  item,
+  onPress,
+}: FCItemProps<SongObject> & {numColumns: number}) => {
   const uri = AddHTTPS(item.image);
   const {width} = useWindowDimensions();
-  const itemWidth = (width - 10) / 2 - 10;
+  const itemWidth = width / numColumns;
   const attColors = findColorByAttribute(item.attribute || '');
-  const [imgSize, setImgSize] = useState({width: 1, height: 1});
-
-  const onLoad = ({nativeEvent}: NativeSyntheticEvent<Success>) => {
-    setImgSize({width: nativeEvent.width, height: nativeEvent.height});
-  };
 
   return (
     <PressableFeedback onPress={onPress}>
+      {uri && (
+        <TurboImage
+          resizeMode="cover"
+          source={{uri}}
+          style={{width: itemWidth, height: itemWidth}}
+        />
+      )}
+      <View
+        className="absolute bottom-0 h-1/3 w-full items-center justify-end bg-linear-to-b from-other-attribute to-other-attribute p-1 data-[attribute=Cool]:from-cool/10 data-[attribute=Cool]:to-cool data-[attribute=Pure]:from-pure/10 data-[attribute=Pure]:to-pure data-[attribute=Smile]:from-smile/10 data-[attribute=Smile]:to-smile"
+        data-attribute={item.attribute}>
+        <Text align="center" className="text-white" weight="bold">
+          {item.name}
+        </Text>
+        {!!item.romaji_name && (
+          <Text truncate align="center" className="text-white" weight="bold">
+            {item.romaji_name}
+          </Text>
+        )}
+      </View>
       <PressableFeedback.Ripple
         animation={{backgroundColor: {value: attColors[1]}}}
       />
-      <Surface
-        className="m-1.25 overflow-hidden rounded-[5px] bg-other-attribute data-[attribute=Cool]:bg-cool data-[attribute=Pure]:bg-pure data-[attribute=Smile]:bg-smile"
-        data-attribute={item.attribute}
-        style={{width: itemWidth}}>
-        <>
-          {uri && (
-            <TurboImage
-              className="rounded-t-[5px]"
-              source={{uri}}
-              style={{
-                width: itemWidth,
-                height: (itemWidth * imgSize.height) / imgSize.width,
-              }}
-              onSuccess={onLoad}
-            />
-          )}
-          <View className="items-center justify-center p-1.25">
-            <Text className="text-center text-white">{item.name}</Text>
-            {!!item.romaji_name && (
-              <Text className="text-center text-white">{item.romaji_name}</Text>
-            )}
-          </View>
-        </>
-      </Surface>
     </PressableFeedback>
   );
 };

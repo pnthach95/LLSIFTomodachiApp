@@ -1,4 +1,10 @@
-import {AppRegistry} from 'react-native';
-import App from './App/routes';
+import {AppRegistry, LogBox} from 'react-native';
+import {name as appName} from './app.json';
+import App from './src/routes';
 
-AppRegistry.registerComponent('LLSIFTomodachi', () => App);
+LogBox.ignoreLogs([
+  'InteractionManager has been deprecated',
+  'SafeAreaView has been deprecated',
+]);
+
+AppRegistry.registerComponent(appName, () => App);

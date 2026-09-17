@@ -1,0 +1,61 @@
+@import 'tailwindcss';
+@import 'uniwind';
+@import 'heroui-native/styles';
+
+@layer theme {
+  @variant light {
+    --accent: #00d2d3;
+    --inactive: #888;
+    --smile: #ff5b9b;
+    --light-smile: #f9cadc;
+    --pure: #09b751;
+    --light-pure: #6fe29f;
+    --other-attribute: #df67ff;
+    --light-other-attribute: #e7adf7;
+    --cool: #00a2ff;
+    --light-cool: #87d3ff;
+    --star0: #2fddff;
+    --star1: #bcfc60;
+    --star2: #ffef58;
+    --star3: #feb510;
+    --star4: #ff9578;
+    --star5: #ff5ba8;
+  }
+
+  @variant dark {
+    --accent: #01a3a4;
+    --inactive: #666;
+    --smile: #ff5b9b;
+    --light-smile: #f9cadc;
+    --pure: #09b751;
+    --light-pure: #6fe29f;
+    --other-attribute: #df67ff;
+    --light-other-attribute: #e7adf7;
+    --cool: #00a2ff;
+    --light-cool: #87d3ff;
+    --star0: #2fddff;
+    --star1: #bcfc60;
+    --star2: #ffef58;
+    --star3: #feb510;
+    --star4: #ff9578;
+    --star5: #ff5ba8;
+  }
+}
+
+@theme inline {
+  --color-inactive: var(--inactive);
+  --color-smile: var(--smile);
+  --color-light-smile: var(--light-smile);
+  --color-pure: var(--pure);
+  --color-light-pure: var(--light-pure);
+  --color-other-attribute: var(--other-attribute);
+  --color-light-other-attribute: var(--light-other-attribute);
+  --color-cool: var(--cool);
+  --color-light-cool: var(--light-cool);
+  --color-star0: var(--star0);
+  --color-star1: var(--star1);
+  --color-star2: var(--star2);
+  --color-star3: var(--star3);
+  --color-star4: var(--star4);
+  --color-star5: var(--star5);
+}

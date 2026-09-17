@@ -1,37 +1,20 @@
 {
-  "compilerOptions": {
-    "allowJs": true,
-    "allowSyntheticDefaultImports": true,
-    "esModuleInterop": true,
-    "isolatedModules": true,
-    "skipLibCheck": true,
-    "jsx": "react",
-    "lib": [
-      "es5",
-      "es6",
-      "dom",
-      "es2015",
-      "es2016",
-      "es2017",
-    ],
-    "moduleResolution": "node",
-    "noEmit": true,
-    "strict": true,
-    "target": "esnext",
-    "baseUrl": ".",
-    "paths": {
-      "~/*": [
-        "App/*"
-      ]
-    },
-  },
+  "extends": "@react-native/typescript-config",
   "include": [
-    "App"
+    "**/*.ts",
+    "**/*.tsx",
+    "eslint.config.js",
+    "index.js",
+    "scripts/**/*",
+    "src/**/*"
   ],
-  "exclude": [
-    "node_modules",
-    "babel.config.js",
-    "metro.config.js",
-    "jest.config.js"
-  ]
+  "exclude": ["**/node_modules", "**/Pods"],
+  "compilerOptions": {
+    "lib": ["ES2023"],
+    "types": ["jest"],
+    "paths": {
+      "*": ["./src/*"]
+    },
+    "verbatimModuleSyntax": true
+  }
 }

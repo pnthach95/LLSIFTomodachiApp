@@ -6,7 +6,7 @@ import {PressableFeedback} from 'heroui-native/pressable-feedback';
 import {Separator} from 'heroui-native/separator';
 import {Switch} from 'heroui-native/switch';
 import {Typography as Text} from 'heroui-native/text';
-import {ScrollView} from 'react-native';
+import {View} from 'react-native';
 import {getVersion} from 'react-native-device-info';
 import {
   onSwitchTheme,
@@ -27,9 +27,7 @@ const MoreScreen = ({navigation}: MainTabScreenProps<'MoreScreen'>) => {
   const goToAboutMe = () => navigation.navigate('AboutMeScreen');
 
   return (
-    <ScrollView
-      contentContainerClassName="grow justify-center gap-3 p-3"
-      showsVerticalScrollIndicator={false}>
+    <View className="grow justify-center gap-3 p-3">
       <Card className="gap-3">
         <Card.Header>
           <Card.Title className="text-accent">Options</Card.Title>
@@ -94,7 +92,7 @@ const MoreScreen = ({navigation}: MainTabScreenProps<'MoreScreen'>) => {
         </Card.Body>
       </Card>
       <Text className="text-center">Version {getVersion()}</Text>
-    </ScrollView>
+    </View>
   );
 };
 

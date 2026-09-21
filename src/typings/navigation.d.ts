@@ -9,7 +9,6 @@ type RootStackParamList = {
   SongsScreen: undefined;
   CardDetailScreen: {item: CardObject};
   EventDetailScreen: {eventName: string};
-  EventTrackerScreen: {isWW: boolean; name: string; backup?: string};
   IdolDetailScreen: {name: string};
   SongDetailScreen: {item: SongObject};
   AboutMeScreen: undefined;
@@ -17,7 +16,6 @@ type RootStackParamList = {
 };
 
 type BottomTabList = {
-  MainScreen: undefined;
   CardsScreen: undefined;
   EventsScreen: undefined;
   MoreScreen: undefined;

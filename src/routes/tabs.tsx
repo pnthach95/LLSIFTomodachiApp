@@ -3,7 +3,6 @@ import {createNativeBottomTabNavigator} from '@react-navigation/bottom-tabs/unst
 import {useThemeColor} from 'heroui-native/hooks';
 import CardsScreen from 'screens/cards';
 import EventsScreen from 'screens/events';
-import MainScreen from 'screens/main';
 import MoreScreen from 'screens/more';
 import type {BottomTabList, RootStackScreenProps} from 'typings/navigation';
 
@@ -24,23 +23,6 @@ const LLSIFTab = ({navigation}: RootStackScreenProps<'Main'>) => {
       backBehavior="initialRoute"
       screenOptions={{headerShown: false}}>
       <Tab.Screen
-        component={MainScreen}
-        listeners={{
-          focus: () => {
-            navigation.setOptions({title: 'Home'});
-          },
-        }}
-        name="MainScreen"
-        options={{
-          tabBarLabel: 'Home',
-          tabBarActiveTintColor: smile,
-          tabBarIcon: {
-            source: Icon.getImageSourceSync('home', {size: ICON_SIZE}),
-            type: 'image',
-          },
-        }}
-      />
-      <Tab.Screen
         component={CardsScreen}
         listeners={{
           focus: () => {
@@ -50,7 +32,7 @@ const LLSIFTab = ({navigation}: RootStackScreenProps<'Main'>) => {
         name="CardsScreen"
         options={{
           tabBarLabel: 'Cards',
-          tabBarActiveTintColor: pure,
+          tabBarActiveTintColor: smile,
           tabBarIcon: {
             source: Icon.getImageSourceSync('cards', {size: ICON_SIZE}),
             type: 'image',
@@ -67,7 +49,7 @@ const LLSIFTab = ({navigation}: RootStackScreenProps<'Main'>) => {
         name="EventsScreen"
         options={{
           tabBarLabel: 'Events',
-          tabBarActiveTintColor: cool,
+          tabBarActiveTintColor: pure,
           tabBarIcon: {
             source: Icon.getImageSourceSync('calendar', {size: ICON_SIZE}),
             type: 'image',
@@ -84,6 +66,7 @@ const LLSIFTab = ({navigation}: RootStackScreenProps<'Main'>) => {
         name="MoreScreen"
         options={{
           tabBarLabel: 'More',
+          tabBarActiveTintColor: cool,
           tabBarIcon: {
             source: Icon.getImageSourceSync('dots-horizontal', {
               size: ICON_SIZE,

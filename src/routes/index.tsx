@@ -26,7 +26,6 @@ import AboutMeScreen from 'screens/aboutme';
 import CardDetailScreen from 'screens/carddetail';
 import ErrorBoundaryScreen from 'screens/errorboundary';
 import EventDetailScreen from 'screens/eventdetail';
-import EventTrackerScreen from 'screens/eventdetail/Tracker';
 import GalleryScreen from 'screens/gallery';
 import IdolDetailScreen from 'screens/idoldetail';
 import IdolsScreen from 'screens/idols';
@@ -156,11 +155,6 @@ const MainContainer = () => {
                           params: {eventName},
                         },
                       }) => ({title: eventName})}
-                    />
-                    <Stack.Screen
-                      component={EventTrackerScreen}
-                      name="EventTrackerScreen"
-                      options={{title: ''}}
                     />
                     <Stack.Screen
                       component={IdolDetailScreen}

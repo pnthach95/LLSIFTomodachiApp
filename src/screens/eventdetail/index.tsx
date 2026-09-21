@@ -1,8 +1,6 @@
 import {Images} from 'assets';
-import TimerCountdown from 'components/timercountdown';
 import {TurboImage} from 'components/uniwind';
 import dayjs from 'dayjs';
-import {Button} from 'heroui-native/button';
 import {PressableFeedback} from 'heroui-native/pressable-feedback';
 import {Separator} from 'heroui-native/separator';
 import {Typography as Text} from 'heroui-native/text';
@@ -113,21 +111,6 @@ const EventDetailScreen = ({
     navigation.navigate('CardDetailScreen', {item: card});
   };
 
-  const goToEnTracker = () => {
-    navigation.navigate('EventTrackerScreen', {
-      isWW: true,
-      name: item?.english_name || '',
-    });
-  };
-
-  const goToJpTracker = () => {
-    navigation.navigate('EventTrackerScreen', {
-      isWW: false,
-      name: item?.japanese_name || '',
-      backup: item?.english_name || '',
-    });
-  };
-
   const styleFastImage: StyleProp<ViewStyle> = {
     alignSelf: 'center',
     width: widthBanner,
@@ -186,21 +169,6 @@ const EventDetailScreen = ({
               <View className="items-center justify-center py-2.5">
                 <Text>{`Start: ${JPEventStart.format('LLL')}`}</Text>
                 <Text>{`End: ${JPEventEnd.format('LLL')}`}</Text>
-                {item.japan_current && (
-                  <Text>
-                    <TimerCountdown seconds={JPEventEnd.diff(dayjs())} />
-                    {' left'}
-                  </Text>
-                )}
-                {item.japan_status === 'announced' && (
-                  <Text>
-                    {'Starts in '}
-                    <TimerCountdown seconds={JPEventStart.diff(dayjs())} />
-                  </Text>
-                )}
-                {item.japan_status !== 'announced' && (
-                  <Button onPress={goToJpTracker}>Go to tracker</Button>
-                )}
               </View>
             </View>
           ) : (
@@ -225,23 +193,6 @@ const EventDetailScreen = ({
                     <View className="items-center justify-center py-2.5">
                       <Text>{`Start: ${WWEventStart.format('LLL')}`}</Text>
                       <Text>{`End: ${WWEventEnd.format('LLL')}`}</Text>
-                      {item.world_current && (
-                        <Text>
-                          <TimerCountdown seconds={WWEventEnd.diff(dayjs())} />
-                          {' left'}
-                        </Text>
-                      )}
-                      {item.english_status === 'announced' && (
-                        <Text>
-                          {'Starts in '}
-                          <TimerCountdown
-                            seconds={WWEventStart.diff(dayjs())}
-                          />
-                        </Text>
-                      )}
-                      {item.english_status !== 'announced' && (
-                        <Button onPress={goToEnTracker}>Go to tracker</Button>
-                      )}
                     </View>
                   </View>
                   <Separator />
@@ -272,21 +223,6 @@ const EventDetailScreen = ({
                 <View className="items-center justify-center py-2.5">
                   <Text>{`Start: ${JPEventStart.format('LLL')}`}</Text>
                   <Text>{`End: ${JPEventEnd.format('LLL')}`}</Text>
-                  {item.japan_current && (
-                    <Text>
-                      <TimerCountdown seconds={JPEventEnd.diff(dayjs())} />
-                      {' left'}
-                    </Text>
-                  )}
-                  {item.japan_status === 'announced' && (
-                    <Text>
-                      {'Starts in '}
-                      <TimerCountdown seconds={JPEventStart.diff(dayjs())} />
-                    </Text>
-                  )}
-                  {item.japan_status !== 'announced' && (
-                    <Button onPress={goToJpTracker}>Go to tracker</Button>
-                  )}
                 </View>
               </View>
             </>

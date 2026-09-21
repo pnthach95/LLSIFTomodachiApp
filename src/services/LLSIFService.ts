@@ -1,5 +1,5 @@
 import {create} from 'apisauce';
-import {flattenDeep} from 'lodash';
+import flattenDeep from 'lodash.flattendeep';
 import {Config} from '../config';
 
 const LLSIFApiClient = create({baseURL: Config.API_URL});

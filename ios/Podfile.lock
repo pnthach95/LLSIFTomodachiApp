@@ -2781,7 +2781,7 @@ SPEC CHECKSUMS:
   RNBootSplash: eeae90e089333b25af2e3ddbf0cd65a9fae5c606
   RNDeviceInfo: 4c852998208b60dc192ae3529e5867817719ad1e
   RNGestureHandler: fb2375bebca8d187e54a854cd4da9f5e0b9d5f81
-  RNReanimated: aec656f27f33212c0b6ee9dcf3d7bb66ab1c9c9e
+  RNReanimated: 13d5da56cced9a95eef598fb1344da65b9144ea1
   RNScreens: eeca9fe79bacbb2de611b8d1baf20aa6e35c826b
   RNSVG: 6cae8d4082913be2eb43eaec2a456222c42195ed
   RNWorklets: 453d16f4cb680d5a4262b314519711e7765a80a1

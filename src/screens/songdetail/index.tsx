@@ -8,6 +8,7 @@ import {TagGroup, type TagKey} from 'heroui-native/tag-group';
 import {Typography as Text} from 'heroui-native/text';
 import {useState} from 'react';
 import {ScrollView, View, useWindowDimensions} from 'react-native';
+import Animated from 'react-native-reanimated';
 import {useCachedData} from 'store';
 import {AddHTTPS} from 'utils';
 import type {RootStackScreenProps} from 'typings/navigation';
@@ -44,7 +45,7 @@ const setColor = (index: number): number => {
  */
 const SongDetailScreen = ({
   route: {
-    params: {item},
+    params: {item, tag},
   },
   navigation,
 }: RootStackScreenProps<'SongDetailScreen'>) => {
@@ -122,9 +123,9 @@ const SongDetailScreen = ({
         </Text>
       )}
       {image && (
-        <TurboImage
+        <Animated.Image
           className="w-2/5 self-center"
-          resizeMode="contain"
+          sharedTransitionTag={tag}
           source={{uri: image}}
           style={{height: width * 0.4}}
         />

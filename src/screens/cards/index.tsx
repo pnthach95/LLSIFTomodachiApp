@@ -1,12 +1,11 @@
 import {FlashList} from '@shopify/flash-list';
 import {Images} from 'assets';
-import CardItem from 'components/carditem';
 import ConnectStatus from 'components/connectstatus';
 import ImgSelectionRow from 'components/imgselectionrow';
 import OrderingRow from 'components/orderingrow';
 import PickerRow from 'components/pickerrow';
 import SelectionRow from 'components/selectionrow';
-import {MaterialDesignIcons} from 'components/uniwind';
+import {BlurView} from 'components/uniwind';
 import {
   AllOnlyNone,
   AttributeData,
@@ -17,15 +16,22 @@ import {
   YearData,
 } from 'config';
 import {Button} from 'heroui-native/button';
-import {SearchField} from 'heroui-native/search-field';
+import {PressableFeedback} from 'heroui-native/pressable-feedback';
 import {Typography as Text} from 'heroui-native/text';
-import {useEffect, useState} from 'react';
-import {Alert, Image, ScrollView, View} from 'react-native';
+import {useEffect, useLayoutEffect, useState} from 'react';
+import {
+  Alert,
+  Image,
+  ScrollView,
+  View,
+  useWindowDimensions,
+} from 'react-native';
+import Animated from 'react-native-reanimated';
 import {SafeAreaView} from 'react-native-screens/experimental';
 import LLSIFService from 'services/LLSIFService';
 import {useCachedData, useWorldwideOnly} from 'store';
 import {useImmer} from 'use-immer';
-import {useControlWindowInsets, useNumColumns} from 'utils';
+import {AddHTTPS, findColorByAttribute, findSkill, useNumColumns} from 'utils';
 import type {MainTabScreenProps} from 'typings/navigation';
 
 /** Key extractor in FlatList */
@@ -35,8 +41,9 @@ const keyExtractor = (item: CardObject) => `card ${item.id}`;
  * [Card List Screen](https://github.com/MagiCircles/SchoolIdolAPI/wiki/API-Cards#get-the-list-of-cards)
  */
 const CardsScreen = ({navigation}: MainTabScreenProps<'CardsScreen'>) => {
-  const insets = useControlWindowInsets();
   const numColumns = useNumColumns();
+  const {width} = useWindowDimensions();
+  const itemWidth = width / numColumns;
   const worldwideOnly = useWorldwideOnly();
   const cachedData = useCachedData();
   const defaultParams: CardSearchParams = {
@@ -144,6 +151,36 @@ const CardsScreen = ({navigation}: MainTabScreenProps<'CardsScreen'>) => {
     }
   };
 
+  /** Call when pressing search button */
+  const onSearch = () => {
+    setList([]);
+    setShowFilter(false);
+    setSearchParams({...searchParams, page: 1});
+    getCards({...searchParams, page: 1});
+  };
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerSearchBarOptions: {
+        placeholder: 'Search card...',
+        onChangeText: ({nativeEvent: {text}}) => {
+          setSearchParams(draft => {
+            draft.search = text;
+          });
+        },
+        onSearchButtonPress: onSearch,
+      },
+      unstable_headerRightItems: () => [
+        {
+          type: 'button',
+          label: 'Filter',
+          icon: {type: 'sfSymbol', name: 'line.3.horizontal.decrease'},
+          onPress: () => setShowFilter(v => !v),
+        },
+      ],
+    });
+  }, [navigation, onSearch]);
+
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect
     getCards(defaultParams);
@@ -151,26 +188,71 @@ const CardsScreen = ({navigation}: MainTabScreenProps<'CardsScreen'>) => {
 
   /** Render item in FlatList */
   const renderItem = ({item}: {item: CardObject}) => {
+    const card = AddHTTPS(item.card_image || item.card_idolized_image);
+    const cardColors = findColorByAttribute(item.attribute);
+
     /** Navigate to Card Detail Screen */
     const navigateToCardDetail = () => {
       navigation.navigate('CardDetailScreen', {item});
     };
 
     return (
-      <CardItem
-        item={item}
-        numColumns={numColumns}
-        onPress={navigateToCardDetail}
-      />
+      <PressableFeedback
+        className="p-2"
+        style={{width: itemWidth}}
+        onPress={navigateToCardDetail}>
+        {!!card && (
+          <Animated.Image
+            sharedTransitionTag={`card_${item.id}`}
+            source={{uri: card}}
+            style={{aspectRatio: 484 / 681}}
+          />
+        )}
+        <BlurView
+          blurAmount={20}
+          blurType="xlight"
+          className="absolute top-2 right-2 gap-1 rounded-bl-md p-2"
+          data-attribute={item.attribute}
+          overlayColorClassName="accent-light-other-attribute data-[attribute=Cool]:accent-light-cool data-[attribute=Pure]:accent-light-pure data-[attribute=Smile]:accent-light-smile">
+          {!!item.skill && (
+            <Image
+              className="h-7 w-7"
+              source={Images.skill[findSkill(item.skill)]}
+              style={{tintColor: cardColors[0]}}
+            />
+          )}
+          <Image
+            className="h-7 w-7"
+            source={item.japan_only ? Images.region[0] : Images.region[1]}
+            style={{tintColor: cardColors[0]}}
+          />
+          {item.is_promo && (
+            <Image
+              className="h-7 w-7"
+              source={Images.promo}
+              style={{tintColor: cardColors[0]}}
+            />
+          )}
+          {item.is_special && (
+            <Image
+              className="h-7 w-7"
+              source={Images.skill[3]}
+              style={{tintColor: cardColors[0]}}
+            />
+          )}
+          {!!item.event && (
+            <Image
+              className="h-7 w-7"
+              source={Images.event}
+              style={{tintColor: cardColors[0]}}
+            />
+          )}
+        </BlurView>
+        <PressableFeedback.Ripple
+          animation={{backgroundColor: {value: cardColors[0]}}}
+        />
+      </PressableFeedback>
     );
-  };
-
-  /** Call when pressing search button */
-  const onSearch = () => {
-    setList([]);
-    setShowFilter(false);
-    setSearchParams({...searchParams, page: 1});
-    getCards({...searchParams, page: 1});
   };
 
   /**
@@ -184,9 +266,6 @@ const CardsScreen = ({navigation}: MainTabScreenProps<'CardsScreen'>) => {
       getCards(newSP);
     }
   };
-
-  /** Filter on/off */
-  const toggleFilter = () => setShowFilter(!showFilter);
 
   /** Reverse search on/off */
   const toggleReverse = () => {
@@ -297,35 +376,8 @@ const CardsScreen = ({navigation}: MainTabScreenProps<'CardsScreen'>) => {
     </View>
   );
 
-  const onChangeText = (text: string) =>
-    setSearchParams(draft => {
-      draft.search = text;
-    });
-
   return (
     <SafeAreaView className="flex-1" edges={{top: true}}>
-      {/* HEADER */}
-      <View className="flex-row gap-3 px-3" style={{paddingLeft: insets.left}}>
-        <SearchField
-          className="flex-1"
-          value={searchParams.search || ''}
-          onChange={onChangeText}>
-          <SearchField.Group>
-            <SearchField.SearchIcon />
-            <SearchField.Input
-              placeholder="Search card..."
-              onSubmitEditing={onSearch}
-            />
-          </SearchField.Group>
-        </SearchField>
-        <Button
-          isIconOnly
-          variant={showFilter ? 'secondary' : 'ghost'}
-          onPress={toggleFilter}>
-          <MaterialDesignIcons name="dots-horizontal" />
-        </Button>
-      </View>
-
       {/* FILTER */}
       {showFilter && (
         <View className="h-7/20">

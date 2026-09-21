@@ -3487,6 +3487,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@sbaiahmed1/react-native-blur@npm:^6.0.2":
+  version: 6.0.2
+  resolution: "@sbaiahmed1/react-native-blur@npm:6.0.2"
+  peerDependencies:
+    react: ">=18.2.0"
+    react-native: ">=0.80.0"
+  checksum: 10/20406cd3297c33c5994d821b93a9e2a9853f2db074b3700944cb6ba7fc2f8e69490ad677fb3480e43c3195b9a1a7cea7d99f35ac27498eb7503a75489d04afcc
+  languageName: node
+  linkType: hard
+
 "@shopify/flash-list@npm:^2.3.2":
   version: 2.3.2
   resolution: "@shopify/flash-list@npm:2.3.2"
@@ -8662,6 +8672,7 @@ __metadata:
     "@rn-primitives/slot": "npm:^1.5.2"
     "@rozenite/metro": "npm:^2.4.0"
     "@rozenite/react-navigation-plugin": "npm:^2.4.0"
+    "@sbaiahmed1/react-native-blur": "npm:^6.0.2"
     "@shopify/flash-list": "npm:^2.3.2"
     "@stylistic/eslint-plugin": "npm:^5.10.0"
     "@types/jest": "npm:^29.5.14"

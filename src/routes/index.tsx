@@ -43,8 +43,6 @@ dayjs.extend(localizedFormat);
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
-const noHeader = {headerShown: false};
-
 const MainContainer = () => {
   const appTheme = useAppTheme();
   const [background, border, card, primary, text] = useThemeColor([
@@ -103,7 +101,7 @@ const MainContainer = () => {
                     <Stack.Screen
                       component={LLSIFTab}
                       name="Main"
-                      options={noHeader}
+                      options={{headerShown: false}}
                     />
                     <Stack.Screen
                       component={IdolsScreen}

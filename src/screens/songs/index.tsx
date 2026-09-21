@@ -4,9 +4,9 @@ import ConnectStatus from 'components/connectstatus';
 import ImgSelectionRow from 'components/imgselectionrow';
 import OrderingRow from 'components/orderingrow';
 import SelectionRow from 'components/selectionrow';
-import SongItem from 'components/songitem';
 import {AllOnlyNone, AttributeData, MainUnitData, OrderingGroup} from 'config';
 import {Button} from 'heroui-native/button';
+import {PressableFeedback} from 'heroui-native/pressable-feedback';
 import {SearchField} from 'heroui-native/search-field';
 import {Surface} from 'heroui-native/surface';
 import {Typography as Text} from 'heroui-native/text';
@@ -19,6 +19,7 @@ import Animated, {
 } from 'react-native-reanimated';
 import LLSIFService from 'services/LLSIFService';
 import {useImmer} from 'use-immer';
+import {AddHTTPS, findColorByAttribute} from 'utils';
 import type {RootStackScreenProps} from 'typings/navigation';
 
 const defaultParams: SongSearchParams = {
@@ -61,6 +62,8 @@ export const useNumColumns = () => {
  */
 const SongsScreen = ({navigation}: RootStackScreenProps<'SongsScreen'>) => {
   const numColumns = useNumColumns();
+  const {width} = useWindowDimensions();
+  const itemWidth = width / numColumns;
   const [loading, setLoading] = useState(true);
   const [list, setList] = useState<SongObject[]>([]);
   const [showFilter, setShowFilter] = useState(false);
@@ -94,17 +97,41 @@ const SongsScreen = ({navigation}: RootStackScreenProps<'SongsScreen'>) => {
 
   /** Render item in FlatList */
   const renderItem = ({item}: {item: SongObject}) => {
+    const tag = `song_${item.name}`;
+    const uri = AddHTTPS(item.image);
+    const attColors = findColorByAttribute(item.attribute || '');
+
     /** Navigate to Song Detail Screen */
     const navigateToSongDetail = () => {
-      navigation.navigate('SongDetailScreen', {item});
+      navigation.navigate('SongDetailScreen', {item, tag});
     };
 
     return (
-      <SongItem
-        item={item}
-        numColumns={numColumns}
-        onPress={navigateToSongDetail}
-      />
+      <PressableFeedback onPress={navigateToSongDetail}>
+        {uri && (
+          <Animated.Image
+            resizeMode="cover"
+            sharedTransitionTag={tag}
+            source={{uri}}
+            style={{width: itemWidth, height: itemWidth}}
+          />
+        )}
+        <View
+          className="absolute bottom-0 h-1/3 w-full items-center justify-end bg-linear-to-b from-other-attribute to-other-attribute p-1 data-[attribute=Cool]:from-cool/10 data-[attribute=Cool]:to-cool data-[attribute=Pure]:from-pure/10 data-[attribute=Pure]:to-pure data-[attribute=Smile]:from-smile/10 data-[attribute=Smile]:to-smile"
+          data-attribute={item.attribute}>
+          <Text align="center" className="text-white" weight="bold">
+            {item.name}
+          </Text>
+          {!!item.romaji_name && (
+            <Text truncate align="center" className="text-white" weight="bold">
+              {item.romaji_name}
+            </Text>
+          )}
+        </View>
+        <PressableFeedback.Ripple
+          animation={{backgroundColor: {value: attColors[1]}}}
+        />
+      </PressableFeedback>
     );
   };
 

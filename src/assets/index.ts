@@ -89,6 +89,7 @@ const multi = {
   "μ's": muse,
   Aqours,
   Nijigasaki,
+  'Nijigasaki High Scho': Nijigasaki,
   'Liella!': Liella,
 };
 

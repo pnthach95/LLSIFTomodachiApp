@@ -4,12 +4,12 @@ import {useThemeColor} from 'heroui-native/hooks';
 import CardsScreen from 'screens/cards';
 import EventsScreen from 'screens/events';
 import MoreScreen from 'screens/more';
-import type {BottomTabList, RootStackScreenProps} from 'typings/navigation';
+import type {BottomTabList} from 'typings/navigation';
 
 const ICON_SIZE = 24;
 const Tab = createNativeBottomTabNavigator<BottomTabList>();
 
-const LLSIFTab = ({navigation}: RootStackScreenProps<'Main'>) => {
+const LLSIFTab = () => {
   //@ts-ignore
   const [smile, pure, cool]: string[] = useThemeColor([
     //@ts-ignore
@@ -19,33 +19,23 @@ const LLSIFTab = ({navigation}: RootStackScreenProps<'Main'>) => {
   ]);
 
   return (
-    <Tab.Navigator
-      backBehavior="initialRoute"
-      screenOptions={{headerShown: false}}>
+    <Tab.Navigator backBehavior="initialRoute">
       <Tab.Screen
         component={CardsScreen}
-        listeners={{
-          focus: () => {
-            navigation.setOptions({title: 'Cards'});
-          },
-        }}
         name="CardsScreen"
         options={{
+          headerShown: true,
           tabBarLabel: 'Cards',
           tabBarActiveTintColor: smile,
           tabBarIcon: {
             source: Icon.getImageSourceSync('cards', {size: ICON_SIZE}),
             type: 'image',
           },
+          title: 'Cards',
         }}
       />
       <Tab.Screen
         component={EventsScreen}
-        listeners={{
-          focus: () => {
-            navigation.setOptions({title: 'Events'});
-          },
-        }}
         name="EventsScreen"
         options={{
           tabBarLabel: 'Events',
@@ -54,15 +44,11 @@ const LLSIFTab = ({navigation}: RootStackScreenProps<'Main'>) => {
             source: Icon.getImageSourceSync('calendar', {size: ICON_SIZE}),
             type: 'image',
           },
+          title: 'Events',
         }}
       />
       <Tab.Screen
         component={MoreScreen}
-        listeners={{
-          focus: () => {
-            navigation.setOptions({title: 'More'});
-          },
-        }}
         name="MoreScreen"
         options={{
           tabBarLabel: 'More',

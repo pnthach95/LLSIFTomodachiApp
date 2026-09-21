@@ -8,40 +8,9 @@ import {TagGroup, type TagKey} from 'heroui-native/tag-group';
 import {Typography as Text} from 'heroui-native/text';
 import {useState} from 'react';
 import {Image, ScrollView, View, useWindowDimensions} from 'react-native';
+import Animated from 'react-native-reanimated';
 import {AddHTTPS, findColorByAttribute} from 'utils';
 import type {RootStackScreenProps} from 'typings/navigation';
-
-const RenderImage = ({
-  index,
-  value,
-  ripperColor,
-  onPress,
-}: {
-  index: number;
-  value: string;
-  ripperColor?: string;
-  onPress: (index: number) => void;
-}) => {
-  const {width} = useWindowDimensions();
-  const itemWidth = (width - 10) / 2 - 10;
-  const onPressImg = () => onPress(index);
-
-  return (
-    <PressableFeedback onPress={onPressImg}>
-      <PressableFeedback.Ripple
-        animation={{backgroundColor: {value: ripperColor}}}
-      />
-      <TurboImage
-        resizeMode="contain"
-        source={{uri: value}}
-        style={{
-          height: (itemWidth * 720) / 512,
-          width: itemWidth,
-        }}
-      />
-    </PressableFeedback>
-  );
-};
 
 /**
  * Card detail screen
@@ -51,6 +20,8 @@ const CardDetailScreen = ({
   route,
 }: RootStackScreenProps<'CardDetailScreen'>) => {
   const {item} = route.params;
+  const {width} = useWindowDimensions();
+  const itemWidth = (width - 10) / 2 - 10;
   const minStats = [
     item.minimum_statistics_smile || 0,
     item.minimum_statistics_pure || 0,
@@ -112,15 +83,25 @@ const CardDetailScreen = ({
       </View>
       {/* CARD IMAGES */}
       <View className="flex-row justify-around pb-5">
-        {images.map((value, index) => (
-          <RenderImage
-            key={index}
-            index={index}
-            ripperColor={cardColors[0]}
-            value={value}
-            onPress={idx => navigation.navigate('Gallery', {idx, images})}
-          />
-        ))}
+        {images.map((value, index) => {
+          const onPress = () =>
+            navigation.navigate('Gallery', {idx: index, images});
+
+          return (
+            <PressableFeedback key={`${item.id}_${index}`} onPress={onPress}>
+              <Animated.Image
+                sharedTransitionTag={
+                  index === 0 ? `card_${item.id}` : undefined
+                }
+                source={{uri: value}}
+                style={{aspectRatio: 512 / 720, width: itemWidth}}
+              />
+              <PressableFeedback.Ripple
+                animation={{backgroundColor: {value: cardColors[0]}}}
+              />
+            </PressableFeedback>
+          );
+        })}
       </View>
       <View className="px-5">
         {/* INFORMATION */}

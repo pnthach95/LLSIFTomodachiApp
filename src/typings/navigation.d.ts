@@ -1,4 +1,4 @@
-import type {BottomTabScreenProps} from '@react-navigation/bottom-tabs';
+import type {NativeBottomTabScreenProps} from '@react-navigation/bottom-tabs/unstable';
 import type {CompositeScreenProps} from '@react-navigation/native';
 import type {NativeStackScreenProps} from '@react-navigation/native-stack';
 
@@ -10,7 +10,7 @@ type RootStackParamList = {
   CardDetailScreen: {item: CardObject};
   EventDetailScreen: {eventName: string};
   IdolDetailScreen: {name: string};
-  SongDetailScreen: {item: SongObject};
+  SongDetailScreen: {item: SongObject; tag: string};
   AboutMeScreen: undefined;
   Gallery: {idx: number; images: string[]};
 };
@@ -25,7 +25,7 @@ type RootStackScreenProps<T extends keyof RootStackParamList> =
   NativeStackScreenProps<RootStackParamList, T>;
 
 type MainTabScreenProps<T extends keyof BottomTabList> = CompositeScreenProps<
-  BottomTabScreenProps<BottomTabList, T>,
+  NativeBottomTabScreenProps<BottomTabList, T>,
   NativeStackScreenProps<RootStackParamList>
 >;
 

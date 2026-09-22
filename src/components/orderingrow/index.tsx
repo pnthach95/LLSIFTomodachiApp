@@ -1,14 +1,13 @@
 import {MaterialDesignIcons} from 'components/uniwind';
 import {PressableFeedback} from 'heroui-native/pressable-feedback';
+import {Select} from 'heroui-native/select';
 import {Typography as Text} from 'heroui-native/text';
-import {View} from 'react-native';
-import {useModal} from 'react-native-modalfy';
-import type {ModalStackParamList} from 'typings/modalfy';
+import {FlatList, View} from 'react-native';
 
 type Props = {
   list: LVObject<string>[];
   onSelect: (item: string) => void;
-  selectedItem: string | undefined;
+  value: string | undefined;
   toggleReverse: () => void;
   isReverse: boolean;
 };
@@ -18,21 +17,10 @@ const OrderingRow = ({
   isReverse,
   list,
   onSelect,
-  selectedItem,
+  value,
   toggleReverse,
 }: Props) => {
-  const {openModal} = useModal<ModalStackParamList>();
-
-  const openList = () => {
-    openModal('list', {
-      title: 'Ordering',
-      selectedItem,
-      objectData: list,
-      onPress: onSelect,
-    });
-  };
-
-  const findLabel = list.find(i => i.value === selectedItem)?.label || '';
+  const findLabel = list.find(i => i.value === value)?.label || '';
 
   return (
     <>
@@ -40,12 +28,36 @@ const OrderingRow = ({
         <View className="my-2.5 flex-1 justify-center">
           <Text>Ordering</Text>
         </View>
-        <PressableFeedback className="flex-2" onPress={openList}>
-          <View className="m-2.5 flex-row items-center justify-between">
-            <Text>{findLabel}</Text>
-            <MaterialDesignIcons name="menu-down" size={20} />
-          </View>
-        </PressableFeedback>
+        <Select
+          className="flex-2"
+          presentation="popover"
+          value={value ? {value, label: findLabel} : undefined}
+          onValueChange={d => {
+            if (d) {
+              onSelect(d.value);
+            }
+          }}>
+          <Select.Trigger>
+            <Select.Value placeholder="" />
+            <Select.TriggerIndicator />
+          </Select.Trigger>
+          <Select.Portal>
+            <Select.Overlay />
+            <Select.Content
+              className="h-96"
+              presentation="popover"
+              width="trigger">
+              <FlatList
+                data={list}
+                renderItem={({item}) => (
+                  <Select.Item label={item.label} value={item.value}>
+                    <Select.ItemLabel />
+                  </Select.Item>
+                )}
+              />
+            </Select.Content>
+          </Select.Portal>
+        </Select>
       </View>
       <View className="flex-row">
         <View className="my-2.5 flex-1 justify-center" />

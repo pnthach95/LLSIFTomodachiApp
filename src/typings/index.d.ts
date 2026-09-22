@@ -7,13 +7,6 @@ type LVObject<T> = {label: string; value: T};
 type Combined = RarityType | AttributeType | MainUnitNames;
 type CombinedWithBOE = BooleanOrEmpty | YearType;
 
-type FCSelectionProps<T = Combined> = {
-  title: string;
-  data: readonly T[];
-  value: T;
-  setValue: (value: T) => void;
-};
-
 type FCItemProps<T> = {
   item: T;
   onPress: () => void;

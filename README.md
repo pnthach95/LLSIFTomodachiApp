@@ -20,7 +20,6 @@ The project contains:
 - [React Native Offline](https://github.com/rgommezz/react-native-offline)
 - [React Native Vector Icons](https://github.com/oblador/react-native-vector-icons)
 - [React Native MMKV Storage](https://github.com/ammarahm-ed/react-native-mmkv-storage)
-- [React Native Modalfy](https://colorfy-software.gitbook.io/react-native-modalfy/)
 - [dayjs](https://day.js.org/)
 - And more...
 

@@ -15,17 +15,12 @@ import {
   RegionData,
   YearData,
 } from 'config';
+import {BottomSheet} from 'heroui-native/bottom-sheet';
 import {Button} from 'heroui-native/button';
 import {PressableFeedback} from 'heroui-native/pressable-feedback';
 import {Typography as Text} from 'heroui-native/text';
 import {useEffect, useLayoutEffect, useState} from 'react';
-import {
-  Alert,
-  Image,
-  ScrollView,
-  View,
-  useWindowDimensions,
-} from 'react-native';
+import {Alert, Image, View, useWindowDimensions} from 'react-native';
 import Animated from 'react-native-reanimated';
 import {SafeAreaView} from 'react-native-screens/experimental';
 import LLSIFService from 'services/LLSIFService';
@@ -379,9 +374,10 @@ const CardsScreen = ({navigation}: MainTabScreenProps<'CardsScreen'>) => {
   return (
     <SafeAreaView className="flex-1" edges={{top: true}}>
       {/* FILTER */}
-      {showFilter && (
-        <View className="h-7/20">
-          <ScrollView contentContainerClassName="p-3">
+      <BottomSheet isOpen={showFilter} onOpenChange={setShowFilter}>
+        <BottomSheet.Portal>
+          <BottomSheet.Overlay />
+          <BottomSheet.Content>
             <PickerRow
               list={cachedData.idols}
               name="Idol"
@@ -457,18 +453,18 @@ const CardsScreen = ({navigation}: MainTabScreenProps<'CardsScreen'>) => {
             <OrderingRow
               isReverse={searchParams.isReverse || false}
               list={OrderingGroup.CARD}
-              selectedItem={
+              toggleReverse={toggleReverse}
+              value={
                 searchParams.selectedOrdering || OrderingGroup.CARD[1].value
               }
-              toggleReverse={toggleReverse}
               onSelect={selectOrdering}
             />
 
             {/* RESET BUTTON */}
             <Button onPress={resetFilter}>RESET</Button>
-          </ScrollView>
-        </View>
-      )}
+          </BottomSheet.Content>
+        </BottomSheet.Portal>
+      </BottomSheet>
       <ConnectStatus />
       {/* LIST */}
       <FlashList

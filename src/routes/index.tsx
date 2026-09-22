@@ -13,13 +13,11 @@ import duration from 'dayjs/plugin/duration';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
 import {useThemeColor} from 'heroui-native/hooks';
 import {HeroUINativeProvider} from 'heroui-native/provider';
-import Modals from 'modals';
 import {useEffect} from 'react';
 import {Image, StatusBar} from 'react-native';
 import BootSplash from 'react-native-bootsplash';
 import ErrorBoundary from 'react-native-error-boundary';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
-import {ModalProvider} from 'react-native-modalfy';
 import {NetworkProvider} from 'react-native-offline';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import AboutMeScreen from 'screens/aboutme';
@@ -94,117 +92,115 @@ const MainContainer = () => {
                   appTheme === 'dark' ? 'light-content' : 'dark-content'
                 }
               />
-              <ModalProvider stack={Modals}>
-                <NavigationContainer theme={theme} onReady={onReady}>
-                  <Stack.Navigator
-                    screenOptions={{headerBackButtonDisplayMode: 'minimal'}}>
-                    <Stack.Screen
-                      component={LLSIFTab}
-                      name="Main"
-                      options={{headerShown: false}}
-                    />
-                    <Stack.Screen
-                      component={IdolsScreen}
-                      name="IdolsScreen"
-                      options={{title: 'School Idols'}}
-                    />
-                    <Stack.Screen
-                      component={SongsScreen}
-                      name="SongsScreen"
-                      options={{title: 'Songs'}}
-                    />
-                    <Stack.Screen
-                      component={CardDetailScreen}
-                      name="CardDetailScreen"
-                      options={({
-                        navigation,
-                        route: {
-                          params: {
-                            item: {
-                              idol: {name},
-                              attribute,
+              <NavigationContainer theme={theme} onReady={onReady}>
+                <Stack.Navigator
+                  screenOptions={{headerBackButtonDisplayMode: 'minimal'}}>
+                  <Stack.Screen
+                    component={LLSIFTab}
+                    name="Main"
+                    options={{headerShown: false}}
+                  />
+                  <Stack.Screen
+                    component={IdolsScreen}
+                    name="IdolsScreen"
+                    options={{title: 'School Idols'}}
+                  />
+                  <Stack.Screen
+                    component={SongsScreen}
+                    name="SongsScreen"
+                    options={{title: 'Songs'}}
+                  />
+                  <Stack.Screen
+                    component={CardDetailScreen}
+                    name="CardDetailScreen"
+                    options={({
+                      navigation,
+                      route: {
+                        params: {
+                          item: {
+                            idol: {name},
+                            attribute,
+                          },
+                        },
+                      },
+                    }) => ({
+                      title: name,
+                      headerTransparent: true,
+                      headerTintColor: findColorByAttribute(attribute)[0],
+                      unstable_headerRightItems: () => [
+                        {
+                          icon: {type: 'sfSymbol', name: 'person'},
+                          tintColor: findColorByAttribute(attribute)[0],
+                          type: 'button',
+                          label: 'View idol detail',
+                          onPress: () => {
+                            navigation.navigate('IdolDetailScreen', {
+                              name,
+                            });
+                          },
+                        },
+                      ],
+                    })}
+                  />
+                  <Stack.Screen
+                    component={EventDetailScreen}
+                    name="EventDetailScreen"
+                    options={({
+                      route: {
+                        params: {eventName},
+                      },
+                    }) => ({title: eventName})}
+                  />
+                  <Stack.Screen
+                    component={IdolDetailScreen}
+                    name="IdolDetailScreen"
+                    options={({
+                      route: {
+                        params: {name},
+                      },
+                    }) => ({title: name, headerLargeTitleEnabled: true})}
+                  />
+                  <Stack.Screen
+                    component={SongDetailScreen}
+                    name="SongDetailScreen"
+                    options={({
+                      route: {
+                        params: {
+                          item: {attribute, name, main_unit},
+                        },
+                      },
+                    }) => ({
+                      title: name,
+                      headerLargeTitleEnabled: true,
+                      headerTintColor: findColorByAttribute(attribute)[0],
+                      unstable_headerRightItems: main_unit
+                        ? () => [
+                            {
+                              type: 'custom',
+                              element: (
+                                <Image
+                                  className="h-12.5 w-17.5"
+                                  resizeMode="contain"
+                                  source={Images.multi[main_unit]}
+                                />
+                              ),
                             },
-                          },
-                        },
-                      }) => ({
-                        title: name,
-                        headerTransparent: true,
-                        headerTintColor: findColorByAttribute(attribute)[0],
-                        unstable_headerRightItems: () => [
-                          {
-                            icon: {type: 'sfSymbol', name: 'person'},
-                            tintColor: findColorByAttribute(attribute)[0],
-                            type: 'button',
-                            label: 'View idol detail',
-                            onPress: () => {
-                              navigation.navigate('IdolDetailScreen', {
-                                name,
-                              });
-                            },
-                          },
-                        ],
-                      })}
-                    />
-                    <Stack.Screen
-                      component={EventDetailScreen}
-                      name="EventDetailScreen"
-                      options={({
-                        route: {
-                          params: {eventName},
-                        },
-                      }) => ({title: eventName})}
-                    />
-                    <Stack.Screen
-                      component={IdolDetailScreen}
-                      name="IdolDetailScreen"
-                      options={({
-                        route: {
-                          params: {name},
-                        },
-                      }) => ({title: name, headerLargeTitleEnabled: true})}
-                    />
-                    <Stack.Screen
-                      component={SongDetailScreen}
-                      name="SongDetailScreen"
-                      options={({
-                        route: {
-                          params: {
-                            item: {attribute, name, main_unit},
-                          },
-                        },
-                      }) => ({
-                        title: name,
-                        headerLargeTitleEnabled: true,
-                        headerTintColor: findColorByAttribute(attribute)[0],
-                        unstable_headerRightItems: main_unit
-                          ? () => [
-                              {
-                                type: 'custom',
-                                element: (
-                                  <Image
-                                    className="h-12.5 w-17.5"
-                                    resizeMode="contain"
-                                    source={Images.multi[main_unit]}
-                                  />
-                                ),
-                              },
-                            ]
-                          : undefined,
-                      })}
-                    />
-                    <Stack.Screen
-                      component={AboutMeScreen}
-                      name="AboutMeScreen"
-                      options={{title: 'About me'}}
-                    />
-                    <Stack.Screen
-                      component={GalleryScreen}
-                      name="Gallery"
-                      options={{headerShown: false}}
-                    />
-                  </Stack.Navigator>
-                </NavigationContainer>
-              </ModalProvider>
+                          ]
+                        : undefined,
+                    })}
+                  />
+                  <Stack.Screen
+                    component={AboutMeScreen}
+                    name="AboutMeScreen"
+                    options={{title: 'About me'}}
+                  />
+                  <Stack.Screen
+                    component={GalleryScreen}
+                    name="Gallery"
+                    options={{headerShown: false}}
+                  />
+                </Stack.Navigator>
+              </NavigationContainer>
             </ErrorBoundary>
           </HeroUINativeProvider>
         </GestureHandlerRootView>

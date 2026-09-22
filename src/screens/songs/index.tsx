@@ -321,8 +321,8 @@ const SongsScreen = ({navigation}: RootStackScreenProps<'SongsScreen'>) => {
             <OrderingRow
               isReverse={searchParams.isReverse || true}
               list={OrderingGroup.SONG}
-              selectedItem={searchParams.selectedOrdering}
               toggleReverse={toggleReverse}
+              value={searchParams.selectedOrdering}
               onSelect={selectOrdering}
             />
             <Button onPress={resetFilter}>RESET</Button>

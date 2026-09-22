@@ -1,9 +1,6 @@
-import {MaterialDesignIcons} from 'components/uniwind';
-import {PressableFeedback} from 'heroui-native/pressable-feedback';
-import {Typography as Text} from 'heroui-native/text';
-import {View} from 'react-native';
-import {useModal} from 'react-native-modalfy';
-import type {ModalStackParamList} from 'typings/modalfy';
+import {Select} from 'heroui-native/select';
+import {Typography} from 'heroui-native/text';
+import {FlatList, View} from 'react-native';
 
 type Props = {
   name: string;
@@ -14,28 +11,41 @@ type Props = {
 
 /** Idol Name Row */
 const PickerRow = ({name, value, list, onSelect}: Props) => {
-  const {openModal} = useModal<ModalStackParamList>();
-
-  const openList = () => {
-    openModal('list', {
-      title: name,
-      data: list,
-      onPress: onSelect,
-      selectedItem: value,
-    });
-  };
-
   return (
-    <View className="flex-row">
-      <View className="my-2.5 flex-1 justify-center">
-        <Text>{name}</Text>
+    <View className="flex-row items-center">
+      <View className="flex-1">
+        <Typography>{name}</Typography>
       </View>
-      <PressableFeedback className="flex-2" onPress={openList}>
-        <View className="m-2.5 flex-row items-center justify-between">
-          <Text>{value}</Text>
-          <MaterialDesignIcons name="menu-down" size={20} />
-        </View>
-      </PressableFeedback>
+      <Select
+        className="flex-2"
+        presentation="popover"
+        value={{label: value, value}}
+        onValueChange={d => {
+          if (d) {
+            onSelect(d.value);
+          }
+        }}>
+        <Select.Trigger>
+          <Select.Value placeholder="" />
+          <Select.TriggerIndicator />
+        </Select.Trigger>
+        <Select.Portal>
+          <Select.Overlay />
+          <Select.Content
+            className="h-96"
+            presentation="popover"
+            width="trigger">
+            <FlatList
+              data={list}
+              renderItem={({item}) => (
+                <Select.Item label={item} value={item}>
+                  <Select.ItemLabel />
+                </Select.Item>
+              )}
+            />
+          </Select.Content>
+        </Select.Portal>
+      </Select>
     </View>
   );
 };

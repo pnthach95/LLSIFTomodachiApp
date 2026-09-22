@@ -7133,15 +7133,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"hoist-non-react-statics@npm:^3.3.2":
-  version: 3.3.2
-  resolution: "hoist-non-react-statics@npm:3.3.2"
-  dependencies:
-    react-is: "npm:^16.7.0"
-  checksum: 10/1acbe85f33e5a39f90c822ad4d28b24daeb60f71c545279431dc98c312cd28a54f8d64788e477fe21dc502b0e3cf58589ebe5c1ad22af27245370391c2d24ea6
-  languageName: node
-  linkType: hard
-
 "html-escaper@npm:^2.0.0":
   version: 2.0.2
   resolution: "html-escaper@npm:2.0.2"
@@ -8708,7 +8699,6 @@ __metadata:
     react-native-keyboard-controller: "npm:^1.22.5"
     react-native-linear-gradient: "npm:^2.8.3"
     react-native-mmkv-storage: "npm:^12.0.1"
-    react-native-modalfy: "npm:^3.7.3"
     react-native-offline: "patch:react-native-offline@npm:6.0.2#./.yarn/patches/offline.patch"
     react-native-reanimated: "npm:4.6.0"
     react-native-restart: "npm:^0.0.29"
@@ -10152,17 +10142,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-is@npm:^16.13.1, react-is@npm:^16.7.0":
+"react-is@npm:^16.13.1":
   version: 16.13.1
   resolution: "react-is@npm:16.13.1"
   checksum: 10/5aa564a1cde7d391ac980bedee21202fc90bdea3b399952117f54fb71a932af1e5902020144fb354b4690b2414a0c7aafe798eb617b76a3d441d956db7726fdf
-  languageName: node
-  linkType: hard
-
-"react-is@npm:^17.0.2":
-  version: 17.0.2
-  resolution: "react-is@npm:17.0.2"
-  checksum: 10/73b36281e58eeb27c9cc6031301b6ae19ecdc9f18ae2d518bdb39b0ac564e65c5779405d623f1df9abf378a13858b79442480244bd579968afc1faf9a2ce5e05
   languageName: node
   linkType: hard
 
@@ -10298,20 +10281,6 @@ __metadata:
   peerDependencies:
     react-native: "*"
   checksum: 10/b471426780b90d9a06dde537087598408975950fbde2320d07832301d68c9c3f4f8f43100456e0105659fe0052007b6e0dbd41465fc5ea3fdbc4c36623cf8bd0
-  languageName: node
-  linkType: hard
-
-"react-native-modalfy@npm:^3.7.3":
-  version: 3.7.3
-  resolution: "react-native-modalfy@npm:3.7.3"
-  dependencies:
-    hoist-non-react-statics: "npm:^3.3.2"
-    react-is: "npm:^17.0.2"
-  peerDependencies:
-    react: ">=16.8.3"
-    react-native: ">=0.59.0"
-    react-native-gesture-handler: ">=2.2.1"
-  checksum: 10/a87696bbdb92209b02cbeaba199b2f55b86d5728b67a864943cddb11dd4f03b7dc34cadca663904da1521511e5419646d9ca656dd817a313c4aa5fe189f1cc84
   languageName: node
   linkType: hard
 

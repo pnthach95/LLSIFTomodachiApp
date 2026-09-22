@@ -38,6 +38,7 @@ const LLSIFTab = () => {
         component={EventsScreen}
         name="EventsScreen"
         options={{
+          headerShown: true,
           tabBarLabel: 'Events',
           tabBarActiveTintColor: pure,
           tabBarIcon: {

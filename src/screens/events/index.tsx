@@ -5,13 +5,13 @@ import EventItem from 'components/eventitem';
 import ImgSelectionRow from 'components/imgselectionrow';
 import PickerRow from 'components/pickerrow';
 import SelectionRow from 'components/selectionrow';
-import {MaterialDesignIcons} from 'components/uniwind';
 import {AttributeData, MainUnitData, RegionData} from 'config';
+import {BottomSheet} from 'heroui-native/bottom-sheet';
 import {Button} from 'heroui-native/button';
-import {SearchField} from 'heroui-native/search-field';
 import {Typography as Text} from 'heroui-native/text';
-import {useEffect, useState} from 'react';
+import {useEffect, useLayoutEffect, useState} from 'react';
 import {Alert, Image, View} from 'react-native';
+import {SafeAreaView} from 'react-native-screens/experimental';
 import LLSIFService from 'services/LLSIFService';
 import {useCachedData, useWorldwideOnly} from 'store';
 import {useImmer} from 'use-immer';
@@ -42,35 +42,6 @@ const EventsScreen = ({navigation}: MainTabScreenProps<'EventsScreen'>) => {
   const [list, setList] = useState<EventObject[]>([]);
   const [showFilter, setShowFilter] = useState(false);
   const [searchParams, setSearchParams] = useImmer(defaultParams);
-
-  useEffect(() => {
-    // eslint-disable-next-line react-hooks/immutability
-    getEvents(defaultParams);
-  }, []);
-
-  /** Render item in FlatList */
-  const renderItem = ({item}: {item: EventObject}) => {
-    /** Navigate to Event Detail Screen */
-    const navigateToEventDetail = () => {
-      navigation.navigate('EventDetailScreen', {
-        eventName: item.japanese_name,
-      });
-    };
-
-    return <EventItem item={item} onPress={navigateToEventDetail} />;
-  };
-
-  /**
-   * Call when scrolling to the end of list.
-   * stopSearch prevents calling getEvents when no event was found (404).
-   */
-  const onEndReached = () => {
-    if (searchParams.page > 0 && !isLoading) {
-      const newSP = {...searchParams, page: searchParams.page + 1};
-      setSearchParams(newSP);
-      getEvents(newSP);
-    }
-  };
 
   /** Get event list */
   const getEvents = async (sp: EventSearchParams) => {
@@ -146,12 +117,60 @@ const EventsScreen = ({navigation}: MainTabScreenProps<'EventsScreen'>) => {
     getEvents({...searchParams, page: 1});
   };
 
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerSearchBarOptions: {
+        placeholder: 'Search card...',
+        onChangeText: ({nativeEvent: {text}}) => {
+          setSearchParams(draft => {
+            draft.search = text;
+          });
+        },
+        onSearchButtonPress: onSearch,
+      },
+      unstable_headerRightItems: () => [
+        {
+          type: 'button',
+          label: 'Filter',
+          icon: {type: 'sfSymbol', name: 'line.3.horizontal.decrease'},
+          onPress: () => setShowFilter(v => !v),
+        },
+      ],
+    });
+  }, [navigation, onSearch]);
+
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    getEvents(defaultParams);
+  }, []);
+
+  /** Render item in FlatList */
+  const renderItem = ({item}: {item: EventObject}) => {
+    /** Navigate to Event Detail Screen */
+    const navigateToEventDetail = () => {
+      navigation.navigate('EventDetailScreen', {
+        eventName: item.japanese_name,
+      });
+    };
+
+    return <EventItem item={item} onPress={navigateToEventDetail} />;
+  };
+
+  /**
+   * Call when scrolling to the end of list.
+   * stopSearch prevents calling getEvents when no event was found (404).
+   */
+  const onEndReached = () => {
+    if (searchParams.page > 0 && !isLoading) {
+      const newSP = {...searchParams, page: searchParams.page + 1};
+      setSearchParams(newSP);
+      getEvents(newSP);
+    }
+  };
+
   /** Reset filter */
   const resetFilter = () =>
     setSearchParams({...defaultParams, page: searchParams.page});
-
-  /** Filter on/off */
-  const toggleFilter = () => setShowFilter(!showFilter);
 
   /** Save `attribute` */
   const selectAttribute = (value: Combined) => {
@@ -194,68 +213,51 @@ const EventsScreen = ({navigation}: MainTabScreenProps<'EventsScreen'>) => {
     </View>
   );
 
-  const onChangeText = (text: string) => {
-    setSearchParams(draft => {
-      draft.search = text;
-    });
-  };
-
   return (
-    <View className="flex-1">
-      {/* HEADER */}
-      <View className="flex-row gap-2">
-        <SearchField value={searchParams.search || ''} onChange={onChangeText}>
-          <SearchField.SearchIcon />
-          <SearchField.Input
-            placeholder="Search event..."
-            onSubmitEditing={onSearch}
-          />
-        </SearchField>
-        <Button isIconOnly onPress={toggleFilter}>
-          <MaterialDesignIcons name="dots-horizontal" />
-        </Button>
-      </View>
-
+    <SafeAreaView className="flex-1" edges={{top: true}}>
       {/* FILTER */}
-      {showFilter && (
-        <View className="bg-surface p-2.5">
-          <PickerRow
-            list={cachedData.idols}
-            name="Idol"
-            value={searchParams.idol || 'All'}
-            onSelect={selectIdol}
-          />
-          <ImgSelectionRow
-            data={MainUnitData}
-            setValue={selectMainUnit}
-            title="Main unit"
-            value={searchParams.main_unit || ''}
-          />
-          <PickerRow
-            list={cachedData.skills}
-            name="Skill"
-            value={searchParams.skill || 'All'}
-            onSelect={selectSkill}
-          />
-          <ImgSelectionRow
-            data={AttributeData}
-            setValue={selectAttribute}
-            title="Attribute"
-            value={searchParams.attribute || ''}
-          />
-          <SelectionRow
-            data={RegionData}
-            setValue={selectRegion}
-            title="Region"
-            value={searchParams.is_english || ''}
-          />
-          <Button onPress={resetFilter}>RESET</Button>
-        </View>
-      )}
+      <BottomSheet isOpen={showFilter} onOpenChange={setShowFilter}>
+        <BottomSheet.Portal>
+          <BottomSheet.Overlay />
+          <BottomSheet.Content>
+            <PickerRow
+              list={cachedData.idols}
+              name="Idol"
+              value={searchParams.idol || 'All'}
+              onSelect={selectIdol}
+            />
+            <ImgSelectionRow
+              data={MainUnitData}
+              setValue={selectMainUnit}
+              title="Main unit"
+              value={searchParams.main_unit || ''}
+            />
+            <PickerRow
+              list={cachedData.skills}
+              name="Skill"
+              value={searchParams.skill || 'All'}
+              onSelect={selectSkill}
+            />
+            <ImgSelectionRow
+              data={AttributeData}
+              setValue={selectAttribute}
+              title="Attribute"
+              value={searchParams.attribute || ''}
+            />
+            <SelectionRow
+              data={RegionData}
+              setValue={selectRegion}
+              title="Region"
+              value={searchParams.is_english || ''}
+            />
+            <Button onPress={resetFilter}>RESET</Button>
+          </BottomSheet.Content>
+        </BottomSheet.Portal>
+      </BottomSheet>
       <ConnectStatus />
       {/* LIST */}
       <FlashList
-        contentContainerClassName="py-1.25"
+        contentInsetAdjustmentBehavior="automatic"
         data={list}
         ItemSeparatorComponent={() => <View className="h-3" />}
         keyExtractor={keyExtractor}
@@ -264,7 +266,7 @@ const EventsScreen = ({navigation}: MainTabScreenProps<'EventsScreen'>) => {
         renderItem={renderItem}
         onEndReached={onEndReached}
       />
-    </View>
+    </SafeAreaView>
   );
 };
 

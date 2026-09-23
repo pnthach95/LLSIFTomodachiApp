@@ -1,0 +1,26 @@
+diff --git a/lib/typescript/src/types.d.ts b/lib/typescript/src/types.d.ts
+index 5fab4a44fdd849c3599e74a75d2db9fb884b424c..e12a97ad4c562a3ef55b61ef5079a1fb0dc38c1d 100644
+--- a/lib/typescript/src/types.d.ts
++++ b/lib/typescript/src/types.d.ts
+@@ -37,7 +37,7 @@ export type Failure = {
+ };
+ export interface TurboImageProps extends AccessibilityProps, ViewProps {
+     source: Source;
+-    style: StyleProp<ViewStyle>;
++    style?: StyleProp<ViewStyle>;
+     resizeMode?: ResizeMode;
+     indicator?: Indicator;
+     placeholder?: Partial<Placeholder>;
+diff --git a/src/types.ts b/src/types.ts
+index 47882f6f3ea95fd5787266904d6ed49c0ee5789c..6080867dcd8accc084bb5160f49b7e968df45487 100644
+--- a/src/types.ts
++++ b/src/types.ts
+@@ -57,7 +57,7 @@ export type Failure = {
+ 
+ export interface TurboImageProps extends AccessibilityProps, ViewProps {
+   source: Source;
+-  style: StyleProp<ViewStyle>;
++  style?: StyleProp<ViewStyle>;
+   resizeMode?: ResizeMode;
+   indicator?: Indicator;
+   placeholder?: Partial<Placeholder>;

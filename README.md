@@ -2,6 +2,8 @@
 
 This project is a Love Live School Idol Festival app using data from [School Idol Tomodachi](https://schoolido.lu/) and [LLSIF.net](https://llsif.net/)
 
+The game is dead, no new contents, database is still up, so it becomes my tech playground.
+
 [![Download APK file here](https://img.shields.io/github/downloads/pnthach95/LLSIFTomodachiApp/total.svg?style=flat-square)](https://github.com/pnthach95/LLSIFTomodachiApp/releases)
 [![GitHub issues](https://img.shields.io/github/issues/pnthach95/LLSIFTomodachiApp.svg?style=flat-square)](https://github.com/pnthach95/LLSIFTomodachiApp/issues)
 
@@ -11,38 +13,26 @@ The project contains:
 
 - [React Native](https://reactnative.dev/)
 - [React Navigation](https://reactnavigation.org/)
-- [Animated TabBar](https://github.com/gorhom/react-native-animated-tabbar)
-- [React Native Paper](https://callstack.github.io/react-native-paper/)
+- [HeroUI](https://heroui.com/en/docs/native/getting-started)
 - [apisauce](https://github.com/infinitered/apisauce)
-- [React Native Firebase](https://rnfirebase.io)
-- [React Native Fast Image](https://github.com/DylanVann/react-native-fast-image)
-- [React Native Image Viewing](https://github.com/jobtoday/react-native-image-viewing)
+- [React Native Turbo Image](https://github.com/duguyihou/react-native-turbo-image)
+- [React Native Awesome Gallery](https://github.com/pavelbabenko/react-native-awesome-gallery)
 - [React Native Offline](https://github.com/rgommezz/react-native-offline)
 - [React Native Vector Icons](https://github.com/oblador/react-native-vector-icons)
-- [React Native Version Number](https://github.com/APSL/react-native-version-number)
-- [React Native Async Storage](https://react-native-async-storage.github.io/async-storage/)
-- [react-native-modalfy](https://colorfy-software.gitbook.io/react-native-modalfy/)
+- [React Native MMKV Storage](https://github.com/ammarahm-ed/react-native-mmkv-storage)
 - [dayjs](https://day.js.org/)
 - And more...
 
 ## Directory layout
 
-- [`App/Components`](App/Components): presentational components
-- [`App/Config`](App/Config): configuration of the application
-- [`App/screens`](App/screens): application's screens
-- [`App/Context`](App/Context): react context
-- [`App/hooks`](App/hooks): custom react hooks
-- [`App/Images`](App/Images): images used by the application
-- [`App/modals`](App/modals): modals
-- [`App/Services`](App/Services): application services, e.g. API clients
-- [`App/Theme`](App/Theme): base styles for the application
-- [`App/Utils`](App/Utils): some utility tools
-
-## Requirements
-
-- Node 8 or greater is required.
-- Development for iOS requires a Mac and Xcode 11 or up, and will target iOS 10 and up.
-- Know about [React Native](https://reactnative.dev).
+- [`src/assets`](src/assets): images used by the application
+- [`src/components`](src/components): presentational components
+- [`src/config`](src/config): configuration of the application
+- [`src/modals`](src/modals): modals
+- [`src/routes`](src/routes): routes
+- [`src/screens`](src/screens): application's screens
+- [`src/services`](src/services): application services, e.g. API clients
+- [`src/utils`](src/utils): some utility tools
 
 ## Running the project
 
@@ -79,7 +69,3 @@ I'm a React Native developer, play Love Live, BanGDream, Starlight everyday.
 © Phạm Ngọc Thạch
 
 This project is released under the [MIT License](LICENSE).
-
-## Version up
-
-`yarn run version:up -- --major || --minor || --patch`

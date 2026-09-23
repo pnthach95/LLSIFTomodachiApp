@@ -1,55 +1,55 @@
 {
   "editor.tabSize": 2,
   "editor.detectIndentation": false,
-  "editor.rulers": [
-    80
-  ],
+  "editor.rulers": [80],
   "editor.formatOnSave": true,
   "editor.formatOnPaste": true,
   "files.eol": "\n",
   "files.insertFinalNewline": true,
-  "todo-tree.general.tags": [
-    "BUG",
-    "HACK",
-    "FIXME",
-    "TODO",
-    "XXX",
-    "START:",
-    "END:"
-  ],
-  "todo-tree.general.tagGroups": {
-    "PROJECT": [
-      "START:",
-      "END:"
-    ]
-  },
-  "todo-tree.highlights.customHighlight": {
-    "PROJECT": {
-      "background": "cyan",
-      "type": "text-and-comment",
-      "hideFromTree": true
-    },
-    "TODO": {
-      "icon": "check",
-      "type": "line",
-      "background": "green"
-    },
-    "FIXME": {
-      "icon": "tools",
-      "background": "yellow",
-      "iconColour": "yellow"
-    }
-  },
-  "todo-tree.highlights.defaultHighlight": {
-    "icon": "dash",
-    "type": "text",
-    "opacity": 50,
-    "foreground": "white",
-    "background": "blue",
-    "iconColour": "green"
-  },
   "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": true
+    "source.fixAll.eslint": "explicit"
   },
-  "god.tsconfig": "./tsconfig.json"
+  "js/ts.tsdk.path": "node_modules/typescript/lib",
+  "i18n-ally.localesPaths": ["src/locales"],
+  "i18n-ally.keystyle": "nested",
+  "i18n-ally.sortKeys": true,
+  "tailwindCSS.classAttributes": [
+    "class",
+    "className",
+    "headerClassName",
+    "contentClassName",
+    "contentContainerClassName",
+    "columnWrapperClassName",
+    "endFillColorClassName",
+    "imageClassName",
+    "inputClassName",
+    "tintColorClassName",
+    "ios_backgroundColorClassName",
+    "textClassName",
+    "thumbColorClassName",
+    "trackColorOnClassName",
+    "trackColorOffClassName",
+    "selectionColorClassName",
+    "cursorColorClassName",
+    "underlineColorAndroidClassName",
+    "placeholderTextColorClassName",
+    "selectionHandleColorClassName",
+    "labelClassName",
+    "colorsClassName",
+    "rippleColorClassName",
+    "progressBackgroundColorClassName",
+    "titleColorClassName",
+    "underlayColorClassName",
+    "colorClassName",
+    "iconColorClassName",
+    "indicatorClassName",
+    "containerColorClassName",
+    "drawerBackgroundColorClassName",
+    "statusBarBackgroundColorClassName",
+    "backdropColorClassName",
+    "backgroundColorClassName",
+    "ListFooterComponentClassName",
+    "ListHeaderComponentClassName"
+  ],
+  "tailwindCSS.classFunctions": ["useResolveClassNames"]
 }

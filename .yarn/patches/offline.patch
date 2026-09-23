@@ -1,0 +1,68 @@
+diff --git a/dist/react-native-offline.js b/dist/react-native-offline.js
+index d6db41f..02dba43 100644
+--- a/dist/react-native-offline.js
++++ b/dist/react-native-offline.js
+@@ -3293,25 +3293,25 @@ function makeHttpRequest(args) {
+         xhr.timeout = timeout;
+         xhr.onload = function onLoad() {
+             // 3xx is a valid response for us, since the server was reachable
+-            if (this.status >= 200 && this.status < 400) {
++            if (xhr.status >= 200 && xhr.status < 400) {
+                 resolve({
+-                    status: this.status,
++                    status: xhr.status,
+                 });
+             }
+             else {
+                 reject({
+-                    status: this.status,
++                    status: xhr.status,
+                 });
+             }
+         };
+         xhr.onerror = function onError() {
+             reject({
+-                status: this.status,
++                status: xhr.status,
+             });
+         };
+         xhr.ontimeout = function onTimeOut() {
+             reject({
+-                status: this.status,
++                status: xhr.status,
+             });
+         };
+         var combinedHeaders = __assign(__assign({}, headers), customHeaders);
+diff --git a/src/utils/makeHttpRequest.ts b/src/utils/makeHttpRequest.ts
+index f0b8ee9..f4c1ad0 100644
+--- a/src/utils/makeHttpRequest.ts
++++ b/src/utils/makeHttpRequest.ts
+@@ -63,23 +63,23 @@ export default function makeHttpRequest(args?: Options) {
+     xhr.timeout = timeout;
+     xhr.onload = function onLoad() {
+       // 3xx is a valid response for us, since the server was reachable
+-      if (this.status >= 200 && this.status < 400) {
++      if (xhr.status >= 200 && xhr.status < 400) {
+         resolve({
+-          status: this.status,
++          status: xhr.status,
+         });
+       } else {
+         reject({
+-          status: this.status,
++          status: xhr.status,
+         });
+       }
+     };
+     xhr.onerror = function onError() {
+       reject({
+-        status: this.status,
++        status: xhr.status,
+       });
+     };
+     xhr.ontimeout = function onTimeOut() {
+       reject({
+-        status: this.status,
++        status: xhr.status,
+       });
+     };

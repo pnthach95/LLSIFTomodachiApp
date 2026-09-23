@@ -1,40 +1,32 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    package="com.pnthach95.llsiftomodachi">
+<manifest
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:tools="http://schemas.android.com/tools">
+  <uses-permission android:name="android.permission.INTERNET" />
+  <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
-    <uses-permission android:name="android.permission.VIBRATE" />
-
-    <application
-      tools:replace="android:allowBackup"
-      android:name=".MainApplication"
+  <application
+    tools:replace="android:allowBackup"
+    android:name=".MainApplication"
+    android:label="@string/app_name"
+    android:largeHeap="true"
+    android:icon="@mipmap/ic_launcher"
+    android:allowBackup="false"
+    android:theme="@style/BootTheme"
+    android:usesCleartextTraffic="${usesCleartextTraffic}"
+    android:supportsRtl="true">
+    <activity
+      android:name=".MainActivity"
       android:label="@string/app_name"
-      android:largeHeap="true"
-      android:icon="@mipmap/ic_launcher"
-      android:allowBackup="false"
+      android:launchMode="singleTask"
+      android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode"
+      android:screenOrientation="portrait"
+      android:exported="true"
+      android:windowSoftInputMode="stateAlwaysHidden|adjustPan"
       android:theme="@style/BootTheme">
-      <activity
-        android:name=".MainActivity"
-        android:label="@string/app_name"
-        android:launchMode="singleTask"
-        android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode"
-        android:screenOrientation="portrait"
-        android:exported="true"
-        android:windowSoftInputMode="stateAlwaysHidden|adjustPan">
-        <intent-filter>
-          <action android:name="android.intent.action.MAIN" />
-          <category android:name="android.intent.category.LAUNCHER" />
-        </intent-filter>
-      </activity>
-      <service android:name="io.invertase.firebase.messaging.RNFirebaseBackgroundMessagingService" />
-      <meta-data
-        android:name="com.google.firebase.messaging.default_notification_icon"
-        android:resource="@drawable/ic_info_notif" />
-      <meta-data
-        android:name="com.google.firebase.messaging.default_notification_color"
-        tools:replace="android:resource"
-        android:resource="@color/purple" />
-    </application>
+      <intent-filter>
+        <action android:name="android.intent.action.MAIN" />
+        <category android:name="android.intent.category.LAUNCHER" />
+      </intent-filter>
+    </activity>
+  </application>
 </manifest>

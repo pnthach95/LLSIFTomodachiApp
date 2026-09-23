@@ -1,20 +1,20 @@
+const ReactCompilerConfig = {target: '19'};
+
+/** @type {import('@babel/core').TransformOptions} */
 module.exports = {
-  presets: ['module:metro-react-native-babel-preset'],
+  presets: ['module:@react-native/babel-preset'],
   plugins: [
+    ['babel-plugin-react-compiler', ReactCompilerConfig],
     [
       'module-resolver',
       {
-        root: ['./App'],
+        root: ['./src'],
+        extensions: ['.ios.js', '.android.js', '.js', '.ts', '.tsx', '.json'],
         alias: {
-          '^~/(.+)': './App/\\1',
+          '*': '.',
         },
       },
     ],
-    'react-native-reanimated/plugin',
+    'react-native-worklets/plugin',
   ],
-  env: {
-    production: {
-      plugins: ['react-native-paper/babel'],
-    },
-  },
 };
